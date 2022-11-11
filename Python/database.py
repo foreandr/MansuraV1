@@ -598,7 +598,7 @@ def MANSURA_SUBSCRIBE_INSERT_MULTIPLE_DEMO():
 
 def REMOVE_ALL_USER_DIRECTORIES():
     dirpath = 'static/#UserData/'
-   
+    # print(os.getcwd())
     for filename in os.listdir(dirpath):
         filepath = os.path.join(dirpath, filename)
         try:

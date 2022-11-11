@@ -12,6 +12,7 @@ Notes/TODO/MVP.docx
 Notes/TODO/unused code.txt
 Notes/TODO/STEPS FOR NEW DROPLETS
 
+Python/__pycache__
 Python/__pychache__
 Python/History
 Python/Paypal
@@ -24,3 +25,6 @@ Python/token.pickle
 
 static/#UserData
 venv/
+Python/all_dates.csv
+Python/current_date.csv
+
