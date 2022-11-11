@@ -23,8 +23,4 @@ Python/testing_database.py
 Python/token.pickle
 
 static/#UserData
-Templates/
 venv/
-mansura.py
-README.md
-wsgi.py

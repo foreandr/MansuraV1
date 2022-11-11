@@ -1,0 +1,325 @@
+{% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
+{%block main %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/post_details.css') }}">
+POST DETAILS
+
+<div class="container">
+    <div class="col" style="width: 100%">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                MAIN POST
+            </div>
+            <div class="card-body ">
+                <div>                   
+                    <a href="/{{username}}">{{username}}</a>
+                    <!--DAILY -->
+                    {% if daily_left == 0 %}
+                    <span id="daily_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_id}}/Daily">D: {{daily_dataset_votes}}</a></button></span>
+                    {% else %}
+                    <span id="daily_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_id}}/Daily">D: {{daily_dataset_votes}}</a></button></span>
+                    {% endif %}
+
+                    <!--MONTHLY -->
+                    {% if monthly_left == 0 %}
+                    <span id="monthly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_id}}/Monthly">M: {{monthly_dataset_votes}}</a></button></span>
+                    {% else %}
+                    <span id="monthly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_id}}/Monthly">M: {{monthly_dataset_votes}}</a></button></span>
+                    {% endif %}
+
+                    <!--YEARLY -->
+                    {% if yearly_left == 0 %}
+                    <span id="yearly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_id}}/Yearly">Y: {{yearly_dataset_votes}}</a></button></span>
+                    {% else %}
+                    <span id="yearly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_id}}/Yearly">Y: {{yearly_dataset_votes}}</a></button></span>
+                    {% endif %}
+                </div>
+                   <!--PROFILE PICTURE-->
+                   <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + username + '/profile/profile_pic.jpg')}} " width='100' height='100' />
+                
+                   <!--POST IMAGE-->
+                   {% if og_post_img != "" %}
+                       <img id="og_post_pic" src="{{url_for('static', filename=og_post_img)}} " width='400' height='200' />
+                   {% endif %}
+   
+                   <!--POST TEXT MAKE LESS THAN SO AND SON-->
+                   <div id="text_span">
+                       {{og_post_text}}
+                   </div>
+                
+
+
+
+
+                    <!-- PUTTING SHIT AT THE BOTTOM -->
+                    <div><br /></div>
+                    <div class=" card-footer d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_id}})" aria-expanded="false">
+                                REPLY
+                            </button>
+                        </small>
+                        <small class="text-muted" id="post_details">
+                            <a href="{{username}}_{{paths_list[i]}}-post_page">ID:{{file_id}} </a>
+                           
+                            <!--OVER 18?-->
+                            {% if og_post_18 == "older_18" %}
+                                <u>18+</u>
+                            {% endif %}
+
+                            {% if og_post_src != "" %}
+                            Source:<a href='{{og_post_src}}'>{{og_post_src}}</a>
+                            {% endif %}
+                            
+                            <!--FOREIGN ID SOURCE?-->
+                            {% if post_foreign_id_source != "N-A" %}
+                                {% if post_foreign_id_source != "" %}
+                                    Referencing: {{post_foreign_id_source}}
+                                {% endif %}
+                            {% endif %}
+
+                            {{post_date}}
+    
+                        </small>
+                    </div>   
+            </div>          
+        </div>
+    </div>
+
+
+    <div class="container">
+        {%for i in range(0, username_len )%}
+        <div class="col" style="width: 90%">
+            <div class="card mb-4 shadow-sm border-dark mb-3">
+                <div class="card-body">
+                    <!-- TODO: CHANGE TO AN HREF TO GO TO THEIR PROFILE -->
+                    <div > <!--CARD TITLE-->                  
+                        <a href="/{{usernames_list[i]}}">{{usernames_list[i]}}</a>
+                                                
+                        <!--DAILY -->
+                        {% if daily_left == 0 %}
+                        <span id="daily_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Daily">D: {{day_votes[i]}}</a></button></span>
+                        {% else %}
+                        <span id="daily_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Daily">D: {{day_votes[i]}}</a></button></span>
+                        {% endif %}
+    
+                        <!--MONTHLY -->
+                        {% if monthly_left == 0 %}
+                        <span id="monthly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
+                        {% else %}
+                        <span id="monthly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
+                        {% endif %}
+    
+                        <!--YEARLY -->
+                        {% if yearly_left == 0 %}
+                        <span id="yearly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
+                        {% else %}
+                        <span id="yearly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
+                        {% endif %}
+                    </div>
+    
+                    
+                    <!-- POST TEXT -->
+                    <div id="text_span">
+                        {% if lengths_of_text_files[i] > 300 %}
+                            {{text_list[i][:300]}}...
+                            <div>
+                                <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page">see more...</a>
+                            </div>
+                        {% else %}
+                            {{text_list[i]}}
+                            <div>
+                                <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page">see more...</a>
+                            </div>
+                        {% endif %}            
+                    </div>
+                    
+                    <!-- POST IMAGE -->
+                    {% if image_path_list[i] != "" %}
+                    <img onclick="enlargeImg()" id="post_pic" src="{{url_for('static', filename=image_path_list[i])}} " width='400' height='200' />
+                    {% endif %}
+                    <!--PROFILE PICTURE-->
+                    <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='30' height='30' />
+    
+    
+                    <!-- PUTTING SHIT AT THE BOTTOM -->
+                    <div><br /></div>
+                    <div class=" card-footer d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_ids_list[i]}})" aria-expanded="false">
+                                REPLY
+                            </button>
+                        </small>
+                        <small class="text-muted" id="post_details">
+                            <a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">ID:{{file_ids_list[i]}} </a>
+    
+                            {% if age_18_list[i] == "older_18" %}
+                            <u>18+</u>
+                            {% endif %}
+                            Source:<a href='{{source_list[i]}}'>{{source_list[i]}}</a>
+                            {% if post_sources_list[i] != "N-A" %}
+                            Referencing: {{post_sources_list[i]}}
+    
+                            {% endif %}
+                            {{dates_list[i]}}
+    
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+    
+    </div>
+    
+
+</div>
+    <!-- reply_modal  -->
+    <div id="reply_modal" class="modal">
+    
+        <!-- Modal content -->
+        <div class="modal-content">
+            <form action="upload" method="POST" enctype="multipart/form-data">
+                <div>
+                    <label for="textbox">Whats on your mind? (10000 chars) [NO EMOJIS FOR NOW SORRY LOL]</label>
+                    <br>
+                    <textarea id="textbox" name="textbox" rows="7" cols="50" maxlength="10000"></textarea>
+    
+                </div>
+    
+                <div class="custom-file">
+                    <!-- .mp4,.csv, .onnx,-->
+                    <input type="file" class="custom-file-input" name="file" accept=".png, .jpeg, .jpg, .pdf" id="dataset_file">
+                    <input type="text" id="hidden_file_size" name="hidden_file_size" placeholder="auto" size="1" value="">
+                    <label class="custom-file-label" for="file">PNG/JPG/CSV/ONNX/MP4/PDF</label>
+    
+                    <div id="dataset_return_message">
+    
+                    </div>
+                </div>
+    
+                <div>                
+                    <label class="custom-file-label" for="file">Replying to File Id</label>
+                    <input type="number" id="reply_external_source" name="external_source" value="" >(this person will get 5% of what your winnings)              
+                </div>
+                
+                <!-- EXTERNAL LINK -->
+                <div>
+                    <input type="checkbox" name="button_reply_external_source_link" value="button_reply_external_source_link" onchange="reply_enable_external_link()">
+                    <label><b>Source:</b></label>
+                    <input id="reply_external_source_link" name="external_source_link" type="url" placeholder="Enter Source LINK">
+                </div>
+    
+                <div>
+                    <input type="checkbox" id="older_18" name="older_18" value="older_18">
+                    <label for="">This is for adults only 18+? (SEVERE PENALITIES FOR GETTING THIS WRONG)</label><br>
+                </div>
+    
+                <br>
+    
+                <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>
+    
+                FILE SIZE MUST BE < 10 GIGS
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("reply_external_source_link").disabled = true; // setting default to disabled
+
+
+    d_votes_left = '{{ daily_left }}';
+    m_votes_left = '{{ monthly_left }}';
+    y_votes_left = '{{ yearly_left }}';
+    daily_pool = '{{dailypool}}'
+    console.log(daily_pool)
+    console.log("HELLO WORLD")
+
+    document.getElementById("index_daily").innerHTML = 'DAILY POOL: ${{daily_pool}}';
+    document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: ${{monthly_pool }}';
+    document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: ${{yearly_pool }}';
+
+    document.getElementById("daily_votes_left").innerHTML = `DAY VOTES LEFT:  ${d_votes_left}`;
+    document.getElementById("monthly_votes_left").innerHTML = `MON VOTES LEFT: ${m_votes_left}`;
+    document.getElementById("yearly_votes_left").innerHTML = `YEA VOTES LEFT:  ${y_votes_left}`;
+    document.getElementById("user_balance").innerHTML = 'BALANCE:${{user_balance}}';
+
+
+
+    function enable_built_from_other() {
+        if (document.getElementById("external_source").disabled == true) {
+            document.getElementById('external_source').removeAttribute("disabled");
+
+        }
+        else {
+            document.getElementById("external_source").setAttribute("disabled", "enabled")
+        }
+
+    }
+
+    function enable_exteral_link() {
+        // console.log("hello world")
+        if (document.getElementById("external_source_link").disabled == true) { // if disabled
+            document.getElementById('external_source_link').removeAttribute("disabled");
+
+        }
+        else {
+            document.getElementById("external_source_link").setAttribute("disabled", "enabled")
+        }
+    }
+
+    function reply_enable_external_link(){
+        if (document.getElementById("reply_external_source_link").disabled == true) { // if disabled
+            document.getElementById('reply_external_source_link').removeAttribute("disabled");
+        }
+        else {
+            document.getElementById("reply_external_source_link").setAttribute("disabled", "enabled")
+        }
+    }
+
+    function post_details_func() {
+        console.log(document.getElementById("insert_post").innerHTML);
+        if (document.getElementById("insert_post").innerHTML == "") {
+            document.getElementById("insert_post").innerHTML = ``
+        } else {
+            document.getElementById("insert_post").innerHTML = ""
+        }
+
+    }
+
+
+    
+    document.getElementById("user_balance").innerHTML = 'BALANCE:${{user_balance}}';
+        // DEFINING SCORLL LOGIC
+        window.onscroll = function (ev) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            console.log("BOTTOM")
+            document.getElementById("page_no").submit();
+
+        }
+    };
+
+    function reply_modal_toggle(file_id) {
+        // console.log(file_id)
+        document.getElementById("reply_external_source").value = file_id;
+        var modal = document.getElementById("reply_modal");
+        modal.style.display = "block";
+    }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+        var modal = document.getElementById("reply_modal");
+        var modal2 = document.getElementById("post_modal");
+        
+        if ((event.target == modal) || (event.target == modal2)) {
+
+            modal.style.display = "none";
+            modal2.style.display = "none";
+        }
+    }
+</script>
+<!-- The Modal -->
+{% endblock main %}
+
+
+
+
