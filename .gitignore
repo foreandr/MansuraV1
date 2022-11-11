@@ -1,0 +1,12 @@
+__pychache__/
+.idea/
+.vs/
+\#DemoData/
+Notes/
+Python/
+static/
+Templates/
+venv/
+mansura.py
+README.md
+wsgi.py
