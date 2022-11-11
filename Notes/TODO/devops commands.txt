@@ -1,0 +1,7 @@
+sudo nginx -s reload 
+
+sudo systemctl status mansura.service
+sudo systemctl enable mansura --now
+
+RESTART SERVICE:kill -HUP 3751
+

@@ -1,0 +1,31 @@
+#footerDiv {
+    position: absolute;
+    bottom: 0;
+}
+
+/*
+#dropdownMenuButton {
+    background-color:lightgrey;
+    color: black;
+
+}
+
+#dropdownMenuButton2 {
+    background-color: lightgrey;
+    color: black;
+    margin-right: 50px;
+}
+*/
+  
+#daily_votes_left{
+    color: red;
+}
+#monthly_votes_left {
+    color: red;
+}
+#yearly_votes_left {
+    color: blue;
+}
+#ULBUTTONS {
+    margin-left: -10px;
+}

@@ -1,10 +1,28 @@
+# THERE ARE SOME FILES YOU SHOULD GRAB WHEN YOU CLONE
+# Notes/TODO/STEPS FOR NEW DROPLETS
+
+
+
+
 __pychache__/
-.idea/
-.vs/
-\#DemoData/
-Notes/
-Python/
-static/
+#.idea/
+#.vs/
+#\#DemoData/
+Notes/TODO/MVP.docx
+Notes/TODO/unused code.txt
+Notes/TODO/STEPS FOR NEW DROPLETS
+
+Python/__pychache__
+Python/History
+Python/Paypal
+Python/Stripe
+Python/db_connection.py
+Python/my_email.py
+Python/paypal_gmail.py
+Python/testing_database.py
+Python/token.pickle
+
+static/#UserData
 Templates/
 venv/
 mansura.py
