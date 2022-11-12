@@ -1,0 +1,4 @@
+SWITCH USER:sudo -i -u postgres
+EXIT   POST:\q
+EXIT TO SYS:exit
+CONN TO DB : psql -d mansura      

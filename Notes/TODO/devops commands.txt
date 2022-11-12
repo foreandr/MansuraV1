@@ -1,0 +1,17 @@
+sudo nginx -s reload 
+
+sudo systemctl status mansura.service
+sudo systemctl enable mansura --now
+
+RESTART SERVICE:kill -HUP 3751
+
+
+GO TO PRODUCTION COMMANDS
+SHOW    BRANCH:git rev-parse --abbrev-ref HEAD
+SWITCH TO PROD:git checkout master
+SWITCH TO DEV :git checkout dev
+MERGE WITH DEV:git merge dev
+
+
+
+# ONE MORE TEST 

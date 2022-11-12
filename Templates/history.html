@@ -1,0 +1,38 @@
+{% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
+{%block main %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            DAILY
+            {%for i in range(daily_len)%}
+                <div>
+                    {{all_daily[i]}}
+                </div>
+            {%endfor%}
+        </div>
+
+        <div class="col-sm">
+            MONTHLY
+            {%for i in range(monthly_len)%}
+            <div>
+                {{all_monthly[i]}}
+            </div>
+            {%endfor%}
+        </div>
+        
+        <div class="col-sm">
+            YEARLY
+            {%for i in range(yearly_len)%}
+            <div>
+                {{all_yearly[i]}}
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+</div>
+
+<script>
+    console.log("HELLO WORLD")
+</script>
+{% endblock main %}
