@@ -119,7 +119,7 @@ def get_filetype(string):
     return my_text[::-1]
 
 
-def check_no_bad_words(word, testing=False): #todo: this is particular to username
+def USERNAME_PROFANITY_CHECK(word, testing=False): #todo: this is particular to username
     print("CHECKING USERNAME FOR BADWORDS: ", type(word), {word})
     
     if testing:
@@ -135,7 +135,13 @@ def check_no_bad_words(word, testing=False): #todo: this is particular to userna
     # print("word:", word)
     # BASIC CHECK IF == TO ANY
     bad_words = f.read().split(",")
-
+    for i in bad_words:
+        if i in word:
+            print(F"FOUND {i} in {word} {len(i)}")
+            return True
+        else:
+            pass
+            #print("NOT FOUND",i, {len(i)})
     # 1. my word check
     if word.lower() in bad_words:
         print("it is in list of bad words")
@@ -153,8 +159,13 @@ def check_no_bad_words(word, testing=False): #todo: this is particular to userna
         
     # 4: 20 CHARS
     if len(word) > 20:
-        print(word, "TOO LONG")
+        print(f"{word} TOO LONG: {len(word)}")
         return True       
+    
+    #5 ALPHANUMERIC
+    if any(not c.isalnum() for c in word):
+        print(f"{word} has non alphanumeric chracters, cant in name")
+        return True
     
     return False
 
@@ -260,3 +271,5 @@ def GET_USER_BIO(username):
 
 # GET_USER_BIO("foreandr")
 # FULL_GIANT_REGISTER()
+
+# print(USERNAME_PROFANITY_CHECK("bozo0000000000000000", testing=True))

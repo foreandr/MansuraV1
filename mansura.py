@@ -72,7 +72,10 @@ def home():
         page_no = 1
    
     file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular = database.universal_dataset_function(search_type="home", search_algo_path="foreandr-1", page_no=page_no, search_user=session_username)
-
+    # GRAB STUFF IT'S IT'S EMPTY EITHE RWAY
+    if len(file_ids_list) == 0:
+        balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session_username)
+    
     username_len = len(usernames_list)
     # print("USERNAMES LEN", username_len, usernames_list)
 
@@ -155,7 +158,7 @@ def register():
 
             # CHECK WHETHER VALUES ARE IN RESTRICTED LIST
             
-            has_bad_words = helpers.check_no_bad_words(registering_username[0])
+            has_bad_words = helpers.USERNAME_PROFANITY_CHECK(registering_username[0])
 
             if not has_bad_words:
 
@@ -352,8 +355,10 @@ def user_profile_name(username):
     if username == "favicon.ico": # check weird username issue
         print("FAVICON ISSUE")
         return redirect(url_for('home'))
+    """
     if request.method == "POST":
         print("USERNAME POSTING")
+    """
     # CHECK USER INFO
     if username == session['user']: # Check some user info
         is_session_user = True  
@@ -364,14 +369,13 @@ def user_profile_name(username):
 
     #   CHECK WHICH ONE OF THE OTHERS IT UIS
     #=======================================================
-    print("GETTING TO HERE TEST 1")
     if username.endswith('-post_page'): # CHECK IF GOING TO A PARTICULAR POST
         if "email" in session:
             balance = database.GET_USER_BALANCE_SIMPLE( session["user"])
         else:
             balance = 0
 
-        print("\nTHIS SHOWS ITS GETTING TO INDIVIDUAL FILE========================")
+        # print("\nTHIS SHOWS ITS GETTING TO INDIVIDUAL FILE========================")
         
         list_from_username = username.split("_")
 
@@ -385,7 +389,10 @@ def user_profile_name(username):
         post_username, post_file_path, post_user_id, post_foreign_id_source, post_date, file_id_ = database.GET_SINGLE_DATASET_INFO(final_filename)
             
         file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular = database.universal_dataset_function(search_type="post", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], file_id=file_id)
-   
+        #MIGHT BE WRTH CONSOLIDATIING INTO ONE FUNCTION
+        if len(file_ids_list) == 0:
+            user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user']) # THIS ASSUMES ALREADY IN SESSION, SHOULD BE
+
         text_list = []
         age_18_list = []
         source_list = []
@@ -415,6 +422,7 @@ def user_profile_name(username):
         for i in text_list:
             lengths_of_text_files.append(len(i))
             # print(i, len(i))
+        '''
         print("=====================DETAILS=======================")
         print("DATES LIST:", dates_list)
         print("RAW NAME :", username)
@@ -433,7 +441,7 @@ def user_profile_name(username):
         print("IMG PATH :",og_post_img)
         print("POST SORC:",og_post_src)
         print("POST OV18:",og_post_18)
-        
+        '''
         return render_template('post_details.html',
                             # POST DETAILS
 
@@ -483,7 +491,7 @@ def user_profile_name(username):
                             yearly_dataset_votes=yearly_votes_singular
                         )        
     else:
-        print(username, "does not end with -post_page")
+        # print(username, "does not end with -post_page")
         pass
     if database.CHECK_IF_NAME_EXISTS(username) == False:
         print("NAME DOESNT EXIST")
@@ -517,12 +525,13 @@ def user_profile_name(username):
     name_exists = database.CHECK_IF_NAME_EXISTS(username=username) #TODO:IMPLEMENT FUNCTION
     my_friends, friend_count = database.GET_FOLLOWING(username)
     my_followers, follow_count = database.GET_FOLLOWERS(username=username)
-    
+    # #TODO:might be worth doing a check befroe before the big query someday
     file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular = database.universal_dataset_function(search_type="prof", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], profile_username=username)
     
     if len(file_ids_list) == 0:
-        pass
-
+        print("THERE IS NOTHING HERE", session['user'])
+        user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user']) # THIS ASSUMES ALREADY IN SESSION, SHOULD BE
+        
     text_list = []
     age_18_list = []
     source_list = []
@@ -547,6 +556,7 @@ def user_profile_name(username):
         lengths_of_text_files.append(len(i))
 
     if name_exists:
+        
         return render_template(f"user_profile.html",
                 #SPECIFIC TO USER PROFILE
                 followers=my_followers,
@@ -569,21 +579,19 @@ def user_profile_name(username):
                 month_votes=month_votes,
                 year_votes=year_votes,
 
+                dailypool=dailypool,
+                monthlypool=monthlypool,
+                yearlypool=yearlypool,
                 daily_votes_left=daily_left,
                 monthly_votes_left=monthly_left,
                 yearly_votes_left=yearly_left,
+                user_balance = user_balance,
 
                 text_list=text_list,
                 lengths_of_text_files=lengths_of_text_files,
                 age_18_list=age_18_list,
                 source_list=source_list,
-                image_path_list=image_path_list,
-
-                dailypool=dailypool,
-                monthlypool=monthlypool,
-                yearlypool=yearlypool,
-
-                balance = user_balance,
+                image_path_list=image_path_list              
             )
     else:                             
         return redirect(url_for('home'))
@@ -896,6 +904,7 @@ def settings():
     return render_template(f"settings.html",
     )
 
+
 if __name__ == '__main__':
     #SUBTITLE Network Societey and it's Future
     
@@ -908,7 +917,7 @@ if __name__ == '__main__':
     thread = Thread(target = distribution_algorithm.TESTING_TIMING, args = ())
     thread.start()
 
-    app.run(host=host, port="8080", debug=True, use_reloader=False)  # host is to get off localhost
-    #serve(app, host=host, url_scheme='https')    
+    #app.run(host=host, port="8080", debug=True, use_reloader=False)  # host is to get off localhost
+    serve(app, host=host)    
 
     # If the debugger is on, I can change my files in real time after saving

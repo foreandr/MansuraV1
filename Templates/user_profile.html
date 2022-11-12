@@ -3,7 +3,6 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/user_profile.css') }}">
 <!-- SESSION VARIABLES-->
 <div id="profile picture">
-    {{test_name}}
     <h1>{{host_account[0]}}</h1>
     <img id="profile_picture"
         src="{{url_for('static', filename='#UserData/' + account_name + '/profile/profile_pic.jpg')}} " width='200' height='200' 
@@ -186,19 +185,20 @@
     day_vote_list = '{{day_votes}}'
     month_vote_list = '{{month_votes}}'
     year_vote_list = '{{year_votes}}'
-    balance = '{{balance}}'
-
+    balance = '{{user_balance}}'
+    console.log("getting here", '{{daily_votes_left}}')
+    console.log([d_votes_left,m_votes_left,y_votes_left,"\n",day_vote_list,month_vote_list,year_vote_list,"\n",balance ])
+    
     document.getElementById("daily_votes_left").innerHTML = `DAILY VOTES: ${d_votes_left}`;
     document.getElementById("monthly_votes_left").innerHTML = `MONTHLY VOTES: ${m_votes_left}`;
     document.getElementById("yearly_votes_left").innerHTML = `YEARLY VOTES: ${y_votes_left}`;
-    document.getElementById("user_balance").innerHTML = `BALANCE: ${balance}`;
+    document.getElementById("user_balance").innerHTML = `BALANCE:$${balance}`;
     document.getElementById("daily_votes_left").innerHTML = `DAILY VOTES: ${d_votes_left}`;
     document.getElementById("index_daily").innerHTML = 'DAILY POOL: ${{dailypool}}';
     document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: ${{monthlypool }}';
     document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: ${{yearlypool }}';
     
-    s_list = '{{source_list}}';
-    console.log("source_list", s_list);
+
 
     function get_wanted_string_following(string) {
         // console.log(string, string.length);

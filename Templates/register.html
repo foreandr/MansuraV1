@@ -9,19 +9,35 @@
     </div>
 
     <form method="POST">
-        <label id="username"><b>Username</b></label>
-        <input name=username type="text" placeholder="Enter Username"  required>
-        <label id="password"><b>Password</b></label>
-        <input name=password type="password" placeholder="Enter Password" required>
+        <div>
+            <input name=username type="text" placeholder="Enter Username"  required>
+            <label id="username"></label>
+        </div>
 
-        <label id="email"><b>Email</b></label>
-        <input name=email type="email" placeholder="Enter Email" required>
+        <div>
+            <input name=password type="password" placeholder="Enter Password" required>
+            <label id="password"></label>
+        </div>
 
-        <label id="paypal_email"><b>Paypal Email (do not fuck this up or you won't get paid)</b></label>
-        <input name=paypal_email type="email" placeholder="Enter Paypal Email" required>
+        <div>
+            <input name=email type="email" placeholder="Enter Email" required>
+            <label id="email"></label>
+        </div>
+
+        <div>   
+            <input name=paypal_email type="email" placeholder="Enter Paypal Email" required>
+            <label id="paypal_email"></label>
+        </div>
+        
+        <div>
+            <button name="submit_button" value="submit" type="submit">Submit</button>
+        </div>
 
 
-        <button name="submit_button" value="submit" type="submit">Submit</button>
+
+
+
+        
     </form>
 
 

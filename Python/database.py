@@ -998,7 +998,7 @@ def MODEL_GET_NUM_VOTES_BY_MODEL_ID(model_id):
 def GET_FOLLOWING(username):
     conn = connection.test_connection()
 
-    print('GET FOLLOWING: ', username)
+    # print('GET FOLLOWING: ', username)
     cursor = conn.cursor()
     cursor.execute(f"SELECT GET_FOLLOWING('{username}');")
     user_friends = []
@@ -2609,7 +2609,7 @@ def universal_dataset_function(search_type, search_algo_path="foreandr-1", page_
             yearly_left = 1 if (int(yearly_left) == 0) else 0
         else:
             daily_left, monthly_left, yearly_left = 0, 0, 0
-    
+    '''
     print("\nCUSTOM QUERY               :", where_clause, order_by_clause)
     print("PROFILE SEARCH CLAUSE      :",profile_search_clause)
     print("FOREIGN ID                 :", foreign_id_text_entry)
@@ -2633,7 +2633,7 @@ def universal_dataset_function(search_type, search_algo_path="foreandr-1", page_
     print("POST_PAGE MAIN_DAILY       :", daily_votes_singular)
     print("POST_PAGE MAIN_MONTHLY     :", monthly_votes_singular)
     print("POST_PAGE MAIN_YEARLY      :", yearly_votes_singular)
-    
+    '''
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
@@ -2654,7 +2654,7 @@ def GRAB_SEARCH_ALGO(search_algo_path):
     # NONE OF X, LOTS OF X
 
     #OPEN JSON FROM SEARCH ALGO PATH
-    print("SEARCH PATH:", search_algo_path)
+    # print("SEARCH PATH:", search_algo_path)
     username = search_algo_path.split("-")[0]
     f = open(f'/root/mansura/static/#UserData/{username}/search_algorithms/{search_algo_path}.json')
     data = json.load(f)
@@ -2711,6 +2711,7 @@ def GET_VOTES_AND_BALANCE_AND_PAYOUTS(username):
         (SELECT Monthly FROM PAYOUTS),
         (SELECT Yearly FROM PAYOUTS)
 
+
     """)
     conn.commit()
     results = cursor.fetchall()
@@ -2725,11 +2726,11 @@ def GET_VOTES_AND_BALANCE_AND_PAYOUTS(username):
 
     for value in results:
         balance = value[0]
-        daily_votes_left = value[0]
-        monthly_votes_left = value[0]
-        yearly_votes_left = value[0]
-        daily_pool = value[0]
-        monthly_pool = value[0]
-        yearly_pool = value[0]
+        daily_votes_left = value[1]
+        monthly_votes_left = value[2]
+        yearly_votes_left = value[3]
+        daily_pool = value[4]
+        monthly_pool = value[5]
+        yearly_pool = value[6]
     
     return balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool
