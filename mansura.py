@@ -295,6 +295,8 @@ def upload():
         forign_id_source = request.form.get("external_source")
         external_link = request.form.get("external_source_link")
         
+
+
         print("UPLOAD DETAILS ==============================")
         print("UPLOADER: " + str(session['user']))
         print("POST TEXT: " + str(post_text))        
@@ -305,6 +307,18 @@ def upload():
         # print("POST SIZE: " + str(file_length))
         print("=============================================")
         
+        if helpers.POST_TEXT_CHECK():
+            print("TEXT WAS FINE")
+            if helpers.POST_IMG_CHECK():
+                print("IMG WAS FINE")
+            else:
+                print("IMG HAD BAD SHIT")
+                return redirect(url_for("home"))
+        else:
+            print("TEXT HAD BAD SHIT")
+            return redirect(url_for("home"))
+                
+
         print(len(post_file.filename), post_file.filename)
         if ( (len(post_text) == 0) and (len(post_file.filename) == 0)): 
             print("EMPTY HERE")

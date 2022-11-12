@@ -261,6 +261,7 @@ def FULL_GIANT_REGISTER():
     GIANT_FILE_VOTE_INSERT()
     GIANT_USER_SUBSCRIBE()
 
+
 def GET_USER_BIO(username):
     f = open(f'/root/mansura/static/#UserData/{username}/config.json')
     data = json.load(f)
@@ -268,6 +269,13 @@ def GET_USER_BIO(username):
     my_bio = data["bio"]
     f.close()
     return my_bio
+
+
+def POST_TEXT_CHECK():
+    return True
+
+def POST_IMG_CHECK():
+    return True
 
 # GET_USER_BIO("foreandr")
 # FULL_GIANT_REGISTER()
