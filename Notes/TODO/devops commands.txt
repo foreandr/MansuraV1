@@ -10,5 +10,8 @@ GO TO PRODUCTION COMMANDS
 SHOW    BRANCH:git rev-parse --abbrev-ref HEAD
 SWITCH TO PROD:git checkout master
 SWITCH TO DEV :git checkout dev
+MERGE WITH DEV:git merge dev
+
+
 
 # ONE MORE TEST 
