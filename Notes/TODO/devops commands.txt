@@ -1,10 +1,23 @@
+apt-get install python3-venv -y
+python3 -m venv venv
+source venv/bin/activate
+
 sudo nginx -s reload 
 
 sudo systemctl status mansura.service
 sudo systemctl enable mansura --now
 
-RESTART SERVICE:kill -HUP 3751
+ps ax|grep gunicorn
+pkill gunicorn
 
+systemctl daemon-reload
+sudo systemctl start mansura
+sudo systemctl enable mansura
+sudo systemctl status mansura
+
+
+BACK END    :sudo systemctl restart mansura
+FRONT END   :kill -HUP 33454
 
 GO TO PRODUCTION COMMANDS
 SHOW    BRANCH:git rev-parse --abbrev-ref HEAD
@@ -12,6 +25,13 @@ SWITCH TO PROD:git checkout master
 SWITCH TO DEV :git checkout dev
 MERGE WITH DEV:git merge dev
 
+HTTP LOG PATH:
+/var/log/nginx/access.log
+
+NGINX PATH
+/etc/nginx/sites-available/mansura
+
+SERVICE PATH
 
 
 # ONE MORE TEST 

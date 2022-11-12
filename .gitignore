@@ -15,7 +15,7 @@ Notes/TODO/STEPS FOR NEW DROPLETS
 Python/__pycache__
 Python/__pychache__
 
-Python/History
+Python/HISTORY
 
 Python/Paypal
 Python/Stripe
@@ -37,5 +37,6 @@ __pycache__/mansura.cpython-38.pyc
 __pycache__/mansura.cpython-310.pyc
 __pycache__/wsgi.cpython-38.pyc
 __pycache__/wsgi.cpython-310.pyc
+
 
 

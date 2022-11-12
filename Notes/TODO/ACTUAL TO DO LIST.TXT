@@ -170,6 +170,7 @@ RPELY AND COPY LOGICbe able to say explicitly that you fork a dataset, and then 
 
 USEFUL LINKS:
 https://packages.ubuntu.com/
+https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-18-04 -WORKED
 https://www.postgresql.org/docs/8.1/functions-datetime.html
 https://stackoverflow.com/questions/69348483/how-do-i-pass-an-image-from-javascript-to-a-python-flask-app
 https://stackoverflow.com/questions/3206344/passing-html-to-template-using-flask-jinja2
