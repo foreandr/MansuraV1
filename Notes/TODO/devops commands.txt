@@ -11,6 +11,7 @@ sudo systemctl status mansura.service
 sudo systemctl enable mansura --now
 
 ps ax|grep gunicorn
+kill -HUP 63920
 pkill gunicorn
 
 systemctl daemon-reload
@@ -20,7 +21,7 @@ sudo systemctl status mansura
 
 
 BACK END    :sudo systemctl restart mansura
-FRONT END   :kill -HUP 33454
+FRONT END   :
 
 GO TO PRODUCTION COMMANDS
 SHOW    BRANCH:git rev-parse --abbrev-ref HEAD

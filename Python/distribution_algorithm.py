@@ -15,15 +15,18 @@ from datetime import datetime
 import pytz
 
 
+
+
 import Python.db_connection as connection
 from Python.helpers import print_green, print_title
 from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
+
 ''' #MIDDLE========================================
+
 from generating_excel import WRITE_HEADERS_TO_EXCEL
 import db_connection as connection
 from  helpers import print_green, print_title
 ''' #TOP/BOPTTOM=================================
-
 
 def GET_REPLYING_TO(file_id):
     
@@ -503,10 +506,10 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
             for key_, value_ in temp_dict.items(): # THIS MAKES EVERYTHING SO MUCH SLOWER
                 if key_ not in FINAL_DICT:
                     # print(f"FIRST TIME SEEING {key}")
-                    FINAL_DICT[key_] = float("{:.2f}".format(value_))
+                    FINAL_DICT[key_] = float("{:.2f}".format(float(value_)))
                 else:
                     #org = FINAL_DICT[key_]                  
-                    FINAL_DICT[key_] += float("{:.2f}".format(value_))
+                    FINAL_DICT[key_] += float("{:.2f}".format(float(value_)))
                     # print(f"DUPE KEY={key} | ORIG={org} + {value} = NEW={FINAL_DICT[key]}")
             
             # GRABBING THE REPLY DETAILS            
@@ -621,6 +624,8 @@ def CHECK_TIME_EQUIVALENCE_AND_EXECUTE():
         
         # current_data = my_datetime.strftime("%d/%m/%Y %H:%M:%S")
         
+        print("CURRENT :",current_datetime)
+        print("PREVIOUS:",previous_datetime)
         # CHECK DAY
         if current_datetime.strftime("%d") != previous_datetime.strftime("%d"):
             append_log_to_csv(["DAY CHANGED"])
@@ -638,8 +643,8 @@ def CHECK_TIME_EQUIVALENCE_AND_EXECUTE():
         # TESTS
         #if current_datetime.strftime("%M") != previous_datetime.strftime("%M"):
         #    print("MINUTE CHANGED")
-        if current_datetime.strftime("%H") != previous_datetime.strftime("%H"):
-            print("HOUR CHANGED: ", current_datetime.strftime('%Y-%m-%d %H:%M:%S'))
+        #if current_datetime.strftime("%H") != previous_datetime.strftime("%H"):
+        #    print("HOUR CHANGED: ", current_datetime.strftime('%Y-%m-%d %H:%M:%S'))
         
         append_log_to_csv([current_datetime.strftime("CURRENT  : %Y-%m-%d %H:%M:%S")])
         append_log_to_csv([previous_datetime.strftime("PREVIOUS : %Y-%m-%d %H:%M:%S")])
@@ -757,7 +762,7 @@ def RUN_WITH_TIME_TEST():
     st = time.time()
 
     FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Daily", testing=True)
-    #FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly", testing=True)
+    FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly", testing=True)
     # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Yearly", testing=True)
         
     # get the end time
@@ -893,7 +898,7 @@ def GET_USERNAME_BY_FILE_ID(file_id):
     """)
 
     for i in cursor.fetchall():
-        print(i[0])
+        # print(i[0])
         return i[0]
         cursor.close()
         conn.close()
