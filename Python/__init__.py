@@ -6,3 +6,4 @@ from .procedures import *
 from .distribution_algorithm import *
 from .generating_excel import *
 from .big_reset_file import *
+from .custom_log_function import *
