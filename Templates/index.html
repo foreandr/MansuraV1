@@ -108,9 +108,8 @@
                         <u>18+</u>
                         {% endif %}
                         Source:<a href='{{source_list[i]}}'>{{source_list[i]}}</a>
-                        {% if post_sources_list[i] != "N-A" %}
-                        Referencing: {{post_sources_list[i]}}
-
+                        {% if post_sources_list[i] != "" %}
+                        Referencing:<a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">{{post_sources_list[i]}} </a>
                         {% endif %}
                         {{dates_list[i]}}
 
