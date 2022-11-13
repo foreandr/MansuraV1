@@ -624,8 +624,8 @@ def CHECK_TIME_EQUIVALENCE_AND_EXECUTE():
         
         # current_data = my_datetime.strftime("%d/%m/%Y %H:%M:%S")
         
-        print("CURRENT :",current_datetime)
-        print("PREVIOUS:",previous_datetime)
+        #print("CURRENT :",current_datetime)
+        #print("PREVIOUS:",previous_datetime)
         # CHECK DAY
         if current_datetime.strftime("%d") != previous_datetime.strftime("%d"):
             append_log_to_csv(["DAY CHANGED"])

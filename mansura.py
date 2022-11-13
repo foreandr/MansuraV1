@@ -173,7 +173,7 @@ def register():
 
             else:
                 return render_template('register.html', 
-                return_message="YOU HAD SOME BAD WORDS YOU SHOULDNT HAVE IN YOUR USERNAMER"
+                    return_message="YOU HAD SOME BAD WORDS YOU SHOULDNT HAVE IN YOUR USERNAMER"
                 )
 
         except Exception as e:
@@ -543,7 +543,7 @@ def user_profile_name(username):
     file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular = database.universal_dataset_function(search_type="prof", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], profile_username=username)
     
     if len(file_ids_list) == 0:
-        print("THERE IS NOTHING HERE", session['user'])
+        # print("THERE IS NOTHING NO FILES ON HOMEPAGE HERE", session['user'])
         user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user']) # THIS ASSUMES ALREADY IN SESSION, SHOULD BE
         
     text_list = []
