@@ -11,10 +11,9 @@ import json
 from psycopg2 import Error
 import Python.procedures as procedures
 # from Python.db_connection import connection
-from  Python.helpers import print_green, print_title, print_error, turn_pic_to_hex, check_and_save_dir, print_warning
+from  Python.helpers import print_green, print_title, print_error, turn_pic_to_hex, check_and_save_dir, print_warning, log_function
 import Python.db_connection as connection
 import Python.big_reset_file as big_reset_file
-
 
 def validate_user_from_session(email, password):
     conn = connection.test_connection()
@@ -66,7 +65,7 @@ def GET_USER_ID(username):
         return user_id
     except Exception as e:
         print(f"FAILED TO INSERT {username}")
-        print(e)
+        log_function("error", e)
 
 
 def EXISTS_EMAIL(email="foreandr@gmail.com"):
@@ -154,7 +153,7 @@ def USER_INSERT(username, password, email, paypal_email, balance=0):
         print_green(F"{username} REGISTER COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        print(e)
+        log_function("error", e)
     
     cursor.close()
     conn.close()
@@ -497,6 +496,7 @@ def MANSURA_SUBSCRIBE(username):
     conn = connection.test_connection()
     # print("FUNC: MANSURA_SUBSCRIBE")
     try:
+
         user_balance = GET_USER_BALANCE_SIMPLE(username) # GET BALANCE
         # print(username, user_balance, type(user_balance))
         
@@ -520,7 +520,7 @@ def MANSURA_SUBSCRIBE(username):
             
             return False
     except Exception as e:
-        print("SUBSCRIBE FAILED: ",e)
+        log_function("error", e)
     
         
         
@@ -542,7 +542,7 @@ def GET_USER_BALANCE(username):
 
             return float(result[2])
     except Exception as e:
-        print(e)
+        log_function("error", e)
         # CLOSE CURSOR AND CONNECTION [MANDATORY]        
         cursor.close()
         conn.close()
@@ -609,9 +609,10 @@ def REMOVE_ALL_USER_DIRECTORIES():
         filepath = os.path.join(dirpath, filename)
         try:
             shutil.rmtree(filepath)
-        except OSError:
+        except OSError as e:
             # os.remove(filepath)
-            print(OSError)
+            log_function("error", e)
+            # print(OSError)
 
 
 def USER_FULL_RESET():
@@ -665,7 +666,7 @@ def DROP_ALL_TABLES():
             print_green("DROPPED TABLE IF EXISTS SEARCH_ALGORITHMS;")
         except Exception as e:
             cursor.execute("ROLLBACK")
-            print_error("[SEARCH_ALGORITHMS] " + str(e))
+            log_function("error", e)
 
         try:
             cursor.execute(f"DROP TABLE IF EXISTS EQUITY;")
@@ -676,7 +677,6 @@ def DROP_ALL_TABLES():
             print_error("[EQUITY] " + str(e))
 
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS SUBSCRIPTIONS_MENSURA;")
             cursor.execute(f"DROP TABLE IF EXISTS SUBSCRIPTIONS_MENSURA;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS SUBSCRIPTIONS_MENSURA;")
@@ -894,7 +894,7 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
 
          # return new_path #TODO: not sure if this needs to return anything
     except Exception as e:
-            print(e)
+            log_function("error", e)
             cursor.execute("ROLLBACK")
             print_error(F"USER:{uploader} FILE INSEERT FAILED")
             
@@ -955,7 +955,7 @@ def DELETE_USER_FILES(user):
         try:
             shutil.rmtree(i)
         except OSError as e:
-            print("Error: %s - %s." % (e.filename, e.strerror))
+            log_function("error", e)
 
 
 def CHANGE_PASSWORD(email, password):
@@ -971,7 +971,7 @@ def CHANGE_PASSWORD(email, password):
         print_green('CHANGE_PASSWORD COMPLETED')
     except Exception as e:
         cursor.execute("ROLLBACK")
-        print("ERROR:  [CHANGE_PASSWORD] " + str(e))
+        log_function("error", e)
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
@@ -1279,7 +1279,7 @@ def USER_SUBSCRIBE_FEE(username):
         return True
     except Exception as e:
         cursor.execute("ROLLBACK")
-        print(f"ERROR:  [USER_SUBSCRIBE_FEE] {username}" + str(e))   
+        log_function("error", e)  
         
         # CLOSE CURSOR AND CONNECTION [MANDATORY]        
         cursor.close()
@@ -1328,7 +1328,7 @@ def USER_SUBSCRIBE_UPDATE_PAYOUTS():
                
     except Exception as e:
         cursor.execute("ROLLBACK")
-        print("ERROR:  [USER_SUBSCRIBE_UPDATE_PAYOUTS " + str(e))        
+        log_function("error", e)
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
@@ -1375,7 +1375,7 @@ def CREATE_PAYOUTS_TABLE():
                 """)
         conn.commit()
         
-        print("created")
+        # print("created")
         # print_green("CREATE_PAYOUTS_TABLE\n")
         
         # INITAL 0'S INSERT
@@ -1387,7 +1387,7 @@ def CREATE_PAYOUTS_TABLE():
         cursor.close()
     except Exception as e:
         cursor.execute("ROLLBACK")
-        print_error("\nHAD TO ROLLBACK [CREATE_PAYOUTS_TABLE]: ", e)
+        log_function("error", e)
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
@@ -1425,7 +1425,7 @@ def GET_TOTAL_DATASET_MARKET_SHARE_BY_TIME(type):
         return num_votes
     except Exception as e:
         cursor.execute("ROLLBACK")
-        print("ERROR:  [USER_SUBSCRIBE_FULL] " + str(e))
+        log_function("error", e)
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
@@ -1508,7 +1508,7 @@ def GET_USER_BALANCE_SIMPLE(username):
             return float(value[0])
     except Exception as e:
         cursor.execute("ROLLBACK")
-        print(e)
+        log_function("error", e)
     CLOSE_CURSOR_AND_CONN(cursor, conn)
 
 
@@ -1890,7 +1890,7 @@ def FILE_INSERT_STORAGE(username, path_name, text, age_18, external_source):
         with open(target, 'w') as f:
             f.write(text)
     except Exception as e:
-        print(str(e) + " TEXT")
+        log_function("error", e)
     
         
     try:
@@ -1898,7 +1898,7 @@ def FILE_INSERT_STORAGE(username, path_name, text, age_18, external_source):
         with open(target, 'w') as f:
             f.write(age_18)
     except Exception as e:
-        print(str(e) + " 18")
+        log_function("error", e)
         
         
     try:
@@ -1906,7 +1906,7 @@ def FILE_INSERT_STORAGE(username, path_name, text, age_18, external_source):
         with open(target, 'w') as f:
             f.write(external_source)
     except Exception as e:
-        print(str(e) + " SOURCE?")
+        log_function("error", e)
 
 
 def CHECK_FILES_NOT_OVER_LIMIT(page_no):
@@ -2275,7 +2275,7 @@ def GET_USERNAME_BY_EMAIL(paypal_email):
             conn.close()
         # return list_of_names
     except Exception as e:
-        print(e)
+        log_function("error", e)
 
         cursor.close()
         conn.close()

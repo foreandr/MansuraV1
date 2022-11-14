@@ -41,9 +41,12 @@ app.secret_key = 'demokey'
 
 app.config["FILE UPLOADS"] = "static/#UserData"
 
+
+
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
-    print('EXECUTING INDEX FUNCTION')
+    helpers.log_function("request", request)
+    #print('EXECUTING INDEX FUNCTION')
     if "user" in session.keys():
         session_username = session["user"]
     else:
@@ -53,9 +56,12 @@ def home():
     #print(request.body)
     #print(request.headers)
 
-    print("SESSION USERNAME IS:", session_username)
+    #print("SESSION USERNAME IS:", session_username)
     
     # PAGE NUMBER CHECK FOR GETTING NEW INFO
+
+    # logging_function.write_to_log_daily_log_file(msg_type="request", request.headers)
+    
     if request.method == 'POST':
         page_no = request.form.get("page_number")
         if page_no == "None" or page_no == None:
@@ -67,7 +73,7 @@ def home():
         else:
             page_no = page_no
 
-        print(page_no)
+        #print(page_no)
     else:
         page_no = 1
    
@@ -141,7 +147,8 @@ def home():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    print('EXECUTING REGISTER FUNCTION')
+    # print('EXECUTING REGISTER FUNCTION')
+    helpers.log_function("request", request)
     if "email" in session:
         return redirect(url_for("user_profile"))
     if request.method == 'GET':
@@ -162,7 +169,7 @@ def register():
 
             if not has_bad_words:
 
-                print(registering_username, "is registering their account!")
+                # print(registering_username, "is registering their account!")
                 # print(password)
 
                 # database.create_user(conn=connection, username="hello", password="password", email="bce@hotmail.com")
@@ -177,13 +184,14 @@ def register():
                 )
 
         except Exception as e:
-            print("Error on HTML POST Register", e)
+            helpers.log_function("error", e)
         return redirect(url_for("login"))
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    print('EXECUTING LOGIN FUNCTION')
+    # print('EXECUTING LOGIN FUNCTION')
+    helpers.log_function("request", request)
     if "email" in session:
         email = session["email"]  # getting user info from session variable
         return redirect(url_for("user_profile"))
@@ -203,7 +211,7 @@ def login():
             session["user"] = signed_in[2]
             session["email"] = email
             #session["password"] = password
-            print('SESSION INFO: ', session)
+            # print('SESSION INFO: ', session)
             return redirect(url_for("user_profile"))
         else:
             return render_template('login.html', message="wrong email or password, try again")
@@ -211,6 +219,7 @@ def login():
 
 @app.route('/logout', methods=['GET'])
 def logout():
+    helpers.log_function("request", request)
     session.pop("email", None)  # remove data from session
     session.pop("user", None)  # remove data from session
     session.pop("password", None)  # remove data from session
@@ -219,13 +228,14 @@ def logout():
 
 @app.route('/user_profile', methods=['GET', 'POST'])
 def user_profile():
-    print('USING USER PROFILE')
+    #print('USING USER PROFILE')
+    helpers.log_function("request", request)
     # print(request)
     if "email" not in session:
         return redirect(url_for('login'))
     elif request.method == "GET":
-        print('USING USER PROFILE - GET')
-        print(session)
+        #print('USING USER PROFILE - GET')
+        #print(session)
         # return redirect(url_for("user_profile"))
         return redirect(url_for('user_profile_name', username=session['user']))
 
@@ -266,7 +276,7 @@ def user_profile():
                 file.save(my_path_with_file)
 
             # print("MY PATH:", my_path)
-            print("MY PATH W/F:", my_path_with_file)
+            #print("MY PATH W/F:", my_path_with_file)
             '''
             database.FILE_INSERT(
                 connection,
@@ -276,19 +286,20 @@ def user_profile():
                 file_size=my_file_size
             )
             '''
-            print("OUT OF CHECKING FILETYPE-------")
-            print("Saved and completed")
+            #print("OUT OF CHECKING FILETYPE-------")
+            #print("Saved and completed")
         # return redirect(url_for("user_profile", message="hi")) # THIS APPEARS IN THE ADDRESS BAR AS A QUERY
         return redirect(url_for("user_profile"))
     
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
+    helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
 
     if request.method == "POST": # UPLOADING SOMETHING
-        print("GOT TO WHETHER SOMETHING IS BEING POISTED OR NOT ==================================")
+        #print("GOT TO WHETHER SOMETHING IS BEING POISTED OR NOT ==================================")
         post_text = request.form.get("textbox")
         post_file = request.files['file']
         plus_18 =  request.form.get("older_18")
@@ -296,7 +307,7 @@ def upload():
         external_link = request.form.get("external_source_link")
         
 
-
+        '''
         print("UPLOAD DETAILS ==============================")
         print("UPLOADER: " + str(session['user']))
         print("POST TEXT: " + str(post_text))        
@@ -306,22 +317,22 @@ def upload():
         print("POST 18+ : " + str(plus_18))
         # print("POST SIZE: " + str(file_length))
         print("=============================================")
-        
+        '''
         if helpers.POST_TEXT_CHECK():
-            print("TEXT WAS FINE")
+            #print("TEXT WAS FINE")
             if helpers.POST_IMG_CHECK():
-                print("IMG WAS FINE")
+                #print("IMG WAS FINE")
             else:
-                print("IMG HAD BAD SHIT")
+                #print("IMG HAD BAD SHIT")
                 return redirect(url_for("home"))
         else:
-            print("TEXT HAD BAD SHIT")
+            #print("TEXT HAD BAD SHIT")
             return redirect(url_for("home"))
                 
 
-        print(len(post_file.filename), post_file.filename)
+        #print(len(post_file.filename), post_file.filename)
         if ( (len(post_text) == 0) and (len(post_file.filename) == 0)): 
-            print("EMPTY HERE")
+            #print("EMPTY HERE")
             #print("post text:", post_text, type(post_text), len(post_text))
             #print("filename:", post_file.filename, type(post_file.filename), len(post_file.filename))
             return redirect(url_for("home"))
@@ -340,17 +351,18 @@ def upload():
 
 @app.route('/subscribe', methods=['GET', 'POST'])
 def subscribe():
+    helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
     #TODO: THIS WORKS BUT IT'S ALL KIND OF BUGGY
-    print("inside of subscribe!!!!") 
+     #print("inside of subscribe!!!!") 
     #TODO:COULD BE MADE INTO ONE FUNCTION TO SIMPLIFY
  
     if "email" not in session: #TODO:PROBABLY CAN ERASE THIS SINCE THERE IS A CHECK AT THE TOP
         return redirect(url_for('login'))
     else:
-        print("REQUEST", request)
-        print("THERE WAS AN ERROR, MAYBE A GET REQUESt?")
+        #print("REQUEST", request)
+        #print("THERE WAS AN ERROR, MAYBE A GET REQUESt?")
         return render_template(f"subscribe.html", 
                                        session_user = session["user"],
                                        daily_votes_left=daily_votes_left,
@@ -363,11 +375,12 @@ def subscribe():
 
 @app.route('/<username>', methods=['GET', 'POST'])
 def user_profile_name(username):
-    print('EXECUTING WITH ARGUMENT: ', username)
+    #print('EXECUTING WITH ARGUMENT: ', username)
+    helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
     if username == "favicon.ico": # check weird username issue
-        print("FAVICON ISSUE")
+        #print("FAVICON ISSUE")
         return redirect(url_for('home'))
     """
     if request.method == "POST":
@@ -508,33 +521,33 @@ def user_profile_name(username):
         # print(username, "does not end with -post_page")
         pass
     if database.CHECK_IF_NAME_EXISTS(username) == False:
-        print("NAME DOESNT EXIST")
+        #print("NAME DOESNT EXIST")
         return redirect(url_for('home'))             
     if username == 'upload':
-        print("THIS SHOWS ITS GETTING TO UPLOAD")
+        #print("THIS SHOWS ITS GETTING TO UPLOAD")
         return redirect(url_for('upload'))
     if username == 'subscribe':
-        print("THIS SHOWS ITS GETTING TO SUBSCRIBE")
+        #print("THIS SHOWS ITS GETTING TO SUBSCRIBE")
         return redirect(url_for('subscribe'))
     if username == "add_funds":
-        print("THIS SHOWS ITS GETTING TO ADD FUNDS")
+        #print("THIS SHOWS ITS GETTING TO ADD FUNDS")
         return redirect(url_for('add_funds'))
     if username == "paypalsuccess":
-        print("THIS SHOWS ITS GETTING TO paypalsuccess")
+        #print("THIS SHOWS ITS GETTING TO paypalsuccess")
         return redirect(url_for('paypalsuccess'))
     if username == "paypalfailure":
-        print("THIS SHOWS ITS GETTING TO paypalfailure")
+        #print("THIS SHOWS ITS GETTING TO paypalfailure")
         return redirect(url_for('paypalfailure'))
     if username == "withdraw_funds":
-        print("THIS SHOWS ITS GETTING TO withdraw funds")
+        #print("THIS SHOWS ITS GETTING TO withdraw funds")
         return redirect(url_for('withdraw_funds'))    
     if username == "settings":
-        print("\nTHIS SHOWS ITS GETTING TO settings funds")
+        #print("\nTHIS SHOWS ITS GETTING TO settings funds")
         return redirect(url_for('settings'))  
     #=======================================================
 
 
-    print(F"GOING TO A USER PROFILE: ", username)
+    #print(F"GOING TO A USER PROFILE: ", username)
     # ASSUME IT'S JUST SOMEBODIES NAME THEN?
     name_exists = database.CHECK_IF_NAME_EXISTS(username=username) #TODO:IMPLEMENT FUNCTION
     my_friends, friend_count = database.GET_FOLLOWING(username)
@@ -613,27 +626,26 @@ def user_profile_name(username):
 
 @app.route("/add_funds", methods=['GET', 'POST'])
 def add_funds():
+    helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
-    print("GOT TO ADD FUNDS HERE")
-
-    
+    #print("GOT TO ADD FUNDS HERE")
 
     if request.method == 'POST':
-        print("DOING POST METHOD")
+        #print("DOING POST METHOD")
         if request.form['subscribe_button'] == 'SUBSCRIBE':
             is_already_subbed_this_month = database.CHECK_DATE( session["user"])   
             if is_already_subbed_this_month:
                 return redirect(url_for('home'))#TODO:COULD REDIRECT TO SUB PAGE AND SAY ALREADY SUBBED
 
             subscribed = database.MANSURA_SUBSCRIBE( session["user"])
-            print("REQUEST", request)
-            print("SUBBED", subscribed)
+            #print("REQUEST", request)
+            #print("SUBBED", subscribed)
             if subscribed: # IF SUBSCRIBE SUCCESSFULL
-                print("WAS ABLE TO SUBSCRIBE")
+                #print("WAS ABLE TO SUBSCRIBE")
                 return redirect(url_for('home'))
             else:
-                print("COULD NOT SUBSCRIBE")
+                #print("COULD NOT SUBSCRIBE")
                 balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
                 return render_template(f"add_funds.html", 
                                session_user = session["user"],
@@ -663,11 +675,12 @@ def add_funds():
 
 @app.route("/withdraw_funds", methods=['GET', 'POST'])
 def withdraw_funds():
+    helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
     session_username = session["user"]
 
-    print("GOT TO WITHDRAWFUNDS HERE")
+    #print("GOT TO WITHDRAWFUNDS HERE")
     
     if request.method == "POST":
         print(F"\n {session_username} WANTS TO DO A WITHDRAWL")
@@ -715,9 +728,10 @@ def withdraw_funds():
 
 @app.route("/get_csv/<account_name>/<folder>/<filename>", methods=['GET', 'POST'])
 def get_csv(account_name, folder, filename):
-    print('Filename:', account_name, folder, filename)
+    helpers.log_function("request", request)
+    #print('Filename:', account_name, folder, filename)
     full_file = "static/" + "#UserData/" + account_name + "/" + folder + "/" + filename
-    print(full_file)
+    #print(full_file)
     with open(full_file) as fp:
         csv = fp.read()
 
@@ -730,6 +744,7 @@ def get_csv(account_name, folder, filename):
 
 @app.route("/add_user/<username>", methods=['POST'])
 def add_user(username):
+    helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
     # print('do something')
@@ -748,6 +763,7 @@ def add_user(username):
 
 @app.route("/remove_user/<username>", methods=['POST'])
 def remove_user(username):
+    helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
     user_id_first = database.GET_USER_ID( username=session['user'])
@@ -762,7 +778,8 @@ def remove_user(username):
 
 @app.route("/password_recovery", methods=['GET', 'POST'])
 def password_recovery():
-    print("LOADING PASSWORD RECOVERY")
+    helpers.log_function("request", request)
+    #print("LOADING PASSWORD RECOVERY")
 
     if request.method == "POST":
         recovery_email = request.form["email"]
@@ -773,6 +790,7 @@ def password_recovery():
 
 @app.route("/password_reset", methods=['GET', 'POST'])
 def password_reset():
+    helpers.log_function("request", request)
     print("got here 1")
     if request.method == "POST":
         print("got here 2")
@@ -797,6 +815,7 @@ def password_reset():
 
 @app.route("/vote/<file_id>/<vote_type>", methods=['GET', 'POST'])
 def file_vote(file_id, vote_type):
+    helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
     print("voting", file_id, vote_type)
@@ -811,6 +830,7 @@ def file_vote(file_id, vote_type):
 
 @app.route("/paypalsuccess", methods=['GET', 'POST'])
 def paypalsuccess():
+    helpers.log_function("request", request)
     print((type(request)),":", request)
     #if request.method == "POST":
     #    print(request)
@@ -821,12 +841,14 @@ def paypalsuccess():
 
 @app.route("/paypalfailure", methods=['GET'])
 def paypalfailure():
+    helpers.log_function("request", request)
     return render_template(f"paypalfailure.html")
 
 
 @app.route("/PayPal_IPN", methods=['GET','POST'])
 def PayPal_IPN():
-    print("REQUESt:    ", request)
+    helpers.log_function("request", request)
+    # print("REQUESt:    ", request)
     
     '''This module processes PayPal Instant Payment Notification messages (IPNs).'''
 
@@ -858,11 +880,11 @@ def PayPal_IPN():
 
     # Check return message and take action as needed
     if r.text == 'VERIFIED':
-        print("SUCCESSFULL")
+        #print("SUCCESSFULL")
         item = params["item_name"]
         payer_email = params["payer_email"]
         #print("ITEM       :", item)
-        print("PAYER EMAIL:", payer_email)
+        # print("PAYER EMAIL:", payer_email)
         database.SUBSCRIBE_FROM_PAYAPL_BUY(payer_email)
         return render_template(f"paypalsuccess.html",
             user=database.GET_USERNAME_BY_EMAIL(payer_email),
@@ -879,6 +901,7 @@ def PayPal_IPN():
 
 @app.route("/history", methods=['GET'])
 def history():
+    helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
 
@@ -913,7 +936,9 @@ def history():
 
 @app.route("/settings", methods=['GET', 'POST'])
 def settings():
-    print("SETTINGS IS BEING SELECTED")
+    helpers.log_function("request", request)
+    
+    # print("SETTINGS IS BEING SELECTED")
 
     return render_template(f"settings.html",
     )

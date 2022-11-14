@@ -15,8 +15,9 @@ Notes/TODO/STEPS FOR NEW DROPLETS
 Python/__pycache__
 Python/__pychache__
 
+Python/logs/access
+Python/logs/errors
 Python/HISTORY
-
 Python/Paypal
 Python/Stripe
 Python/db_connection.py

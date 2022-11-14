@@ -277,6 +277,25 @@ def POST_TEXT_CHECK():
 def POST_IMG_CHECK():
     return True
 
+def log_function(msg_type, log_string):
+    import csv
+    from datetime import datetime
+    import pytz
+
+    my_time = pytz.timezone('US/Eastern') 
+    current_datetime = datetime.now(my_time).replace(microsecond=0).replace(tzinfo=None)
+    current_date = current_datetime.strftime('%Y-%m-%d')
+    err_string = f"{current_datetime} [{msg_type}]- {log_string}\n" 
+
+    if msg_type == "error":        
+        print("==========LOGGING AN ERROR PLS NOTICE!=========")
+        with open(f'/root/mansura/Python/logs/errors/{current_date}.txt', 'a') as f:
+            f.write(err_string)
+
+    elif msg_type == "request":
+        with open(f'/root/mansura/Python/logs/access/{current_date}.txt', 'a') as f:
+            f.write(err_string)
+
 # GET_USER_BIO("foreandr")
 # FULL_GIANT_REGISTER()
 

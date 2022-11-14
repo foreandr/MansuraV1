@@ -9,24 +9,28 @@ import Python.db_connection as connection
 ALL OF THIS CAN CERTAINLY BE OPTOMIZED, JUST GETTING THE THING WORKING FOR NOW
 '''
 
-
+import numpy as np
 import csv
 from datetime import datetime
 import pytz
+import numpy as np
 
 
-
-
+''' #TOP/BOPTTOM=================================
 import Python.db_connection as connection
-from Python.helpers import print_green, print_title
+from Python.helpers import print_green, print_title, log_function
 from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
 
 ''' #MIDDLE========================================
 
 from generating_excel import WRITE_HEADERS_TO_EXCEL
 import db_connection as connection
-from  helpers import print_green, print_title
-''' #TOP/BOPTTOM=================================
+from  helpers import print_green, print_title, log_function
+
+test_ordered_array = ['Ulisses', 
+        'Ulisses', 'Tywana', 'Tyriek', 'Tyrece', 'Tynan', 'Tylan', 'Tyeesha', 'Tyeasha', 'Tya', 'Travers', 'Tramel', 'Radhika', 'Klaus', 'foreandr', 'Bozo', 'Buddy', 'Buddy2', 'Buddy3', 'Buddy4', 'Buddy5', 'Buddy6', 'Buddy7', 'Buddy8','Buddy9', 'Buddy10', 'Buddy11', 'Buddy12', 'Buddy13', 'Buddy14', 'Buddy15', 'Buddy16']
+
+''''''
 
 def GET_REPLYING_TO(file_id):
     
@@ -110,23 +114,23 @@ def FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT(vote_type, testing=False):
             # REPLYING LOGIC
             original_replying_to_user = GET_REPLYING_TO(key)
             if original_replying_to_user != "None":
-                n_percent = float("{:.2f}".format(float(value["VALUE"]["AMOUNT"]) )) * 0.10
+                n_percent = float(BROKEN_ROUNDING(value["VALUE"]["AMOUNT"])) * 0.10
                 #print(n_percent) 
-                value["VALUE"]["AMOUNT"] = "{:.2f}".format(float(value["VALUE"]["AMOUNT"]) - n_percent)
+                value["VALUE"]["AMOUNT"] = BROKEN_ROUNDING(float(value["VALUE"]["AMOUNT"]) - n_percent)
                 value["REPLY"] = {
                     "REPLYING_TO": original_replying_to_user,
-                    "AMOUNT": "{:.2f}".format(n_percent)
+                    "AMOUNT": BROKEN_ROUNDING(n_percent)
                 }
 
             # RATIO LOGIC
             #print(f"KEY IS {key}\n")
             ratio_file_id = CHECK_FOR_HIGHEST_RATIO(key, vote_type)
             if ratio_file_id !="None":
-                n_percent = float("{:.2f}".format(float(value["VALUE"]["AMOUNT"]) )) * 0.10
-                value["VALUE"]["AMOUNT"] = "{:.2f}".format(float(value["VALUE"]["AMOUNT"]) - n_percent)
+                n_percent = BROKEN_ROUNDING(value["VALUE"]["AMOUNT"]) * 0.10
+                value["VALUE"]["AMOUNT"] = BROKEN_ROUNDING(float(value["VALUE"]["AMOUNT"]) - n_percent)
                 #print(ratio_file_id)
                 value["RATIO"] = {
-                        F'{GET_USERNAME_BY_FILE_ID(ratio_file_id)}': "{:.2f}".format(n_percent)
+                        F'{GET_USERNAME_BY_FILE_ID(ratio_file_id)}': BROKEN_ROUNDING(n_percent)
                 }
                 #print(value)
                 #print()
@@ -205,7 +209,7 @@ def GET_FREQUENCY_DICT_TYPED(my_vote_type):
 
     print(F"VOTE TYPE: {my_vote_type}")
     print(F"{my_vote_type} CAPITAL FOR TOTAL:  {GET_TYPED_PAYOUT( my_vote_type)}")
-    print(F"{my_vote_type} CAPITAL FOR EQUITY: {'{:.2f}'.format(total_capital_for_equity)} [%{equity_percentage}]")
+    print(F"{my_vote_type} CAPITAL FOR EQUITY: {BROKEN_ROUNDING(total_capital_for_equity)} [%{equity_percentage}]")
     print(F"{my_vote_type} CAPITAL FOR USERS : {total_capital_typed}")
 
 
@@ -216,14 +220,14 @@ def GET_FREQUENCY_DICT_TYPED(my_vote_type):
                 "AMOUNT": ""
                 }
         
-        value["PERCENT"] =  float("{:.8f}".format(value["VOTES"] / total_vote_count_typed))
-        value["AMOUNT"] = "{:.2f}".format(value["PERCENT"] * total_capital_typed) 
+        value["PERCENT"] =  BROKEN_ROUNDING(value["VOTES"] / total_vote_count_typed)
+        value["AMOUNT"] = BROKEN_ROUNDING(value["PERCENT"] * total_capital_typed) 
         value["PERCENT"] =  "".join(("%", str(value["PERCENT"])))
         new_dict[key] = value
     
         
     
-    new_dict["EQUITY"] = float("{:.2f}".format(total_capital_for_equity))
+    new_dict["EQUITY"] = BROKEN_ROUNDING(total_capital_for_equity)
     #for key, value in new_dict.items():        
     #     print(key, ":",value)
     
@@ -506,20 +510,20 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
             for key_, value_ in temp_dict.items(): # THIS MAKES EVERYTHING SO MUCH SLOWER
                 if key_ not in FINAL_DICT:
                     # print(f"FIRST TIME SEEING {key}")
-                    FINAL_DICT[key_] = float("{:.2f}".format(float(value_)))
+                    FINAL_DICT[key_] = BROKEN_ROUNDING(float(value_))
                 else:
                     #org = FINAL_DICT[key_]                  
-                    FINAL_DICT[key_] += float("{:.2f}".format(float(value_)))
+                    FINAL_DICT[key_] += BROKEN_ROUNDING(float(value_))
                     # print(f"DUPE KEY={key} | ORIG={org} + {value} = NEW={FINAL_DICT[key]}")
             
             # GRABBING THE REPLY DETAILS            
             if "REPLY" in value:
                 #print(value["REPLY"])
                 if value["REPLY"]['REPLYING_TO'] not in FINAL_DICT:
-                    FINAL_DICT[value["REPLY"]['REPLYING_TO']] = float("{:.2f}".format(float(value["REPLY"]['AMOUNT'])))
+                    FINAL_DICT[value["REPLY"]['REPLYING_TO']] = BROKEN_ROUNDING(float(value["REPLY"]['AMOUNT']))
                 else:
                     #org = FINAL_DICT[value['REPLY']['REPLYING_TO']]                  
-                    FINAL_DICT[value['REPLY']['REPLYING_TO']] += float("{:.2f}".format(float(value['REPLY']['AMOUNT'])))
+                    FINAL_DICT[value['REPLY']['REPLYING_TO']] += BROKEN_ROUNDING(float(value['REPLY']['AMOUNT']))
                     #print(f"DUPE KEY={value['REPLY']['REPLYING_TO']} | ORIG={org} + {value['REPLY']['AMOUNT']} = NEW={FINAL_DICT[value['REPLY']['REPLYING_TO']]}") 
             
             # RATIO DETIALS
@@ -541,7 +545,7 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
     #print("GOT TO WRITING TO DIST EXCEL")
     for key, value in FINAL_DICT.items():
         if type(value) is not dict:
-            num = "{:.2f}".format(value)
+            num = BROKEN_ROUNDING(value)
             temp_array_ = [key, num]
             #print(temp_array_)
             my_time = pytz.timezone('US/Eastern') 
@@ -773,60 +777,6 @@ def RUN_WITH_TIME_TEST():
     print('Execution time:', elapsed_time, 'seconds')
 
 
-#TODO: I WOULD LIKE TO PUT THESE IN ANOTHER FILE WITH N OTHER ALGORITHMS
-def HALF_LOG_DISTRIBUTION(TOTAL, my_array):
-    pass
-
-
-def PURE_LOG_DISTRIBUTION(TOTAL, my_array):
-    
-    new_dict = {}
-    num_members = len(my_array)
-
-    if len(my_array) == 1: #SINGLE ELEMENT
-        new_dict[TOTAL] = my_array[0]
-        print("[PURE_LOG_DISTRIBUTION] SINGLE ITEM :", new_dict)
-        return new_dict
-
-    for i in range(num_members):      
-        temp_holder = TOTAL / (2 ** (i+1))
-        if temp_holder < 0.01:
-            break # PROBABLY NOT WORTH HAVING THE ZEROES, PROBABLY WILLC REATE BUGS
-            # new_dict[my_array[i]] = 0.0
-
-            # break #this breaks the whole loop and stops giving out money, I could just have the rest be zeroes instead
-        else:
-            if my_array[i] not in new_dict: # IF NEW KEY
-                new_dict[my_array[i]] = temp_holder  
-            else:
-                new_dict[my_array[i]] += temp_holder # add dupe value to value already inside
-    
-    current_total = 0
-    for key, value in new_dict.items():
-        current_total += value
-
-    extra_amount = float("{:.2f}".format(TOTAL - current_total))
-    
-    j = 0 
-    for key, value in new_dict.items():
-        extra_dist = extra_amount / num_members
-        # print(j, key, value, extra_dist)
-        new_dict[key] = float("{:.2f}".format(new_dict[key] + extra_dist))
-        j+=1    
-
-    current_total_after_redo = 0
-    for key, value in new_dict.items():
-        current_total_after_redo += value
-
-
-    #print("ENTERED TOTAL:", TOTAL)
-    #print("EXTRA   TOTAL:", current_total)
-    #print("UPDATED TOTAL:", "{:.2f}".format(current_total_after_redo))
-    #print("MINE :", new_dict)
-    return new_dict
-
-
-
 def RESULT_ANALYSIS():
     #TODO: CUSTOM DATE
     total = 0
@@ -908,6 +858,167 @@ def GET_USERNAME_BY_FILE_ID(file_id):
         conn.close()
         return "None"
 
-# RUN_WITH_TIME_TEST()
-# HALF_LOG_DISTRIBUTION(60.51, ['Ulisses', 'Tywana'])
-#PURE_LOG_DISTRIBUTION(60.51, ['Ulisses', 'Ulisses', 'Tywana', 'Tyriek', 'Tyrece', 'Tynan', 'Tylan', 'Tyeesha', 'Tyeasha', 'Tya', 'Travers', 'Tramel', 'Radhika', 'Klaus', 'Klaus', 'foreandr', 'Bozo', 'Buddy', 'Buddy2', 'Buddy3', 'Buddy4', 'Buddy5', 'Buddy6' ])
+
+def PURE_LOG_DISTRIBUTION(TOTAL, my_array):
+    
+    new_dict = {}
+    num_members = len(my_array)
+
+    if len(my_array) == 1: #SINGLE ELEMENT
+        new_dict[TOTAL] = my_array[0]
+        # print("[PURE_LOG_DISTRIBUTION] SINGLE ITEM :", new_dict)
+        return new_dict
+
+    for i in range(num_members):      
+        temp_holder = TOTAL / (2 ** (i+1))
+        if temp_holder < 0.01:
+            break # PROBABLY NOT WORTH HAVING THE ZEROES, PROBABLY WILLC REATE BUGS
+            # new_dict[my_array[i]] = 0.0
+
+            # break #this breaks the whole loop and stops giving out money, I could just have the rest be zeroes instead
+        else:
+            if my_array[i] not in new_dict: # IF NEW KEY
+                new_dict[my_array[i]] = temp_holder  
+            else:
+                new_dict[my_array[i]] += temp_holder # add dupe value to value already inside
+    
+    current_total = 0
+    for key, value in new_dict.items():
+        current_total += value
+
+    extra_amount = BROKEN_ROUNDING(TOTAL - current_total)
+    
+    j = 0 
+    for key, value in new_dict.items():
+        extra_dist = extra_amount / num_members
+        # print(j, key, value, extra_dist)
+        new_dict[key] = BROKEN_ROUNDING(new_dict[key] + extra_dist)
+        j+=1    
+
+    current_total_after_redo = 0
+    for key, value in new_dict.items():
+        current_total_after_redo += value
+
+    # FOR TESTING PURPOSES
+    #print("PURE_LOG_DISTRIBUTION\nENTERED TOTAL:", TOTAL)
+    #print("EXTRA   TOTAL:", current_total)
+    # print("UPDATED TOTAL:", "{:.2f}\n".format(current_total_after_redo))
+    #print("MINE :", new_dict)
+    return new_dict
+
+
+def BROKEN_ROUNDING(my_float):
+
+    
+    string_float = str(my_float) # THE FLOAT CONVERSION IS TO MAKE SURE THEY ALL HAVE DECIMAL POINTS
+    before_dec = string_float.split(".")[0]
+    after_dec = string_float.split(".")[1]
+    after_dec = after_dec[:2]
+    return float(before_dec + "." + after_dec)
+
+
+def EQUAL_DISTRIBUTION(TOTAL, my_array):
+    array_length = len(my_array)
+    each = BROKEN_ROUNDING(TOTAL / array_length)
+    new_dict = {}
+    for i in range(len(my_array)):
+        # print(my_array[i])
+        new_dict[my_array[i]] = BROKEN_ROUNDING(each)
+    
+    new_sum = 0
+    for key, value in new_dict.items():
+        # print(key, value)
+        new_sum  += value
+
+
+    EXTRA_CAPITAL = TOTAL - new_sum
+    each_second = BROKEN_ROUNDING(EXTRA_CAPITAL / array_length)
+    for i in range(len(my_array)):
+        # print(my_array[i])
+        new_dict[my_array[i]] += BROKEN_ROUNDING(each_second)
+    
+    # CHECK AT THE END
+    new_sum = 0
+    for key, value in new_dict.items():
+        new_dict[key] = BROKEN_ROUNDING(value)
+        
+        new_sum  += value
+
+    #print(F"TOTAL : {TOTAL}")
+    #print(F"EACH  : {each}")
+    # print(F"RE-SUM: {round(new_sum, 2)}")
+
+    return new_dict
+
+
+#TODO: I WOULD LIKE TO PUT THESE IN ANOTHER FILE WITH N OTHER ALGORITHMS
+def SECTIONED_EQUAL_DISTRIBUTION(TOTAL, my_array, sections=2):
+    #I HAVE NO IDEA WHY BUT SECTIONS HAVE TO  BE BELOW 195, 
+    #WRAP ALL THIS IN A TRY CATCH BLOCK
+    try:
+        if sections == 1:
+            return EQUAL_DISTRIBUTION(TOTAL, my_array)
+        
+        my_arrays = np.array_split(my_array, sections)
+
+        array_of_initial_amounts = 0
+        ordered_temp_array = []
+        for i in range(sections):
+            temp_holder = TOTAL / (2 ** (i+1))
+            if temp_holder < 0.01:
+
+                break
+            array_of_initial_amounts += temp_holder
+            ordered_temp_array.append(temp_holder)
+        
+        amount_left = TOTAL - array_of_initial_amounts
+
+        dict_of_nums_arrays = {}
+        for i in range(len(ordered_temp_array)):
+            dict_of_nums_arrays[ordered_temp_array[i]] = my_arrays[i]
+
+        each_second = BROKEN_ROUNDING(amount_left / len(my_arrays))
+
+        keys_list = list(dict_of_nums_arrays.keys())
+        for i in range(len(keys_list)):
+            keys_list[i] = BROKEN_ROUNDING(keys_list[i] + each_second)
+
+        
+        dict_for_equal = {}
+        counter = 0
+        for key,value in dict_of_nums_arrays.items():
+            dict_for_equal[keys_list[counter]] = value
+            counter += 1
+        
+        second_counter_check = 0
+        FINAL_DICT = {}
+        for key, value in dict_for_equal.items():
+            # print(f"{key}: {value}")
+            second_counter_check += key
+            single_for_each = key / len(value)
+            for i in value:
+                # print(i)
+                if i in FINAL_DICT:
+                    FINAL_DICT[i] += BROKEN_ROUNDING(single_for_each)
+                else:
+                    FINAL_DICT[i] = BROKEN_ROUNDING(single_for_each)
+        #for key,value in FINAL_DICT.items():
+        #    print(key, value)
+                
+        return FINAL_DICT
+    except Exception as e:
+        # THERE WAS SOME KIND OF ERROR SO JUST DO EQUALITY
+        log_function(e)
+        return EQUAL_DISTRIBUTION(TOTAL, my_array)
+    # return new_dict
+
+
+
+#PURE_LOG_DISTRIBUTION(100.00, test_ordered_array)
+# EQUAL_DISTRIBUTION(100.00, test_ordered_array)
+SECTIONED_EQUAL_DISTRIBUTION(19.91, test_ordered_array, sections=2)
+#WEIGHTED_EQUAL_DISTRIBUTION(60.51, test_ordered_array)
+
+
+
+# print(BROKEN_ROUNDING(331.00901238))
