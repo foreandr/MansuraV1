@@ -302,26 +302,31 @@ def upload():
         #print("GOT TO WHETHER SOMETHING IS BEING POISTED OR NOT ==================================")
         post_text = request.form.get("textbox")
         post_file = request.files['file']
-        plus_18 =  request.form.get("older_18")
-        forign_id_source = request.form.get("external_source")
+        # plus_18 =  request.form.get("older_18")
+        plus_18 = "older_18"# make it that by default
+        forign_id_source = str(request.form.get("external_source"))
         external_link = request.form.get("external_source_link")
-        
+        distribution_algorithm_ = str(request.form.get("distro_algo"))
+        how_many_sections = str(request.form.get("how_many_sections_"))
 
-        '''
+        ''''''
         print("UPLOAD DETAILS ==============================")
-        print("UPLOADER: " + str(session['user']))
-        print("POST TEXT: " + str(post_text))        
-        print("POST FILE: " + str(post_file))
-        print("POST LINK: " + str(external_link))
-        print("POST FOID: " + str(forign_id_source))
-        print("POST 18+ : " + str(plus_18))
-        # print("POST SIZE: " + str(file_length))
+        print("UPLOADER   :" + str(session['user']))
+        print("POST TEXT  :" + str(post_text))        
+        print("POST FILE  :" + str(post_file))
+        print("POST LINK  :" + str(external_link))
+        print("POST FOID  :" + str(forign_id_source))
+        print("POST 18+   :" + str(plus_18))
+        print("DISTRO ALGO:" + distribution_algorithm_, type(distribution_algorithm_))
+        print("DISTRO SECT:" + str(how_many_sections))
         print("=============================================")
-        '''
+        exit(0)
         if helpers.POST_TEXT_CHECK():
+            
             #print("TEXT WAS FINE")
             if helpers.POST_IMG_CHECK():
-                #print("IMG WAS FINE")
+                #DO THE UPLOAD
+                pass
             else:
                 #print("IMG HAD BAD SHIT")
                 return redirect(url_for("home"))

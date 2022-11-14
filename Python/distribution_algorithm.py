@@ -13,10 +13,7 @@ import numpy as np
 import csv
 from datetime import datetime
 import pytz
-import numpy as np
 
-
-''' #TOP/BOPTTOM=================================
 import Python.db_connection as connection
 from Python.helpers import print_green, print_title, log_function
 from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
@@ -26,6 +23,7 @@ from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
 from generating_excel import WRITE_HEADERS_TO_EXCEL
 import db_connection as connection
 from  helpers import print_green, print_title, log_function
+''' #TOP/BOPTTOM=================================
 
 test_ordered_array = ['Ulisses', 
         'Ulisses', 'Tywana', 'Tyriek', 'Tyrece', 'Tynan', 'Tylan', 'Tyeesha', 'Tyeasha', 'Tya', 'Travers', 'Tramel', 'Radhika', 'Klaus', 'foreandr', 'Bozo', 'Buddy', 'Buddy2', 'Buddy3', 'Buddy4', 'Buddy5', 'Buddy6', 'Buddy7', 'Buddy8','Buddy9', 'Buddy10', 'Buddy11', 'Buddy12', 'Buddy13', 'Buddy14', 'Buddy15', 'Buddy16']
@@ -953,8 +951,11 @@ def EQUAL_DISTRIBUTION(TOTAL, my_array):
 
 #TODO: I WOULD LIKE TO PUT THESE IN ANOTHER FILE WITH N OTHER ALGORITHMS
 def SECTIONED_EQUAL_DISTRIBUTION(TOTAL, my_array, sections=2):
-    #I HAVE NO IDEA WHY BUT SECTIONS HAVE TO  BE BELOW 195, 
-    #WRAP ALL THIS IN A TRY CATCH BLOCK
+    """
+    NOTES: 1. i do not know why this is the case, but BUT SECTIONS HAVE TO  BE BELOW 195, or I got weired bugs with the totals
+           2. I know there will be anomalies here so I wrapped it in a try catch, and just run the easier equal distribution anyway then log the error
+    """
+
     try:
         if sections == 1:
             return EQUAL_DISTRIBUTION(TOTAL, my_array)
@@ -966,8 +967,8 @@ def SECTIONED_EQUAL_DISTRIBUTION(TOTAL, my_array, sections=2):
         for i in range(sections):
             temp_holder = TOTAL / (2 ** (i+1))
             if temp_holder < 0.01:
-
                 break
+
             array_of_initial_amounts += temp_holder
             ordered_temp_array.append(temp_holder)
         
@@ -1014,11 +1015,6 @@ def SECTIONED_EQUAL_DISTRIBUTION(TOTAL, my_array, sections=2):
 
 
 
-#PURE_LOG_DISTRIBUTION(100.00, test_ordered_array)
+# PURE_LOG_DISTRIBUTION(100.00, test_ordered_array)
 # EQUAL_DISTRIBUTION(100.00, test_ordered_array)
-SECTIONED_EQUAL_DISTRIBUTION(19.91, test_ordered_array, sections=2)
-#WEIGHTED_EQUAL_DISTRIBUTION(60.51, test_ordered_array)
-
-
-
-# print(BROKEN_ROUNDING(331.00901238))
+# SECTIONED_EQUAL_DISTRIBUTION(19.91, test_ordered_array, sections=2)

@@ -277,7 +277,12 @@ def POST_TEXT_CHECK():
 def POST_IMG_CHECK():
     return True
 
+
 def log_function(msg_type, log_string):
+    #if log_string == "write() argument must be str, not None":
+    #    print("got here")
+    #    return "" # THIS ERROR CAN BE IGNORED
+    # print(f"TESTING:{log_string}")
     import csv
     from datetime import datetime
     import pytz

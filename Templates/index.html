@@ -167,7 +167,6 @@
 
             <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>
 
-            FILE SIZE MUST BE < 10 GIGS
         </form>
     </div>
 </div>
@@ -176,13 +175,13 @@
 
 
 <!-- post_modal  -->
-<div on_click="helloworld()" id="post_modal" class="modal">
+<div id="post_modal" class="modal">
 
     <!-- Modal content -->
     <div class="modal-content">
         <form action="upload" method="POST" enctype="multipart/form-data">
             <div>
-                <label for="textbox">Whats on your mind? (10000 chars) [NO EMOJIS FOR NOW SORRY LOL]</label>
+                <label for="textbox">Whats on your mind? (10000 max chars)</label>
                 <br>
                 <textarea id="textbox" name="textbox" rows="7" cols="50" maxlength="10000"></textarea>
 
@@ -191,8 +190,6 @@
             <div class="custom-file">
                 <!-- .mp4,.csv, .onnx,-->
                 <input type="file" class="custom-file-input" name="file" accept=".png, .jpeg, .jpg, .pdf" id="dataset_file">
-                <input type="text" id="hidden_file_size" name="hidden_file_size" placeholder="auto" size="1" value="">
-                <label class="custom-file-label" for="file">PNG/JPG/CSV/ONNX/MP4</label>
 
                 <div id="dataset_return_message">
 
@@ -212,24 +209,53 @@
                 <input id="external_source_link" name="external_source_link" type="url" placeholder="Enter Source LINK" disabled>
             </div>
 
-            <div>
-                <input type="checkbox" id="older_18" name="older_18" value="older_18">
-                <label for="">This is for adults only 18+? (SEVERE PENALITIES FOR GETTING THIS WRONG)</label><br>
+
+            <div class="dropdown" name="distro_algo">
+                <select id="distro_algo" class="dropdown-content" name="distro_algo" onchange="howmanysectionsfunc()">
+                    <option id="equal">EQUAL DISTRIBUTION</option>           
+                    <option id="log">LOG DISTRIBUTION</option>
+                    <option id="log_equal">LOG EQUAL DISTRIBUTION</option>
+                </select>
+                more coming soon...
+            </div>
+
+            <div id="how_many_sections" name="">
+                
+            </div>
+
+            <div>    <!-- IMAGES -->
+                <img id="equal_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/equal_distribution.png')}}" width='400' height='200' />
+                <img id="log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_distribution.png')}}" width='400' height='200' />
+                <img id="equa_log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_equal_distribution.png')}}" width='400' height='200' />
             </div>
 
             <br>
 
             <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>
-
-            FILE SIZE MUST BE < 10 GIGS
-
         </form>
 
     </div>
 </div>
 <!-- post_modal  -->
 <script>
-    document.getElementById("reply_external_source_link").disabled = true; // setting default to disabled
+    var slider = `Sections: 1-10
+        <div class="slidecontainer" >
+            <input type="range" min="1" max="10" value="5" class="slider" id="myRange" name="how_many_sections_">
+        </div>
+        `
+
+
+    function howmanysectionsfunc(){
+
+        dist_chosen = document.getElementById("distro_algo").value 
+
+        if (dist_chosen == "LOG EQUAL DISTRIBUTION"){
+            document.getElementById("how_many_sections").innerHTML = slider
+        }
+        else{
+            document.getElementById("how_many_sections").innerHTML= ""
+        }
+    }
     
     function enable_built_from_other() {
         if (document.getElementById("external_source").disabled == true) {
@@ -271,19 +297,11 @@
         }
 
     }
-    //console.log("Citizen of the Network State, Member of the Church of the New Hackers")
-    //console.log('D-POOL: {{dailypool}}')
-    //console.log('M-POOL: {{monthlypool}}')
-    //console.log('Y-POOL: {{yearlypool}}')
 
-    //console.log('D-LEFT: {{daily_left}}')
-    //console.log('M-LEFT: {{monthly_left}}')
-    //console.log('Y-LEFT: {{yearly_left}}')
-    //console.log('BALANC: {{user_balance}}')
     d_votes_left = '{{ daily_left }}';
     m_votes_left = '{{ monthly_left }}';
     y_votes_left = '{{ yearly_left }}';
-    // console.log(d_votes_left)
+
 
     document.getElementById("index_daily").innerHTML = 'DAILY POOL: ${{dailypool}}';
     document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: ${{monthlypool }}';

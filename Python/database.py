@@ -775,22 +775,12 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
     REALLY COMPLICATED NIGHTMARE BUT IT WORKS
     
     """
-    
     #1. CHECK THAT THE POST FOREIGN ID ACTUALLY EXISTS
-    if post_foreign_id_source == "None" or post_foreign_id_source == "":
-        pass
-    else:
-        if not (CHECK_FILE_EXISTS(post_foreign_id_source)):
+    if post_foreign_id_source == "None" or post_foreign_id_source == "" or None:
+        print(F"EMPTY SOURCE IS [{post_foreign_id_source}]")
+        post_foreign_id_source = ""
+        print(F"EMPTY SOURCE IS [{post_foreign_id_source}]")
             
-            print("FAILED TO INSERT FILE BECAUSE FOREIGN FILE DOESNT EXIST")
-            #print(F"UPLOADER: {uploader}")
-            #print(F"post_foreign_id_source: {post_foreign_id_source}")
-            #print(F"uploaderId: {uploaderId}")
-            #print(F"UPLOADER: {uploader}")
-            return False
-        else:
-            pass
-            # print(F"{post_foreign_id_source}: IS A FILE THAT EXISTS")
 
 
     conn = connection.test_connection()
@@ -803,29 +793,6 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
         filename = post_file.filename
 
     # BEGINNING EXOCUTION
-    
-    ''' #TODO: CAN PROBABLY DELETE THIS WHOLE FILE SIZE CHECK THING THIS SECTION IS CHECKING FILE SIZED
-    file_path = file_path + uploader + "temp"
-    cursor = conn.cursor()
-    cursor.execute(F"""SELECT GET_CALCULATED_UPLOAD_VOLUME_BY_MONTH({uploaderId})""") # checking upload limit
-    count = cursor.fetchall()
-    num = ""
-    for i in count: #1. CHECK VOLUME
-        num = i[0]
-    # print(f"SUM OF UPLOADED FILES FOR ID {uploaderId} IS {num}")
-    
-    if not(isinstance(num, int)): # check if there is an int 
-        num = 0
-    if num > 10737418240:
-        fail_size_string = "COULD NOT RUN [FILE_INSERTFILE_INSERT], too much file volume this month, cap 10 gigs"
-        print(fail_size_string)
-        
-        # CLOSE CURSOR AND CONNECTION [MANDATORY]        
-        cursor.close()
-        conn.close()
-
-        return fail_size_string
-        '''
     try:
     # 1. INSERTING INTO DATABASE
         cursor.execute(
@@ -838,7 +805,7 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
         conn.commit()
             
             
-            # 2. UPDATING PATH IN DB TO RELEVANT FILE_ID            
+        # 2. UPDATING PATH IN DB TO RELEVANT FILE_ID            
         cursor.execute(f"""
             SELECT File_id
             FROM FILES
@@ -894,6 +861,7 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
 
          # return new_path #TODO: not sure if this needs to return anything
     except Exception as e:
+            print(e)
             log_function("error", e)
             cursor.execute("ROLLBACK")
             print_error(F"USER:{uploader} FILE INSEERT FAILED")
@@ -2324,7 +2292,8 @@ def WITHDRAWL_FUNCTION(username, withdrawl_amount=2):
 
 
 def CHECK_FILE_EXISTS(File_id_):
-        
+    if File_id_ == "None" or File_id_ == "":
+        return False
     conn = connection.test_connection()
     cursor = conn.cursor()
     cursor.execute(f"""SELECT File_Id FROM FILES WHERE File_id = {File_id_}""")
