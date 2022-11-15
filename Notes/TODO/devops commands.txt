@@ -12,6 +12,7 @@ sudo nginx -s reload
 sudo systemctl status mansura.service
 sudo systemctl enable mansura --now
 
+# THIS IS THE FULL METHOD THAT HAS TO BE USED FOR A RESET
 ps ax|grep gunicorn
 kill -HUP 66173
 pkill gunicorn
@@ -30,6 +31,7 @@ SHOW    BRANCH:git rev-parse --abbrev-ref HEAD
 SWITCH TO PROD:git checkout master
 SWITCH TO DEV :git checkout dev
 MERGE WITH DEV:git merge dev
+git reset --hard origin/master
 
 HTTP LOG PATH:
 /var/log/nginx/access.log

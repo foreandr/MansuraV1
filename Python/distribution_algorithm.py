@@ -1048,7 +1048,7 @@ def GET_DISTRO_ALGO_BY_FILE_ID(file_id):
     path = GET_FILE_PATH_BY_ID(file_id)
     username = path.split("-")[0]
     
-    full_path = f"../static/#UserData/{username}/files/{path}/post_config.json"
+    full_path = f"static/#UserData/{username}/files/{path}/post_config.json"
     
     f = open(f'{full_path}')
     data = json.load(f)
