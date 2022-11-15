@@ -918,7 +918,7 @@ def PURE_LOG_DISTRIBUTION(TOTAL, my_array):
 
 
 def BROKEN_ROUNDING(my_float):
-
+    #USE EXTREMELY CAUTIOUSLY
     
     string_float = str(my_float) # THE FLOAT CONVERSION IS TO MAKE SURE THEY ALL HAVE DECIMAL POINTS
     before_dec = string_float.split(".")[0]

@@ -1,5 +1,6 @@
 # IT SEEMS TO DO ANYTHING DATABASE RELATED ARBIRTARILY, I WILL HAVE TO USE THE database.local FILE
 
+#TEST WITH THIS LOCALLY FOR ERRORS
 gunicorn -w 1 --bind 0.0.0.0:8080 wsgi:app
 
 apt-get install python3-venv -y
@@ -12,7 +13,7 @@ sudo systemctl status mansura.service
 sudo systemctl enable mansura --now
 
 ps ax|grep gunicorn
-kill -HUP 63920
+kill -HUP 66173
 pkill gunicorn
 
 systemctl daemon-reload
