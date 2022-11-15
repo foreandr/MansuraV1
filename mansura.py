@@ -45,7 +45,7 @@ app.config["FILE UPLOADS"] = "static/#UserData"
 
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
-    if "email" not in session:
+    if "email" not in session: # testasdkjhfaks
         return redirect(url_for('login'))
     helpers.log_function("request", request)
     #print('EXECUTING INDEX FUNCTION')
