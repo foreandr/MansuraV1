@@ -1,5 +1,6 @@
 # IT SEEMS TO DO ANYTHING DATABASE RELATED ARBIRTARILY, I WILL HAVE TO USE THE database.local FILE
 
+gunicorn -w 1 --bind 0.0.0.0:8080 wsgi:app
 
 apt-get install python3-venv -y
 python3 -m venv venv

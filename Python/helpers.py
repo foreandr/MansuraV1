@@ -26,21 +26,12 @@ def get_postinfo_from_path(my_path):
     if not path.exists(pic_path):
         post_image_path = ""
 
-    for filename in os.listdir(my_path):
-        f = os.path.join(my_path, filename)
-
-        if os.path.isfile(f):
-            x = open(f, "r")
-             # check which file it is
-            if "age_18" in f:                     
-                post_age_18 = x.read()
-            elif "source" in f: 
-                post_sources = x.read()
-            elif "post_text" in f:                    
-                post_text = x.read()
-            elif "pic" in f:
-                post_image_path = pic_path[7:] # remove static
-
+    f = open(f'{my_path}/post_config.json')
+    data = json.load(f)
+    post_text = data["txt"]
+    post_age_18 = data["18+"]
+    post_sources = data["external_source"]
+    distro_details = data["distro_details"]
     #print(post_text, post_age_18,  post_sources, post_image_path)
     #print(my_path)
     #print("TEXT:",post_text , len(post_text))
@@ -48,7 +39,7 @@ def get_postinfo_from_path(my_path):
     #print("SRC?:",post_sources , len(post_sources))
     #print("IMG-:",post_image_path , len(post_image_path))
     #print()
-    return post_text, post_age_18,  post_sources, post_image_path
+    return post_text, post_age_18, post_sources, post_image_path, distro_details
 
 
 def print_model_details(ids, paths, descriptions, dates, id1, uploaders, ids1, paths1, sizes, id2, date,
@@ -178,12 +169,13 @@ def GIANT_FILE_INSERT():
     
     with open('TEST_STRING_DEMO.txt', 'a') as f:
         f.write(F'\n\ndef GIANT_FILE_INSERT():\n')
-
+    mylist = ["EQUAL DISTRIBUTION", "LOG DISTRIBUTION"]
     for line in Lines:
         count += 1
         # print("Line{}: {}".format(count, line.strip()))
         name = line.strip()
-        my_string = (f"""\tDB.FILE_INSERT( uploader='{name}', uploaderId=DB.GET_USER_ID( '{name}'), size=100, post_foreign_id_source="{random.randint(1,300)}", file_path="N-A", post_file="", post_text="testing a string hello hello hello", age_18="older_18", external_link="")""")
+        my_string = (f"""\tDB.FILE_INSERT( uploader='{name}', uploaderId=DB.GET_USER_ID( '{name}'), size=100, post_foreign_id_source="{random.randint(1, count+1)}", file_path="N-A", post_file="", post_text="testing a string hello hello hello", age_18="older_18", external_link="",  distro_details=['{random.choice(mylist)}', 'None'])""")
+        
         with open('TEST_STRING_DEMO.txt', 'a') as f:
             f.write(F'{my_string}\n')
 
@@ -303,5 +295,5 @@ def log_function(msg_type, log_string):
 
 # GET_USER_BIO("foreandr")
 # FULL_GIANT_REGISTER()
-
-# print(USERNAME_PROFANITY_CHECK("bozo0000000000000000", testing=True))
+# print(USERNAME_sPROFANITY_CHECK("bozo0000000000000000", testing=True))
+# print(get_postinfo_from_path("../static/#UserData/oguser/files/oguser-1"))

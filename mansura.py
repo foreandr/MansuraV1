@@ -89,14 +89,16 @@ def home():
     age_18_list = []
     source_list = []
     image_path_list = []
+    distro_details_list = []
     for i in range(len(usernames_list)):
         # print(usernames_list[i], paths_list[i])
         my_path = f"static/#UserData/{usernames_list[i]}/files/{paths_list[i]}"
-        post_text, post_age_18, post_sources, post_image_path = helpers.get_postinfo_from_path(my_path)
+        post_text, post_age_18, post_sources, post_image_path, distro_details = helpers.get_postinfo_from_path(my_path)
         age_18_list.insert(i, post_age_18)
         source_list.insert(i, post_sources)
         text_list.insert(i, post_text)
         image_path_list.insert(i, post_image_path)
+        distro_details_list.insert(i,distro_details)
 
                 #age_18 = f.read()
                 #print(f)
@@ -140,8 +142,9 @@ def home():
                            age_18_list=age_18_list,
                            source_list=source_list,
                            image_path_list=image_path_list,
+                           distro_details=distro_details,
+                           
                            page_no=page_no
-
                            )
 
 
@@ -319,8 +322,10 @@ def upload():
         print("POST 18+   :" + str(plus_18))
         print("DISTRO ALGO:" + distribution_algorithm_, type(distribution_algorithm_))
         print("DISTRO SECT:" + str(how_many_sections))
+        distro_details =[distribution_algorithm_, how_many_sections]
+        print(distro_details)
         print("=============================================")
-        exit(0)
+        
         if helpers.POST_TEXT_CHECK():
             
             #print("TEXT WAS FINE")
@@ -345,7 +350,8 @@ def upload():
         database.FILE_INSERT( uploader=session["user"], uploaderId=database.GET_USER_ID(session["user"]), size="10", post_foreign_id_source=forign_id_source, 
                 file_path="N-A", post_file=post_file, 
                 post_text=post_text, age_18=plus_18, 
-                external_link=external_link
+                external_link=external_link,
+                distro_details=distro_details
                 )
         #TODO: THIS SHOULD REDIRECT TO THE PAGE OF THE POST 
         return redirect(url_for("home"))
@@ -431,6 +437,7 @@ def user_profile_name(username):
         image_path_list = []
         usernames_list = []
         paths_list = []
+        distro_details_list = []
 
         for i in range(len(reply_array)):
             #print(i)
@@ -440,14 +447,15 @@ def user_profile_name(username):
             my_path = f"static/#UserData/{reply_array[i][0]}/files/{reply_array[i][1]}"
             # print("PATH    :", my_path)
             
-            post_text, post_age_18, post_sources, post_image_path = helpers.get_postinfo_from_path(my_path)
+            post_text, post_age_18, post_sources, post_image_path, distro_details = helpers.get_postinfo_from_path(my_path)
             age_18_list.insert(i, post_age_18)
             source_list.insert(i, post_sources)
             text_list.insert(i, post_text)
             image_path_list.insert(i, post_image_path)
+            distro_details_list.insert(i, distro_details)
         
         my_og_path = f"static/#UserData/{new_username}/files/{post_file_path}"
-        og_post_text, og_post_18, og_post_src, og_post_img   = helpers.get_postinfo_from_path(my_og_path)
+        og_post_text, og_post_18, og_post_src, og_post_img, og_post_distro_details = helpers.get_postinfo_from_path(my_og_path)
 
         # GET LENGTHS OF TEXT
         lengths_of_text_files = []
@@ -482,6 +490,7 @@ def user_profile_name(username):
                             og_post_img=og_post_img ,
                             og_post_src=og_post_src,
                             og_post_18=og_post_18,
+                            og_post_distro_details=og_post_distro_details,
 
                             test_message="post_details.html page",
                             lengths_of_text_files=lengths_of_text_files,
@@ -504,6 +513,7 @@ def user_profile_name(username):
                             paths_list=paths_list,
                             dates_list=dates_list,
                             post_sources_list=post_sources_list,
+                            distro_details_list=distro_details_list,
 
                             daily_left=daily_left,
                             monthly_left=monthly_left,
@@ -576,7 +586,7 @@ def user_profile_name(username):
     for i in range(len(usernames_list)):
         # print(usernames_list[i], paths_list[i])
         my_path = f"static/#UserData/{usernames_list[i]}/files/{paths_list[i]}"
-        post_text, post_age_18, post_sources, post_image_path = helpers.get_postinfo_from_path(my_path)
+        post_text, post_age_18, post_sources, post_image_path, distro_details = helpers.get_postinfo_from_path(my_path)
         age_18_list.insert(i, post_age_18)
         source_list.insert(i, post_sources)
         text_list.insert(i, post_text)

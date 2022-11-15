@@ -171,8 +171,9 @@
     
 
 </div>
-    <!-- reply_modal  -->
-    <div id="reply_modal" class="modal">
+
+<!-- reply_modal  -->
+<div id="reply_modal" class="modal">
     
         <!-- Modal content -->
         <div class="modal-content">
@@ -207,21 +208,55 @@
                     <input id="reply_external_source_link" name="external_source_link" type="url" placeholder="Enter Source LINK">
                 </div>
     
-                <div>
-                    <input type="checkbox" id="older_18" name="older_18" value="older_18">
-                    <label for="">This is for adults only 18+? (SEVERE PENALITIES FOR GETTING THIS WRONG)</label><br>
+                <div class="dropdown" name="distro_algo">
+                    <select id="distro_algo" class="dropdown-content" name="distro_algo" onchange="howmanysectionsfunc()">
+                        <option id="equal">EQUAL DISTRIBUTION</option>           
+                        <option id="log">LOG DISTRIBUTION</option>
+                        <option id="log_equal">LOG EQUAL DISTRIBUTION</option>
+                    </select>
+                    more coming soon...
                 </div>
+                
+                <div id="how_many_sections" name="">
+                    
+                </div>
+    
+                <div>    <!-- IMAGES -->
+                    <img id="equal_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/equal_distribution.png')}}" width='400' height='200' />
+                    <img id="log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_distribution.png')}}" width='400' height='200' />
+                    <img id="equa_log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_equal_distribution.png')}}" width='400' height='200' />
+                </div>
+    
     
                 <br>
     
                 <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>
     
-                FILE SIZE MUST BE < 10 GIGS
             </form>
         </div>
-    </div>
+</div>
 </div>
 <script>
+    var slider = `Sections: 1-10
+        <div class="slidecontainer" >
+            <input type="range" min="1" max="10" value="5" class="slider" id="myRange" name="how_many_sections_">
+        </div>
+        `
+
+
+    function howmanysectionsfunc(){
+
+        dist_chosen = document.getElementById("distro_algo").value 
+
+        if (dist_chosen == "LOG EQUAL DISTRIBUTION"){
+            document.getElementById("how_many_sections").innerHTML = slider
+        }
+        else{
+            document.getElementById("how_many_sections").innerHTML= ""
+        }
+    }
+
+    
     document.getElementById("reply_external_source_link").disabled = true; // setting default to disabled
 
 

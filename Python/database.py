@@ -770,18 +770,18 @@ def FILE_CREATE_TABLE():
 def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None", 
                 file_path="N-A", post_file="", 
                 post_text="", age_18="", 
-                external_link=""):
+                external_link="",
+                distro_details=""):
     """
     REALLY COMPLICATED NIGHTMARE BUT IT WORKS
     
     """
     #1. CHECK THAT THE POST FOREIGN ID ACTUALLY EXISTS
-    if post_foreign_id_source == "None" or post_foreign_id_source == "" or None:
+    if post_foreign_id_source == "None" or post_foreign_id_source == "" or post_foreign_id_source == None:
         print(F"EMPTY SOURCE IS [{post_foreign_id_source}]")
         post_foreign_id_source = ""
         print(F"EMPTY SOURCE IS [{post_foreign_id_source}]")
             
-
 
     conn = connection.test_connection()
     cursor = conn.cursor()
@@ -850,7 +850,9 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
             path_name=new_path, 
             text=post_text, 
             age_18=age_18,
-            external_source=external_link                                   
+            external_source=external_link,
+            distro_details=distro_details
+
         )
 
         print_green(f"FILE INSERT COMPLETED {uploader}, {new_path}")
@@ -885,7 +887,7 @@ def register_user_files(username):
         'age':"",
         'bio':f"Hello my name is {username}"
     }
-    jsonString = json.dumps(config_json)
+    jsonString = json.dumps(config_json, indent=4)
     jsonFile = open(f"static/#UserData/{username}/config.json", "w")
     jsonFile.write(jsonString)
     jsonFile.close()
@@ -1850,9 +1852,21 @@ def profile_dataset_function(session_username):
     return File_ids, usernames, paths, dates, Post_total_size, post_sources, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, total_votes, user_balance, dailypool, monthlypool, yearlypool
 
 
-def FILE_INSERT_STORAGE(username, path_name, text, age_18, external_source):
+def FILE_INSERT_STORAGE(username, path_name, text, age_18, external_source, distro_details):
     # print(f"username: {username}\npath_name: {path_name}\ntext: {text}\nmy_file: {my_file}\nage_18: {age_18}\nexternal_source: {external_source}")
-    
+
+    my_dictionary = {
+        "txt": f"{text}",
+        "18+": f"{age_18}",
+        "external_source": f"{external_source}",
+        "distro_details": distro_details
+    }
+    print(f"DICTIONARY:\n{type(my_dictionary)}\n{my_dictionary}")
+    json_object = json.dumps(my_dictionary, indent=4)
+    # Writing to sample.json
+    with open(f"static/#UserData/{username}/files/{path_name}/post_config.json", "w") as outfile:
+        outfile.write(json_object)
+    '''
     try:
         target = rf'static/#UserData/{username}/files/{path_name}/post_text.txt' # WRITING TEXT PART   
         with open(target, 'w') as f:
@@ -1875,7 +1889,7 @@ def FILE_INSERT_STORAGE(username, path_name, text, age_18, external_source):
             f.write(external_source)
     except Exception as e:
         log_function("error", e)
-
+    '''
 
 def CHECK_FILES_NOT_OVER_LIMIT(page_no):
     conn = connection.test_connection()
@@ -2364,7 +2378,7 @@ def SEARCH_ALGO_INSERT(username, Algorithm_Name, order_by_clause, where_clause):
         'ORDER_BY_CLAUSE':f"{order_by_clause}",
         'WHERE_CLAUSE'   :f"{where_clause}"
     }
-    jsonString = json.dumps(config_json)
+    jsonString = json.dumps(config_json, indent=4)
     jsonFile = open(f"{my_path}", "w")
     jsonFile.write(jsonString)
     jsonFile.close()

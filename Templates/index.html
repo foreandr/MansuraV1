@@ -157,11 +157,26 @@
                 <label><b>Source:</b></label>
                 <input id="reply_external_source_link" name="external_source_link" type="url" placeholder="Enter Source LINK">
             </div>
-
-            <div>
-                <input type="checkbox" id="older_18" name="older_18" value="older_18">
-                <label for="">This is for adults only 18+? (SEVERE PENALITIES FOR GETTING THIS WRONG)</label><br>
+            
+            <div class="dropdown" name="distro_algo">
+                <select id="distro_algo" class="dropdown-content" name="distro_algo" onchange="howmanysectionsfunc()">
+                    <option id="equal">EQUAL DISTRIBUTION</option>           
+                    <option id="log">LOG DISTRIBUTION</option>
+                    <option id="log_equal">LOG EQUAL DISTRIBUTION</option>
+                </select>
+                more coming soon...
             </div>
+
+            <div id="how_many_sections" name="">
+                
+            </div>
+
+            <div>    <!-- IMAGES -->
+                <img id="equal_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/equal_distribution.png')}}" width='400' height='200' />
+                <img id="log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_distribution.png')}}" width='400' height='200' />
+                <img id="equa_log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_equal_distribution.png')}}" width='400' height='200' />
+            </div>
+
 
             <br>
 

@@ -13,6 +13,8 @@ import numpy as np
 import csv
 from datetime import datetime
 import pytz
+import json
+
 
 import Python.db_connection as connection
 from Python.helpers import print_green, print_title, log_function
@@ -24,11 +26,6 @@ from generating_excel import WRITE_HEADERS_TO_EXCEL
 import db_connection as connection
 from  helpers import print_green, print_title, log_function
 ''' #TOP/BOPTTOM=================================
-
-test_ordered_array = ['Ulisses', 
-        'Ulisses', 'Tywana', 'Tyriek', 'Tyrece', 'Tynan', 'Tylan', 'Tyeesha', 'Tyeasha', 'Tya', 'Travers', 'Tramel', 'Radhika', 'Klaus', 'foreandr', 'Bozo', 'Buddy', 'Buddy2', 'Buddy3', 'Buddy4', 'Buddy5', 'Buddy6', 'Buddy7', 'Buddy8','Buddy9', 'Buddy10', 'Buddy11', 'Buddy12', 'Buddy13', 'Buddy14', 'Buddy15', 'Buddy16']
-
-''''''
 
 def GET_REPLYING_TO(file_id):
     
@@ -89,7 +86,8 @@ def FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT(vote_type, testing=False):
     conn = connection.test_connection()
     cursor = conn.cursor()
     my_dict = GET_FREQUENCY_DICT_TYPED(vote_type)
-
+    # print(my_dict[4])
+    
     non_equity_dict = {}
     for key, value in my_dict.items():        
         if key != "EQUITY":
@@ -159,10 +157,11 @@ def FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT(vote_type, testing=False):
     # print("\nCHECKPOINT 1")
     #PROBABLY THE BEST THING TO PRINT TO KNOW WHAT'S GOING ON
     #NOTE, RATIO HAS ALREADY BEEN TAKEN OUT OF AMOUNT, IT ISN'T INCORRECT, CAN BE CHECKED WITH ALGOS
+    
     #for key, value in non_equity_dict.items():
     #    print(key, ":", value)
     
-    # exit()  #THIS IS WHERE IM WORKIN CHECKPOINT 1
+    #exit()  #THIS IS WHERE IM WORKIN CHECKPOINT 1
     UPDATE_BALANCES_TYPED(vote_type, non_equity_dict, testing)
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
@@ -180,10 +179,10 @@ def GET_FREQUENCY_DICT_TYPED(my_vote_type):
     conn = connection.test_connection()
 
     cursor = conn.cursor()
-    dataset_array = GET_ALL_TYPED( my_vote_type)
+    dataset_array = GET_ALL_TYPED(my_vote_type)
     freq_array = []
     for i in dataset_array:
-        #print(i)
+        # print(i)
         freq_array.append(i[0])
     
     freq = CountFrequency(freq_array)
@@ -193,19 +192,21 @@ def GET_FREQUENCY_DICT_TYPED(my_vote_type):
 
     equity_percentage = 0
     if my_vote_type == "Daily":
-        equity_percentage = .20
+        equity_percentage = 0.20
     elif my_vote_type == "Monthly":
         equity_percentage = 0.20
     elif my_vote_type == "Yearly":
-        equity_percentage = .20
+        equity_percentage = 0.20
 
-    total_vote_count_typed = GET_TOTAL_VOTE_COUNT( my_vote_type)
+    total_vote_count_typed = GET_TOTAL_VOTE_COUNT(my_vote_type)
+    
     total_capital_typed = GET_TYPED_PAYOUT( my_vote_type)
       
     total_capital_for_equity = total_capital_typed * equity_percentage
     total_capital_typed = total_capital_typed - total_capital_for_equity
 
-    print(F"VOTE TYPE: {my_vote_type}")
+    print(F"VOTE TYPE : {my_vote_type}")
+    print(F"VOTE COUNT: {total_vote_count_typed}")
     print(F"{my_vote_type} CAPITAL FOR TOTAL:  {GET_TYPED_PAYOUT( my_vote_type)}")
     print(F"{my_vote_type} CAPITAL FOR EQUITY: {BROKEN_ROUNDING(total_capital_for_equity)} [%{equity_percentage}]")
     print(F"{my_vote_type} CAPITAL FOR USERS : {total_capital_typed}")
@@ -218,9 +219,10 @@ def GET_FREQUENCY_DICT_TYPED(my_vote_type):
                 "AMOUNT": ""
                 }
         
-        value["PERCENT"] =  BROKEN_ROUNDING(value["VOTES"] / total_vote_count_typed)
+        value["PERCENT"] =  (value["VOTES"] / total_vote_count_typed)
         value["AMOUNT"] = BROKEN_ROUNDING(value["PERCENT"] * total_capital_typed) 
         value["PERCENT"] =  "".join(("%", str(value["PERCENT"])))
+
         new_dict[key] = value
     
         
@@ -495,10 +497,20 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
         
             # temp dict is a dictionary that goes into [NAME ARRAY] in order, and has distributed the capital
             #print(dataset_id_total_capital, name_array)
-
-            # SHOULD BE ABLE TO CHOOSE A NUMBER OF DISTRIBUTION ALGORITHMS
-
-            temp_dict = PURE_LOG_DISTRIBUTION(float(dataset_id_total_capital), name_array) #TODO:SHOULD MAKE THE TYPES PROPER
+            ALGO = GET_DISTRO_ALGO_BY_FILE_ID(key)
+            # print(key, ALGO)
+            if ALGO[0] == "EQUAL DISTRIBUTION":
+                temp_dict = EQUAL_DISTRIBUTION(float(dataset_id_total_capital), name_array)
+                # print("EQU DISTRO",dataset_id_total_capital, temp_dict)
+            elif ALGO[0] == "LOG DISTRIBUTION": 
+                temp_dict = PURE_LOG_DISTRIBUTION(float(dataset_id_total_capital), name_array) 
+                #print("LOG DISTRO", dataset_id_total_capital, temp_dict)
+                #exit()
+            elif ALGO[0] == "LOG EQUAL DISTRIBUTION":
+                temp_dict = SECTIONED_EQUAL_DISTRIBUTION(float(dataset_id_total_capital), name_array, float(ALGO[1]))
+            else:
+                temp_dict = EQUAL_DISTRIBUTION(float(dataset_id_total_capital), name_array)
+            
             all_temp_dicts[key] = {
                 "ORDER":temp_dict,
                 "VALUE":value,
@@ -764,7 +776,7 @@ def RUN_WITH_TIME_TEST():
     st = time.time()
 
     FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Daily", testing=True)
-    FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly", testing=True)
+    # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly", testing=True)
     # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Yearly", testing=True)
         
     # get the end time
@@ -949,7 +961,6 @@ def EQUAL_DISTRIBUTION(TOTAL, my_array):
     return new_dict
 
 
-#TODO: I WOULD LIKE TO PUT THESE IN ANOTHER FILE WITH N OTHER ALGORITHMS
 def SECTIONED_EQUAL_DISTRIBUTION(TOTAL, my_array, sections=2):
     """
     NOTES: 1. i do not know why this is the case, but BUT SECTIONS HAVE TO  BE BELOW 195, or I got weired bugs with the totals
@@ -1014,7 +1025,49 @@ def SECTIONED_EQUAL_DISTRIBUTION(TOTAL, my_array, sections=2):
     # return new_dict
 
 
+def GET_FILE_PATH_BY_ID(file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+        SELECT File_PATH
+        FROM FILES 
+        WHERE File_id = '{file_id}'
+    """)
+    path = ""
+    for i in cursor.fetchall():
+        path = i[0]
 
+    cursor.close()
+    conn.close()
+    return path
+
+
+def GET_DISTRO_ALGO_BY_FILE_ID(file_id):
+    
+    # print(F"FILE ID: {file_id}")
+    path = GET_FILE_PATH_BY_ID(file_id)
+    username = path.split("-")[0]
+    
+    full_path = f"../static/#UserData/{username}/files/{path}/post_config.json"
+    
+    f = open(f'{full_path}')
+    data = json.load(f)
+    distro_details = data["distro_details"]
+    #print(path)
+    #print(username)
+    #print(distro_details)
+    return distro_details
+
+
+
+    #f = open(f'{my_path}/post_config.json')
+    #data = json.load(f)
+    #distro_details = data["distro_details"]
+    #print("DISTRO DETAILS:", distro_details)
+    return ""
+
+# GET_DISTRO_ALGO_BY_FILE_ID(1)
 # PURE_LOG_DISTRIBUTION(100.00, test_ordered_array)
 # EQUAL_DISTRIBUTION(100.00, test_ordered_array)
 # SECTIONED_EQUAL_DISTRIBUTION(19.91, test_ordered_array, sections=2)
+# RUN_WITH_TIME_TEST()
