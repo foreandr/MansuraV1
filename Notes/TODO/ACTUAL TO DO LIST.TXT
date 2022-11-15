@@ -21,13 +21,12 @@ DONE. DOMAIN NAME
 DONE. HTTPS
 DONE. LOG EVERY REQUEST, AND ERROR TO A LOG FILE, log file for each day that has all the code and requests
 DONE. FOR TOMORROW, GET DB FUNCTIONS WORKING, GUNICORN LOGGING
-
+DONE. RE FORM LOG DICT IN DISTRIBUTION
 
 
 MINIMUM VIABLE PRODUCT
 ========================
-X. TEXT CHECK AND IMAGE CHECK WORKING PROPERLY, mild frontend checks as well
-1. RE FORM LOG DICT IN DISTRIBUTION
+1. TEXT CHECK AND IMAGE CHECK WORKING PROPERLY, mild frontend checks as well
 2. LIKES TABLE (WITH SIMILAR LOGIC TO VOTES)[MAY NOT NEED DATE SOME OTHER MINOR STUFF]
 	- LIKES WILL INFORM SEARCH
 3. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
@@ -35,39 +34,32 @@ X. TEXT CHECK AND IMAGE CHECK WORKING PROPERLY, mild frontend checks as well
 	- should test their search ona test net, tell them it will be verified over a business day
 		- if test net no shenanigans, create place somewhere to store query
 		- perm ban if shenanigans from submitting search algo
-withdrawl isn't finishe
+5. withdrawl isn't finishe
 4.CREATE TWTICH/TIKTOK CHANNEL TO TALK TO PEOLPE
-5. 18+ IS BLURRED UNLESS YOU CONFIRM YOUR AGE
-	- AGE TABLE, THEN CHANGE INDEX TO KNOW IF THE USER PROFILE IS 18+ CHECK IF SESSION USER IS OVER 18	
-6. GET UPLOADS ACTUALLY WORKING, RESCRICT UPLOADS TO PEOPLE WHO ARE SUBBED
+6. GET UPLOADS ACTUALLY WORKING, 
+	- RESCRICT UPLOADS TO PEOPLE WHO ARE SUBBED
+	-. LIMIT NUM POSTS PER DAY
 	- CHECK having modal issue
 	- CHECKSOME UPLOADS HAVE RANDOM SLASHES IN THEM FOR UPLOAD NUMS
-7. LIMIT NUM POSTS PER DAY
-8. profile reply logic isn't done
-9. allow for profile bio
+7. allow for profile bio
 	- EDIT BIO
 	- a full page on it's own for editing profile including picture and bio, and presumabley other things of that nature
-10. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
-11. REPOST, ability to take another post and endorse it somehow 
-12. something cool has to happen if you get ratio'd
-13. show publicly how many people have blocked this person
-14. make sure username has no dashes or other annoying characters (make sure ascii)
-15. DO THIS BY REPORT(NO WAY IM GOING TO MANAGE THIS WITH SEARCH)
+8. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
+9. REPOST, ability to take another post and endorse it somehow 
+10. show publicly how many people have blocked this person
+11. DO THIS BY REPORT(NO WAY IM GOING TO MANAGE THIS WITH SEARCH)
 	- if a post is character for character the same, look for the one with the earliest timestamp, they get all the winnings
 	- SUCCESSFULL REPORTER GETS 50% 
-16. HEAD TO HEADS (incomplete but something like this should be thought through carefully)
+12. HEAD TO HEADS (incomplete but something like this should be thought through carefully)
 	- YOU can report someones post, and then that inverts the vote ratio so you have a head to head between reports and votes for that month
 	- the people who report if successful will get the winnings of what that page would have got
 		- else they just lost their vote for the month
-17. NO PORN
-18. GOTTA INTRODUCED SECTIONED LOG DIST, RIGHT NOW THERE IS NO INCENTIVE BE MORE MORE THAN THE 8TH VOTE OR SO
-19. POST TO LIKE RATIO NEXT TO LIST ON PROFILE OF WHO BLOCKS? RATING OF ACCOUNTS?
-20. if logged in, go to profile
-21. GOTTA BE A REFER SYSTEM OF SOME KINDS, WITH A MONETARY REWARD, more posts per month? probably not monetary
-22. COPY OF SOMETHING ELSE REPORT LOGIC
+13. POST TO LIKE RATIO NEXT TO LIST ON PROFILE OF WHO BLOCKS? RATING OF ACCOUNTS?
+14. GOTTA BE A REFER SYSTEM OF SOME KINDS, WITH A MONETARY REWARD, more posts per month? probably not monetary
+15. COPY OF SOMETHING ELSE REPORT LOGIC
 	- RETWEET LOGIC
-23. IF A POST GETS REPORTED, AND THE REPORT IS SUCCESSFUL (NEED LOGIC FOR DETERMINING THAT), THAT POST GETS PINNED ON THEIR PROFILE, AND THEY GET SLASHED SOME TO THE POOL SOME TO THE REPORTERS
-24. redirected to wrong page after follow
+16. IF A POST GETS REPORTED, AND THE REPORT IS SUCCESSFUL (NEED LOGIC FOR DETERMINING THAT), THAT POST GETS PINNED ON THEIR PROFILE, AND THEY GET SLASHED SOME TO THE POOL SOME TO THE REPORTERS
+17. redirected to wrong page after follow
 
 IMPORTANT BUT LATER
 ===================
