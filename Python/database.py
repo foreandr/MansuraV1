@@ -496,7 +496,6 @@ def MANSURA_SUBSCRIBE(username):
     conn = connection.test_connection()
     # print("FUNC: MANSURA_SUBSCRIBE")
     try:
-
         user_balance = GET_USER_BALANCE_SIMPLE(username) # GET BALANCE
         # print(username, user_balance, type(user_balance))
         
@@ -1648,7 +1647,7 @@ def home_dataset_function(page_no, sort_time_frame, how_many, session_username='
         total_votes_ = i[10] + i[11] + i[12]
         total_votes += str(total_votes_) + "//"
         
-    if CHECK_DATE( session_username):
+    if CHECK_DATE(session_username):
         #print(session_username, " IS SUBSCRIBED")
         daily_left =  1 if (int(daily_left) == 0) else 0
         monthly_left = 1 if (int(monthly_left) == 0) else 0

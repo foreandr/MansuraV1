@@ -300,7 +300,8 @@ def upload():
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
-
+    if not database.CHECK_DATE(session["user"]):
+        return redirect(url_for("add_funds"))
     if request.method == "POST": # UPLOADING SOMETHING
         #print("GOT TO WHETHER SOMETHING IS BEING POISTED OR NOT ==================================")
         post_text = request.form.get("textbox")
@@ -358,30 +359,6 @@ def upload():
     else:
         #TODO: THIS SHOULD REDIRECT TO INDEX.HTML        
         return redirect(url_for("home"))
-
-
-@app.route('/subscribe', methods=['GET', 'POST'])
-def subscribe():
-    helpers.log_function("request", request)
-    if "email" not in session:
-        return redirect(url_for('login'))
-    #TODO: THIS WORKS BUT IT'S ALL KIND OF BUGGY
-     #print("inside of subscribe!!!!") 
-    #TODO:COULD BE MADE INTO ONE FUNCTION TO SIMPLIFY
- 
-    if "email" not in session: #TODO:PROBABLY CAN ERASE THIS SINCE THERE IS A CHECK AT THE TOP
-        return redirect(url_for('login'))
-    else:
-        #print("REQUEST", request)
-        #print("THERE WAS AN ERROR, MAYBE A GET REQUESt?")
-        return render_template(f"subscribe.html", 
-                                       session_user = session["user"],
-                                       daily_votes_left=daily_votes_left,
-                                       monthly_votes_left=monthly_votes_left,
-                                       yearly_votes_left=yearly_votes_left,
-                                       balance = balance
-
-                                       )
 
 
 @app.route('/<username>', methods=['GET', 'POST'])
@@ -964,15 +941,15 @@ if __name__ == '__main__':
     
     #my_port = 443
     
-    #host = "0.0.0.0" #could be local host
+    host = "0.0.0.0" #could be local host
     # logging.basicConfig(filename='app.log', encoding='utf-8', level=logging.DEBUG) #ISN'T    WORKING THE WAY I WANT
     # database.USER_FULL_RESET()
 
     
-    #thread = Thread(target = distribution_algorithm.TESTING_TIMING, args = ())
-    #thread.start()
+    thread = Thread(target = distribution_algorithm.TESTING_TIMING, args = ())
+    thread.start()
 
-    #app.run(host=host, port="8080", debug=True, use_reloader=False)  # host is to get off localhost
+    app.run(host=host, port="8083", debug=True, use_reloader=False)  # host is to get off localhost
     #serve(app, host=host)    
 
     # If the debugger is on, I can change my files in real time after saving

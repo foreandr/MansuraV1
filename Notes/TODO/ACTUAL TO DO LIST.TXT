@@ -22,10 +22,23 @@ DONE. HTTPS
 DONE. LOG EVERY REQUEST, AND ERROR TO A LOG FILE, log file for each day that has all the code and requests
 DONE. FOR TOMORROW, GET DB FUNCTIONS WORKING, GUNICORN LOGGING
 DONE. RE FORM LOG DICT IN DISTRIBUTION
-
+DONE. RESCRICT UPLOADS TO PEOPLE WHO ARE SUBBED
+DONE, CREATED A WHOLE FUCK TONE OF SOCIAL MEDIA ACCOUNTS
+	- NOTE======================== COULD PROBABLY CREATE MORE
 
 MINIMUM VIABLE PRODUCT
 ========================
+TODAY AT LIBRARY:
+	1.First n people to join this month get in free, (xd)
+		- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
+		- person who refers gets 1 monthly vote for EACH refer
+		-   
+	2. WRITE UP THE PAPER
+	4. CODE FOR CHECKING HOW SIMILAR TWO PIECES OF TEXT ARE
+	5. JIRA CONFLUENCE DOCUMENTATION 
+	6. SEARCH BASIC
+	
+
 1. TEXT CHECK AND IMAGE CHECK WORKING PROPERLY, mild frontend checks as well
 2. LIKES TABLE (WITH SIMILAR LOGIC TO VOTES)[MAY NOT NEED DATE SOME OTHER MINOR STUFF]
 	- LIKES WILL INFORM SEARCH
@@ -35,9 +48,7 @@ MINIMUM VIABLE PRODUCT
 		- if test net no shenanigans, create place somewhere to store query
 		- perm ban if shenanigans from submitting search algo
 5. withdrawl isn't finishe
-4.CREATE TWTICH/TIKTOK CHANNEL TO TALK TO PEOLPE
 6. GET UPLOADS ACTUALLY WORKING, 
-	- RESCRICT UPLOADS TO PEOPLE WHO ARE SUBBED
 	-. LIMIT NUM POSTS PER DAY
 	- CHECK having modal issue
 	- CHECKSOME UPLOADS HAVE RANDOM SLASHES IN THEM FOR UPLOAD NUMS
@@ -55,7 +66,6 @@ MINIMUM VIABLE PRODUCT
 	- the people who report if successful will get the winnings of what that page would have got
 		- else they just lost their vote for the month
 13. POST TO LIKE RATIO NEXT TO LIST ON PROFILE OF WHO BLOCKS? RATING OF ACCOUNTS?
-14. GOTTA BE A REFER SYSTEM OF SOME KINDS, WITH A MONETARY REWARD, more posts per month? probably not monetary
 15. COPY OF SOMETHING ELSE REPORT LOGIC
 	- RETWEET LOGIC
 16. IF A POST GETS REPORTED, AND THE REPORT IS SUCCESSFUL (NEED LOGIC FOR DETERMINING THAT), THAT POST GETS PINNED ON THEIR PROFILE, AND THEY GET SLASHED SOME TO THE POOL SOME TO THE REPORTERS
@@ -116,7 +126,6 @@ email noam chomsky about the consequneces of substrate independant information p
 0. Might be a good idea to have each user have a config file JSON object for all kinds of parameters
 1. ABLE TO UPLOAD ONCE A [TIME INTERVAL] IF NOT SUBSCRIBED
 2. IN THE CSV PRODUCED IN THE HISTORY, ADD SITE COSTS
-
 4. ACHIEVMENTS
 5. Tell when user has registered successfully or not and why
 6. PUBLIC POLLS (coming soon, with similar distribution, think "https://secure.runescape.com/m=poll/oldschool/#_ga=2.149377974.1498537872.1665427969-62632821.1665427968")
