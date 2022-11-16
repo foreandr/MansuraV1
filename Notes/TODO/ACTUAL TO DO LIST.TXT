@@ -34,6 +34,7 @@ MINIMUM VIABLE PRODUCT
 	- should test their search ona test net, tell them it will be verified over a business day
 		- if test net no shenanigans, create place somewhere to store query
 		- perm ban if shenanigans from submitting search algo
+		- when doing the where clauses, I should be able to superimpose diffrent searches on one an other
 5. withdrawl isn't finishe
 4.CREATE TWTICH/TIKTOK CHANNEL TO TALK TO PEOLPE
 6. GET UPLOADS ACTUALLY WORKING, 

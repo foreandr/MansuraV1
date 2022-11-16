@@ -1049,7 +1049,11 @@ def GET_DISTRO_ALGO_BY_FILE_ID(file_id):
     username = path.split("-")[0]
     
     full_path = f"static/#UserData/{username}/files/{path}/post_config.json"
+<<<<<<< HEAD
     # log_function(full_path)
+=======
+    
+>>>>>>> 8b3bf6430351d192d80a96716bf18f916af6fbc9
     f = open(f'{full_path}')
     data = json.load(f)
     distro_details = data["distro_details"]
