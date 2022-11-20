@@ -1,16 +1,37 @@
+MANSURA
+
 WHITEPAPER
-
+    Towards a Financial Cybernetic Collective
+    
 INTRODUCTION
+    The proliferation of social media has had a tremendous impact on our society. There have been numerous efforts
+    over the last few decades to get the formula right, with varying degress of success. This is our attempt.
 
-DISTRIBUTION
+COMMON PROBLEMS
+    Before I begin describing the bells and whistles of Mansura, I would first like to lay out our view of what seem to be 
+    some of the common issues that people are facing.
+    
+    1. FINANCIAL/ INCENTIVE : the distribution of the capital for participation in the network. Either as creator OR consumer.
+        - Incentive for posting equal distribution dependant on what percent of the votes they got]
+        - incentive for liking they are rewarded depending on the distribution algorithms
+        - Reply/Citation/Ratio incentive
+    6. CURATION & SEARCH ALGORITHMS
+        - custom search queries arbitrary precision and complexity
+        - compose the queries of others to make new ones
+        - query creators get paid based on the use of their things
+            - peoeple can use each others search, nothing pre curated
+    2. IDENTITY / OWNERSHIP   : when I interact with the network, I either do, or DON'T want people to know who I am, 
+        - and I don't want to be impersonated. I also want to be rewarded for what I make, and if someone copies me, I should get credit
+    3. BOTS/SPAM
+        - BOTS won't ever be stopped but they can be disincentivized, you can make bot accounts, but they just ocntribute
+    5. TRANSPARENCY
+        - public distribution log for every time there is a reset
 
-BUSINESS MODEL/INCENTIVE
 
-BUGS/HACKERS
 
-PRIVACY
+
+
 	
 CALCULATIONS
 
 CONCLUSION
-

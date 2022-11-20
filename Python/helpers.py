@@ -266,8 +266,38 @@ def GET_USER_BIO(username):
 def POST_TEXT_CHECK():
     return True
 
-def POST_IMG_CHECK():
+
+def POST_IMG_CHECK(image_file, testing=False):
     return True
+    """
+    if testing:
+        target = rf'image_test_dir/download.jpg'#TODO: DIFFERENTIATE DIFFERENT EXTENSIONS
+    else:
+        target = rf'Python/image_test_dir/{image_file.filename}'#TODO: DIFFERENTIATE DIFFERENT EXTENSIONS
+        image_file.save(target)
+    
+
+
+    import nude
+    from nude import Nude
+
+    print(f"NUDE1 :{nude.is_nude(target)}")
+
+    n = Nude(f'{target}')
+    n.parse()
+    print("NUDE2: :", n.result, n.inspect())
+
+
+    # SECOND TESTER
+    from nudenet import NudeClassifier, NudeDetector
+    detector = NudeDetector()
+    #classifier = NudeClassifier()
+    #print("NUDE3",classifier.classify(target))
+    print("NUDE4",detector.detect(target))
+    print("NUDE5",detector.detect(target, mode='fast'))
+    exit(0)
+    return True
+    """
 
 
 def log_function(msg_type, log_string):
@@ -293,7 +323,154 @@ def log_function(msg_type, log_string):
         with open(f'/root/mansura/Python/logs/access/{current_date}.txt', 'a') as f:
             f.write(err_string)
 
+
+def remove_values_from_list(the_list):
+   return [value for value in the_list if value != "None" or value != None ]
+
+
+def GET_ALL_QUERY_INFO_FROM_REQUEST_FORM(request):
+    and_or_clauses = []
+    where_clauses = []
+    hi_eq_low = []
+    num_search_text = []
+   
+    
+    and_or_clauses.append(request.form.get(f"and_or_clause"))
+    where_clauses.append(request.form.get(f"where_clauses"))
+    hi_eq_low.append(request.form.get(f"higher_equal_lower"))
+    num_search_text.append(request.form.get(f"num_search_text"))
+
+    for i in range(1, 10):
+        and_or_clauses.append(request.form.get(f"and_or_clause{i}"))
+        where_clauses.append(request.form.get(f"where_clauses{i}"))
+        hi_eq_low.append(request.form.get(f"higher_equal_lower{i}"))
+        num_search_text.append(request.form.get(f"num_search_text{i}"))
+    
+    # REMOVING EXTRAS
+    #and_or_clauses = remove_values_from_list(and_or_clauses)
+    #where_clauses = remove_values_from_list(where_clauses)
+    #hi_eq_low = remove_values_from_list(hi_eq_low)
+    #num_search_text = remove_values_from_list(num_search_text)
+    final_and_or_clauses = []
+    final_where_clauses = []
+    final_hi_eq_low = []
+    final_num_search_text = []
+
+    for i in range(len(and_or_clauses)): # any would do
+        temp_and_or_clauses = and_or_clauses[i]
+        temp_where_clauses = where_clauses[i]
+        temp_hi_eq_low = hi_eq_low[i]
+        temp_num_search_text = num_search_text[i]
+        
+        if (temp_and_or_clauses != None) and (temp_where_clauses != None) and (temp_hi_eq_low != None) and ((temp_num_search_text != None) or (temp_num_search_text != "")):
+            # print("temp_num_search_text", len(temp_num_search_text), temp_num_search_text)
+            if temp_num_search_text != "":
+                final_and_or_clauses.append(temp_and_or_clauses)
+                final_where_clauses.append(temp_where_clauses)
+                final_hi_eq_low.append(temp_hi_eq_low)
+                final_num_search_text.append(temp_num_search_text)
+
+    return final_and_or_clauses, final_where_clauses, final_hi_eq_low, final_num_search_text
+
+
+def TURN_WHERE_CLAUSE_TO_STRING(query_list):
+    # print("WHERE_CLAUSE_TO_STRING: ", query_list)
+    
+    if len(query_list) == 0:
+        # print("empty list")
+        return ""
+    
+    and_or = query_list[0]
+    question =  query_list[1]
+    comparison = query_list[2]
+    amount = query_list[3]
+
+    #print("and_or      :", and_or)
+    #print("question    :", question)
+    #print("comparison  :", comparison)
+    #print("amount      :", amount)
+
+    recomposed_string = ""
+
+    if question == "POST DAY VOTES":
+        question_string = "(SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily')"
+    elif question == "POST MONTH VOTES":
+        question_string = "(SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly')"
+    elif question == "POST YEAR VOTES":
+        question_string = "(SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Yearly')"
+
+    recomposed_string += and_or + " "
+    recomposed_string += question_string + " "
+    recomposed_string += comparison + " "
+    recomposed_string += amount + " "
+    #print("ENTIRE RECOMPOSED STRING:")
+    #print(recomposed_string)
+    return recomposed_string
+
+
+def SPLIT_AND_RECOMPOSE_ORDER_BY_CLAUSES(giant_order_string):
+    # print(giant_order_string)
+    order_by_sections = giant_order_string.split("ORDER BY")
+    # print(len(order_by_sections))
+    new_order_by_string = "ORDER BY"
+    for i in range(len(order_by_sections)):
+        # print(i, len(order_by_sections[i]), order_by_sections[i])
+        if len(order_by_sections[i]) > 1: # THIS SHOULD BE 0 THERE IS AN EXTRA SPACE CREATED SOMEWHERE IN THE CODE, so it has to be > 1
+            new_order_by_string += order_by_sections[i] + ","
+    
+    # i should also remove duplicates here
+    print("ERROR!!!! THIS IS A BUG, NEED TO REMOVE DUPLICATES THAT ARE IN CHRONOLOGIAL ORDER!!!!!")
+    
+
+    #print(new_order_by_string)
+    new_order_by_string = new_order_by_string[:-1]
+    #print(new_order_by_string)
+    return new_order_by_string
+
+
+def COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses):
+    print("==============WITHIN COMPOSE SEARCH AND JSON==============")
+    #print("returned_search_arguments:",type(returned_search_arguments), returned_search_arguments)
+    #print("json_search_clauses      :",type(json_search_clauses), json_search_clauses)
+    
+    #TODO: WHAT I MIGHT HAVE TO DO IS GO TO THE SEARCH ALGO-PATH AS WELL AND CONTACT
+    new_composed_where_clause = ""
+    new_composed_order_by_clause = ""
+    
+    if str(returned_search_arguments) != "None":
+        if type(returned_search_arguments) != dict:
+            returned_search_arguments = eval(returned_search_arguments)
+        new_composed_where_clause = returned_search_arguments['where_full_query'] + " " + json_search_clauses['WHERE_CLAUSE']
+        #print("new_composed_where_clause", new_composed_where_clause)
+    
+    if str(json_search_clauses) != "None":
+        if type(json_search_clauses) != dict:
+            json_search_clauses = eval(json_search_clauses)
+        # print("GOT HERE CHECKPOINT")
+        #print(returned_search_arguments['order_by_clause'])
+        #print(json_search_clauses['ORDER_BY_CLAUSE'])
+        new_composed_order_by_clause = SPLIT_AND_RECOMPOSE_ORDER_BY_CLAUSES(returned_search_arguments['order_by_clause']+ " " + json_search_clauses['ORDER_BY_CLAUSE'])
+        print("new_composed_order_by_clause", new_composed_order_by_clause)
+    
+    #TODO: SOMETHING IN HERE TO DELETE ALL THE EXTRA TIMES IT SAYS AND USERNAME == USERNAME
+    
+    new_return_clause = {
+        'WHERE_CLAUSE': new_composed_where_clause,
+        'ORDER_BY_CLAUSE':new_composed_order_by_clause
+    }
+    return new_return_clause
+    
+
+#demo_list = ['AND', 'POST DAY VOTES', '==', '9']
+#demo_list2 = ['OR', 'POST MONTH VOTES', '<=', '10']
+#demo_list3 = ['AND', 'POST YEAR VOTES', '==', '1']
+#TURN_WHERE_CLAUSE_TO_STRING(demo_list)
+#TURN_WHERE_CLAUSE_TO_STRING(demo_list2)
+#TURN_WHERE_CLAUSE_TO_STRING(demo_list3)
+
+    
 # GET_USER_BIO("foreandr")
 # FULL_GIANT_REGISTER()
 # print(USERNAME_sPROFANITY_CHECK("bozo0000000000000000", testing=True))
 # print(get_postinfo_from_path("../static/#UserData/oguser/files/oguser-1"))
+# POST_IMG_CHECK("test",testing=True)

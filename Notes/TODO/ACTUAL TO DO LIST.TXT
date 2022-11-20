@@ -28,6 +28,7 @@ DONE, CREATED A WHOLE FUCK TONE OF SOCIAL MEDIA ACCOUNTS
 
 MINIMUM VIABLE PRODUCT
 ========================
+CHANGE VOTING TO 30 4 1
 TODAY AT LIBRARY:
 	1.First n people to join this month get in free, (xd)
 		- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
@@ -42,11 +43,13 @@ TODAY AT LIBRARY:
 1. TEXT CHECK AND IMAGE CHECK WORKING PROPERLY, mild frontend checks as well
 2. LIKES TABLE (WITH SIMILAR LOGIC TO VOTES)[MAY NOT NEED DATE SOME OTHER MINOR STUFF]
 	- LIKES WILL INFORM SEARCH
+	
 3. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
 	- SOMETHING wrong with the ordering of files
 	- should test their search ona test net, tell them it will be verified over a business day
 		- if test net no shenanigans, create place somewhere to store query
 		- perm ban if shenanigans from submitting search algo
+		- add tags to text inserts to help the search algo
 5. withdrawl isn't finishe
 6. GET UPLOADS ACTUALLY WORKING, 
 	-. LIMIT NUM POSTS PER DAY
@@ -69,10 +72,12 @@ TODAY AT LIBRARY:
 15. COPY OF SOMETHING ELSE REPORT LOGIC
 	- RETWEET LOGIC
 16. IF A POST GETS REPORTED, AND THE REPORT IS SUCCESSFUL (NEED LOGIC FOR DETERMINING THAT), THAT POST GETS PINNED ON THEIR PROFILE, AND THEY GET SLASHED SOME TO THE POOL SOME TO THE REPORTERS
+	- every post is scored with some point system, if the points to remove > 100 or something, and 2x score of regular vots, it gets shadowbanned in some way
 17. redirected to wrong page after follow
-
+18. LEFT HAND SIDE, CURRENT MONTH LEADERBOARDS EQUITY, DOWNWARD TO POSTS
 IMPORTANT BUT LATER
 ===================
+#liek clauses case insensitive
 #UNIT TEST THHIS, WHEN COMMITING, DEMONSTRATE IT'S OFF
 #ALSO SOME WEIRD SESSION ISSUES, if it thinks youre logged in, you cant go to the log in screen, maybe redirect to profile or something instead, and if there is no profile, , redirect o login
 #CHANGE TESTNET PAYPAL OFF LIVE
@@ -124,6 +129,7 @@ QUALITY OF LIFE
 email noam chomsky about the consequneces of substrate independant information processing
 20x12. change user on structure to be able to show users name when signedinto session
 0. Might be a good idea to have each user have a config file JSON object for all kinds of parameters
+1. NATIVE BOLD/ ITALICS/ UNDERLINE/STRIKETHROUGH FONTS
 1. ABLE TO UPLOAD ONCE A [TIME INTERVAL] IF NOT SUBSCRIBED
 2. IN THE CSV PRODUCED IN THE HISTORY, ADD SITE COSTS
 4. ACHIEVMENTS

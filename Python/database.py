@@ -11,7 +11,7 @@ import json
 from psycopg2 import Error
 import Python.procedures as procedures
 # from Python.db_connection import connection
-from  Python.helpers import print_green, print_title, print_error, turn_pic_to_hex, check_and_save_dir, print_warning, log_function
+from  Python.helpers import print_green, print_title, print_error, turn_pic_to_hex, check_and_save_dir, print_warning, log_function, TURN_WHERE_CLAUSE_TO_STRING
 import Python.db_connection as connection
 import Python.big_reset_file as big_reset_file
 
@@ -169,7 +169,7 @@ def USER_INSERT_MULTIPLE():
     except Exception as e:
         print("could not remove static/#UserData/", e)
 
-    full_register('admin', 'password', 'admin@gmail.com', 'admin@gmail.com', 5)
+    full_register('a', 'password', 'MensuraHost@gmail.com', 'MensuraHost@gmail.com', 5)
     full_register('foreandr', 'password', 'foreandr@gmail.com', 'foreandr@gmail.com', 5)
     full_register('andrfore', 'password', 'andrfore@gmail.com', 'andrfore@gmail.com', 5)
     full_register('cheatsie', 'password', 'cheatsieog@gmail.com', 'cheatsieog@gmail.com', 5)
@@ -642,7 +642,7 @@ def USER_FULL_RESET():
     SEARCH_ALGO_INSERT_DEMO_MULTIPLE()
     # EQUITY CAN GO LAST, DOESN'T INTERFERE WITH ANYTHING
     EQUITY_CREATE_TABLE()
-    TRANSFER_EQUITY("admin", "foreandr", 2)
+    TRANSFER_EQUITY(buyer="a", seller="foreandr", amount=2)
 
     # MODEL_MULTIPLE_INSERT(conn) # MODELS
     # MODEL_VOTE_INSERT_DEMO(conn) # VOTES ON MODELS \
@@ -890,6 +890,15 @@ def register_user_files(username):
     jsonFile = open(f"static/#UserData/{username}/config.json", "w")
     jsonFile.write(jsonString)
     jsonFile.close()
+
+    search_counter_json = {
+        "":""
+    }
+    search_jsonString = json.dumps(search_counter_json, indent=4)    
+    search_jsonFile = open(f"static/#UserData/{username}/search_counter.json", "w")
+    search_jsonFile.write(search_jsonString)
+    search_jsonFile.close()
+
 
     my_path = f"static/#UserData/{username}/profile"
     my_path_with_file = f"static/#UserData/{username}/profile/profile_pic.jpg"  # PREVIOUSLY USED file.filename, should use with other types
@@ -2324,6 +2333,199 @@ def CHECK_FILE_EXISTS(File_id_):
     else:
         return False
 
+def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, searcher):
+    #print("\nINSIDE TURNING INTO JSON\n")
+    #print("ITEM SEARCH       :", search) # DONE
+    #print("date_check        :", date_check) # DONE
+    #print("order_check       :", order_check) # DONE
+    # print("clauses_dict      :", clauses_dict)
+
+    # QUERY STRING CHECK
+    LIKE_QUERY = ""
+    personal_where_clause = ""
+    personal_order_by_clause=""
+    if len(search) > 0:
+        # print("search is a string with len", search)
+        LIKE_QUERY = F"AND LOWER(U.username) LIKE LOWER('%{search}%')"
+
+    # DATE CHECK 
+    if date_check == "ALL":
+        date_clause = ""
+    elif date_check == "YEAR":
+        date_clause = "AND F.Date_Time >= date_trunc('year', now())::date"
+    elif date_check == "MONTH":
+        date_clause = "AND F.Date_Time >= date_trunc('month', now())::date"
+    elif date_check == "DAY":
+        date_clause = "AND F.Date_Time >= date_trunc('day', now())::date"
+
+    # ORDER CHECK
+    if order_check == "TOP":
+        order_clause = "ORDER BY (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Yearly') DESC"
+    elif order_check == "HOT":
+        order_clause = "AND F.Date_Time >= date_trunc('month', now())::date" #TODO: CHANGE TO REFLECT ORDER BY FUNCTION
+    elif order_check == "NEW":
+        order_clause = "AND F.Date_Time >= date_trunc('day', now())::date" #TODO: CHANGE TO REFLECT ORDER BY FUNCTION
+    else:
+        #print("ORDER CHECK IS CUSTOM OR FAVOURITE", order_check)
+        if order_check == "ONE OF THE DEFAULT ALGORITHM NAMES, THEN SEND THERE":#TODO: OBVIOUSLY THIS NEEDS TO CHANGE TO THE REAL ALGO NAMES
+            pass
+        else:
+            # GO TO THAT USER, AND GRAB THAT ALGORITHM
+            #print(order_check)
+
+            #GET UPLOADER AND FILE_ID FROM ALGO NAME
+            uploader, file_id = GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME(order_check)
+            username = uploader
+            order_check = str(uploader) + "-" + str(file_id)
+            print("ALGO BY PERSON DETAILS:", uploader, file_id, order_check)
+            f = open(f'/root/mansura/static/#UserData/{username}/search_algorithms/{order_check}.json')
+            data_ = json.load(f)
+            f.close()
+
+            #ADD A VOTE TO THAT GUY
+            if searcher != "": # SEARCHER IS RELATED TO SESSION, VOTES ONLINE COUNT IF SIGNED IN
+                # COULD ADD AN ADDITIONAL CRITERIA ABOUT SUBSCRIPTION
+                # JSON IN
+                with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'r') as f:
+                    data = json.load(f)
+                    print("data:\n",data)
+                    data = dict(data)
+                    print("coming back from file:",data)
+                    if order_check in data:
+                        print("in")
+                        data[order_check] += 1
+                    else:
+                        print("not in")
+                        data[order_check] = 1
+                # JSON OUT
+                with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'w') as f:    
+                    json_object = json.dumps(data) 
+                    print("NEW DICT", data)
+                    print("json_object", json_object)
+                    f.write(json_object)
+                    
+            order_clause = data_["ORDER_BY_CLAUSE"]
+            personal_where_clause = data_["WHERE_CLAUSE"]
+
+
+   
+    #print("======================")
+    #print(LIKE_QUERY)
+    #print(date_clause)
+    #print(order_clause)
+    #print("======================")
+
+    first = []
+    second = []
+    third = []
+    fourth = []
+    fifth = []
+    sixth = []
+    seventh = []
+    eigth = []
+    ninth = []
+    tenth = []
+
+    for i in clauses_dict:
+        # print(i)
+        # print(len(i), i)
+        if len(i) > 0:
+            first.append(i[0])
+        if len(i) > 1:
+            second.append(i[1])
+        if len(i) > 2:
+            third.append(i[2])
+        if len(i) > 3:
+            fourth.append(i[3])
+        if len(i) > 4:
+            fifth.append(i[4])
+        if len(i) > 5:
+            sixth.append(i[5])
+        if len(i) > 6:
+            seventh.append(i[6])
+        if len(i) > 7:
+            eigth.append(i[7])
+        if len(i) > 8:
+            first.append(i[8])
+        if len(i) > 9:
+            ninth.append(i[9])
+        if len(i) > 10:
+            tenths.append(i[10])
+
+        
+    #print("1:",first)
+    #print("2:",second)
+    #print("3:",third)
+    #print("4:",fourth)
+    #print("5:",fifth)
+    #print("6:",sixth)
+    #print("7:",seventh)
+    #print("8:",eigth)
+    #print("9:",ninth)
+    #print("10:",tenth)
+    #print("======================")
+    clauses_reasembled = []
+
+    clauses_reasembled.append(first)
+    clauses_reasembled.append(second)
+    clauses_reasembled.append(third)
+    clauses_reasembled.append(fourth)
+    clauses_reasembled.append(fifth)
+    clauses_reasembled.append(sixth)
+    clauses_reasembled.append(seventh)
+    clauses_reasembled.append(eigth)
+    clauses_reasembled.append(ninth)
+    clauses_reasembled.append(tenth)
+    
+    #print("REASSEMBELLED")
+    #for i in clauses_reasembled:
+    #    print(i)
+    #print("======================")
+    
+    list_of_assembled_queries = []
+    
+    for i in clauses_reasembled:
+        temp_full_clause = TURN_WHERE_CLAUSE_TO_STRING(i)
+        list_of_assembled_queries.append(temp_full_clause)
+
+    #for i in list_of_assembled_queries:
+    #    print(i)
+    #print("======================")
+    
+    WHERE_CLAUSE = ""
+    for i in list_of_assembled_queries:
+        #print(i)
+        WHERE_CLAUSE += i
+
+    #print("WHERE CLAUSE:\n", WHERE_CLAUSE)
+    WHERE_CLAUSE += LIKE_QUERY + " " + date_clause + " " + personal_where_clause
+    #print("%LIKE%-WHERE CLAUSE:", WHERE_CLAUSE)
+    #print("======================") 
+    demo_json = {
+        "ORDER_BY_CLAUSE": order_clause,
+        "WHERE_CLAUSE": WHERE_CLAUSE
+    }
+    return demo_json
+
+
+def GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME(order_check):
+    print("GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME")
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(f"""
+        SELECT Username, Search_id
+        FROM SEARCH_ALGORITHMS
+        WHERE Algorithm_Name = '{order_check}'
+    """)
+    name = ""
+    search_id = ""
+    for i in cursor.fetchall():
+        # print(i)
+        name = i[0] 
+        search_id = i[1] 
+    return name, search_id
+
 
 def SEARCH_ALGO_CREATE_TABLE():
     conn = connection.test_connection()
@@ -2337,6 +2539,7 @@ def SEARCH_ALGO_CREATE_TABLE():
         Username varchar,
         Search_Path varchar UNIQUE,
         Algorithm_Name varchar UNIQUE,
+        Search_TOTAL BIGINT,
         Date_Time timestamp,      
         FOREIGN KEY (Username) REFERENCES USERS(Username)
         );
@@ -2364,9 +2567,9 @@ def SEARCH_ALGO_INSERT(username, Algorithm_Name, order_by_clause, where_clause):
     cursor.execute(
     f"""
     INSERT INTO SEARCH_ALGORITHMS
-        (Username, Search_Path, Algorithm_Name, Date_Time)
+        (Username, Search_Path, Algorithm_Name, Search_TOTAL, Date_Time)
     VALUES
-        ('{username}', '{new_path}', '{Algorithm_Name}', CURRENT_TIMESTAMP );
+        ('{username}', '{new_path}', '{Algorithm_Name}', 0, CURRENT_TIMESTAMP );
     """)        
     conn.commit()
 
@@ -2391,12 +2594,32 @@ def SEARCH_ALGO_INSERT(username, Algorithm_Name, order_by_clause, where_clause):
     
 
 def SEARCH_ALGO_INSERT_DEMO_MULTIPLE():
-    SEARCH_ALGO_INSERT('foreandr', 'foreandr-basic-top-month', "ORDER BY U.username DESC", "")
+    # username, Algorithm_Name, order_by_clause, where_clause
+    SEARCH_ALGO_INSERT(username='a', Algorithm_Name='a-demo', order_by_clause="ORDER BY F.Date_Time, U.username ASC", where_clause="")
+    SEARCH_ALGO_INSERT('foreandr', 'foreandr-basic-top-month', "ORDER BY U.username ASC", "")
     SEARCH_ALGO_INSERT('andrfore', 'andrfore-basic-top-month', "ORDER BY U.username ASC", f"AND U.username LIKE 'foreandr%'")
     print_green("SEARCH_ALGO_INSERT_DEMO_MULTIPLE()")
 
 
-def universal_dataset_function(search_type, search_algo_path="foreandr-1", page_no="1", search_user="None", file_id="None", profile_username="None"):
+def COMPOSE_ORDER_BY_CLAUSES(order_by_clause, custom_clauses_order_by):
+    print("COMPOSE_ORDER_BY_CLAUSES====")
+    print(order_by_clause)
+    print(custom_clauses_order_by)
+
+    demo_concat = order_by_clause + " " + custom_clauses_order_by
+    #print("\ndemo_concat", demo_concat)
+
+    demo_split_first = order_by_clause.split("ORDER BY")
+    #print("\ndemo_split_first", demo_split_first)
+
+    demo_split_second = custom_clauses_order_by.split("ORDER BY")
+    #print("\ndemo_split_second", demo_split_second)
+
+    print("===========================")
+    return order_by_clause
+
+
+def universal_dataset_function(search_type, page_no="1", search_user="None", file_id="None", profile_username="None", custom_clauses="None"):
     conn = conn = connection.test_connection()
     cursor = conn.cursor()
     """
@@ -2447,11 +2670,47 @@ def universal_dataset_function(search_type, search_algo_path="foreandr-1", page_
         profile_search_clause = F"AND U.username = U.username"
 
 
+    # order_by_clause, where_clause = GRAB_SEARCH_ALGO(search_algo_path)
+    
+    #print("\n\n")
+    #print("CURRENT CLAUSE SETUP===================")
+    #print("ORDER BY OG   :",order_by_clause)
+    #print("WHR CLAUS OG  :",where_clause)
+    ##print("CUSTOM CLAUSES:",custom_clauses)
 
+    #for key, value in custom_clauses.items():
+    #    print(key, value)
+    print("custom clauses", type(custom_clauses), custom_clauses)
+    where_clause = custom_clauses["WHERE_CLAUSE"] 
+    print("=======================================")
+    #if custom_clauses != None and custom_clauses !="None":
+    #    where_clause = where_clause + custom_clauses["WHERE_CLAUSE"]
+    
+    # print("OG ORDER BY", order_by_clause)
+    # print("NW ORDDR BY", custom_clauses["WHERE_CLAUSE"])
+    print("NEW GIANT ORDER CLAUSE:")
+    order_by_clause = custom_clauses["ORDER_BY_CLAUSE"]
+    print(len(order_by_clause))
+    print(order_by_clause)
 
-    order_by_clause, where_clause = GRAB_SEARCH_ALGO(search_algo_path)
-
-    cursor.execute(f"""
+    if len(order_by_clause) == 0:
+        print("got here it == 0 ")
+        order_by_clause = "ORDER BY (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Yearly') DESC"
+    print("========================================")
+    
+    #print("NEW GIANT WHERE CLAUSE:")
+    #print(where_clause)
+    #print("========================================")
+    
+    print("QUERIES ENTERED",)
+    print("foreign_id_text_entry:", foreign_id_text_entry)
+    print("profile_search_clause:", profile_search_clause)
+    print("where_clause         :", where_clause)
+    print("========================================")
+    print("FULL WHERE QUERY")
+    where_full_query = f"{profile_search_clause} {profile_search_clause} {where_clause}"
+    print(where_full_query)
+    query = f"""
         SELECT
             F.File_id, 
             U.username, 
@@ -2463,9 +2722,7 @@ def universal_dataset_function(search_type, search_algo_path="foreandr-1", page_
             ),  
             F.File_PATH, 
             F.Date_Time, 
-            F.Post_foreign_id_source, 
-
-                   
+            F.Post_foreign_id_source,                    
             ( 
                 SELECT COUNT(*) -- daily num votes LEFT 
                 FROM FILE_VOTES file_vote 
@@ -2505,7 +2762,6 @@ def universal_dataset_function(search_type, search_algo_path="foreandr-1", page_
                 WHERE file.File_id = F.File_id 
                 AND Vote_Type = 'Yearly'
             ), 
-
             --PAYOUT info
             (SELECT Daily FROM PAYOUTS),
             (SELECT Monthly FROM PAYOUTS),
@@ -2518,20 +2774,28 @@ def universal_dataset_function(search_type, search_algo_path="foreandr-1", page_
         on U.username = F.Uploader
 
         WHERE U.username = U.username -- DO THIS SO ALL OTHERC ALUSES CAN BE AND CLAUSES
-        {foreign_id_text_entry}
-        {profile_search_clause}
-        {where_clause}
-
-
+        {where_full_query}
 
         {order_by_clause}
 
         OFFSET (({page_no} - 1) * 100)
         LIMIT 100; 
-    """)
+    """
+    #print("MY QUERY ================================")
+    #print(query)
+    cursor.execute(query)
     # -- ORDER BY GET_FILE_VOTE_COUNT_TYPED(F.File_Id, '{sort_time_frame}') DESC
-    dataset_arguments = [search_type, search_algo_path, page_no, search_user, file_id]
-    # print(F"ARGS: {dataset_arguments}")
+    search_arguments = {
+        "search_type":search_type, 
+        # "search_algo_path":search_algo_path, 
+        "page_no":page_no, 
+        "search_user":search_user, 
+        "file_id":file_id, 
+        "where_full_query":where_full_query, 
+        "order_by_clause":order_by_clause
+    }
+
+    # print(F"ARGS: {search_arguments}")
 
     file_ids_list = []
     usernames_list = []
@@ -2592,7 +2856,7 @@ def universal_dataset_function(search_type, search_algo_path="foreandr-1", page_
         else:
             daily_left, monthly_left, yearly_left = 0, 0, 0
     '''
-    print("\nCUSTOM QUERY               :", where_clause, order_by_clause)
+    # print("\nCUSTOM QUERY             :", where_clause, order_by_clause)
     print("PROFILE SEARCH CLAUSE      :",profile_search_clause)
     print("FOREIGN ID                 :", foreign_id_text_entry)
     print("=============     QUERY RESULTS       ============")
@@ -2619,8 +2883,9 @@ def universal_dataset_function(search_type, search_algo_path="foreandr-1", page_
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
-
-    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular
+    #print("THESE ARE MY SERVER SIDE SEARCH ARGUMENTS")
+    #print(search_arguments)
+    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, search_arguments
 
 
 def GRAB_SEARCH_ALGO(search_algo_path):
@@ -2637,6 +2902,9 @@ def GRAB_SEARCH_ALGO(search_algo_path):
 
     #OPEN JSON FROM SEARCH ALGO PATH
     # print("SEARCH PATH:", search_algo_path)
+    if search_algo_path == "":
+        return ["", ""]
+    
     username = search_algo_path.split("-")[0]
     f = open(f'/root/mansura/static/#UserData/{username}/search_algorithms/{search_algo_path}.json')
     data = json.load(f)

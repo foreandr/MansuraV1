@@ -144,6 +144,8 @@ def GIANT_FILE_INSERT():
 	DB.FILE_INSERT( uploader='Rosaline', uploaderId=DB.GET_USER_ID( 'Rosaline'), size=100, post_foreign_id_source="5", file_path="N-A", post_file="", post_text="testing a string hello hello hello", age_18="older_18", external_link="",  distro_details=['LOG DISTRIBUTION', 'None'])
 	DB.FILE_INSERT( uploader='Romaine', uploaderId=DB.GET_USER_ID( 'Romaine'), size=100, post_foreign_id_source="88", file_path="N-A", post_file="", post_text="testing a string hello hello hello", age_18="older_18", external_link="",  distro_details=['EQUAL DISTRIBUTION', 'None'])
 	DB.FILE_INSERT( uploader='Rivky', uploaderId=DB.GET_USER_ID( 'Rivky'), size=100, post_foreign_id_source="82", file_path="N-A", post_file="", post_text="testing a string hello hello hello", age_18="older_18", external_link="",  distro_details=['LOG DISTRIBUTION', 'None'])
+	"""
+
 	DB.FILE_INSERT( uploader='Riane', uploaderId=DB.GET_USER_ID( 'Riane'), size=100, post_foreign_id_source="10", file_path="N-A", post_file="", post_text="testing a string hello hello hello", age_18="older_18", external_link="",  distro_details=['LOG DISTRIBUTION', 'None'])
 	DB.FILE_INSERT( uploader='Rekeisha', uploaderId=DB.GET_USER_ID( 'Rekeisha'), size=100, post_foreign_id_source="24", file_path="N-A", post_file="", post_text="testing a string hello hello hello", age_18="older_18", external_link="",  distro_details=['LOG DISTRIBUTION', 'None'])
 	DB.FILE_INSERT( uploader='Reannon', uploaderId=DB.GET_USER_ID( 'Reannon'), size=100, post_foreign_id_source="79", file_path="N-A", post_file="", post_text="testing a string hello hello hello", age_18="older_18", external_link="",  distro_details=['LOG DISTRIBUTION', 'None'])
@@ -1054,7 +1056,7 @@ def GIANT_FILE_INSERT():
 	DB.FILE_INSERT( uploader='Chessie', uploaderId=DB.GET_USER_ID( 'Chessie'), size=100, post_foreign_id_source="201", file_path="N-A", post_file="", post_text="testing a string hello hello hello", age_18="older_18", external_link="",  distro_details=['LOG DISTRIBUTION', 'None'])
 	DB.FILE_INSERT( uploader='Chesney', uploaderId=DB.GET_USER_ID( 'Chesney'), size=100, post_foreign_id_source="837", file_path="N-A", post_file="", post_text="testing a string hello hello hello", age_18="older_18", external_link="",  distro_details=['EQUAL DISTRIBUTION', 'None'])
 	DB.FILE_INSERT( uploader='Cherina', uploaderId=DB.GET_USER_ID( 'Cherina'), size=100, post_foreign_id_source="256", file_path="N-A", post_file="", post_text="testing a string hello hello hello", age_18="older_18", external_link="",  distro_details=['EQUAL DISTRIBUTION', 'None'])
-
+"""
 
 def GIANT_USER_REGISTER():
 	DB.full_register('Valen', 'password', 'Valen@gmail.com', 'Valen@gmail.com', 5)
@@ -1147,6 +1149,7 @@ def GIANT_USER_REGISTER():
 	DB.full_register('Rosaline', 'password', 'Rosaline@gmail.com', 'Rosaline@gmail.com', 5)
 	DB.full_register('Romaine', 'password', 'Romaine@gmail.com', 'Romaine@gmail.com', 5)
 	DB.full_register('Rivky', 'password', 'Rivky@gmail.com', 'Rivky@gmail.com', 5)
+	"""
 	DB.full_register('Riane', 'password', 'Riane@gmail.com', 'Riane@gmail.com', 5)
 	DB.full_register('Rekeisha', 'password', 'Rekeisha@gmail.com', 'Rekeisha@gmail.com', 5)
 	DB.full_register('Reannon', 'password', 'Reannon@gmail.com', 'Reannon@gmail.com', 5)
@@ -2057,7 +2060,7 @@ def GIANT_USER_REGISTER():
 	DB.full_register('Chessie', 'password', 'Chessie@gmail.com', 'Chessie@gmail.com', 5)
 	DB.full_register('Chesney', 'password', 'Chesney@gmail.com', 'Chesney@gmail.com', 5)
 	DB.full_register('Cherina', 'password', 'Cherina@gmail.com', 'Cherina@gmail.com', 5)
-
+"""
 
 def GIANT_FILE_VOTE_INSERT():
 	DB.FILE_VOTE_INSERT( 'Valen', 67,  'Daily')
@@ -2330,6 +2333,7 @@ def GIANT_FILE_VOTE_INSERT():
 	DB.FILE_VOTE_INSERT( 'Rivky', 83,  'Daily')
 	DB.FILE_VOTE_INSERT( 'Rivky', 3,  'Monthly')
 	DB.FILE_VOTE_INSERT( 'Rivky', 281,  'Yearly')
+	"""
 	DB.FILE_VOTE_INSERT( 'Riane', 45,  'Daily')
 	DB.FILE_VOTE_INSERT( 'Riane', 20,  'Monthly')
 	DB.FILE_VOTE_INSERT( 'Riane', 93,  'Yearly')
@@ -5060,7 +5064,7 @@ def GIANT_FILE_VOTE_INSERT():
 	DB.FILE_VOTE_INSERT( 'Cherina', 73,  'Daily')
 	DB.FILE_VOTE_INSERT( 'Cherina', 158,  'Monthly')
 	DB.FILE_VOTE_INSERT( 'Cherina', 180,  'Yearly')
-
+"""
 
 def GIANT_SUBSCRIBE():
 	DB.MANSURA_SUBSCRIBE('Valen')
@@ -5153,6 +5157,7 @@ def GIANT_SUBSCRIBE():
 	DB.MANSURA_SUBSCRIBE('Rosaline')
 	DB.MANSURA_SUBSCRIBE('Romaine')
 	DB.MANSURA_SUBSCRIBE('Rivky')
+	"""
 	DB.MANSURA_SUBSCRIBE('Riane')
 	DB.MANSURA_SUBSCRIBE('Rekeisha')
 	DB.MANSURA_SUBSCRIBE('Reannon')
@@ -6063,3 +6068,4 @@ def GIANT_SUBSCRIBE():
 	DB.MANSURA_SUBSCRIBE('Chessie')
 	DB.MANSURA_SUBSCRIBE('Chesney')
 	DB.MANSURA_SUBSCRIBE('Cherina')
+"""
