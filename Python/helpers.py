@@ -1,6 +1,7 @@
 import os.path
 import random
 import json
+from nudenet import NudeClassifier
 
 class bcolors:
     HEADER = '\033[95m'
@@ -268,36 +269,41 @@ def POST_TEXT_CHECK():
 
 
 def POST_IMG_CHECK(image_file, testing=False):
-    return True
-    """
+    #PUT THIS IN THE MOUNTED DIR
+    
+    print("CHECK IMAGE FILE",image_file )
     if testing:
-        target = rf'image_test_dir/download.jpg'#TODO: DIFFERENTIATE DIFFERENT EXTENSIONS
+        target = rf'/root/mansura/Python/nude_test/{image_file.filename}'#TODO: DIFFERENTIATE DIFFERENT EXTENSIONS
     else:
-        target = rf'Python/image_test_dir/{image_file.filename}'#TODO: DIFFERENTIATE DIFFERENT EXTENSIONS
+        target = rf'/root/mansura/Python/nude_test/{image_file.filename}'#TODO: DIFFERENTIATE DIFFERENT EXTENSIONS
+        image_file.stream.seek(0)
         image_file.save(target)
     
 
+    # initialize classifier (downloads the checkpoint file automatically the first time)
+    try:
+        # target = "/root/mansura/Python/nude_test/0.042468_42220.jpg"
+        classifier = NudeClassifier()
+        
+        # Classify single image
+        var = (classifier.classify(target))
+        safe_percent = (var[list(var)[0]]["safe"])
+        unsafe_percent = (var[list(var)[0]]["unsafe"])
 
-    import nude
-    from nude import Nude
-
-    print(f"NUDE1 :{nude.is_nude(target)}")
-
-    n = Nude(f'{target}')
-    n.parse()
-    print("NUDE2: :", n.result, n.inspect())
-
-
-    # SECOND TESTER
-    from nudenet import NudeClassifier, NudeDetector
-    detector = NudeDetector()
-    #classifier = NudeClassifier()
-    #print("NUDE3",classifier.classify(target))
-    print("NUDE4",detector.detect(target))
-    print("NUDE5",detector.detect(target, mode='fast'))
-    exit(0)
-    return True
-    """
+    
+        if safe_percent > 0.65: #I MAY HAVE TO CHANGE THIS
+            print(F"SAFE  :{safe_percent}")
+            return True
+        else:
+            print(F"UNSAFE:{unsafe_percent}")
+            return False
+        # print(var)
+    except Exception as e:
+        #print(e)
+        log_function("error", e)
+        return False
+    
+    
 
 
 def log_function(msg_type, log_string):
@@ -429,7 +435,7 @@ def SPLIT_AND_RECOMPOSE_ORDER_BY_CLAUSES(giant_order_string):
 
 
 def COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses):
-    print("==============WITHIN COMPOSE SEARCH AND JSON==============")
+    # print("==============WITHIN COMPOSE SEARCH AND JSON==============")
     #print("returned_search_arguments:",type(returned_search_arguments), returned_search_arguments)
     #print("json_search_clauses      :",type(json_search_clauses), json_search_clauses)
     
@@ -450,7 +456,7 @@ def COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_cla
         #print(returned_search_arguments['order_by_clause'])
         #print(json_search_clauses['ORDER_BY_CLAUSE'])
         new_composed_order_by_clause = SPLIT_AND_RECOMPOSE_ORDER_BY_CLAUSES(returned_search_arguments['order_by_clause']+ " " + json_search_clauses['ORDER_BY_CLAUSE'])
-        print("new_composed_order_by_clause", new_composed_order_by_clause)
+        #print("new_composed_order_by_clause\n", new_composed_order_by_clause)
     
     #TODO: SOMETHING IN HERE TO DELETE ALL THE EXTRA TIMES IT SAYS AND USERNAME == USERNAME
     
@@ -474,3 +480,4 @@ def COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_cla
 # print(USERNAME_sPROFANITY_CHECK("bozo0000000000000000", testing=True))
 # print(get_postinfo_from_path("../static/#UserData/oguser/files/oguser-1"))
 # POST_IMG_CHECK("test",testing=True)
+# POST_IMG_CHECK("", True)

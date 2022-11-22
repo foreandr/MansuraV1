@@ -30,7 +30,8 @@ static/#UserData
 venv/
 Python/all_dates.csv
 Python/current_date.csv
-
+Python/AI/porn_dataset
+Python/nude_test/
 
 __pycache__/app.cpython-38.pyc
 __pycache__/app.cpython-310.pyc
@@ -41,3 +42,6 @@ __pycache__/wsgi.cpython-310.pyc
 
 
 
+Python/AI/code/local_nsfw_detector.py
+Python/AI/code/local_nudenet.py
+Python/AI/code/local_tensorflow.py

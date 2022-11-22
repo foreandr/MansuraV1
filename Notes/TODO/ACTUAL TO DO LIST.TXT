@@ -32,6 +32,7 @@ CHANGE VOTING TO 30 4 1
 TODAY AT LIBRARY:
 	1.First n people to join this month get in free, (xd)
 		- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
+		- the correct judgment is if reffered you get EXTRA
 		- person who refers gets 1 monthly vote for EACH refer
 		-   
 	2. WRITE UP THE PAPER
@@ -75,6 +76,11 @@ TODAY AT LIBRARY:
 	- every post is scored with some point system, if the points to remove > 100 or something, and 2x score of regular vots, it gets shadowbanned in some way
 17. redirected to wrong page after follow
 18. LEFT HAND SIDE, CURRENT MONTH LEADERBOARDS EQUITY, DOWNWARD TO POSTS
+19. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
+20. BUY ADS TO PUT ON THE MAIN PAGE, ALL GOES TO POOL, BUY ADS TO PUT ON A PERSONS PAGE, 50% GOES TO THEM, 50% GOES TO POOL
+
+
+
 IMPORTANT BUT LATER
 ===================
 #liek clauses case insensitive

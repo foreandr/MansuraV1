@@ -96,18 +96,17 @@ def home():
 
     #print("SESSION USERNAME IS:", session_username)
     returned_search_arguments = request.form.get("search_arguments") # SEARCH ARGUMENTS FROM THE PREVIOUS QUERY
-    print("=====RETURNED SEARCH ARGUMENTS=====")
+    # print("=====RETURNED SEARCH ARGUMENTS=====")
     # print(returned_search_arguments)
 
     json_search_clauses = helpers.COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses)
     print("COMPOSE_SEARCHARGS_AND_JSONCLAUSE")
     print(json_search_clauses)
-
     print("===================================")
 
     page_no = request.form.get("page_number")
-
     print("CURRENT PAGE NUMBER:", type(page_no), page_no)
+    print("===================================")
     if page_no == None or str(page_no) == "None":
         page_no = 1
 
@@ -381,10 +380,10 @@ def upload():
                     pass
                 else:
                     #print("IMG HAD BAD SHIT")
-                    return redirect(url_for("home"))
+                    return redirect(url_for("terms_and_conditions"))
         else:
             #print("TEXT HAD BAD SHIT")
-            return redirect(url_for("home"))
+            return redirect(url_for("terms_and_conditions"))
                 
 
         #print(len(post_file.filename), post_file.filename)
@@ -982,6 +981,11 @@ def settings():
     return render_template(f"settings.html",
     )
 
+@app.route("/terms_and_conditions", methods=['GET', 'POST'])
+def terms_and_conditions():
+    helpers.log_function("request", request)
+    return render_template(f"terms_and_conditions.html",
+    )
 
 if __name__ == '__main__':
     #SUBTITLE Network Societey and it's Future

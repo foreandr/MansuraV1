@@ -837,11 +837,14 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
         # 4. save the picture if there is one
         if filename != "":
             try:
-                target = rf'static/#UserData/{uploader}/files/{new_path}/pic.jpg'#TODO: DIFFERENTIATE DIFFERENT EXTENSIONS
+                print("ENTERING POSTIFLE:", post_file)
+                target = rf'/root/mansura/static/#UserData/{uploader}/files/{new_path}/pic.jpg'#TODO: DIFFERENTIATE DIFFERENT EXTENSIONS
+                post_file.stream.seek(0)
                 post_file.save(target)
+                
                 # print("ENTERED INTO TARGET", target)
             except Exception as e:
-                print(str(e) + "FILE ERROR ENTRY OF SOME KIND!!!!!")    
+                log_function(str(e) + "FILE ERROR ENTRY OF SOME KIND!!!!!")    
            
         # 5. INSERT INTO FILE SYSTEM           
         FILE_INSERT_STORAGE(
@@ -853,7 +856,7 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
             distro_details=distro_details
 
         )
-
+        exit() 
         print_green(f"FILE INSERT COMPLETED {uploader}, {new_path}")
             
         # CLOSE CURSOR AND CONNECTION [MANDATORY]        
@@ -1869,7 +1872,7 @@ def FILE_INSERT_STORAGE(username, path_name, text, age_18, external_source, dist
         "external_source": f"{external_source}",
         "distro_details": distro_details
     }
-    print(f"DICTIONARY:\n{type(my_dictionary)}\n{my_dictionary}")
+    # print(f"DICTIONARY:\n{type(my_dictionary)}\n{my_dictionary}")
     json_object = json.dumps(my_dictionary, indent=4)
     # Writing to sample.json
     with open(f"static/#UserData/{username}/files/{path_name}/post_config.json", "w") as outfile:
@@ -2377,31 +2380,31 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
             uploader, file_id = GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME(order_check)
             username = uploader
             order_check = str(uploader) + "-" + str(file_id)
-            print("ALGO BY PERSON DETAILS:", uploader, file_id, order_check)
+            # print("ALGO BY PERSON DETAILS:", uploader, file_id, order_check)
             f = open(f'/root/mansura/static/#UserData/{username}/search_algorithms/{order_check}.json')
             data_ = json.load(f)
             f.close()
 
-            #ADD A VOTE TO THAT GUY
+            # COUNTING SEARCHES
             if searcher != "": # SEARCHER IS RELATED TO SESSION, VOTES ONLINE COUNT IF SIGNED IN
                 # COULD ADD AN ADDITIONAL CRITERIA ABOUT SUBSCRIPTION
                 # JSON IN
                 with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'r') as f:
                     data = json.load(f)
-                    print("data:\n",data)
+                    # print("data:\n",data)
                     data = dict(data)
-                    print("coming back from file:",data)
+                    # print("coming back from file:",data)
                     if order_check in data:
-                        print("in")
+                        # print("in")
                         data[order_check] += 1
                     else:
-                        print("not in")
+                        # print("not in")
                         data[order_check] = 1
                 # JSON OUT
                 with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'w') as f:    
                     json_object = json.dumps(data) 
-                    print("NEW DICT", data)
-                    print("json_object", json_object)
+                    # print("NEW DICT", data)
+                    # print("json_object", json_object)
                     f.write(json_object)
                     
             order_clause = data_["ORDER_BY_CLAUSE"]
