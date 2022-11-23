@@ -2,6 +2,7 @@ import os.path
 import random
 import json
 from nudenet import NudeClassifier
+from os import path
 
 class bcolors:
     HEADER = '\033[95m'
@@ -16,16 +17,20 @@ class bcolors:
 
 
 def get_postinfo_from_path(my_path):
-    from os import path
+
     post_text = ""
     post_age_18 = ""
     post_source = ""
     post_image_path = ""
 
     # TESTING IF THERE IS AN IMAGE
-    pic_path = my_path + "/pic.jpg"
+    pic_path = os.path.join(my_path + "/pic.jpg").strip()
+
     if not path.exists(pic_path):
         post_image_path = ""
+    else:
+        post_image_path = pic_path[7:]
+    
 
     f = open(f'{my_path}/post_config.json')
     data = json.load(f)
@@ -115,9 +120,9 @@ def USERNAME_PROFANITY_CHECK(word, testing=False): #todo: this is particular to 
     print("CHECKING USERNAME FOR BADWORDS: ", type(word), {word})
     
     if testing:
-        f = open("bad_words.txt", "r")
+        f = open("bad_words_username.txt", "r")
     else:
-        f = open("Python/bad_words.txt", "r")
+        f = open("Python/bad_words_username.txt", "r")
         
     from better_profanity import profanity
  # print(word[0])
@@ -264,8 +269,22 @@ def GET_USER_BIO(username):
     return my_bio
 
 
-def POST_TEXT_CHECK():
-    return True
+def POST_TEXT_CHECK(entered_string):
+    """
+    f = open("/root/mansura/Python/bad_words_post.txt", "r")
+    bad_words = f.read()
+    print(F"bad words:\n{bad_words}")
+    """
+
+
+    from better_profanity import profanity
+    censored_text = profanity.censor(entered_string)
+    # print(censored_text)
+
+
+    # print(len(text_list))
+    #print(text_list)
+    return censored_text
 
 
 def POST_IMG_CHECK(image_file, testing=False):
@@ -276,7 +295,7 @@ def POST_IMG_CHECK(image_file, testing=False):
         target = rf'/root/mansura/Python/nude_test/{image_file.filename}'#TODO: DIFFERENTIATE DIFFERENT EXTENSIONS
     else:
         target = rf'/root/mansura/Python/nude_test/{image_file.filename}'#TODO: DIFFERENTIATE DIFFERENT EXTENSIONS
-        image_file.stream.seek(0)
+        image_file.stream.seek(0) #need this part in here so it doesnt give 0 bits in a later save
         image_file.save(target)
     
 
@@ -303,8 +322,10 @@ def POST_IMG_CHECK(image_file, testing=False):
         log_function("error", e)
         return False
     
-    
 
+def STRING_SIMILARITY_CHECK(a, b):
+    from difflib import SequenceMatcher
+    return SequenceMatcher(None, a, b).ratio()
 
 def log_function(msg_type, log_string):
     #if log_string == "write() argument must be str, not None":
@@ -398,13 +419,16 @@ def TURN_WHERE_CLAUSE_TO_STRING(query_list):
 
     recomposed_string = ""
 
+    # THIS IS WHERE THE WHERE CLAUSES GET TRANSLATED INTO QUURIES, WILL EVENTUALLY BE TURNED INTO IT'S OWN FUNCTION
     if question == "POST DAY VOTES":
         question_string = "(SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily')"
     elif question == "POST MONTH VOTES":
         question_string = "(SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly')"
     elif question == "POST YEAR VOTES":
         question_string = "(SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Yearly')"
-
+    else: #DEFAULT BECAUSE OF A BREAK, CLICKED AN OPTION NOT IMPLEMENTED IN WHERE CLAUSE
+         question_string = ""
+    
     recomposed_string += and_or + " "
     recomposed_string += question_string + " "
     recomposed_string += comparison + " "
@@ -478,6 +502,10 @@ def COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_cla
 # GET_USER_BIO("foreandr")
 # FULL_GIANT_REGISTER()
 # print(USERNAME_sPROFANITY_CHECK("bozo0000000000000000", testing=True))
-# print(get_postinfo_from_path("../static/#UserData/oguser/files/oguser-1"))
+# print(get_postinfo_from_path("/root/mansura/static/#UserData/foreandr/files/foreandr-157"))
+
+"/root/mansura/static/#UserData/foreandr/files/foreandr-157/pic.jpg"
+"/root/mansura/static/#UserData/foreandr/files/foreandr-157/pic.jpg"
 # POST_IMG_CHECK("test",testing=True)
 # POST_IMG_CHECK("", True)
+# POST_TEXT_CHECK("")

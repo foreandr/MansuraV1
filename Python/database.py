@@ -856,7 +856,7 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
             distro_details=distro_details
 
         )
-        exit() 
+        # exit() 
         print_green(f"FILE INSERT COMPLETED {uploader}, {new_path}")
             
         # CLOSE CURSOR AND CONNECTION [MANDATORY]        

@@ -25,59 +25,62 @@ DONE. RE FORM LOG DICT IN DISTRIBUTION
 DONE. RESCRICT UPLOADS TO PEOPLE WHO ARE SUBBED
 DONE, CREATED A WHOLE FUCK TONE OF SOCIAL MEDIA ACCOUNTS
 	- NOTE======================== COULD PROBABLY CREATE MORE
+DONE. JIRA CONFLUENCE DOCUMENTATION 
+DONE. SEARCH BASIC
+DONE. CODE FOR CHECKING HOW SIMILAR TWO PIECES OF TEXT ARE
+DONE. withdrawl isn't finished
+DONE. HTTPS 
+DONE. STREAMLINE UPDATES TO THE SYSTEM (GITHUB AND SO ON)
 
 MINIMUM VIABLE PRODUCT
 ========================
-CHANGE VOTING TO 30 4 1
-TODAY AT LIBRARY:
-	1.First n people to join this month get in free, (xd)
-		- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
-		- the correct judgment is if reffered you get EXTRA
-		- person who refers gets 1 monthly vote for EACH refer
-		-   
-	2. WRITE UP THE PAPER
-	4. CODE FOR CHECKING HOW SIMILAR TWO PIECES OF TEXT ARE
-	5. JIRA CONFLUENCE DOCUMENTATION 
-	6. SEARCH BASIC
-	
+MOTTO
+	- PAID TO POST
+	- PAID TO LIKE
+	- PAID TO SHARE
+	- PAID TO SEARCH
+ files that have iomages or not sort
 
-1. TEXT CHECK AND IMAGE CHECK WORKING PROPERLY, mild frontend checks as well
-2. LIKES TABLE (WITH SIMILAR LOGIC TO VOTES)[MAY NOT NEED DATE SOME OTHER MINOR STUFF]
-	- LIKES WILL INFORM SEARCH
-	
-3. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
-	- SOMETHING wrong with the ordering of files
-	- should test their search ona test net, tell them it will be verified over a business day
-		- if test net no shenanigans, create place somewhere to store query
-		- perm ban if shenanigans from submitting search algo
-		- add tags to text inserts to help the search algo
-5. withdrawl isn't finishe
-6. GET UPLOADS ACTUALLY WORKING, 
-	-. LIMIT NUM POSTS PER DAY
+
+0. CHANGE VOTING TO 30 4 1
+1. First n people to join this month get in free, (xd)
+	- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
+	- the correct judgment is if reffered you get EXTRA
+	- person who refers gets 1 monthly vote for EACH refer
+	-   
+2. WRITE UP THE PAPER
+3.  IF NUM POSTS GOTTEN FROM UNIVERSAL < 100, OR WHATEVER THE COUNT IS, DISABLE SCROLL FUNCTIONALITY
+4. TEXT CHECK AND IMAGE CHECK WORKING PROPERLY, mild frontend checks as well
+5. LIKES TABLE (WITH SIMILAR LOGIC TO VOTES)[MAY NOT NEED DATE SOME OTHER MINOR STUFF]
+	- LIKES WILL INFORM SEARCH	
+6. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
+	- add tags to text inserts to help the search algo
+7. GET UPLOADS ACTUALLY WORKING, 
+	- LIMIT NUM POSTS PER DAY
 	- CHECK having modal issue
 	- CHECKSOME UPLOADS HAVE RANDOM SLASHES IN THEM FOR UPLOAD NUMS
-7. allow for profile bio
+8. allow for profile bio
 	- EDIT BIO
 	- a full page on it's own for editing profile including picture and bio, and presumabley other things of that nature
-8. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
-9. REPOST, ability to take another post and endorse it somehow 
-10. show publicly how many people have blocked this person
-11. DO THIS BY REPORT(NO WAY IM GOING TO MANAGE THIS WITH SEARCH)
+9. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
+10. REPOST, ability to take another post and endorse it somehow 
+11. show publicly how many people have blocked this person
+12. DO THIS BY REPORT(NO WAY IM GOING TO MANAGE THIS WITH SEARCH)
 	- if a post is character for character the same, look for the one with the earliest timestamp, they get all the winnings
 	- SUCCESSFULL REPORTER GETS 50% 
-12. HEAD TO HEADS (incomplete but something like this should be thought through carefully)
+13. HEAD TO HEADS (incomplete but something like this should be thought through carefully)
 	- YOU can report someones post, and then that inverts the vote ratio so you have a head to head between reports and votes for that month
 	- the people who report if successful will get the winnings of what that page would have got
 		- else they just lost their vote for the month
-13. POST TO LIKE RATIO NEXT TO LIST ON PROFILE OF WHO BLOCKS? RATING OF ACCOUNTS?
-15. COPY OF SOMETHING ELSE REPORT LOGIC
+
+14. COPY OF SOMETHING ELSE REPORT LOGIC
 	- RETWEET LOGIC
-16. IF A POST GETS REPORTED, AND THE REPORT IS SUCCESSFUL (NEED LOGIC FOR DETERMINING THAT), THAT POST GETS PINNED ON THEIR PROFILE, AND THEY GET SLASHED SOME TO THE POOL SOME TO THE REPORTERS
+15. IF A POST GETS REPORTED, AND THE REPORT IS SUCCESSFUL (NEED LOGIC FOR DETERMINING THAT), THAT POST GETS PINNED ON THEIR PROFILE, AND THEY GET SLASHED SOME TO THE POOL SOME TO THE REPORTERS
 	- every post is scored with some point system, if the points to remove > 100 or something, and 2x score of regular vots, it gets shadowbanned in some way
-17. redirected to wrong page after follow
-18. LEFT HAND SIDE, CURRENT MONTH LEADERBOARDS EQUITY, DOWNWARD TO POSTS
-19. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
-20. BUY ADS TO PUT ON THE MAIN PAGE, ALL GOES TO POOL, BUY ADS TO PUT ON A PERSONS PAGE, 50% GOES TO THEM, 50% GOES TO POOL
+16. redirected to wrong page after follow
+17. LEFT HAND SIDE, CURRENT MONTH LEADERBOARDS EQUITY, DOWNWARD TO POSTS
+18. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
+19. BUY ADS TO PUT ON THE MAIN PAGE, ALL GOES TO POOL, BUY ADS TO PUT ON A PERSONS PAGE, 50% GOES TO THEM, 50% GOES TO POOL
 
 
 
@@ -87,7 +90,11 @@ IMPORTANT BUT LATER
 #UNIT TEST THHIS, WHEN COMMITING, DEMONSTRATE IT'S OFF
 #ALSO SOME WEIRD SESSION ISSUES, if it thinks youre logged in, you cant go to the log in screen, maybe redirect to profile or something instead, and if there is no profile, , redirect o login
 #CHANGE TESTNET PAYPAL OFF LIVE
+#CHALLENGES OF THE DAY WITH MONETARY INCENTIVE, vote on next questions of the day?
+ public tribunal for banned words and shit like that
+	whichever searcch has the most votes at the time becomes the default search algo
 
+	
 SEARCH
 =======
 FULL SAME DISTRIBUTION FOR THE SEARCH ALGOS, YOU ARE REWARDED FOR YOUR VOTE THERE TOO
@@ -102,10 +109,10 @@ DEVOPS
 ===============
 1. DATABASE BACKUPS
 2. REMOTE FILESYTEM?
-DONE. STREAMLINE UPDATES TO THE SYSTEM
+
 4. HIDE SENSATIVE INFO
 
-DONE. HTTPS 
+
 7.create a backup of the DB on every daily reset
 8. CREATE  DEV NET ALONGSIDE TEST NET, CREATE UNIT TESTS
 
@@ -134,6 +141,7 @@ QUALITY OF LIFE
 ===============
 email noam chomsky about the consequneces of substrate independant information processing
 20x12. change user on structure to be able to show users name when signedinto session
+X. NOT SURE UGNNA DO. POST TO LIKE RATIO NEXT TO LIST ON PROFILE OF WHO BLOCKS? RATING OF ACCOUNTS?
 0. Might be a good idea to have each user have a config file JSON object for all kinds of parameters
 1. NATIVE BOLD/ ITALICS/ UNDERLINE/STRIKETHROUGH FONTS
 1. ABLE TO UPLOAD ONCE A [TIME INTERVAL] IF NOT SUBSCRIBED

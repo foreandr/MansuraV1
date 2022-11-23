@@ -140,6 +140,8 @@ def home():
         image_path_list.insert(i, post_image_path)
         distro_details_list.insert(i,distro_details)
 
+    print("IMAGE PATHS")
+    print(image_path_list)
     
     #print(len(text_list), " - ", text_list)
     #print(len(age_18_list), " - ", age_18_list)
@@ -371,19 +373,14 @@ def upload():
         distro_details =[distribution_algorithm_, how_many_sections]
         print(distro_details)
         print("=============================================")
-        
-        if helpers.POST_TEXT_CHECK():
-            #print("TEXT WAS FINE")
-            if len(post_file.filename) != 0: #THERE IS A FILE
-                if helpers.POST_IMG_CHECK(post_file):
-                    #DO THE UPLOAD
-                    pass
-                else:
-                    #print("IMG HAD BAD SHIT")
-                    return redirect(url_for("terms_and_conditions"))
-        else:
-            #print("TEXT HAD BAD SHIT")
-            return redirect(url_for("terms_and_conditions"))
+
+        post_text = helpers.POST_TEXT_CHECK(post_text)
+        if len(post_file.filename) != 0: #THERE IS A FILE
+            if helpers.POST_IMG_CHECK(post_file):
+                pass
+            else:
+                #print("IMG HAD BAD SHIT")
+                return redirect(url_for("terms_and_conditions"))
                 
 
         #print(len(post_file.filename), post_file.filename)
@@ -722,36 +719,34 @@ def withdraw_funds():
     
     if request.method == "POST":
         print(F"\n {session_username} WANTS TO DO A WITHDRAWL")
-        print(request)
-        withdrawl_amount = 2
-        # withdrawl_amount = request.form["withdrawl_amount"]
+        #print(request)
+        withdrawl_amount = float(request.form.get("withdraw_amount"))
         print("WITHDRAWL AMOUNT", withdrawl_amount)
-       
-        #TODO: CHECK WITHDRAWL AMOUNT IS SMALLER THAN BALANCER
-        balance = database.GET_USER_BALANCE_SIMPLE( session["user"])
+
+        balance = float(database.GET_USER_BALANCE_SIMPLE( session["user"]))
         if balance >= withdrawl_amount:
-            
             # THEN ADD IT TO THE END OF A WITHDRAW CSV
             with open('Python/withdrawl.csv', 'a') as f: # CAN MAKE THIS AN EXTERNAL FUNCTION #TODO:
                 my_writer = writer(f)
             
                 # Pass the list as an argument into
                 # the writerow()
-                my_writer.writerow([session_username, withdrawl_amount])
+                my_writer.writerow([session_username, withdrawl_amount, date.today()])
             
                 # Close the file object
                 f.close()
-            print("FINISHED WRITING TO FILE")
+            #print("FINISHED WRITING TO FILE")
 
             # THEN REMOVE THAT AMOUNT FROM USER BALANCE
             database.WITHDRAWL_FUNCTION(session_username, withdrawl_amount)
-            print("UPDATED USER BALANCE")
+            #print("UPDATED USER BALANCE")
             #return redirect(url_for("index.html"))
             return redirect(url_for('user_profile_name', username=session['user']))
         else:
-            print("DIDNT HAVE ENOUGH")
+            # print("DIDNT HAVE ENOUGH")
+            pass
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session_username)
-    print(request)
+    # print(request)
     return render_template('withdraw_funds.html', 
                             session_username=session_username,
                             daily_votes_left=daily_votes_left,
