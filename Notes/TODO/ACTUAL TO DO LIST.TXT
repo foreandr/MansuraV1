@@ -65,12 +65,9 @@ MOTTO
 5. GET UPLOADS ACTUALLY WORKING, 
 	- CHECK having modal issue
 	- CHECKSOME UPLOADS HAVE RANDOM SLASHES IN THEM FOR UPLOAD NUMS
-
-
 6. allow for profile bio
 	- EDIT BIO
 	- a full page on it's own for editing profile including picture and bio, and presumabley other things of that nature
-
 7. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
 8. REPOST, ability to take another post and endorse it somehow 
 
