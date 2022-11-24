@@ -26,8 +26,10 @@
 #yearly_votes_left {
     color: blue;
 }
-#ULBUTTONS {
-    margin-left: -10px;
+
+#adjust_nav_bar{
+  margin-right: 150px;
+  
 }
 
 /*DANIEL CURRENT CSS ADDITIONS*/

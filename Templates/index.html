@@ -3,11 +3,11 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 
 <!--POSTING SOMETHING-->
-<div class="row">
-        <button class="btn btn-secondary" type="button" onclick="post_modal_toggle()" aria-expanded="false">
-            POST
-        </button>
-</div>
+
+<button class="btn btn-secondary" type="button" onclick="post_modal_toggle()" aria-expanded="false">
+        POST
+</button>
+
 
 <div class="container-fluid">
     <div class="row justify-content-md-center">
@@ -244,12 +244,12 @@
                         <input name="num_search_text" id="num_search_text" type="text"maxlength="4" size="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ><br><br>
                     </div>
                 </div>
-            
+
                 <div>
-                    <input type="hidden" id="search_arguments" name="search_arguments" value="{{search_arguments}}" />search_arguments:{{search_arguments}}
+                    <input type="hidden" id="search_arguments" name="search_arguments" value="{{search_arguments}}" /> <!--search_arguments:{{search_arguments}}-->
                 </div>
                 <div>
-                    <input type="hidden" id="page_number" name="page_number" value={{page_no}} /> Page Test:{{page_no}}
+                    <input type="hidden" id="page_number" name="page_number" value={{page_no}} /><!--Page Test:{{page_no}}--> 
                 </div>
             </form>
 
