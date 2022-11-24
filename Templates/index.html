@@ -48,6 +48,9 @@
                         {% else %}
                         <span id="yearly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
                         {% endif %}
+
+                        <span id="like"><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/like">LIKES: {{likes[i]}}</a></button></span>
+
                     </div>
 
                     
@@ -81,6 +84,9 @@
                             <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_ids_list[i]}})" aria-expanded="false">
                                 REPLY
                             </button>
+                            <button class="btn btn-secondary" type="button" aria-expanded="false">
+                                REPOST
+                            </button>
                         </small>
                         <small class="text-muted" id="post_details">
                             <a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">ID:{{file_ids_list[i]}} </a>
@@ -106,13 +112,14 @@
         <div class="col-3">
             
             <form action="https://google.com">
-                <input class="btn btn-primary" type="submit" value="SAVE" />
+                <input class="inline btn btn-primary" type="submit" value="Save Current Algorithm" />
             </form>
           
             <form action="/" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
                 <input class="d-inline form-control mr-sm-2" id="search" name="search" type="search" placeholder="(can be empty)" aria-label="search">
                     <button class="btn btn-primary">Search</button>
                 </input>
+
                
                 <!-- DATE SECTION -->
                 <div>
@@ -550,8 +557,12 @@
 
     // DEFINING SCORLL LOGIC
     var scroll_disabler = 0 //FOR SOME REASON YOU CAN HIT THE BOTTOM OF THE PAGE AND SCROLL 10X, DISABLES THIS
+    
     window.onscroll = function (ev) {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        js_can_scroll = '{{can_scroll}}'
+        //javascript bool is fucking stupid
+        if (js_can_scroll == "true" || js_can_scroll == "True" ){
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             if (scroll_disabler <1) {
                 scroll_disabler += 1
                 console.log("BOTTOM OF PAGE")
@@ -565,8 +576,13 @@
                 document.getElementById("page_number").value = new_page_no
                 document.getElementById("search_form").submit();
                 
+                }
             }
+        } 
+        else{
+            console.log(js_can_scroll)
         }
+
     };
 
 

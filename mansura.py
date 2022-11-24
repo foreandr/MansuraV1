@@ -65,8 +65,6 @@ def home():
     if request.method == 'POST':
         # print("\n============SEARCH CONFIGURATION============\n")
 
-
-
         search = request.form.get("search")   
         date_check = request.form.get("date_check")  
         order_check = request.form.get("order_check")  
@@ -115,8 +113,20 @@ def home():
     #TODO: what I may have to do is do a similar query to the one below, but just returning a path list, grab all the paths that meet the criteria, then stick is back into
     # a function that returns the correct info with the search value in there as welll
 
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=json_search_clauses)
-    # print("NUMBER OF QUERIES RETURNED BY THIS WHERE CLAUSE IS ", len(file_ids_list))
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=json_search_clauses)
+    
+    
+    #FOR DIABLING OR ACTIVATING SCROLL LOGIC
+    numposts = len(file_ids_list)
+    if numposts < 90: # this 100 number needs to be better coded, hard coding is going to cause issues
+        can_scroll = False
+    else:
+        can_scroll = True
+
+
+    
+
+
 
     # GRAB STUFF IT'S IT'S EMPTY EITHE RWAY
     if len(file_ids_list) == 0:
@@ -168,6 +178,7 @@ def home():
                             paths_list=paths_list,
                             dates_list=dates_list,
                             post_sources_list=post_sources_list,
+                            likes=likes,
                             
                             day_votes=day_votes,
                             month_votes=month_votes,
@@ -190,7 +201,8 @@ def home():
                             distro_details_list=distro_details_list,
                             
                             search_arguments=search_arguments,
-                            page_no=page_no
+                            page_no=page_no,
+                            can_scroll=can_scroll
 
                            )
 
@@ -446,7 +458,7 @@ def user_profile_name(username):
         post_username, post_file_path, post_user_id, post_foreign_id_source, post_date, file_id_ = database.GET_SINGLE_DATASET_INFO(final_filename)
             
         file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, search_arguments= database.universal_dataset_function(search_type="post", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], file_id=file_id)
-        
+
         #MIGHT BE WRTH CONSOLIDATIING INTO ONE FUNCTION
         if len(file_ids_list) == 0:
             user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user']) # THIS ASSUMES ALREADY IN SESSION, SHOULD BE
@@ -852,6 +864,13 @@ def file_vote(file_id, vote_type):
     if "email" not in session:
         return redirect(url_for('login'))
     print("voting", file_id, vote_type)
+    
+    if vote_type == "like":
+        print("DOING LIKE LOGIC")
+        database.LIKE_LOGIC(session["user"], file_id)
+        return redirect(url_for("home"))
+    
+    
     is_already_subbed_this_month = database.CHECK_DATE( session["user"])
     if is_already_subbed_this_month:
         #print(is_already_subbed_this_month)

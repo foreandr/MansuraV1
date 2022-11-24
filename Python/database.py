@@ -234,8 +234,8 @@ def CONNECTION_INSERT(user_id1, user_id2):
 
 def CONNECTION_REMOVE(user_id_first, user_id_second):
     conn = connection.test_connection()
-    
-    cursor = connection.cursor()
+    cursor = conn.cursor()
+
     cursor.execute(
         f"""
         CALL CUSTOM_DELETION({user_id_first}, {user_id_second});
@@ -251,6 +251,110 @@ def CONNECTION_INSERT_MULTIPLE():
     CONNECTION_INSERT( user_id1=1, user_id2=2)
     CONNECTION_INSERT( user_id1=1, user_id2=3)
     print_green("USER MULTI INSERT CONNECTIONS COMPLETED\n")
+
+
+def LIKES_CREATE_TABLE():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(f"DROP TABLE IF EXISTS LIKES ;")
+        cursor.execute(
+                f"""
+                CREATE TABLE LIKES(
+                    Like_Id SERIAL PRIMARY KEY,
+                    File_id INT,
+                    Liker_Username varchar(50),
+                    Date_Time timestamp, 
+
+                    ---CONSTRAINTS
+                    FOREIGN KEY (File_id) REFERENCES FILES(File_id),
+                    UNIQUE (File_id, Liker_Username) --this should allow someone to only have one like per post
+                );
+                """)
+        conn.commit()
+
+        print_green("LIKES CREATE COMPLETED\n")
+    except Exception as e:
+        
+        cursor.execute("ROLLBACK")
+        print_error("\nHAD TO ROLLBACK LIKES TABLE CREATION" + str(e) )
+        exit()
+
+    cursor.close()
+    conn.close()
+
+def LIKES_INSERT(liker_username, file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            f"""
+            INSERT INTO LIKES
+            (File_id, Liker_Username, Date_Time)
+            VALUES
+            ({file_id}, '{liker_username}', CURRENT_TIMESTAMP);
+            """)
+        conn.commit()
+        return True
+    except Exception as e:
+            # print(e)
+            log_function("error", e)
+            cursor.execute("ROLLBACK")
+            # log_function(F"USER:{uploader} FILE INSEERT FAILED")      
+            cursor.close()
+            conn.close() 
+            return False
+            
+             
+def LIKES_REMOVE(liker_username, file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            f"""
+            DELETE FROM LIKES
+            WHERE Liker_Username = '{liker_username}' AND File_id = {file_id}
+            """)
+        conn.commit()
+    except Exception as e:
+            # print(e)
+            log_function("error", e)
+            cursor.execute("ROLLBACK")
+            # log_function(F"USER:{uploader} FILE INSEERT FAILED")      
+            cursor.close()
+            conn.close() 
+
+
+def LIKE_LOGIC(liker_username, file_id):
+    if LIKES_INSERT(liker_username, file_id): # RETURNS TRUE IF SMOOTH
+        print("SUCCESSFUL LIKE INSERT")
+        
+    else:
+        print("FAILED LIKE INSERT")
+        LIKES_REMOVE(liker_username, file_id)
+
+
+
+
+
+def GET_COUNT_LIKES_BY_ID(file_id):
+    cursor.execute(f"""
+        SELECT COUNT(*)
+        FROM LIKES
+        WHERE File_Id = {file_id}
+        """) 
+
+    likes = cursor.fetchall()[0][0]
+    print("NUM LIKES:",likes)
+    return likes
+def LIKES_DEMO_INSERT():
+    LIKES_INSERT("foreandr", 1)
+    LIKES_INSERT("foreandr", 2)
+    LIKES_INSERT("foreandr", 3)
+    LIKES_INSERT("foreandr", 4)
+    LIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
 
 
 def FILE_VOTE_CREATE_TABLE():
@@ -626,9 +730,11 @@ def USER_FULL_RESET():
     REMOVE_ALL_USER_DIRECTORIES()
 
     # CREATE TABLES
+    
     USER_CREATE_TABLE()
     CREATE_PAYOUTS_TABLE()
     FILE_CREATE_TABLE()   
+    LIKES_CREATE_TABLE()
     FILE_VOTE_CREATE_TABLE() 
     CONNECTION_CREATE_TABLE()
     CREATE_MANSURA_TABLE()
@@ -640,6 +746,7 @@ def USER_FULL_RESET():
     USER_INSERT_MULTPLE_FILES()
     FILE_VOTE_INSERT_DEMO() # VOTES ON CSVS
     SEARCH_ALGO_INSERT_DEMO_MULTIPLE()
+    LIKES_DEMO_INSERT()
     # EQUITY CAN GO LAST, DOESN'T INTERFERE WITH ANYTHING
     EQUITY_CREATE_TABLE()
     TRANSFER_EQUITY(buyer="a", seller="foreandr", amount=2)
@@ -653,11 +760,20 @@ def USER_FULL_RESET():
     print_title("USER FULL RESET COMPLETED")
 
 
+
+
 def DROP_ALL_TABLES():
     conn = connection.test_connection()
     print_title("\nDROPPING TABELS..")
     cursor = conn.cursor()
-    try:
+    try:     
+        try:
+            cursor.execute(f"DROP TABLE IF EXISTS LIKES;")
+            conn.commit()
+            print_green("DROPPED TABLE IF EXISTS LIKES;")
+        except Exception as e:
+            cursor.execute("ROLLBACK")
+            log_function("error", e)
         
         try:
             cursor.execute(f"DROP TABLE IF EXISTS SEARCH_ALGORITHMS;")
@@ -2660,9 +2776,14 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     print("file_id               :", file_id)
     print("profile_username      :", profile_username)
     '''
+
     if search_type != "post":
         #payouts because small table, wasnt sure if size would effect query time
-        POST_SEARCH_QUERIES = "(SELECT count(*) FROM PAYOUTS WHERE 1 = 0)" 
+        POST_SEARCH_QUERIES = """ 
+        (SELECT count(*) FROM PAYOUTS WHERE 1 = 0),
+        (SELECT count(*) FROM PAYOUTS WHERE 1 = 0),
+        (SELECT count(*) FROM PAYOUTS WHERE 1 = 0)
+        """ # THIS IS JUST A NOTHING QUERY
         foreign_id_text_entry = F"AND U.username = U.username" # a meaningless statement        
         if search_type == "prof":
             profile_search_clause = F"AND U.username = '{profile_username}'"      
@@ -2769,7 +2890,12 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
             (SELECT Daily FROM PAYOUTS),
             (SELECT Monthly FROM PAYOUTS),
             (SELECT Yearly FROM PAYOUTS),
-            {POST_SEARCH_QUERIES}
+            {POST_SEARCH_QUERIES},
+            (
+                SELECT COUNT(*)
+                FROM LIKES likes
+                WHERE likes.File_id = F.File_id 
+            )
 
         FROM FILES F
         
@@ -2809,6 +2935,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     month_votes = []
     year_votes = []
     total_votes = []
+    likes = []
 
     #INDIVIDUAL USER
     daily_left = ""
@@ -2849,6 +2976,8 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
             yearly_votes_singular = (i[17])
         except:
             pass
+        likes.append(i[18])
+        
 
     if daily_left != "":
         if CHECK_DATE(search_user):
@@ -2888,7 +3017,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     conn.close()
     #print("THESE ARE MY SERVER SIDE SEARCH ARGUMENTS")
     #print(search_arguments)
-    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, search_arguments
+    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, search_arguments
 
 
 def GRAB_SEARCH_ALGO(search_algo_path):

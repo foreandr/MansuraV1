@@ -31,6 +31,12 @@ DONE. CODE FOR CHECKING HOW SIMILAR TWO PIECES OF TEXT ARE
 DONE. withdrawl isn't finished
 DONE. HTTPS 
 DONE. STREAMLINE UPDATES TO THE SYSTEM (GITHUB AND SO ON)
+DONE. LIKES TABLE (WITH SIMILAR LOGIC TO VOTES)[MAY NOT NEED DATE SOME OTHER MINOR STUFF]
+DONE. TEXT CHECK AND IMAGE CHECK WORKING PROPERLY, mild frontend checks as well
+DONE. Files that have iomages or not sort
+NOT DOING. show publicly how many people have blocked this person
+NOT DOING. LIMIT NUM POSTS PER DAY, GOOD QUERIES WILL LIMIT BOTS
+DONE. IF NUM POSTS GOTTEN FROM UNIVERSAL < 100, OR WHATEVER THE COUNT IS, DISABLE SCROLL FUNCTIONALITY
 
 MINIMUM VIABLE PRODUCT
 ========================
@@ -39,48 +45,49 @@ MOTTO
 	- PAID TO LIKE
 	- PAID TO SHARE
 	- PAID TO SEARCH
- files that have iomages or not sort
 
 
-0. CHANGE VOTING TO 30 4 1
-1. First n people to join this month get in free, (xd)
+
+1. CHANGE VOTING TO 30 4 1
+2. First n people to join this month get in free, (xd)
 	- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
 	- the correct judgment is if reffered you get EXTRA
 	- person who refers gets 1 monthly vote for EACH refer
 	-   
-2. WRITE UP THE PAPER
-3.  IF NUM POSTS GOTTEN FROM UNIVERSAL < 100, OR WHATEVER THE COUNT IS, DISABLE SCROLL FUNCTIONALITY
-4. TEXT CHECK AND IMAGE CHECK WORKING PROPERLY, mild frontend checks as well
-5. LIKES TABLE (WITH SIMILAR LOGIC TO VOTES)[MAY NOT NEED DATE SOME OTHER MINOR STUFF]
+3. WRITE UP THE PAPER
+
 	- LIKES WILL INFORM SEARCH	
-6. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
+4. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
 	- add tags to text inserts to help the search algo
-7. GET UPLOADS ACTUALLY WORKING, 
-	- LIMIT NUM POSTS PER DAY
+5. GET UPLOADS ACTUALLY WORKING, 
 	- CHECK having modal issue
 	- CHECKSOME UPLOADS HAVE RANDOM SLASHES IN THEM FOR UPLOAD NUMS
-8. allow for profile bio
+
+
+6. allow for profile bio
 	- EDIT BIO
 	- a full page on it's own for editing profile including picture and bio, and presumabley other things of that nature
-9. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
-10. REPOST, ability to take another post and endorse it somehow 
-11. show publicly how many people have blocked this person
-12. DO THIS BY REPORT(NO WAY IM GOING TO MANAGE THIS WITH SEARCH)
+7. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
+8. REPOST, ability to take another post and endorse it somehow 
+
+9. DO THIS BY REPORT(NO WAY IM GOING TO MANAGE THIS WITH SEARCH)
 	- if a post is character for character the same, look for the one with the earliest timestamp, they get all the winnings
 	- SUCCESSFULL REPORTER GETS 50% 
-13. HEAD TO HEADS (incomplete but something like this should be thought through carefully)
+	- OPY OF SOMETHING ELSE REPORT LOGIC
+
+10. RETWEET LOGIC
+
+11.REPORT POST LOGIC
+  	- HEAD TO HEADS (incomplete but something like this should be thought through carefully)
 	- YOU can report someones post, and then that inverts the vote ratio so you have a head to head between reports and votes for that month
 	- the people who report if successful will get the winnings of what that page would have got
 		- else they just lost their vote for the month
-
-14. COPY OF SOMETHING ELSE REPORT LOGIC
-	- RETWEET LOGIC
-15. IF A POST GETS REPORTED, AND THE REPORT IS SUCCESSFUL (NEED LOGIC FOR DETERMINING THAT), THAT POST GETS PINNED ON THEIR PROFILE, AND THEY GET SLASHED SOME TO THE POOL SOME TO THE REPORTERS
+	-	IF A POST GETS REPORTED, AND THE REPORT IS SUCCESSFUL (NEED LOGIC FOR DETERMINING THAT), THAT POST GETS PINNED ON THEIR PROFILE, AND THEY GET SLASHED SOME TO THE POOL SOME TO THE REPORTERS
 	- every post is scored with some point system, if the points to remove > 100 or something, and 2x score of regular vots, it gets shadowbanned in some way
-16. redirected to wrong page after follow
-17. LEFT HAND SIDE, CURRENT MONTH LEADERBOARDS EQUITY, DOWNWARD TO POSTS
-18. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
-19. BUY ADS TO PUT ON THE MAIN PAGE, ALL GOES TO POOL, BUY ADS TO PUT ON A PERSONS PAGE, 50% GOES TO THEM, 50% GOES TO POOL
+
+12. redirected to wrong page after follow
+13. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
+14. BUY ADS TO PUT ON THE MAIN PAGE, ALL GOES TO POOL, BUY ADS TO PUT ON A PERSONS PAGE, 50% GOES TO THEM, 50% GOES TO POOL
 
 
 
@@ -94,7 +101,7 @@ IMPORTANT BUT LATER
  public tribunal for banned words and shit like that
 	whichever searcch has the most votes at the time becomes the default search algo
 
-	
+
 SEARCH
 =======
 FULL SAME DISTRIBUTION FOR THE SEARCH ALGOS, YOU ARE REWARDED FOR YOUR VOTE THERE TOO
