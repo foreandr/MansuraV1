@@ -53,18 +53,12 @@ def home():
 
     print("REQUEST TYP:",request.method)
     print("REQUEST URL:",request.url)
-    seached_for_item = ""
-    try:
-        seached_for_item=str(request.url).split("?search=")[1]
-        print("SEARCH QUE:",seached_for_item)
-    except: # just means there is no search going on
-        pass
+
     search_json = {}
 
     json_search_clauses = "None"
+    
     if request.method == 'POST':
-        # print("\n============SEARCH CONFIGURATION============\n")
-
         search = request.form.get("search")   
         date_check = request.form.get("date_check")  
         order_check = request.form.get("order_check")  
@@ -75,31 +69,15 @@ def home():
             hi_eq_low, 
             num_search_text
         ]
-        #print("ITEM SEARCH       :", search)
-        #print("date_check        :", date_check)
-        #print("order_check        :", order_check)
-        
-        #print("and_or_clauses    :", and_or_clauses)
-        #print("where_clauses     :", where_clauses)
-        #print("hi_eq_low         :", hi_eq_low)
-        #print("num_search_text   :", num_search_text)
-        #print("\n============SEARCH CONFIGURATION============\n")
-        
         json_search_clauses = database.TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, session_username)
-        #print("JSON SEARCH CLAUSE INFO")
-        #print(type(json_search_clauses))
-        #print(json_search_clauses)
-    #print(request.body)
-    #print(request.headers)
+    
+    # GRAB THE ARGS FROM QUERY BEFORE THE CURRENT PAGE [GET OR POST]
+    returned_search_arguments = request.form.get("search_arguments")
 
-    #print("SESSION USERNAME IS:", session_username)
-    returned_search_arguments = request.form.get("search_arguments") # SEARCH ARGUMENTS FROM THE PREVIOUS QUERY
-    # print("=====RETURNED SEARCH ARGUMENTS=====")
-    # print(returned_search_arguments)
 
-    json_search_clauses = helpers.COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses)
+    new_json_search_clauses = helpers.COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses)
     print("COMPOSE_SEARCHARGS_AND_JSONCLAUSE")
-    print(json_search_clauses)
+    print(new_json_search_clauses)
     print("===================================")
 
     page_no = request.form.get("page_number")
@@ -108,12 +86,10 @@ def home():
     if page_no == None or str(page_no) == "None":
         page_no = 1
 
-
-
     #TODO: what I may have to do is do a similar query to the one below, but just returning a path list, grab all the paths that meet the criteria, then stick is back into
     # a function that returns the correct info with the search value in there as welll
 
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=json_search_clauses)
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
     
     
     #FOR DIABLING OR ACTIVATING SCROLL LOGIC
@@ -122,10 +98,6 @@ def home():
         can_scroll = False
     else:
         can_scroll = True
-
-
-    
-
 
 
     # GRAB STUFF IT'S IT'S EMPTY EITHE RWAY
@@ -140,8 +112,7 @@ def home():
     source_list = []
     image_path_list = []
     distro_details_list = []
-    for i in range(len(usernames_list)): # GETTING TXT INFO
-        # print(usernames_list[i], paths_list[i])
+    for i in range(len(usernames_list)): # GETTING POST INFO FROM PATH
         my_path = f"static/#UserData/{usernames_list[i]}/files/{paths_list[i]}"
         post_text, post_age_18, post_sources, post_image_path, distro_details = helpers.get_postinfo_from_path(my_path)
         age_18_list.insert(i, post_age_18)
@@ -150,22 +121,9 @@ def home():
         image_path_list.insert(i, post_image_path)
         distro_details_list.insert(i,distro_details)
 
-    print("IMAGE PATHS")
-    print(image_path_list)
-    
-    #print(len(text_list), " - ", text_list)
-    #print(len(age_18_list), " - ", age_18_list)
-    #print(len(source_list), " - ", source_list)
-    #print(len(image_path_list), " - ", image_path_list)
-    # print("FILENAMES: ", filenames)
     lengths_of_text_files = []
     for i in text_list:
         lengths_of_text_files.append(len(i))
-   
-
-    print("UNIVERSAL RETURNED FROM FUNCTION:")
-    print(search_arguments)
-
 
     return render_template('index.html',
                             message="index.html page",

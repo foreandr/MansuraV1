@@ -47,7 +47,9 @@ MOTTO
 	- PAID TO SEARCH
 
 
-
+0. add search to distrobution
+2. ALLOW HISTORY TO BE DOWNLOADABLE
+	- EVENTUALLY DO THE FOLDER THING!
 1. CHANGE VOTING TO 30 4 1
 2. First n people to join this month get in free, (xd)
 	- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
@@ -57,6 +59,7 @@ MOTTO
 3. WRITE UP THE PAPER
 
 	- LIKES WILL INFORM SEARCH	
+
 4. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
 	- add tags to text inserts to help the search algo
 5. GET UPLOADS ACTUALLY WORKING, 
@@ -67,6 +70,7 @@ MOTTO
 6. allow for profile bio
 	- EDIT BIO
 	- a full page on it's own for editing profile including picture and bio, and presumabley other things of that nature
+
 7. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
 8. REPOST, ability to take another post and endorse it somehow 
 
