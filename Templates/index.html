@@ -19,6 +19,7 @@
             askljhfalkjsddsafasdafds
           </div>
         </div>
+
         <div class="col-7">
             {%for i in range(0, username_len )%}
             <div class="col">
@@ -109,12 +110,7 @@
         </div>
 
         <!--DOING THE SEARCH-->
-        <div class="col-3">
-            
-            <form action="https://google.com">
-                <input class="inline btn btn-primary" type="submit" value="Save Current Algorithm" />
-            </form>
-          
+        <div class="col-3"> 
             <form action="/" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
                 <input class="d-inline form-control mr-sm-2" id="search" name="search" type="search" placeholder="(can be empty)" aria-label="search">
                     <button class="btn btn-primary">Search</button>
@@ -188,10 +184,21 @@
                             <div>
                                 ALGORITHM FAVOURITES (5 Max)
                             </div>
+
                             <div class="btn btn-outline-success">
                                 <input type="radio" name="order_check" value="a-demo" id="a-demo">
                                 <label for="a-demo" unselectable>a-demo</label>
                             </div>
+                            <div class="btn btn-outline-success">
+                                <input type="radio" name="order_check" value="andrfore-demo" id="andrfore-demo">
+                                <label for="andrfore-demo" unselectable>andrfore-demo</label>
+                            </div>
+
+                            <div class="btn btn-outline-success">
+                                <input type="radio" name="order_check" value="foreandr-demo" id="foreandr-demo">
+                                <label for="foreandr-demo" unselectable>foreandr-demo</label>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -253,7 +260,13 @@
                 </div>
             </form>
 
+                    
+            <form action="https://google.com">
+                <input class="inline btn btn-primary" type="submit" value="Save Current Algorithm" />
+            </form>
+
         </div>
+
 
     </div>
 </div>

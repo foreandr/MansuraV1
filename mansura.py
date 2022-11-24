@@ -953,10 +953,16 @@ def settings():
     return render_template(f"settings.html",
     )
 
-@app.route("/terms_and_conditions", methods=['GET', 'POST'])
+@app.route("/terms_and_conditions", methods=['GET'])
 def terms_and_conditions():
     helpers.log_function("request", request)
     return render_template(f"terms_and_conditions.html",
+    )
+
+@app.route("/search_algorithms_page", methods=['GET', 'POST'])
+def search_algorithms_page():
+    helpers.log_function("request", request)
+    return render_template(f"search_algorithms_page.html",
     )
 
 if __name__ == '__main__':

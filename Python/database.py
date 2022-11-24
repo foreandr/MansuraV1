@@ -279,7 +279,7 @@ def LIKES_CREATE_TABLE():
         
         cursor.execute("ROLLBACK")
         print_error("\nHAD TO ROLLBACK LIKES TABLE CREATION" + str(e) )
-        exit()
+        # exit()
 
     cursor.close()
     conn.close()
@@ -739,6 +739,7 @@ def USER_FULL_RESET():
     CONNECTION_CREATE_TABLE()
     CREATE_MANSURA_TABLE()
     SEARCH_ALGO_CREATE_TABLE()
+    CREATE_TABLE_SEARCH_VOTES()
 
     USER_INSERT_MULTIPLE()
     CONNECTION_INSERT_MULTIPLE()
@@ -766,7 +767,15 @@ def DROP_ALL_TABLES():
     conn = connection.test_connection()
     print_title("\nDROPPING TABELS..")
     cursor = conn.cursor()
-    try:     
+    try:    
+        try:
+            cursor.execute(f"DROP TABLE IF EXISTS SEARCH_VOTES;")
+            conn.commit()
+            print_green("DROPPED TABLE IF EXISTS SEARCH_VOTES;")
+        except Exception as e:
+            cursor.execute("ROLLBACK")
+            log_function("error", e)
+
         try:
             cursor.execute(f"DROP TABLE IF EXISTS LIKES;")
             conn.commit()
@@ -2452,6 +2461,28 @@ def CHECK_FILE_EXISTS(File_id_):
     else:
         return False
 
+def CUSTOM_GET_HIGHEST_VALUE_IN_DICT_SLOW(my_dict):
+    '''
+    I ONLY WROTE THIS BECAUSE PYTHONS MAX FUNCTION HAS ALL KINDS OF ABSOLUTELY INSANE RULES
+
+    SHOULD BE MUCH SLOWER TTHAN ITS NEEDS TO BE, COULD BE RE-WRITTEN IN LOWER LVL LANGUGAE
+    '''
+    
+    # my_dict = {"": "", "a-1": 5, "andrfore-3": 3, "foreandr-2": 3}
+    
+    highest_key = None
+    highest_num = 0
+    for key, value in my_dict.items():
+        
+        if type(value) == int:
+            # print(key, value, type(value))
+            if value >= highest_num: # this should ensure the last search wins
+                highest_num = value 
+                highest_key = key
+    
+    # print(highest_key)
+    return  highest_key
+
 def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, searcher):
     #print("\nINSIDE TURNING INTO JSON\n")
     #print("ITEM SEARCH       :", search) # DONE
@@ -2504,25 +2535,45 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
             # COUNTING SEARCHES
             if searcher != "": # SEARCHER IS RELATED TO SESSION, VOTES ONLINE COUNT IF SIGNED IN
                 # COULD ADD AN ADDITIONAL CRITERIA ABOUT SUBSCRIPTION
-                # JSON IN
-                with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'r') as f:
-                    data = json.load(f)
-                    # print("data:\n",data)
-                    data = dict(data)
-                    # print("coming back from file:",data)
-                    if order_check in data:
-                        # print("in")
-                        data[order_check] += 1
-                    else:
-                        # print("not in")
-                        data[order_check] = 1
-                # JSON OUT
-                with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'w') as f:    
-                    json_object = json.dumps(data) 
-                    # print("NEW DICT", data)
-                    # print("json_object", json_object)
-                    f.write(json_object)
+
+                if CHECK_DATE(searcher):
+                    # JSON IN
+                    with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'r') as f:
+                        data = json.load(f)
+                        # print("data:\n",data)
+                        data = dict(data)
+                        # print("coming back from file:",data)
+
+                        current_max= CUSTOM_GET_HIGHEST_VALUE_IN_DICT_SLOW(data)
+                        print("PRE DICT:",data )
+                        if order_check in data:
+                            # print("in")
+                            data[order_check] += int(1)
+                        else:
+                            # print("not in")
+                            data[order_check] = int(1)
+
+                        #UPDATE MAJORITY SEARCH FOR THAT USER if new high
+                        print("POS DECT:",data )
+                        new_max = CUSTOM_GET_HIGHEST_VALUE_IN_DICT_SLOW(data)
+
+                        print("current_max:", current_max)
+                        print("new_max    :", new_max)
+                        
+                        if new_max != current_max:
+                            UPDATE_TABLE_SEARCH_VOTES(searcher, new_max)
+                        
+
+
+                        
                     
+                    # JSON OUT
+                    with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'w') as f:    
+                        json_object = json.dumps(data) 
+                        # print("NEW DICT", data)
+                        # print("json_object", json_object)
+                        f.write(json_object)
+                        
             order_clause = data_["ORDER_BY_CLAUSE"]
             personal_where_clause = data_["WHERE_CLAUSE"]
 
@@ -2626,6 +2677,61 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
     }
     return demo_json
 
+def UPDATE_TABLE_SEARCH_VOTES(voter_username, search_algo_name):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(f"""
+    SELECT COUNT(*)
+    FROM SEARCH_VOTES
+    WHERE Voter_Username = '{voter_username}'
+    """)
+
+    vote_exists = cursor.fetchall()[0][0]
+    print("VOTE EXISTS", vote_exists)
+    
+    search_id = GET_SEARCH_ALGO_ID_BY_PATH(search_algo_name)
+    
+    print(search_id)
+    print(search_algo_name)
+    if vote_exists == 0:
+        print("INSERTING SEARCH VOTE")
+        cursor.execute(f"""
+            INSERT INTO SEARCH_VOTES(Search_id, Voter_Username)
+            VALUES ({search_id}, '{voter_username}');
+        """)
+        conn.commit()
+    else:
+        print("UPDATING SEARCH VOTE")
+        cursor.execute(f"""
+            UPDATE SEARCH_VOTES
+            SET Search_id = {search_id}
+            WHERE Voter_Username = '{voter_username}'
+        """)
+        conn.commit()
+    
+    cursor.close()
+    conn.close()
+
+def GET_SEARCH_ALGO_ID_BY_PATH(algo_path):
+    print("GET_SEARCH_ALGO_ID_BY_PATH")
+
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(f"""
+        SELECT Search_id
+        FROM SEARCH_ALGORITHMS
+        WHERE Search_Path = '{algo_path}'
+    """)
+
+    search_id = ""
+    for i in cursor.fetchall():
+        search_id = i[0] 
+    print("ENTERED ALGO NAME  :",algo_path, len(algo_path))
+    print("RETIURNED SEARCH ID:",search_id )
+    return search_id
+
 
 def GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME(order_check):
     print("GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME")
@@ -2662,6 +2768,26 @@ def SEARCH_ALGO_CREATE_TABLE():
         Date_Time timestamp,      
         FOREIGN KEY (Username) REFERENCES USERS(Username)
         );
+        """)
+    conn.commit()
+    
+    # CLOSE CURSOR AND CONNECTION [MANDATORY]        
+    cursor.close()
+    conn.close()
+
+
+def CREATE_TABLE_SEARCH_VOTES():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute("""DROP TABLE IF EXISTS SEARCH_VOTES""")
+    cursor.execute(
+        f"""
+            CREATE TABLE SEARCH_VOTES(
+            Search_Vote_Id SERIAL PRIMARY KEY,
+            Search_id INT,
+            Voter_Username varchar,
+            FOREIGN KEY (Search_id) REFERENCES SEARCH_ALGORITHMS(Search_id)
+        )
         """)
     conn.commit()
     
@@ -2715,8 +2841,8 @@ def SEARCH_ALGO_INSERT(username, Algorithm_Name, order_by_clause, where_clause):
 def SEARCH_ALGO_INSERT_DEMO_MULTIPLE():
     # username, Algorithm_Name, order_by_clause, where_clause
     SEARCH_ALGO_INSERT(username='a', Algorithm_Name='a-demo', order_by_clause="ORDER BY F.Date_Time, U.username ASC", where_clause="")
-    SEARCH_ALGO_INSERT('foreandr', 'foreandr-basic-top-month', "ORDER BY U.username ASC", "")
-    SEARCH_ALGO_INSERT('andrfore', 'andrfore-basic-top-month', "ORDER BY U.username ASC", f"AND U.username LIKE 'foreandr%'")
+    SEARCH_ALGO_INSERT('foreandr', 'foreandr-demo', "ORDER BY U.username ASC", "")
+    SEARCH_ALGO_INSERT('andrfore', 'andrfore-demo', "ORDER BY U.username ASC", f"AND U.username LIKE 'foreandr%'")
     print_green("SEARCH_ALGO_INSERT_DEMO_MULTIPLE()")
 
 
