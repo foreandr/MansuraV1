@@ -120,7 +120,7 @@
 	</div>
 
 	<header class="site-navbar js-sticky-header site-navbar-target" role="banner">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row align-items-center">
 				<div class="col-6 col-xl-2">
 					<h1 class="mb-0 site-logo"><a href="index.html">MANSURA<span class="text-primary"></span></a></h1>		
@@ -129,7 +129,18 @@
 				<div class="col-12 col-md-10 d-none d-xl-block">
 					<nav class="site-navigation position-relative text-right" role="navigation">						
 						<ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
-							
+							<li><a  id="index_daily" class="nav-link"></a></li>
+							<li><a  id="index_monthly" class="nav-link"></a></li>
+							<li><a  id="index_yearly" class="nav-link"></a></li>
+							 
+							 <li class="has-children">
+								<a id="user_balance" class="nav-link">Balance</a>
+								<ul class="dropdown">
+									<li><a class="nav-link" href="./add_funds" disabled><h6>Subscribe</h6></a></li>
+									<li><a class="nav-link" href="./withdraw_funds" disabled><h6>Withdraw</h6></a></li>
+
+								</ul>
+							</li>
 							
 							<li class="has-children">
 								<a class="nav-link">User</a>
@@ -139,44 +150,46 @@
 									<li><a class="nav-link" href="./login">Login</a></li>
 									<li><a class="nav-link" href="./logout">Logout</a></li>
 									<li><a class="nav-link" href="./settings">Settings</a></li>
-									<li class="has-children">
-										<ul class="dropdown">
-										</ul>
-									</li>
 								</ul>
 							</li>
-							<i class="fa-regular fa-gear"></i>
+
 							<li class="has-children">
-								<a href="#votes-section" class="nav-link">Votes</a>
+								<a  class="nav-link">Votes</a>
 								<ul class="dropdown">
-									<li> 
-										<a href="#daily-votes" id="index_daily" class="nav-link"></a>
-									<li><a href="#weekly-votes" id="index_monthly" class="nav-link"></a>
-									</li>
-									<li><a href="#yearly-votes" id="index_yearly" class="nav-link"></a></li>
-									</li>
+									<span>
+										<a class="nav-link" id="daily_votes_left">DAILY VOTES:</a>
+									  </span>
+									  <span>
+										  <a class="nav-link" id="monthly_votes_left">MONTHLY VOTES:</a>
+									  </span>
+									  <span>
+										  <a class="nav-link" id="yearly_votes_left">YEARLY VOTES:</a>
+									  </span> 						
 								</ul>
+							</li>
+
 							<li class="has-children">
-								<a href="#metrics-section" class="nav-link>">Metrics</a>
-								<ul class="dropdown">
-									<li><a href="leaderboards-section" class="nav-link">Leaderboards</a></li>
-									<li><a href="leaderboards-section" class="nav-link">History</a></li>
+									<a class="nav-link>">Metrics</a>
+									<ul class="dropdown">
+										<li><a href="leaderboards-section" class="nav-link">Leaderboards</a></li>
+										<li><a href="leaderboards-section" class="nav-link">History</a></li>
 								</ul>
 							</li>
-							</li>
-							<li><a href="#contact-section" class="nav-link">Contact</a></li>
-							</a>
+
+							<li class="has-children">
+								<a class="nav-link>">Help</a>
+								<ul class="dropdown">
+									<li><a href="leaderboards-section" class="nav-link">Settings</a></li>
+									<li><a href="leaderboards-section" class="nav-link">Contact</a></li>
+									<li><a href="leaderboards-section" class="nav-link">Intstructions</a></li>
+									<li><a href="leaderboards-section" class="nav-link">FAQ</a></li>
+								</ul>
 							</li>
 						</ul>
 					</nav>
 				</div>
-				<div
-					class="col-6 d-inline-block d-xl-none ml-md-0 py-3"
-					style="position: relative; top: 3px"
-					>
-					<a href="#" class="site-menu-toggle js-menu-toggle float-right"
-						><span class="icon-menu h2"></span
-						></a>
+				<div class="col-6 d-inline-block d-xl-none ml-md-0 py-3" style="position: relative; top: 3px">
+					<a href="#" class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h2"></span></a>																					
 				</div>
 			</div>
 		</div>
