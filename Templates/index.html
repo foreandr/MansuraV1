@@ -234,8 +234,7 @@
                             <option id="USER FOLLOWING (x)" disabled>USER FOLLOWING (x)</option>
                             <option id="USER FOLLOWED BY (x)" disabled>USER FOLLOWED BY (x)</option>
                             <option id="USER 18+" disabled>USER 18+</option>
-                            <option id="USER FROM COUNTRY (x)" disabled>USER FROM COUNTRY (x)</option>
-                            
+                            <option id="USER FROM COUNTRY (x)" disabled>USER FROM COUNTRY (x)</option>    
                         </select> 
                         <select name="higher_equal_lower" id="higher_equal_lower" class="dropdown-content">
                             <option id="greater_equal">>=</option>           
@@ -277,7 +276,7 @@
                 <!-- .mp4,.csv, .onnx,-->
                 <input type="file" class="custom-file-input" name="file" accept=".png, .jpeg, .jpg, .pdf" id="dataset_file">
                 <input type="text" id="hidden_file_size" name="hidden_file_size" placeholder="auto" size="1" value="">
-                <label class="custom-file-label" for="file">PNG/JPG/CSV/ONNX/MP4/PDF</label>
+                <label class="custom-file-label" for="file">PNG/JPG/PDF</label>
 
                 <div id="dataset_return_message">
 
@@ -408,15 +407,24 @@
             </select>  
             <select name="where_clauses${where_counter}" id="where_clauses${where_counter}" class="dropdown-content">
                 <option id="DAY VOTES">POST DAY VOTES</option>
+                <option id="DAY VOTES">POST DAY VOTES</option>
                             <option id="MONTH VOTES">POST MONTH VOTES</option>
                             <option id="YEAR VOTES">POST YEAR VOTES</option>            
-                            <option id="LIKES">POST LIKES</option>           
-                            <option id="REPLIES">POST REPLIES</option>
-                            <option id="USER FOLLOWING">USER FOLLOWING</option>
-                            <option id="USER FOLLOWERS">USER FOLLOWERS</option>
-                            <option id="USER USER BLOCKED THEM">USER BLOCKED THEM</option>
+                            <option id="LIKES"disabled>POST LIKES</option>           
+                            <option id="REPLIES"disabled>POST REPLIES</option>
+                            <option id="POST SENTIMENT ANALYSIS"disabled>POST SENTIMENT</option>
+                            <option id="POST HAS IMAGE" disabled>POST HAS IMAGE T/F</option>
+                            <option id="HAS SOURCE"disabled>HAS SOURCE</option>
+                            <option id="USER FOLLOWING"disabled>USER FOLLOWING</option>
+                            <option id="USER FOLLOWERS"disabled>USER FOLLOWERS</option>
+                            <option id="USER USER BLOCKED THEM" disabled>USER NUM BLOCKED</option>
                             <option id="FRIENDS WITH" disabled>USER FRIENDS WITH</option>
                             <option id="Post/Like Ratio" disabled>USER POST/LIKE RATIO</option>
+                            <option id="USER POLARIZATION" disabled>USER POLARIZATION</option>
+                            <option id="USER FOLLOWING (x)" disabled>USER FOLLOWING (x)</option>
+                            <option id="USER FOLLOWED BY (x)" disabled>USER FOLLOWED BY (x)</option>
+                            <option id="USER 18+" disabled>USER 18+</option>
+                            <option id="USER FROM COUNTRY (x)" disabled>USER FROM COUNTRY (x)</option> 
             </select> 
             <select name="higher_equal_lower${where_counter}" id="higher_equal_lower" class="dropdown-content">
                 <option id="equal">>=</option>           
@@ -452,15 +460,24 @@
                 </select>  
                 <select name="where_clauses${where_counter}" id="where_clauses${where_counter}" class="dropdown-content">
                     <option id="DAY VOTES">POST DAY VOTES</option>
+                    <option id="DAY VOTES">POST DAY VOTES</option>
                             <option id="MONTH VOTES">POST MONTH VOTES</option>
                             <option id="YEAR VOTES">POST YEAR VOTES</option>            
-                            <option id="LIKES">POST LIKES</option>           
-                            <option id="REPLIES">POST REPLIES</option>
-                            <option id="USER FOLLOWING">USER FOLLOWING</option>
-                            <option id="USER FOLLOWERS">USER FOLLOWERS</option>
-                            <option id="USER USER BLOCKED THEM">USER BLOCKED THEM</option>
+                            <option id="LIKES"disabled>POST LIKES</option>           
+                            <option id="REPLIES"disabled>POST REPLIES</option>
+                            <option id="POST SENTIMENT ANALYSIS"disabled>POST SENTIMENT</option>
+                            <option id="POST HAS IMAGE" disabled>POST HAS IMAGE T/F</option>
+                            <option id="HAS SOURCE"disabled>HAS SOURCE</option>
+                            <option id="USER FOLLOWING"disabled>USER FOLLOWING</option>
+                            <option id="USER FOLLOWERS"disabled>USER FOLLOWERS</option>
+                            <option id="USER USER BLOCKED THEM" disabled>USER NUM BLOCKED</option>
                             <option id="FRIENDS WITH" disabled>USER FRIENDS WITH</option>
                             <option id="Post/Like Ratio" disabled>USER POST/LIKE RATIO</option>
+                            <option id="USER POLARIZATION" disabled>USER POLARIZATION</option>
+                            <option id="USER FOLLOWING (x)" disabled>USER FOLLOWING (x)</option>
+                            <option id="USER FOLLOWED BY (x)" disabled>USER FOLLOWED BY (x)</option>
+                            <option id="USER 18+" disabled>USER 18+</option>
+                            <option id="USER FROM COUNTRY (x)" disabled>USER FROM COUNTRY (x)</option> 
                 </select> 
                 <select name="higher_equal_lower${where_counter}" id="higher_equal_lower" class="dropdown-content">
                     <option id="equal">>=</option>           
