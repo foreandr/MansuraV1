@@ -15,7 +15,7 @@ from datetime import datetime
 import pytz
 import json
 
-''' #TOP/BOPTTOM=================================
+
 import Python.db_connection as connection
 from Python.helpers import print_green, print_title, log_function
 from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
@@ -25,7 +25,7 @@ from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
 from generating_excel import WRITE_HEADERS_TO_EXCEL
 import db_connection as connection
 from  helpers import print_green, print_title, log_function
-
+''' #TOP/BOPTTOM=================================
 
 def GET_REPLYING_TO(file_id):
     
@@ -1195,4 +1195,4 @@ def GET_NUM_SEARCH_VOTES():
 # PURE_LOG_DISTRIBUTION(100.00, test_ordered_array)
 # EQUAL_DISTRIBUTION(100.00, test_ordered_array)
 # SECTIONED_EQUAL_DISTRIBUTION(19.91, test_ordered_array, sections=2)
-RUN_WITH_TIME_TEST()
+# RUN_WITH_TIME_TEST()

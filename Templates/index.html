@@ -16,7 +16,7 @@
             THIS IS WHERE PEOPLE WILL BUY ADS
           </div>
           <div>
-            askljhfalkjsddsafasdafds
+            {{can_scroll}}
           </div>
         </div>
 
@@ -590,8 +590,12 @@
         js_can_scroll = '{{can_scroll}}'
         //javascript bool is fucking stupid
         if (js_can_scroll == "true" || js_can_scroll == "True" ){
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            if (scroll_disabler <1) {
+            console.log("WINDOW HEIGHT:", window.innerHeight + window.scrollY)
+            console.log("DOCUMENT BODY:",document.body.scrollHeight)
+            
+            if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+                
+                if (scroll_disabler <1) {
                 scroll_disabler += 1
                 console.log("BOTTOM OF PAGE")
                 
@@ -606,6 +610,7 @@
                 
                 }
             }
+            
         } 
         else{
             console.log(js_can_scroll)

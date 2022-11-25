@@ -38,7 +38,7 @@ NOT DOING. show publicly how many people have blocked this person
 NOT DOING. LIMIT NUM POSTS PER DAY, GOOD QUERIES WILL LIMIT BOTS
 DONE. IF NUM POSTS GOTTEN FROM UNIVERSAL < 100, OR WHATEVER THE COUNT IS, DISABLE SCROLL FUNCTIONALITY
 DONE. ALLOW HISTORY TO BE DOWNLOADABLE
-
+DONE. add search to distrobution
 MINIMUM VIABLE PRODUCT
 ========================
 MOTTO
@@ -52,7 +52,9 @@ notifications, chat ROOM
 public chat rooms by algorithm vs private char rooms
 
 
-0. add search to distrobution
+THE REPORT SYSTEM
+
+
 
 	- EVENTUALLY DO THE FOLDER THING!
 1. CHANGE VOTING TO 30 4 1

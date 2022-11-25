@@ -200,6 +200,7 @@ def CONNECTION_CREATE_TABLE():
                 Friendship_Id SERIAL PRIMARY KEY,
                 User_Id1 INT,
                 User_Id2 INT,
+                creation_date timestamp,
                 
                 FOREIGN KEY (User_Id1) REFERENCES USERS(User_Id),
                 FOREIGN KEY (User_Id2) REFERENCES USERS(User_Id)
@@ -219,13 +220,15 @@ def CONNECTION_INSERT(user_id1, user_id2):
     try:
         cursor.execute(
             f"""
-            INSERT INTO CONNECTIONS (User_Id1, User_Id2)
-                VALUES({user_id1}, {user_id2})
+                INSERT INTO CONNECTIONS (User_Id1, User_Id2, creation_date)
+                VALUES({user_id1}, {user_id2}, NOW())
             """)
         conn.commit()
+        print_green(f"CONNECTED {user_id1} -> {user_id2}")
     except Exception as e:
-         cursor.execute("ROLLBACK")
-         print("ERROR:  [INSERT INTO CONNECTIONS] " + str(e))
+        cursor.execute("ROLLBACK")
+        print("ERROR:  [INSERT INTO CONNECTIONS] " + str(e))
+        log_function(e) 
     
     cursor.close()
     conn.close()
@@ -250,6 +253,8 @@ def CONNECTION_REMOVE(user_id_first, user_id_second):
 def CONNECTION_INSERT_MULTIPLE():
     CONNECTION_INSERT( user_id1=1, user_id2=2)
     CONNECTION_INSERT( user_id1=1, user_id2=3)
+    big_reset_file.GIANT_CONNECTION_INSERT()
+    
     print_green("USER MULTI INSERT CONNECTIONS COMPLETED\n")
 
 
