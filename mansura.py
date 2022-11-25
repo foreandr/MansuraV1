@@ -953,17 +953,43 @@ def settings():
     return render_template(f"settings.html",
     )
 
+
 @app.route("/terms_and_conditions", methods=['GET'])
 def terms_and_conditions():
     helpers.log_function("request", request)
     return render_template(f"terms_and_conditions.html",
     )
 
+
 @app.route("/search_algorithms_page", methods=['GET', 'POST'])
 def search_algorithms_page():
     helpers.log_function("request", request)
     return render_template(f"search_algorithms_page.html",
     )
+
+@app.route("/contact", methods=['GET'])
+def contact():
+    helpers.log_function("request", request)
+    return render_template(f"contact.html",
+    )
+
+@app.route("/FAQ", methods=['GET'])
+def FAQ():
+    helpers.log_function("request", request)
+    return render_template(f"FAQ.html",
+    )
+
+@app.route("/instructions", methods=['GET'])
+def instructions():
+    helpers.log_function("request", request)
+    return render_template(f"instructions.html",
+    )
+@app.route("/leaderboards", methods=['GET'])
+def leaderboards():
+    helpers.log_function("request", request)
+    return render_template(f"leaderboards.html",
+    )
+
 
 if __name__ == '__main__':
     #SUBTITLE Network Societey and it's Future

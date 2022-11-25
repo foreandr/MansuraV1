@@ -740,6 +740,9 @@ def USER_FULL_RESET():
     CREATE_MANSURA_TABLE()
     SEARCH_ALGO_CREATE_TABLE()
     CREATE_TABLE_SEARCH_VOTES()
+    CREATE_TABLE_SEARCH_FAVOURITES()
+    CREATE_TABLE_POST_FAVOURITES()
+    EQUITY_CREATE_TABLE()
 
     USER_INSERT_MULTIPLE()
     CONNECTION_INSERT_MULTIPLE()
@@ -748,9 +751,10 @@ def USER_FULL_RESET():
     FILE_VOTE_INSERT_DEMO() # VOTES ON CSVS
     SEARCH_ALGO_INSERT_DEMO_MULTIPLE()
     LIKES_DEMO_INSERT()
+    DEFAULT_EQUITY_INSERT()
     # EQUITY CAN GO LAST, DOESN'T INTERFERE WITH ANYTHING
-    EQUITY_CREATE_TABLE()
-    TRANSFER_EQUITY(buyer="a", seller="foreandr", amount=2)
+    
+    # TRANSFER_EQUITY(buyer="a", seller="foreandr", amount=2)
 
     # MODEL_MULTIPLE_INSERT(conn) # MODELS
     # MODEL_VOTE_INSERT_DEMO(conn) # VOTES ON MODELS \
@@ -767,7 +771,24 @@ def DROP_ALL_TABLES():
     conn = connection.test_connection()
     print_title("\nDROPPING TABELS..")
     cursor = conn.cursor()
-    try:    
+    try:
+        try:
+            cursor.execute(f"DROP TABLE IF EXISTS POST_FAVOURITES;")
+            conn.commit()
+            print_green("DROPPED TABLE IF EXISTS POST_FAVOURITES;")
+        except Exception as e:
+            cursor.execute("ROLLBACK")
+            log_function("error", e)
+        
+        
+        try:
+            cursor.execute(f"DROP TABLE IF EXISTS SEARCH_FAVOURITES;")
+            conn.commit()
+            print_green("DROPPED TABLE IF EXISTS SEARCH_FAVOURITES;")
+        except Exception as e:
+            cursor.execute("ROLLBACK")
+            log_function("error", e)
+
         try:
             cursor.execute(f"DROP TABLE IF EXISTS SEARCH_VOTES;")
             conn.commit()
@@ -1643,38 +1664,55 @@ def TRANSFER_EQUITY(buyer, seller, amount):
     CLOSE_CURSOR_AND_CONN(cursor, conn)
 
 def EQUITY_INSERT():
-        
-    conn = connection.test_connection()
-    cursor = conn.cursor()
-    cursor.execute(f"""
-            INSERT INTO EQUITY(username, percentage)
-            VALUES ('foreandr', 100)
-    """)
-    conn.commit()
+    try:
+        conn = connection.test_connection()
+        cursor = conn.cursor()
+        cursor.execute(f"""
+                INSERT INTO EQUITY(username, percentage)
+                VALUES ('foreandr', 100)
+        """)
+        conn.commit()
+    except Exception as e:
+        log_function(e)
+
 
 def EQUITY_CREATE_TABLE():
     conn = connection.test_connection()
     cursor = conn.cursor()
-    cursor.execute(f"DROP TABLE IF EXISTS EQUITY;")
-    cursor.execute(f"""
-    CREATE TABLE EQUITY 
-    (
-        username varchar(200) UNIQUE,
-        percentage Decimal,
-        FOREIGN KEY (username) REFERENCES USERS(username)
-    );
-    """)
-
-    cursor.execute(
-        f"""
-        INSERT INTO EQUITY  (username, percentage)
-        VALUES('foreandr', 100)
+    try:
+        cursor.execute(f"DROP TABLE IF EXISTS EQUITY;")
+        cursor.execute(f"""
+        CREATE TABLE EQUITY 
+        (
+            username varchar(200) UNIQUE,
+            percentage Decimal,
+            FOREIGN KEY (username) REFERENCES USERS(username)
+        );
         """)
-    conn.commit()
-
+        conn.commit()
+        print_green("EQUITY_CREATE_TABLE SUCCESSFUL")
+    except Exception as e:
+        log_function(e)
+    
     CLOSE_CURSOR_AND_CONN(cursor, conn)
 
 
+def DEFAULT_EQUITY_INSERT():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    try:
+
+        cursor.execute(
+            f"""
+            INSERT INTO EQUITY (username, percentage)
+            VALUES('foreandr', 100)
+        """)
+        conn.commit()
+
+    except Exception as e:
+        log_function(e)
+    
+    CLOSE_CURSOR_AND_CONN(cursor, conn)
 
 def home_dataset_function(page_no, sort_time_frame, how_many, session_username='None'):
     conn = connection.test_connection()
@@ -2545,7 +2583,7 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
                         # print("coming back from file:",data)
 
                         current_max= CUSTOM_GET_HIGHEST_VALUE_IN_DICT_SLOW(data)
-                        print("PRE DICT:",data )
+                        #print("PRE DICT:",data )
                         if order_check in data:
                             # print("in")
                             data[order_check] += int(1)
@@ -2554,19 +2592,15 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
                             data[order_check] = int(1)
 
                         #UPDATE MAJORITY SEARCH FOR THAT USER if new high
-                        print("POS DECT:",data )
+                        #print("POS DECT:",data )
                         new_max = CUSTOM_GET_HIGHEST_VALUE_IN_DICT_SLOW(data)
 
-                        print("current_max:", current_max)
-                        print("new_max    :", new_max)
+                        #print("current_max:", current_max)
+                        #print("new_max    :", new_max)
                         
                         if new_max != current_max:
                             UPDATE_TABLE_SEARCH_VOTES(searcher, new_max)
-                        
-
-
-                        
-                    
+                                          
                     # JSON OUT
                     with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'w') as f:    
                         json_object = json.dumps(data) 
@@ -2772,6 +2806,68 @@ def SEARCH_ALGO_CREATE_TABLE():
     conn.commit()
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
+    cursor.close()
+    conn.close()
+
+
+def CREATE_TABLE_POST_FAVOURITES():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(f"DROP TABLE IF EXISTS POST_FAVOURITES;")
+        cursor.execute(
+                f"""
+                CREATE TABLE POST_FAVOURITES(
+                    Favourite_Id SERIAL PRIMARY KEY,
+                    File_id INT,
+                    Favouriter_Username varchar(50),
+                    Date_Time timestamp, 
+
+                    ---CONSTRAINTS
+                    FOREIGN KEY (File_id) REFERENCES FILES(File_id),
+                    UNIQUE (File_id, Favouriter_Username) --this should allow someone to only have one favourite per post
+                );
+                """)
+        conn.commit()
+
+        print_green("POST_FAVOURITES CREATE COMPLETED\n")
+    except Exception as e:
+        
+        cursor.execute("ROLLBACK")
+        print_error("\nHAD TO ROLLBACK POST_FAVOURITES TABLE CREATION" + str(e) )
+        # exit()
+
+    cursor.close()
+    conn.close()
+
+def CREATE_TABLE_SEARCH_FAVOURITES():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(f"DROP TABLE IF EXISTS SEARCH_FAVOURITES;")
+        cursor.execute(
+                f"""
+                CREATE TABLE SEARCH_FAVOURITES(
+                    Search_Favourite_Id SERIAL PRIMARY KEY,
+                    Search_id INT,
+                    Favouriter_Username varchar(50),
+                    Date_Time timestamp, 
+
+                    ---CONSTRAINTS
+                    FOREIGN KEY (Search_id) REFERENCES SEARCH_ALGORITHMS(Search_id),
+                    UNIQUE (Search_id, Favouriter_Username) --this should allow someone to only have one favourite per post
+                );
+                """)
+        conn.commit()
+
+        print_green("POST_FAVOURITES CREATE COMPLETED")    
+
+    except Exception as e:       
+        cursor.execute("ROLLBACK")
+        print_error("HAD TO ROLLBACK  CREATE_TABLE_SEARCH_FAVOURITES TABLE CREATION" + str(e))   
+        log_function(e)      
+
     cursor.close()
     conn.close()
 
