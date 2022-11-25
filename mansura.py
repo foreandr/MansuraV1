@@ -8,7 +8,7 @@ import flask
 import os
 
 
-from flask import Flask, render_template, request, session, redirect, url_for, g, send_from_directory, Response
+from flask import Flask, render_template, request, session, redirect, url_for, g, send_from_directory, Response, send_file
 from psycopg2 import connect
 import requests
 import Python.database as database
@@ -814,6 +814,21 @@ def password_reset():
     else:
         print("got here 4")
         return render_template(f"password_reset.html")
+
+
+@app.route("/user_download_excel/<vote_timeframe>/<vote_date>", methods=['GET', 'POST'])
+def user_download_excel(vote_timeframe, vote_date):
+	print("hello")
+	try:
+		og_path = "/root/mansura/Python/HISTORY/"
+		custom_path = og_path + vote_timeframe +"/" + vote_date
+		print("custom_path", custom_path)
+		filename = vote_date
+		return send_file(custom_path, download_name=filename)
+	except Exception as e:
+		helpers.log_function("error", e)
+
+
 
 
 @app.route("/vote/<file_id>/<vote_type>", methods=['GET', 'POST'])

@@ -7,7 +7,9 @@
             DAILY
             {%for i in range(daily_len)%}
                 <div>
-                    {{all_daily[i]}}
+                    <a href="/user_download_excel/Daily/{{all_daily[i]}}" target="blank"><button class='btn btn-default'>{{all_daily[i]}}</button></a>
+                    
+                    
                 </div>
             {%endfor%}
         </div>

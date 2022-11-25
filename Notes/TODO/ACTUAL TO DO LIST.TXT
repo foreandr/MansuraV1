@@ -37,6 +37,7 @@ DONE. Files that have iomages or not sort
 NOT DOING. show publicly how many people have blocked this person
 NOT DOING. LIMIT NUM POSTS PER DAY, GOOD QUERIES WILL LIMIT BOTS
 DONE. IF NUM POSTS GOTTEN FROM UNIVERSAL < 100, OR WHATEVER THE COUNT IS, DISABLE SCROLL FUNCTIONALITY
+DONE. ALLOW HISTORY TO BE DOWNLOADABLE
 
 MINIMUM VIABLE PRODUCT
 ========================
@@ -48,7 +49,7 @@ MOTTO
 
 
 0. add search to distrobution
-2. ALLOW HISTORY TO BE DOWNLOADABLE
+
 	- EVENTUALLY DO THE FOLDER THING!
 1. CHANGE VOTING TO 30 4 1
 2. First n people to join this month get in free, (xd)
