@@ -15,7 +15,7 @@ from datetime import datetime
 import pytz
 import json
 
-
+''' #TOP/BOPTTOM=================================
 import Python.db_connection as connection
 from Python.helpers import print_green, print_title, log_function
 from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
@@ -25,7 +25,7 @@ from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
 from generating_excel import WRITE_HEADERS_TO_EXCEL
 import db_connection as connection
 from  helpers import print_green, print_title, log_function
-''' #TOP/BOPTTOM=================================
+
 
 def GET_REPLYING_TO(file_id):
     
@@ -90,7 +90,7 @@ def FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT(vote_type, testing=False):
     
     non_equity_dict = {}
     for key, value in my_dict.items():        
-        if key != "EQUITY":
+        if key != "EQUITY" and key != "SEARCH":
             #print(f"\nFILE ID: {key}\t{value['AMOUNT']}")
             
             value = {
@@ -197,21 +197,27 @@ def GET_FREQUENCY_DICT_TYPED(my_vote_type):
         equity_percentage = 0.20
     elif my_vote_type == "Yearly":
         equity_percentage = 0.20
+    search_equity_percentage = 0.20
 
     total_vote_count_typed = GET_TOTAL_VOTE_COUNT(my_vote_type)
-    
     total_capital_typed = GET_TYPED_PAYOUT( my_vote_type)
       
+    
+    total_capital_for_search = total_capital_typed * search_equity_percentage
     total_capital_for_equity = total_capital_typed * equity_percentage
-    total_capital_typed = total_capital_typed - total_capital_for_equity
+    #print("t1search", total_capital_for_search, search_equity_percentage)
+    #print("t2global", total_capital_for_equity, equity_percentage)
+      
+    total_capital_typed = total_capital_typed - (total_capital_for_equity + total_capital_for_search)
+    
 
     print(F"VOTE TYPE : {my_vote_type}")
-    print(F"VOTE COUNT: {total_vote_count_typed}")
-    print(F"{my_vote_type} CAPITAL FOR TOTAL:  {GET_TYPED_PAYOUT( my_vote_type)}")
-    print(F"{my_vote_type} CAPITAL FOR EQUITY: {BROKEN_ROUNDING(total_capital_for_equity)} [%{equity_percentage}]")
-    print(F"{my_vote_type} CAPITAL FOR USERS : {total_capital_typed}")
-
-
+    #print(F"VOTE COUNT: {total_vote_count_typed}")
+    print(F"{my_vote_type} CAPITAL FOR TOTAL   : {GET_TYPED_PAYOUT( my_vote_type)}")
+    print(F"{my_vote_type} CAPITAL FOR MANSURA : {BROKEN_ROUNDING(total_capital_for_equity)} [%{equity_percentage}]")
+    print(F"{my_vote_type} CAPITAL FOR SEARCH  : {BROKEN_ROUNDING(total_capital_for_search)} [%{search_equity_percentage}]")
+    print(F"{my_vote_type} CAPITAL FOR USERS   : {total_capital_typed}")
+    
     for key, value in freq.items():        
         # print("FILE ID=", key, ":", "VOTES=",value)
         value = {"VOTES":value, 
@@ -227,7 +233,9 @@ def GET_FREQUENCY_DICT_TYPED(my_vote_type):
     
         
     
+    #print("\nTESTERS\n")
     new_dict["EQUITY"] = BROKEN_ROUNDING(total_capital_for_equity)
+    new_dict["SEARCH"] = BROKEN_ROUNDING(total_capital_for_search)
     #for key, value in new_dict.items():        
     #     print(key, ":",value)
     
@@ -380,7 +388,8 @@ def UPDATE_BALANCE_FROM_FINAL_DICT(final_dict, vote_type, testing=False):
     # 1 UPDATE EACH USER + THEIR WINNINGS
     try:
         for key, value in final_dict.items():        
-            if key != "EQUITY":
+            if key != "EQUITY" and key != "SEARCH":
+                print("FINAL POST/VOTE UPDATES:")
                 #print("i")
                 #UPDATE ALL THE PLAYERS IN THE GAME 
                 
@@ -392,7 +401,8 @@ def UPDATE_BALANCE_FROM_FINAL_DICT(final_dict, vote_type, testing=False):
                 """)
                 conn.commit()
      
-            else: # UPDATING ALL THE PEOPLE WHO HOLD EQUITY
+            elif key == "EQUITY": # UPDATING ALL THE PEOPLE WHO HOLD EQUITY
+                print("FINAL EQUITY UPDATES:")
                 # print(key, value)
                 #print("j")
                 equity_holders_dict = GET_ALL_EQUITY_HOLDERS()
@@ -413,7 +423,19 @@ def UPDATE_BALANCE_FROM_FINAL_DICT(final_dict, vote_type, testing=False):
                     WHERE username = '{name}';
                     """)
                     conn.commit()
-        
+            elif key == "SEARCH":
+                #print("FINAL SEARCH UPDATES:")
+                #print(key, value)
+                for key__, value__ in value.items():
+                    # print(f"{key__}: {value__}")
+                    
+                    cursor.execute(f"""
+                        UPDATE USERS 
+                        SET balance = ROUND(balance + {value__}, 2)
+                        WHERE username = '{key__}';
+                        """)
+                    conn.commit()
+                    
         # 2 CHANGE TYPE BACK TO 0 IF LIVE
         if not testing:
             cursor.execute(f"""
@@ -489,9 +511,8 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
     
     FINAL_DICT = {} 
     for key, value in update_dict.items():
-        # print(key)
         # print(key, value)
-        if key != "EQUITY":
+        if key != "EQUITY" and key != "SEARCH":
             name_array = value['ORDER']            
             dataset_id_total_capital = (value['VALUE']['AMOUNT'])    
         
@@ -543,14 +564,37 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
                     FINAL_DICT[username] = float(value["RATIO"][username])
                 else:
                     FINAL_DICT[username] += float(value["RATIO"][username])
-        else:
+        elif key == "EQUITY":\
             # print("DOING ANY OF THIS?")
             equity_dict = GET_ALL_EQUITY_HOLDERS()
             FINAL_DICT[key] = {
                 "AMOUNT": value,
                 "EQUITY":equity_dict 
             }
-            # print(F"EQUITY DICT {key}, {value}")
+            # print(F"\n\n\n\nEQUITY DICT {key}, {value}")
+            # print(equity_dict)
+        elif key == "SEARCH":
+            #print("GOT TO EARCH FUNCTIONALITY")
+            search_dict = CREATE_SEARCH_VOTE_FREQUNCY_DICT()
+            total_search_equity = value
+            
+            dict_of_search_details = {}
+            for key__, value__ in search_dict.items():
+                
+                dollar_amount = total_search_equity * value__['PERCENTAGE']
+                amount_for_creator = BROKEN_ROUNDING(dollar_amount / 2) #creator half
+                dollar_amount -= amount_for_creator
+
+                #print(key__, value__, dollar_amount)
+                # dict_of_search_details[key__] = BROKEN_ROUNDING(dollar_amount / len(value__['SEARCHERS_LIST']))
+                creator = value__["SEARCH_CREATOR"]
+                for i in value__["SEARCHERS_LIST"]:
+                    #print("EQUATION IS: ", dollar_amount, "/", len(value__["SEARCHERS_LIST"]))
+                    dict_of_search_details[i] = BROKEN_ROUNDING(dollar_amount / len(value__["SEARCHERS_LIST"]))
+                dict_of_search_details[creator] = amount_for_creator
+
+            FINAL_DICT[key] = dict_of_search_details
+            # print(dict_of_search_details)
     #print("\nFINAL DICT INFO")
     #print("GOT TO WRITING TO DIST EXCEL")
     for key, value in FINAL_DICT.items():
@@ -579,6 +623,7 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
         all_temp_dicts=all_temp_dicts,
         testing=testing
     )
+    # exit()
     UPDATE_BALANCE_FROM_FINAL_DICT(FINAL_DICT, vote_type, testing)
 
 
@@ -775,7 +820,7 @@ def RUN_WITH_TIME_TEST():
     # get the start time
     st = time.time()
 
-    FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Daily", testing=True)
+    FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly", testing=True)
     # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly", testing=True)
     # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Yearly", testing=True)
         
@@ -1066,8 +1111,88 @@ def GET_DISTRO_ALGO_BY_FILE_ID(file_id):
     #print("DISTRO DETAILS:", distro_details)
     #return ""
 
+
+#============================search related
+def CREATE_SEARCH_VOTE_FREQUNCY_DICT():
+    array_of_searches = GET_ALL_SEARCH_VOTES()
+    search_vote_freq_dict = {}
+    for i in array_of_searches:
+        # print(i)
+        if i[1] in search_vote_freq_dict:
+            # WHAT I NEED TO DO NEXT IS ATTACH ALL THE PEOPLE WHO VOTED FOR THIS DATASET IN AN ARRAY
+            search_vote_freq_dict[i[1]]['AMOUNT'] +=1
+            search_vote_freq_dict[i[1]]['SEARCHERS_LIST'].append(i[2])
+        else:
+            search_creator = GET_CREATOR_OF_SEARCH_ALGO_BY_SEARCH_ID(i[1])
+            search_vote_freq_dict[i[1]] = {"AMOUNT": 1, 'SEARCHERS_LIST': [i[2]], 'SEARCH_CREATOR': search_creator}
+    
+    TOTAL_NUM_SEARCH_VOTES = GET_NUM_SEARCH_VOTES()
+    for key, value in search_vote_freq_dict.items():
+        percentage = BROKEN_ROUNDING(value['AMOUNT'] / TOTAL_NUM_SEARCH_VOTES)
+        value['PERCENTAGE'] = percentage
+
+    #for key, value in search_vote_freq_dict.items():
+    #    print(key, value)
+    
+    return search_vote_freq_dict
+
+def GET_ALL_SEARCH_VOTES():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(f"""
+    SELECT Search_Vote_Id, Search_id, Voter_Username
+    FROM SEARCH_VOTES
+    
+    """
+    )
+    vote_list = []
+    for i in cursor.fetchall():
+        # print(i)
+        vote_id = i[0]
+        search_algo_id = i[1]
+        voter_name = i[2]   
+        vote_list.append([vote_id,search_algo_id,voter_name])     
+    return vote_list
+
+
+def GET_CREATOR_OF_SEARCH_ALGO_BY_SEARCH_ID(search_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(f"""
+        SELECT Username
+        FROM SEARCH_ALGORITHMS
+        WHERE Search_id = {search_id}
+    """
+    )
+    
+    username = ""
+    for i in cursor.fetchall():
+        username = i[0]
+
+
+    return username
+
+
+def GET_NUM_SEARCH_VOTES():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(f"""
+    SELECT COUNT(*) 
+    FROM SEARCH_VOTES
+    """
+    )
+    count = 0 
+    for i in cursor.fetchall():
+        count = i[0]
+    # print("TOTAL NUM VOTES", count)
+    return count
+#============================search related
+
 # GET_DISTRO_ALGO_BY_FILE_ID(1)
 # PURE_LOG_DISTRIBUTION(100.00, test_ordered_array)
 # EQUAL_DISTRIBUTION(100.00, test_ordered_array)
 # SECTIONED_EQUAL_DISTRIBUTION(19.91, test_ordered_array, sections=2)
-# RUN_WITH_TIME_TEST()
+RUN_WITH_TIME_TEST()

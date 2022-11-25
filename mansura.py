@@ -999,10 +999,23 @@ def instructions():
     helpers.log_function("request", request)
     return render_template(f"instructions.html",
     )
+
 @app.route("/leaderboards", methods=['GET'])
 def leaderboards():
     helpers.log_function("request", request)
     return render_template(f"leaderboards.html",
+    )
+
+@app.route("/messages", methods=['GET'])
+def messages():
+    helpers.log_function("request", request)
+    return render_template(f"messages.html",
+    )
+
+@app.route("/notifications", methods=['GET'])
+def notifications():
+    helpers.log_function("request", request)
+    return render_template(f"notifications.html",
     )
 
 

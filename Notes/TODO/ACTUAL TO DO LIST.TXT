@@ -47,6 +47,10 @@ MOTTO
 	- PAID TO SHARE
 	- PAID TO SEARCH
 
+notifications, chat ROOM
+
+public chat rooms by algorithm vs private char rooms
+
 
 0. add search to distrobution
 
