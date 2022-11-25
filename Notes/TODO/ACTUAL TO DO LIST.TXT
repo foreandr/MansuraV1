@@ -48,15 +48,11 @@ MOTTO
 	- PAID TO SEARCH
 
 notifications, chat ROOM
-
 public chat rooms by algorithm vs private char rooms
-
-
 THE REPORT SYSTEM
-
-
-
-	- EVENTUALLY DO THE FOLDER THING!
+	report button
+	block button
+		-
 1. CHANGE VOTING TO 30 4 1
 2. First n people to join this month get in free, (xd)
 	- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
@@ -106,6 +102,7 @@ THE REPORT SYSTEM
 IMPORTANT BUT LATER
 ===================
 make the history look less hsit
+	-0. EVENTUALLY DO THE FOLDER THING!
 #liek clauses case insensitive
 #UNIT TEST THHIS, WHEN COMMITING, DEMONSTRATE IT'S OFF
 #ALSO SOME WEIRD SESSION ISSUES, if it thinks youre logged in, you cant go to the log in screen, maybe redirect to profile or something instead, and if there is no profile, , redirect o login

@@ -340,9 +340,85 @@ def LIKE_LOGIC(liker_username, file_id):
         print("FAILED LIKE INSERT")
         LIKES_REMOVE(liker_username, file_id)
 
+def DILIKES_CREATE_TABLE():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
 
+    try:
+        cursor.execute(f"DROP TABLE IF EXISTS DILIKES;")
+        cursor.execute(
+                f"""
+                CREATE TABLE DILIKES(
+                    Dislike_Id SERIAL PRIMARY KEY,
+                    File_id INT,
+                    Disliker_Username varchar(50),
+                    Date_Time timestamp, 
 
+                    ---CONSTRAINTS
+                    FOREIGN KEY (File_id) REFERENCES FILES(File_id),
+                    UNIQUE (File_id, Disliker_Username) --this should allow someone to only have one like per post
+                );
+                """)
+        conn.commit()
 
+        print_green("DISLIKES CREATE COMPLETED\n")
+    except Exception as e:
+        
+        cursor.execute("ROLLBACK")
+        print_error("\nHAD TO ROLLBACK DISLIKES TABLE CREATION" + str(e) )
+        # exit()
+
+    cursor.close()
+    conn.close()
+
+def DISLIKES_INSERT(disliker_username, file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            f"""
+            INSERT INTO DISLIKES
+            (File_id, Disliker_Username, Date_Time)
+            VALUES
+            ({file_id}, '{disliker_username}', CURRENT_TIMESTAMP);
+            """)
+        conn.commit()
+        return True
+    except Exception as e:
+            # print(e)
+            log_function("error", e)
+            cursor.execute("ROLLBACK")
+            # log_function(F"USER:{uploader} FILE INSEERT FAILED")      
+            cursor.close()
+            conn.close() 
+            return False
+
+def DISLIKES_REMOVE(disliker_username, file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            f"""
+            DELETE FROM LIKES
+            WHERE Disliker_username = '{disliker_username}' AND File_id = {file_id}
+            """)
+        conn.commit()
+    except Exception as e:
+            # print(e)
+            log_function("error", e)
+            cursor.execute("ROLLBACK")
+            # log_function(F"USER:{uploader} FILE INSEERT FAILED")      
+            cursor.close()
+            conn.close() 
+
+def DISLIKE_LOGIC(disliker_username, file_id):
+    if DISLIKES_INSERT(disliker_username, file_id): # RETURNS TRUE IF SMOOTH
+        print("SUCCESSFUL DISLIKE INSERT")
+        
+    else:
+        print("FAILED DISLIKE INSERT")
+        DISLIKES_REMOVE(disliker_username, file_id)
 
 def GET_COUNT_LIKES_BY_ID(file_id):
     cursor.execute(f"""
@@ -354,12 +430,21 @@ def GET_COUNT_LIKES_BY_ID(file_id):
     likes = cursor.fetchall()[0][0]
     print("NUM LIKES:",likes)
     return likes
+
+
 def LIKES_DEMO_INSERT():
     LIKES_INSERT("foreandr", 1)
     LIKES_INSERT("foreandr", 2)
     LIKES_INSERT("foreandr", 3)
     LIKES_INSERT("foreandr", 4)
     LIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
+
+def DISLIKES_DEMO_INSERT():
+    DISLIKES_INSERT("foreandr", 1)
+    DISLIKES_INSERT("foreandr", 2)
+    DISLIKES_INSERT("foreandr", 3)
+    DISLIKES_INSERT("foreandr", 4)
+    DISLIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
 
 
 def FILE_VOTE_CREATE_TABLE():
@@ -728,7 +813,7 @@ def USER_FULL_RESET():
     
     # SET TIMEZONE
     # SET_TIME_ZONE(conn)
-    FUNCTION_AND_PROCEDURES()
+    
 
     # DROPPING ALL TABLES
     DROP_ALL_TABLES()
@@ -740,6 +825,7 @@ def USER_FULL_RESET():
     CREATE_PAYOUTS_TABLE()
     FILE_CREATE_TABLE()   
     LIKES_CREATE_TABLE()
+    DILIKES_CREATE_TABLE()
     FILE_VOTE_CREATE_TABLE() 
     CONNECTION_CREATE_TABLE()
     CREATE_MANSURA_TABLE()
@@ -749,6 +835,8 @@ def USER_FULL_RESET():
     CREATE_TABLE_POST_FAVOURITES()
     EQUITY_CREATE_TABLE()
 
+    FUNCTION_AND_PROCEDURES()
+
     USER_INSERT_MULTIPLE()
     CONNECTION_INSERT_MULTIPLE()
     MANSURA_SUBSCRIBE_INSERT_MULTIPLE_DEMO()
@@ -756,6 +844,7 @@ def USER_FULL_RESET():
     FILE_VOTE_INSERT_DEMO() # VOTES ON CSVS
     SEARCH_ALGO_INSERT_DEMO_MULTIPLE()
     LIKES_DEMO_INSERT()
+    DISLIKES_DEMO_INSERT()
     DEFAULT_EQUITY_INSERT()
     # EQUITY CAN GO LAST, DOESN'T INTERFERE WITH ANYTHING
     
@@ -778,16 +867,15 @@ def DROP_ALL_TABLES():
     cursor = conn.cursor()
     try:
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS POST_FAVOURITES;")
+            cursor.execute(f"DROP TABLE IF EXISTS POST_FAVOURITES CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS POST_FAVOURITES;")
         except Exception as e:
             cursor.execute("ROLLBACK")
             log_function("error", e)
         
-        
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS SEARCH_FAVOURITES;")
+            cursor.execute(f"DROP TABLE IF EXISTS SEARCH_FAVOURITES CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS SEARCH_FAVOURITES;")
         except Exception as e:
@@ -795,15 +883,23 @@ def DROP_ALL_TABLES():
             log_function("error", e)
 
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS SEARCH_VOTES;")
+            cursor.execute(f"DROP TABLE IF EXISTS SEARCH_VOTES CASCADE;")
             conn.commit()
-            print_green("DROPPED TABLE IF EXISTS SEARCH_VOTES;")
+            print_green("DROPPED TABLE IF EXISTS SEARCH_VOTES ;")
         except Exception as e:
             cursor.execute("ROLLBACK")
             log_function("error", e)
 
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS LIKES;")
+            cursor.execute(f"DROP TABLE IF EXISTS DISLIKES CASCADE;")
+            conn.commit()
+            print_green("DROPPED TABLE IF EXISTS DISLIKES;")
+        except Exception as e:
+            cursor.execute("ROLLBACK")
+            log_function("error", e)
+
+        try:
+            cursor.execute(f"DROP TABLE IF EXISTS LIKES CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS LIKES;")
         except Exception as e:
@@ -811,7 +907,7 @@ def DROP_ALL_TABLES():
             log_function("error", e)
         
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS SEARCH_ALGORITHMS;")
+            cursor.execute(f"DROP TABLE IF EXISTS SEARCH_ALGORITHMS CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS SEARCH_ALGORITHMS;")
         except Exception as e:
@@ -819,7 +915,7 @@ def DROP_ALL_TABLES():
             log_function("error", e)
 
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS EQUITY;")
+            cursor.execute(f"DROP TABLE IF EXISTS EQUITY CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS EQUITY;")
         except Exception as e:
@@ -827,7 +923,7 @@ def DROP_ALL_TABLES():
             print_error("[EQUITY] " + str(e))
 
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS SUBSCRIPTIONS_MENSURA;")
+            cursor.execute(f"DROP TABLE IF EXISTS SUBSCRIPTIONS_MENSURA CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS SUBSCRIPTIONS_MENSURA;")
         except Exception as e:
@@ -835,7 +931,7 @@ def DROP_ALL_TABLES():
             print_error("[SUBSCRIPTIONS_MENSURA] " + str(e))
                
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS MODEL_VOTES;")
+            cursor.execute(f"DROP TABLE IF EXISTS MODEL_VOTES CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS MODEL_VOTES;")
         except Exception as e:
@@ -843,7 +939,7 @@ def DROP_ALL_TABLES():
             print_error("[MODEL VOTES] " + str(e))
             
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS MODEL;")
+            cursor.execute(f"DROP TABLE IF EXISTS MODEL CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS MODEL;")
         except Exception as e:
@@ -851,7 +947,7 @@ def DROP_ALL_TABLES():
             print_error("[MODEL] " + str(e))
                  
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS FILE_VOTES;")
+            cursor.execute(f"DROP TABLE IF EXISTS FILE_VOTES CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS FILE_VOTES;")
         except Exception as e:
@@ -859,7 +955,7 @@ def DROP_ALL_TABLES():
             print_error("[FILE_VOTES] " + str(e) )
 
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS FILES;")
+            cursor.execute(f"DROP TABLE IF EXISTS FILES CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS FILES;")
         except Exception as e:
@@ -867,7 +963,7 @@ def DROP_ALL_TABLES():
             print_error("[FILES] " + str(e))
 
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS CONNECTIONS;")
+            cursor.execute(f"DROP TABLE IF EXISTS CONNECTIONS CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS CONNECTIONS;")
         except Exception as e:
@@ -875,7 +971,7 @@ def DROP_ALL_TABLES():
             print_error("[CONNECTIONS]" + str(e))
 
         try:        
-            cursor.execute(f"DROP TABLE IF EXISTS USERS;")
+            cursor.execute(f"DROP TABLE IF EXISTS USERS CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS USERS;")
         except Exception as e:
@@ -3122,6 +3218,11 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
                 SELECT COUNT(*)
                 FROM LIKES likes
                 WHERE likes.File_id = F.File_id 
+            ),
+            (
+                SELECT COUNT(*)
+                FROM DISLIKES dislikes
+                WHERE dislikes.File_id = F.File_id 
             )
 
         FROM FILES F
@@ -3163,7 +3264,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     year_votes = []
     total_votes = []
     likes = []
-
+    dislikes = []
     #INDIVIDUAL USER
     daily_left = ""
     monthly_left = "" 
@@ -3204,6 +3305,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         except:
             pass
         likes.append(i[18])
+        dislikes.append(i[19])
         
 
     if daily_left != "":
@@ -3244,7 +3346,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     conn.close()
     #print("THESE ARE MY SERVER SIDE SEARCH ARGUMENTS")
     #print(search_arguments)
-    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, search_arguments
+    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, search_arguments
 
 
 def GRAB_SEARCH_ALGO(search_algo_path):

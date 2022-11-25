@@ -89,7 +89,7 @@ def home():
     #TODO: what I may have to do is do a similar query to the one below, but just returning a path list, grab all the paths that meet the criteria, then stick is back into
     # a function that returns the correct info with the search value in there as welll
 
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
     
     
     #FOR DIABLING OR ACTIVATING SCROLL LOGIC
@@ -1016,6 +1016,12 @@ def messages():
 def notifications():
     helpers.log_function("request", request)
     return render_template(f"notifications.html",
+    )
+
+@app.route("/tribunal", methods=['GET'])
+def tribunal():
+    helpers.log_function("request", request)
+    return render_template(f"tribunal.html",
     )
 
 
