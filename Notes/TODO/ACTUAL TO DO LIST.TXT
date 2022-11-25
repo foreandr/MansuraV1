@@ -99,6 +99,7 @@ MOTTO
 
 IMPORTANT BUT LATER
 ===================
+make the history look less hsit
 #liek clauses case insensitive
 #UNIT TEST THHIS, WHEN COMMITING, DEMONSTRATE IT'S OFF
 #ALSO SOME WEIRD SESSION ISSUES, if it thinks youre logged in, you cant go to the log in screen, maybe redirect to profile or something instead, and if there is no profile, , redirect o login
