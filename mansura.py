@@ -843,7 +843,7 @@ def file_vote(file_id, vote_type):
         return redirect(url_for("home"))
     
     if vote_type == "dislike":
-        print("DOING LIKE LOGIC")
+        print("DOING DISLIKE LOGIC")
         database.DISLIKE_LOGIC(session["user"], file_id)
         return redirect(url_for("home"))
     
@@ -987,11 +987,13 @@ def search_algorithms_page():
     return render_template(f"search_algorithms_page.html",
     )
 
+
 @app.route("/contact", methods=['GET'])
 def contact():
     helpers.log_function("request", request)
     return render_template(f"contact.html",
     )
+
 
 @app.route("/FAQ", methods=['GET'])
 def FAQ():
@@ -1011,11 +1013,13 @@ def leaderboards():
     return render_template(f"leaderboards.html",
     )
 
+
 @app.route("/messages", methods=['GET'])
 def messages():
     helpers.log_function("request", request)
     return render_template(f"messages.html",
     )
+
 
 @app.route("/notifications", methods=['GET'])
 def notifications():
@@ -1028,6 +1032,20 @@ def tribunal():
     helpers.log_function("request", request)
     return render_template(f"tribunal.html",
     )
+
+
+@app.route("/patch_notes", methods=['GET'])
+def patch_notes():
+    helpers.log_function("request", request)
+    return render_template(f"patch_notes.html",
+    )
+
+@app.route("/newsletter", methods=['GET'])
+def newsletter():
+    helpers.log_function("request", request)
+    return render_template(f"newsletter.html",
+    )
+
 
 
 if __name__ == '__main__':
