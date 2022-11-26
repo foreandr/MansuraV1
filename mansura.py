@@ -137,6 +137,7 @@ def home():
                             dates_list=dates_list,
                             post_sources_list=post_sources_list,
                             likes=likes,
+							dislikes=dislikes,
                             
                             day_votes=day_votes,
                             month_votes=month_votes,
@@ -829,8 +830,6 @@ def user_download_excel(vote_timeframe, vote_date):
 		helpers.log_function("error", e)
 
 
-
-
 @app.route("/vote/<file_id>/<vote_type>", methods=['GET', 'POST'])
 def file_vote(file_id, vote_type):
     helpers.log_function("request", request)
@@ -843,7 +842,13 @@ def file_vote(file_id, vote_type):
         database.LIKE_LOGIC(session["user"], file_id)
         return redirect(url_for("home"))
     
+    if vote_type == "dislike":
+        print("DOING LIKE LOGIC")
+        database.DISLIKE_LOGIC(session["user"], file_id)
+        return redirect(url_for("home"))
     
+
+	
     is_already_subbed_this_month = database.CHECK_DATE( session["user"])
     if is_already_subbed_this_month:
         #print(is_already_subbed_this_month)

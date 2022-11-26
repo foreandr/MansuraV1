@@ -345,10 +345,10 @@ def DILIKES_CREATE_TABLE():
     cursor = conn.cursor()
 
     try:
-        cursor.execute(f"DROP TABLE IF EXISTS DILIKES;")
+        cursor.execute(f"DROP TABLE IF EXISTS DISLIKES;")
         cursor.execute(
                 f"""
-                CREATE TABLE DILIKES(
+                CREATE TABLE DISLIKES(
                     Dislike_Id SERIAL PRIMARY KEY,
                     File_id INT,
                     Disliker_Username varchar(50),
@@ -400,7 +400,7 @@ def DISLIKES_REMOVE(disliker_username, file_id):
     try:
         cursor.execute(
             f"""
-            DELETE FROM LIKES
+            DELETE FROM DISLIKES
             WHERE Disliker_username = '{disliker_username}' AND File_id = {file_id}
             """)
         conn.commit()
@@ -826,6 +826,7 @@ def USER_FULL_RESET():
     FILE_CREATE_TABLE()   
     LIKES_CREATE_TABLE()
     DILIKES_CREATE_TABLE()
+    
     FILE_VOTE_CREATE_TABLE() 
     CONNECTION_CREATE_TABLE()
     CREATE_MANSURA_TABLE()
