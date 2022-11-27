@@ -1,6 +1,6 @@
 REFRESH PROCESS
 source venv/bin/activate
-
+IF CHANGED CLOUD STRUCTURE, RECREATE tmp/mansura/ipc.sock file
 IF INSTALLED NEW LIBRARIES
 1. pip install -r requirmentx.txt
 IF CHANGE DB
