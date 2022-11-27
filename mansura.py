@@ -8,7 +8,7 @@ import flask
 import os
 
 
-from flask import Flask, render_template, request, session, redirect, url_for, g, send_from_directory, Response
+from flask import Flask, render_template, request, session, redirect, url_for, g, send_from_directory, Response, send_file
 from psycopg2 import connect
 import requests
 import Python.database as database
@@ -89,7 +89,7 @@ def home():
     #TODO: what I may have to do is do a similar query to the one below, but just returning a path list, grab all the paths that meet the criteria, then stick is back into
     # a function that returns the correct info with the search value in there as welll
 
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
     
     
     #FOR DIABLING OR ACTIVATING SCROLL LOGIC
@@ -137,6 +137,7 @@ def home():
                             dates_list=dates_list,
                             post_sources_list=post_sources_list,
                             likes=likes,
+							dislikes=dislikes,
                             
                             day_votes=day_votes,
                             month_votes=month_votes,
@@ -253,37 +254,21 @@ def user_profile():
     # print(request)
     if "email" not in session:
         return redirect(url_for('login'))
-    elif request.method == "GET":
-        #print('USING USER PROFILE - GET')
-        #print(session)
-        # return redirect(url_for("user_profile"))
+    
+    
+    if request.method == "GET":
         return redirect(url_for('user_profile_name', username=session['user']))
-
-        # return render_template(f"user_profiles/{session['user']}.html", friends=my_friends,account_name=session['user'])
-
+    
     elif request.method == "POST":
-
-        #password = session["password"]  # DON'T NEED?
-        #email = session["email"]  # DON'T NEED?
         user = session["user"]
         id = session["id"]
 
-        # print("ID:", id)
-        # print("USERNAME:", user)
-        # print("PASSWORD:", password)
-        # print("EMAIL   :", email)
-        # print("-------")
         if request.files:
-            file = request.files['file']  # because name in HTML FORM is file
-            my_description = ""  # only here because needs to be global
-            my_file_size = 0
-            # print(request.headers)
+            file = request.files['file']  
+            my_description = ""  
 
-            # print(file)
-            # print(app.config["FILE UPLOADS"])
-            # print(file.filename)
             my_path_with_file = ""
-            # print("FILE", file.content_type, type(file.content_type))
+
             if file.content_type == "text/csv":  # if it's a csv file, store it at the user location
                 my_path_with_file = f"{app.config['FILE UPLOADS']}/{user}/csv_files/{file.filename}"
                 file.save(my_path_with_file)
@@ -295,20 +280,6 @@ def user_profile():
                 my_path_with_file = f"{app.config['FILE UPLOADS']}/{user}/profile/profile_pic.jpg"  # overriding file type
                 file.save(my_path_with_file)
 
-            # print("MY PATH:", my_path)
-            #print("MY PATH W/F:", my_path_with_file)
-            '''
-            database.FILE_INSERT(
-                connection,
-                file_path=my_path_with_file,
-                description=my_description,
-                user_id=id,
-                file_size=my_file_size
-            )
-            '''
-            #print("OUT OF CHECKING FILETYPE-------")
-            #print("Saved and completed")
-        # return redirect(url_for("user_profile", message="hi")) # THIS APPEARS IN THE ADDRESS BAR AS A QUERY
         return redirect(url_for("user_profile"))
     
 
@@ -816,6 +787,19 @@ def password_reset():
         return render_template(f"password_reset.html")
 
 
+@app.route("/user_download_excel/<vote_timeframe>/<vote_date>", methods=['GET', 'POST'])
+def user_download_excel(vote_timeframe, vote_date):
+	print("hello")
+	try:
+		og_path = "/root/mansura/Python/HISTORY/"
+		custom_path = og_path + vote_timeframe +"/" + vote_date
+		print("custom_path", custom_path)
+		filename = vote_date
+		return send_file(custom_path, download_name=filename)
+	except Exception as e:
+		helpers.log_function("error", e)
+
+
 @app.route("/vote/<file_id>/<vote_type>", methods=['GET', 'POST'])
 def file_vote(file_id, vote_type):
     helpers.log_function("request", request)
@@ -828,7 +812,13 @@ def file_vote(file_id, vote_type):
         database.LIKE_LOGIC(session["user"], file_id)
         return redirect(url_for("home"))
     
+    if vote_type == "dislike":
+        print("DOING DISLIKE LOGIC")
+        database.DISLIKE_LOGIC(session["user"], file_id)
+        return redirect(url_for("home"))
     
+
+	
     is_already_subbed_this_month = database.CHECK_DATE( session["user"])
     if is_already_subbed_this_month:
         #print(is_already_subbed_this_month)
@@ -953,11 +943,114 @@ def settings():
     return render_template(f"settings.html",
     )
 
-@app.route("/terms_and_conditions", methods=['GET', 'POST'])
+
+@app.route("/terms_and_conditions", methods=['GET'])
 def terms_and_conditions():
     helpers.log_function("request", request)
     return render_template(f"terms_and_conditions.html",
     )
+
+
+@app.route("/search_algorithms_page", methods=['GET', 'POST'])
+def search_algorithms_page():
+    helpers.log_function("request", request)
+    return render_template(f"search_algorithms_page.html",
+    )
+
+
+@app.route("/contact", methods=['GET'])
+def contact():
+    helpers.log_function("request", request)
+    return render_template(f"contact.html",
+    )
+
+
+@app.route("/FAQ", methods=['GET'])
+def FAQ():
+    helpers.log_function("request", request)
+    return render_template(f"FAQ.html",
+    )
+
+
+@app.route("/instructions", methods=['GET'])
+def instructions():
+    helpers.log_function("request", request)
+    return render_template(f"instructions.html",
+    )
+
+
+@app.route("/leaderboards", methods=['GET'])
+def leaderboards():
+    helpers.log_function("request", request)
+    return render_template(f"leaderboards.html",
+    )
+
+
+@app.route("/messages", methods=['GET'])
+def messages():
+    helpers.log_function("request", request)
+    return render_template(f"messages.html",
+    )
+
+
+@app.route("/notifications", methods=['GET'])
+def notifications():
+    helpers.log_function("request", request)
+    if "email" not in session:
+        return redirect(url_for('login'))
+
+    user_id = database.GET_USER_ID(session["user"])
+    notifications = database.GET_NOTIFICATIONS_BY_USER_ID(user_id)
+
+    LIKES = []
+    DISLIKES = []
+    REPLY = []
+    VOTES = []
+    NEW_FOLLOWER = []
+    #print(user_id)
+    for i in notifications:
+        #print(i)
+        if i[0] == "LIKE":
+            LIKES.append(i[1])
+        if i[0] == "DISLIKE":
+            DISLIKES.append(i[1])    
+        if i[0] == "REPLY":
+            REPLY.append(i[1])
+        if i[0] == "VOTES":
+            VOTES.append(i[1])        
+        if i[0] == "NEW FOLLOWER":
+            NEW_FOLLOWER.append(i[1])    
+    
+    return render_template(f"notifications.html",
+        LIKES=LIKES,
+        DISLIKES=DISLIKES,
+        REPLY=REPLY,
+        VOTES=VOTES,
+        NEW_FOLLOWER=NEW_FOLLOWER
+    )
+
+
+@app.route("/tribunal", methods=['GET'])
+def tribunal():
+    helpers.log_function("request", request)
+    return render_template(f"tribunal.html",
+    )
+
+
+@app.route("/patch_notes", methods=['GET'])
+def patch_notes():
+    helpers.log_function("request", request)
+    return render_template(f"patch_notes.html",
+    )
+
+
+@app.route("/newsletter", methods=['GET'])
+def newsletter():
+    helpers.log_function("request", request)
+    return render_template(f"newsletter.html",
+    )
+
+
 
 if __name__ == '__main__':
     #SUBTITLE Network Societey and it's Future

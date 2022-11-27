@@ -37,7 +37,6 @@ def PROCEDURE_CUSTOM_MODEL_INSERT():
 def PROCEDURE_USER_MONTHLY_SUBSCRIPTION_FEE():
     conn = connection.test_connection()
     print("CREATING [PROCEDURE_USER_MONTHLY_SUBSCRIPTION_FEE] PROCEDURE...")
-    print("BUG!!!!!!!!!!!!!!!!!!!! -- THIS NEEDS TO BE CHANGED TO MINUS ")
     try:
         cursor = conn.cursor()
         cursor.execute(f"""

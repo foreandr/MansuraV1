@@ -327,6 +327,7 @@ def STRING_SIMILARITY_CHECK(a, b):
     from difflib import SequenceMatcher
     return SequenceMatcher(None, a, b).ratio()
 
+
 def log_function(msg_type, log_string):
     #if log_string == "write() argument must be str, not None":
     #    print("got here")
