@@ -437,14 +437,14 @@ def LIKES_DEMO_INSERT():
     LIKES_INSERT("foreandr", 2)
     LIKES_INSERT("foreandr", 3)
     LIKES_INSERT("foreandr", 4)
-    LIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
+    #LIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
 
 def DISLIKES_DEMO_INSERT():
     DISLIKES_INSERT("foreandr", 1)
     DISLIKES_INSERT("foreandr", 2)
     DISLIKES_INSERT("foreandr", 3)
     DISLIKES_INSERT("foreandr", 4)
-    DISLIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
+    #DISLIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
 
 
 def FILE_VOTE_CREATE_TABLE():
@@ -3446,3 +3446,133 @@ def GET_VOTES_AND_BALANCE_AND_PAYOUTS(username):
         yearly_pool = value[6]
     
     return balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool
+
+def GET_NOTIFICATIONS_BY_USER_ID(user_id):
+    # TODO:GOING TO HAVE TO BE ABLE TO SPECIFY WHICH ONES YOU WANT TO SEE
+    # TODO: SHOULD BE SIMPLIFED, ALSO DATE SORTING ISNT WORKING
+    conn = connection.test_connection()
+
+    # 1. GET INCOMING FOLLOWERS   
+    cursor = conn.cursor()
+    cursor.execute(f"""
+        SELECT  creation_date,Friendship_Id, User_Id1, User_Id2
+        FROM CONNECTIONS
+        WHERE User_Id2 = {user_id} --USER_ID2 BECAUSE YOU'RE THE RECIEVER NOT THE SENDER
+        ORDER BY creation_date       
+    """)
+    
+    NOTIFS = []
+    for i in cursor.fetchall():
+        NOTIFS.append(["NEW FOLLOWER", [i[0],i[1],i[2],i[3]]])
+    cursor.close()
+
+    cursor = conn.cursor()
+    cursor.execute(f"""
+        SELECT File_Id
+        FROM FILES file
+        WHERE file.UserId = {user_id}
+    """)
+    
+    user_file_ids = []
+    for i in cursor.fetchall():
+        user_file_ids.append(i[0])
+    cursor.close()
+    #print(user_file_ids)
+
+    # 2. GET POSTS
+    REPLYING_TO_ID = []
+    LIKES_TO_ID = []
+    DISLIKES_TO_ID = []
+    VOTES_TO_ID = []
+    for i in user_file_ids:
+        # REPLIES
+        cursor = conn.cursor()
+        cursor.execute(f"""
+            SELECT  Date_Time, File_id, File_PATH,  Uploader, UserId, Post_foreign_id_source
+            FROM FILES file
+            WHERE file.Post_foreign_id_source = '{i}'
+            ORDER BY Date_Time 
+            LIMIT 100
+        """)
+        
+        for j in cursor.fetchall():
+            REPLYING_TO_ID.append([j[0],j[1],j[2],j[3],j[4],j[5]])
+        cursor.close()
+
+        # LIKES
+        cursor = conn.cursor()
+        cursor.execute(f"""
+            SELECT Date_Time, Like_Id, File_id, Liker_Username
+            FROM LIKES 
+            WHERE File_id = '{i}'
+            ORDER BY Date_Time
+            LIMIT 100
+            """)
+        
+        
+        for k in cursor.fetchall():
+            LIKES_TO_ID.append([k[0],k[1],k[2],k[3]])
+        cursor.close()
+
+        # DISLIKES
+        cursor = conn.cursor()
+        cursor.execute(f"""
+            SELECT Date_Time, Dislike_Id, File_id, Disliker_Username, Date_Time
+            FROM DISLIKES 
+            WHERE File_id = '{i}'
+            ORDER BY Date_Time
+            LIMIT 100
+            """)
+        
+        for y in cursor.fetchall():
+            DISLIKES_TO_ID.append([y[0],y[1],y[2],y[3]])
+        cursor.close()
+
+        # VOTES
+        cursor = conn.cursor()
+        cursor.execute(f"""
+            SELECT Date_Time, File_Vote_Id, File_id, Vote_Type, Voter_Username
+            FROM FILE_VOTES 
+            WHERE File_id = '{i}'
+            ORDER BY Date_Time
+            LIMIT 100
+            """)
+        
+        for t in cursor.fetchall():
+            VOTES_TO_ID.append([t[0],t[1],t[2],t[3],t[4],])
+        cursor.close()
+
+        # TAGS
+        #TODO: IMPEMENT
+        # FINANCIAL
+        #TODO: IMPEMENT
+            # - got money, withrdraw etc
+
+
+        # MESSAGES
+
+    for i in REPLYING_TO_ID:
+        NOTIFS.append(["REPLY",i])
+    for i in LIKES_TO_ID:
+        NOTIFS.append(["LIKE",i])
+    for i in DISLIKES_TO_ID:
+        NOTIFS.append(["DISLIKE", i])
+    for i in VOTES_TO_ID:
+        NOTIFS.append(["VOTES", i])
+
+
+
+    # 5. DAILY REWARD X
+    # CREATE TABLE CASH_NOTIFICATIONS
+    # PAYPAL MONEY ON ITS WAY
+    # GOT YOUR FUNDS!
+    # RECOVERY ETC
+    # MESSAGES
+
+
+    
+    #for i in NOTIFS:
+    #    print(i)
+    
+    return NOTIFS
+

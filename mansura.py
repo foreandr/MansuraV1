@@ -1024,7 +1024,37 @@ def messages():
 @app.route("/notifications", methods=['GET'])
 def notifications():
     helpers.log_function("request", request)
+    if "email" not in session:
+        return redirect(url_for('login'))
+
+    user_id = database.GET_USER_ID(session["user"])
+    notifications = database.GET_NOTIFICATIONS_BY_USER_ID(user_id)
+
+    LIKES = []
+    DISLIKES = []
+    REPLY = []
+    VOTES = []
+    NEW_FOLLOWER = []
+    #print(user_id)
+    for i in notifications:
+        #print(i)
+        if i[0] == "LIKE":
+            LIKES.append(i[1])
+        if i[0] == "DISLIKE":
+            DISLIKES.append(i[1])    
+        if i[0] == "REPLY":
+            REPLY.append(i[1])
+        if i[0] == "VOTES":
+            VOTES.append(i[1])        
+        if i[0] == "NEW FOLLOWER":
+            NEW_FOLLOWER.append(i[1])    
+    
     return render_template(f"notifications.html",
+        LIKES=LIKES,
+        DISLIKES=DISLIKES,
+        REPLY=REPLY,
+        VOTES=VOTES,
+        NEW_FOLLOWER=NEW_FOLLOWER
     )
 
 @app.route("/tribunal", methods=['GET'])

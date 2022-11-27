@@ -15,7 +15,6 @@ from datetime import datetime
 import pytz
 import json
 
-
 import Python.db_connection as connection
 from Python.helpers import print_green, print_title, log_function
 from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
@@ -25,6 +24,7 @@ from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
 from generating_excel import WRITE_HEADERS_TO_EXCEL
 import db_connection as connection
 from  helpers import print_green, print_title, log_function
+
 ''' #TOP/BOPTTOM=================================
 
 def GET_REPLYING_TO(file_id):
@@ -160,7 +160,7 @@ def FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT(vote_type, testing=False):
     
     #for key, value in non_equity_dict.items():
     #    print(key, ":", value)
-    
+    # exit(0)
     #exit()  #THIS IS WHERE IM WORKIN CHECKPOINT 1
     UPDATE_BALANCES_TYPED(vote_type, non_equity_dict, testing)
     
@@ -564,8 +564,8 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
                     FINAL_DICT[username] = float(value["RATIO"][username])
                 else:
                     FINAL_DICT[username] += float(value["RATIO"][username])
-        elif key == "EQUITY":\
-            # print("DOING ANY OF THIS?")
+        elif key == "EQUITY":
+            # prEint("DOING ANY OF THIS?")
             equity_dict = GET_ALL_EQUITY_HOLDERS()
             FINAL_DICT[key] = {
                 "AMOUNT": value,
@@ -591,13 +591,16 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
                 for i in value__["SEARCHERS_LIST"]:
                     #print("EQUATION IS: ", dollar_amount, "/", len(value__["SEARCHERS_LIST"]))
                     dict_of_search_details[i] = BROKEN_ROUNDING(dollar_amount / len(value__["SEARCHERS_LIST"]))
+                    #print(i, dict_of_search_details[i])
                 dict_of_search_details[creator] = amount_for_creator
+                #print("SEARCH AMOUNT FOR CREATOR", amount_for_creator)
 
             FINAL_DICT[key] = dict_of_search_details
             # print(dict_of_search_details)
     #print("\nFINAL DICT INFO")
     #print("GOT TO WRITING TO DIST EXCEL")
     for key, value in FINAL_DICT.items():
+        #print(key, value)
         if type(value) is not dict:
             num = BROKEN_ROUNDING(value)
             temp_array_ = [key, num]
@@ -614,16 +617,18 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
             # IMPORTANT PRINT
             # print(f'{key}                :{num }'.rjust(38))
     # print(FINAL_DICT)
-    # exit()
+    
     equity_dict_current = GET_ALL_EQUITY_HOLDERS()
     WRITE_HEADERS_TO_EXCEL(
         equity_dict=equity_dict_current, 
         vote_type=vote_type, 
         equity_total=update_dict["EQUITY"],
+        search_dict=update_dict["SEARCH"],
         all_temp_dicts=all_temp_dicts,
         testing=testing
     )
     # exit()
+
     UPDATE_BALANCE_FROM_FINAL_DICT(FINAL_DICT, vote_type, testing)
 
 
@@ -820,8 +825,9 @@ def RUN_WITH_TIME_TEST():
     # get the start time
     st = time.time()
 
+    # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Daily", testing=True)
     FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly", testing=True)
-    # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly", testing=True)
+    
     # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Yearly", testing=True)
         
     # get the end time
@@ -1135,6 +1141,7 @@ def CREATE_SEARCH_VOTE_FREQUNCY_DICT():
     #    print(key, value)
     
     return search_vote_freq_dict
+
 
 def GET_ALL_SEARCH_VOTES():
     conn = connection.test_connection()
