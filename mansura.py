@@ -8,7 +8,7 @@ import flask
 import os
 
 
-from flask import Flask, render_template, request, session, redirect, url_for, g, send_from_directory, Response
+from flask import Flask, render_template, request, session, redirect, url_for, g, send_from_directory, Response, send_file
 from psycopg2 import connect
 import requests
 import Python.database as database
@@ -48,38 +48,60 @@ def home():
     if "email" not in session: # testasdkjhfaks
         return redirect(url_for('login'))
     helpers.log_function("request", request)
-    #print('EXECUTING INDEX FUNCTION')
     if "user" in session.keys():
         session_username = session["user"]
     else:
         session_username = ""
-    
-    #print(request.url) # TO SEE WHATS GOIN ON
-    #print(request.body)
-    #print(request.headers)
 
-    #print("SESSION USERNAME IS:", session_username)
-    
-    # PAGE NUMBER CHECK FOR GETTING NEW INFO
+    print("REQUEST TYP:",request.method)
+    print("REQUEST URL:",request.url)
 
-    # logging_function.write_to_log_daily_log_file(msg_type="request", request.headers)
+    search_json = {}
+
+    json_search_clauses = "None"
     
     if request.method == 'POST':
-        page_no = request.form.get("page_number")
-        if page_no == "None" or page_no == None:
-            page_no = 1
-        more_left = database.CHECK_FILES_NOT_OVER_LIMIT(int(page_no)+1) ##CHECK IF THE NEXT ONE WOULD BREAK THINGS
-        # print("THERE IS STILL ROOM TO SCROLL", more_left)
-        if more_left:
-            page_no = int(page_no) + 1
-        else:
-            page_no = page_no
+        search = request.form.get("search")   
+        date_check = request.form.get("date_check")  
+        order_check = request.form.get("order_check")  
+        and_or_clauses, where_clauses, hi_eq_low, num_search_text = helpers.GET_ALL_QUERY_INFO_FROM_REQUEST_FORM(request)
+        clauses_dict = [
+            and_or_clauses, 
+            where_clauses, 
+            hi_eq_low, 
+            num_search_text
+        ]
+        json_search_clauses = database.TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, session_username)
+    
+    # GRAB THE ARGS FROM QUERY BEFORE THE CURRENT PAGE [GET OR POST]
+    returned_search_arguments = request.form.get("search_arguments")
 
-        #print(page_no)
-    else:
+
+    new_json_search_clauses = helpers.COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses)
+    print("COMPOSE_SEARCHARGS_AND_JSONCLAUSE")
+    print(new_json_search_clauses)
+    print("===================================")
+
+    page_no = request.form.get("page_number")
+    print("CURRENT PAGE NUMBER:", type(page_no), page_no)
+    print("===================================")
+    if page_no == None or str(page_no) == "None":
         page_no = 1
-   
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular = database.universal_dataset_function(search_type="home", search_algo_path="foreandr-1", page_no=page_no, search_user=session_username)
+
+    #TODO: what I may have to do is do a similar query to the one below, but just returning a path list, grab all the paths that meet the criteria, then stick is back into
+    # a function that returns the correct info with the search value in there as welll
+
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
+    
+    
+    #FOR DIABLING OR ACTIVATING SCROLL LOGIC
+    numposts = len(file_ids_list)
+    if numposts < 90: # this 100 number needs to be better coded, hard coding is going to cause issues
+        can_scroll = False
+    else:
+        can_scroll = True
+
+
     # GRAB STUFF IT'S IT'S EMPTY EITHE RWAY
     if len(file_ids_list) == 0:
         balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session_username)
@@ -92,8 +114,7 @@ def home():
     source_list = []
     image_path_list = []
     distro_details_list = []
-    for i in range(len(usernames_list)):
-        # print(usernames_list[i], paths_list[i])
+    for i in range(len(usernames_list)): # GETTING POST INFO FROM PATH
         my_path = f"static/#UserData/{usernames_list[i]}/files/{paths_list[i]}"
         post_text, post_age_18, post_sources, post_image_path, distro_details = helpers.get_postinfo_from_path(my_path)
         age_18_list.insert(i, post_age_18)
@@ -102,51 +123,48 @@ def home():
         image_path_list.insert(i, post_image_path)
         distro_details_list.insert(i,distro_details)
 
-                #age_18 = f.read()
-                #print(f)
-        #print("")
-    
-    #print(len(text_list), " - ", text_list)
-    #print(len(age_18_list), " - ", age_18_list)
-    #print(len(source_list), " - ", source_list)
-    #print(len(image_path_list), " - ", image_path_list)
-    # print("FILENAMES: ", filenames)
     lengths_of_text_files = []
     for i in text_list:
         lengths_of_text_files.append(len(i))
 
     return render_template('index.html',
-                           message="index.html page",
-                           usernames_list=usernames_list,
-                           file_ids_list=file_ids_list,
-                           session_username=session_username,
-                           username_len=username_len,
+                            message="index.html page",
                            
-                           paths_list=paths_list,
-                           dates_list=dates_list,
-                           post_sources_list=post_sources_list,
+                            usernames_list=usernames_list,
+                            file_ids_list=file_ids_list,
+                            session_username=session_username,
+                            username_len=username_len,
                            
-                           day_votes=day_votes,
-                           month_votes=month_votes,
-                           year_votes=year_votes,
+                            paths_list=paths_list,
+                            dates_list=dates_list,
+                            post_sources_list=post_sources_list,
+                            likes=likes,
+							dislikes=dislikes,
+                            
+                            day_votes=day_votes,
+                            month_votes=month_votes,
+                            year_votes=year_votes,
+                            
+                            dailypool = dailypool,
+                            monthlypool = monthlypool,
+                            yearlypool = yearlypool,
+                            
+                            daily_left = daily_left,
+                            monthly_left = monthly_left,
+                            yearly_left = yearly_left,
+                            user_balance = user_balance,
                            
-                           dailypool = dailypool,
-                           monthlypool = monthlypool,
-                           yearlypool = yearlypool,
-                           
-                           daily_left = daily_left,
-                           monthly_left = monthly_left,
-                           yearly_left = yearly_left,
-                           user_balance = user_balance,
-                           
-                           text_list=text_list,
-                           lengths_of_text_files=lengths_of_text_files,
-                           age_18_list=age_18_list,
-                           source_list=source_list,
-                           image_path_list=image_path_list,
-                           distro_details=distro_details,
-                           
-                           page_no=page_no
+                            text_list=text_list,
+                            lengths_of_text_files=lengths_of_text_files,
+                            age_18_list=age_18_list,
+                            source_list=source_list,
+                            image_path_list=image_path_list,
+                            distro_details_list=distro_details_list,
+                            
+                            search_arguments=search_arguments,
+                            page_no=page_no,
+                            can_scroll=can_scroll
+
                            )
 
 
@@ -238,37 +256,21 @@ def user_profile():
     # print(request)
     if "email" not in session:
         return redirect(url_for('login'))
-    elif request.method == "GET":
-        #print('USING USER PROFILE - GET')
-        #print(session)
-        # return redirect(url_for("user_profile"))
+    
+    
+    if request.method == "GET":
         return redirect(url_for('user_profile_name', username=session['user']))
-
-        # return render_template(f"user_profiles/{session['user']}.html", friends=my_friends,account_name=session['user'])
-
+    
     elif request.method == "POST":
-
-        #password = session["password"]  # DON'T NEED?
-        #email = session["email"]  # DON'T NEED?
         user = session["user"]
         id = session["id"]
 
-        # print("ID:", id)
-        # print("USERNAME:", user)
-        # print("PASSWORD:", password)
-        # print("EMAIL   :", email)
-        # print("-------")
         if request.files:
-            file = request.files['file']  # because name in HTML FORM is file
-            my_description = ""  # only here because needs to be global
-            my_file_size = 0
-            # print(request.headers)
+            file = request.files['file']  
+            my_description = ""  
 
-            # print(file)
-            # print(app.config["FILE UPLOADS"])
-            # print(file.filename)
             my_path_with_file = ""
-            # print("FILE", file.content_type, type(file.content_type))
+
             if file.content_type == "text/csv":  # if it's a csv file, store it at the user location
                 my_path_with_file = f"{app.config['FILE UPLOADS']}/{user}/csv_files/{file.filename}"
                 file.save(my_path_with_file)
@@ -280,20 +282,6 @@ def user_profile():
                 my_path_with_file = f"{app.config['FILE UPLOADS']}/{user}/profile/profile_pic.jpg"  # overriding file type
                 file.save(my_path_with_file)
 
-            # print("MY PATH:", my_path)
-            #print("MY PATH W/F:", my_path_with_file)
-            '''
-            database.FILE_INSERT(
-                connection,
-                file_path=my_path_with_file,
-                description=my_description,
-                user_id=id,
-                file_size=my_file_size
-            )
-            '''
-            #print("OUT OF CHECKING FILETYPE-------")
-            #print("Saved and completed")
-        # return redirect(url_for("user_profile", message="hi")) # THIS APPEARS IN THE ADDRESS BAR AS A QUERY
         return redirect(url_for("user_profile"))
     
 
@@ -302,7 +290,8 @@ def upload():
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
-
+    if not database.CHECK_DATE(session["user"]):
+        return redirect(url_for("add_funds"))
     if request.method == "POST": # UPLOADING SOMETHING
         #print("GOT TO WHETHER SOMETHING IS BEING POISTED OR NOT ==================================")
         post_text = request.form.get("textbox")
@@ -327,19 +316,14 @@ def upload():
         distro_details =[distribution_algorithm_, how_many_sections]
         print(distro_details)
         print("=============================================")
-        
-        if helpers.POST_TEXT_CHECK():
-            
-            #print("TEXT WAS FINE")
-            if helpers.POST_IMG_CHECK():
-                #DO THE UPLOAD
+
+        post_text = helpers.POST_TEXT_CHECK(post_text)
+        if len(post_file.filename) != 0: #THERE IS A FILE
+            if helpers.POST_IMG_CHECK(post_file):
                 pass
             else:
                 #print("IMG HAD BAD SHIT")
-                return redirect(url_for("home"))
-        else:
-            #print("TEXT HAD BAD SHIT")
-            return redirect(url_for("home"))
+                return redirect(url_for("terms_and_conditions"))
                 
 
         #print(len(post_file.filename), post_file.filename)
@@ -360,30 +344,6 @@ def upload():
     else:
         #TODO: THIS SHOULD REDIRECT TO INDEX.HTML        
         return redirect(url_for("home"))
-
-
-@app.route('/subscribe', methods=['GET', 'POST'])
-def subscribe():
-    helpers.log_function("request", request)
-    if "email" not in session:
-        return redirect(url_for('login'))
-    #TODO: THIS WORKS BUT IT'S ALL KIND OF BUGGY
-     #print("inside of subscribe!!!!") 
-    #TODO:COULD BE MADE INTO ONE FUNCTION TO SIMPLIFY
- 
-    if "email" not in session: #TODO:PROBABLY CAN ERASE THIS SINCE THERE IS A CHECK AT THE TOP
-        return redirect(url_for('login'))
-    else:
-        #print("REQUEST", request)
-        #print("THERE WAS AN ERROR, MAYBE A GET REQUESt?")
-        return render_template(f"subscribe.html", 
-                                       session_user = session["user"],
-                                       daily_votes_left=daily_votes_left,
-                                       monthly_votes_left=monthly_votes_left,
-                                       yearly_votes_left=yearly_votes_left,
-                                       balance = balance
-
-                                       )
 
 
 @app.route('/<username>', methods=['GET', 'POST'])
@@ -428,7 +388,8 @@ def user_profile_name(username):
         reply_array = database.GET_ALL_REPLIES(file_id)
         post_username, post_file_path, post_user_id, post_foreign_id_source, post_date, file_id_ = database.GET_SINGLE_DATASET_INFO(final_filename)
             
-        file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular = database.universal_dataset_function(search_type="post", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], file_id=file_id)
+        file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, search_arguments= database.universal_dataset_function(search_type="post", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], file_id=file_id)
+
         #MIGHT BE WRTH CONSOLIDATIING INTO ONE FUNCTION
         if len(file_ids_list) == 0:
             user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user']) # THIS ASSUMES ALREADY IN SESSION, SHOULD BE
@@ -570,7 +531,7 @@ def user_profile_name(username):
     my_friends, friend_count = database.GET_FOLLOWING(username)
     my_followers, follow_count = database.GET_FOLLOWERS(username=username)
     # #TODO:might be worth doing a check befroe before the big query someday
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular = database.universal_dataset_function(search_type="prof", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], profile_username=username)
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, search_arguments = database.universal_dataset_function(search_type="prof", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], profile_username=username)
     
     if len(file_ids_list) == 0:
         # print("THERE IS NOTHING NO FILES ON HOMEPAGE HERE", session['user'])
@@ -701,36 +662,34 @@ def withdraw_funds():
     
     if request.method == "POST":
         print(F"\n {session_username} WANTS TO DO A WITHDRAWL")
-        print(request)
-        withdrawl_amount = 2
-        # withdrawl_amount = request.form["withdrawl_amount"]
+        #print(request)
+        withdrawl_amount = float(request.form.get("withdraw_amount"))
         print("WITHDRAWL AMOUNT", withdrawl_amount)
-       
-        #TODO: CHECK WITHDRAWL AMOUNT IS SMALLER THAN BALANCER
-        balance = database.GET_USER_BALANCE_SIMPLE( session["user"])
+
+        balance = float(database.GET_USER_BALANCE_SIMPLE( session["user"]))
         if balance >= withdrawl_amount:
-            
             # THEN ADD IT TO THE END OF A WITHDRAW CSV
             with open('Python/withdrawl.csv', 'a') as f: # CAN MAKE THIS AN EXTERNAL FUNCTION #TODO:
                 my_writer = writer(f)
             
                 # Pass the list as an argument into
                 # the writerow()
-                my_writer.writerow([session_username, withdrawl_amount])
+                my_writer.writerow([session_username, withdrawl_amount, date.today()])
             
                 # Close the file object
                 f.close()
-            print("FINISHED WRITING TO FILE")
+            #print("FINISHED WRITING TO FILE")
 
             # THEN REMOVE THAT AMOUNT FROM USER BALANCE
             database.WITHDRAWL_FUNCTION(session_username, withdrawl_amount)
-            print("UPDATED USER BALANCE")
+            #print("UPDATED USER BALANCE")
             #return redirect(url_for("index.html"))
             return redirect(url_for('user_profile_name', username=session['user']))
         else:
-            print("DIDNT HAVE ENOUGH")
+            # print("DIDNT HAVE ENOUGH")
+            pass
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session_username)
-    print(request)
+    # print(request)
     return render_template('withdraw_funds.html', 
                             session_username=session_username,
                             daily_votes_left=daily_votes_left,
@@ -830,12 +789,38 @@ def password_reset():
         return render_template(f"password_reset.html")
 
 
+@app.route("/user_download_excel/<vote_timeframe>/<vote_date>", methods=['GET', 'POST'])
+def user_download_excel(vote_timeframe, vote_date):
+	print("hello")
+	try:
+		og_path = "/root/mansura/Python/HISTORY/"
+		custom_path = og_path + vote_timeframe +"/" + vote_date
+		print("custom_path", custom_path)
+		filename = vote_date
+		return send_file(custom_path, download_name=filename)
+	except Exception as e:
+		helpers.log_function("error", e)
+
+
 @app.route("/vote/<file_id>/<vote_type>", methods=['GET', 'POST'])
 def file_vote(file_id, vote_type):
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
     print("voting", file_id, vote_type)
+    
+    if vote_type == "like":
+        print("DOING LIKE LOGIC")
+        database.LIKE_LOGIC(session["user"], file_id)
+        return redirect(url_for("home"))
+    
+    if vote_type == "dislike":
+        print("DOING DISLIKE LOGIC")
+        database.DISLIKE_LOGIC(session["user"], file_id)
+        return redirect(url_for("home"))
+    
+
+	
     is_already_subbed_this_month = database.CHECK_DATE( session["user"])
     if is_already_subbed_this_month:
         #print(is_already_subbed_this_month)
@@ -961,20 +946,132 @@ def settings():
     )
 
 
+@app.route("/terms_and_conditions", methods=['GET'])
+def terms_and_conditions():
+    helpers.log_function("request", request)
+    return render_template(f"terms_and_conditions.html",
+    )
+
+
+@app.route("/search_algorithms_page", methods=['GET', 'POST'])
+def search_algorithms_page():
+    helpers.log_function("request", request)
+    return render_template(f"search_algorithms_page.html",
+    )
+
+
+@app.route("/contact", methods=['GET'])
+def contact():
+    helpers.log_function("request", request)
+    return render_template(f"contact.html",
+    )
+
+
+@app.route("/FAQ", methods=['GET'])
+def FAQ():
+    helpers.log_function("request", request)
+    return render_template(f"FAQ.html",
+    )
+
+
+@app.route("/instructions", methods=['GET'])
+def instructions():
+    helpers.log_function("request", request)
+    return render_template(f"instructions.html",
+    )
+
+
+@app.route("/leaderboards", methods=['GET'])
+def leaderboards():
+    helpers.log_function("request", request)
+    return render_template(f"leaderboards.html",
+    )
+
+
+@app.route("/messages", methods=['GET'])
+def messages():
+    helpers.log_function("request", request)
+    return render_template(f"messages.html",
+    )
+
+
+@app.route("/notifications", methods=['GET'])
+def notifications():
+    helpers.log_function("request", request)
+    if "email" not in session:
+        return redirect(url_for('login'))
+
+    user_id = database.GET_USER_ID(session["user"])
+    notifications = database.GET_NOTIFICATIONS_BY_USER_ID(user_id)
+
+    LIKES = []
+    DISLIKES = []
+    REPLY = []
+    VOTES = []
+    NEW_FOLLOWER = []
+    #print(user_id)
+    for i in notifications:
+        #print(i)
+        if i[0] == "LIKE":
+            LIKES.append(i[1])
+        if i[0] == "DISLIKE":
+            DISLIKES.append(i[1])    
+        if i[0] == "REPLY":
+            REPLY.append(i[1])
+        if i[0] == "VOTES":
+            VOTES.append(i[1])        
+        if i[0] == "NEW FOLLOWER":
+            NEW_FOLLOWER.append(i[1])    
+    
+    return render_template(f"notifications.html",
+        LIKES=LIKES,
+        DISLIKES=DISLIKES,
+        REPLY=REPLY,
+        VOTES=VOTES,
+        NEW_FOLLOWER=NEW_FOLLOWER
+    )
+
+
+@app.route("/tribunal", methods=['GET'])
+def tribunal():
+    helpers.log_function("request", request)
+    return render_template(f"tribunal.html",
+    )
+
+
+@app.route("/patch_notes", methods=['GET'])
+def patch_notes():
+    helpers.log_function("request", request)
+    return render_template(f"patch_notes.html",
+    )
+
+
+@app.route("/newsletter", methods=['GET'])
+def newsletter():
+    helpers.log_function("request", request)
+    return render_template(f"newsletter.html",
+    )
+
+
+
 if __name__ == '__main__':
     #SUBTITLE Network Societey and it's Future
     
     #my_port = 443
     
-    #host = "0.0.0.0" #could be local host
-    # logging.basicConfig(filename='app.log', encoding='utf-8', level=logging.DEBUG) #ISN'T    WORKING THE WAY I WANT
+    host = "0.0.0.0" #could be local host
+    # http://165.227.35.71:8088/
     # database.USER_FULL_RESET()
 
+    #TURNING CONSOLE LOGGING ON OR OFF
+    import logging
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
     
-    #thread = Thread(target = distribution_algorithm.TESTING_TIMING, args = ())
-    #thread.start()
+    thread = Thread(target = distribution_algorithm.TESTING_TIMING, args = ())
+    thread.start()
 
-    #app.run(host=host, port="8080", debug=True, use_reloader=False)  # host is to get off localhost
+    app.run(host=host, port="8088", use_reloader=False)  # host is to get off localhost
     #serve(app, host=host)    
 
     # If the debugger is on, I can change my files in real time after saving

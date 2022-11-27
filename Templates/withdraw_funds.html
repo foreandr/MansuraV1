@@ -3,9 +3,8 @@
 <!-- PAYPAL BUY BUTTON--> 
 {{balance}}
 <form name="my_form" method="POST">
-
     <input id="withdrawl_amount" type="text" name="withdraw_amount"  onkeyup="disableButton()"/>
-    <input id="myBtn" type="submit" name="withdraw_button" value="withdraw" disabled/>
+    <input id="myBtn" type="submit" name="withdraw_button" value="withdraw" disabled/>Min 0.50 (else paypal will take everything and you get nothing)
 </form>
 <script>
 

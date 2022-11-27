@@ -22,7 +22,25 @@ DONE. HTTPS
 DONE. LOG EVERY REQUEST, AND ERROR TO A LOG FILE, log file for each day that has all the code and requests
 DONE. FOR TOMORROW, GET DB FUNCTIONS WORKING, GUNICORN LOGGING
 DONE. RE FORM LOG DICT IN DISTRIBUTION
-
+DONE. RESCRICT UPLOADS TO PEOPLE WHO ARE SUBBED
+DONE, CREATED A WHOLE FUCK TONE OF SOCIAL MEDIA ACCOUNTS
+	- NOTE======================== COULD PROBABLY CREATE MORE
+DONE. JIRA CONFLUENCE DOCUMENTATION 
+DONE. SEARCH BASIC
+DONE. CODE FOR CHECKING HOW SIMILAR TWO PIECES OF TEXT ARE
+DONE. withdrawl isn't finished
+DONE. HTTPS 
+DONE. STREAMLINE UPDATES TO THE SYSTEM (GITHUB AND SO ON)
+DONE. LIKES TABLE (WITH SIMILAR LOGIC TO VOTES)[MAY NOT NEED DATE SOME OTHER MINOR STUFF]
+DONE. TEXT CHECK AND IMAGE CHECK WORKING PROPERLY, mild frontend checks as well
+DONE. Files that have iomages or not sort
+NOT DOING. show publicly how many people have blocked this person
+NOT DOING. LIMIT NUM POSTS PER DAY, GOOD QUERIES WILL LIMIT BOTS
+DONE. IF NUM POSTS GOTTEN FROM UNIVERSAL < 100, OR WHATEVER THE COUNT IS, DISABLE SCROLL FUNCTIONALITY
+DONE. ALLOW HISTORY TO BE DOWNLOADABLE
+DONE. add search to distrobution
+DONE.notifications 
+	- I SHOULD MAKE THE QUERIES SEPARATE SO THE DATES ARE CORRECT
 
 MINIMUM VIABLE PRODUCT
 ========================
@@ -34,7 +52,6 @@ MINIMUM VIABLE PRODUCT
 	- should test their search ona test net, tell them it will be verified over a business day
 		- if test net no shenanigans, create place somewhere to store query
 		- perm ban if shenanigans from submitting search algo
-		- when doing the where clauses, I should be able to superimpose diffrent searches on one an other
 5. withdrawl isn't finishe
 4.CREATE TWTICH/TIKTOK CHANNEL TO TALK TO PEOLPE
 6. GET UPLOADS ACTUALLY WORKING, 
@@ -42,31 +59,45 @@ MINIMUM VIABLE PRODUCT
 	-. LIMIT NUM POSTS PER DAY
 	- CHECK having modal issue
 	- CHECKSOME UPLOADS HAVE RANDOM SLASHES IN THEM FOR UPLOAD NUMS
-7. allow for profile bio
+6. allow for profile bio
 	- EDIT BIO
 	- a full page on it's own for editing profile including picture and bio, and presumabley other things of that nature
-8. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
-9. REPOST, ability to take another post and endorse it somehow 
-10. show publicly how many people have blocked this person
-11. DO THIS BY REPORT(NO WAY IM GOING TO MANAGE THIS WITH SEARCH)
+7. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
+8. REPOST, ability to take another post and endorse it somehow 
+
+9. DO THIS BY REPORT(NO WAY IM GOING TO MANAGE THIS WITH SEARCH)
 	- if a post is character for character the same, look for the one with the earliest timestamp, they get all the winnings
 	- SUCCESSFULL REPORTER GETS 50% 
-12. HEAD TO HEADS (incomplete but something like this should be thought through carefully)
+	- OPY OF SOMETHING ELSE REPORT LOGIC
+
+10. RETWEET LOGIC
+
+11.REPORT POST LOGIC
+  	- HEAD TO HEADS (incomplete but something like this should be thought through carefully)
 	- YOU can report someones post, and then that inverts the vote ratio so you have a head to head between reports and votes for that month
 	- the people who report if successful will get the winnings of what that page would have got
 		- else they just lost their vote for the month
-13. POST TO LIKE RATIO NEXT TO LIST ON PROFILE OF WHO BLOCKS? RATING OF ACCOUNTS?
-14. GOTTA BE A REFER SYSTEM OF SOME KINDS, WITH A MONETARY REWARD, more posts per month? probably not monetary
-15. COPY OF SOMETHING ELSE REPORT LOGIC
-	- RETWEET LOGIC
-16. IF A POST GETS REPORTED, AND THE REPORT IS SUCCESSFUL (NEED LOGIC FOR DETERMINING THAT), THAT POST GETS PINNED ON THEIR PROFILE, AND THEY GET SLASHED SOME TO THE POOL SOME TO THE REPORTERS
-17. redirected to wrong page after follow
+	-	IF A POST GETS REPORTED, AND THE REPORT IS SUCCESSFUL (NEED LOGIC FOR DETERMINING THAT), THAT POST GETS PINNED ON THEIR PROFILE, AND THEY GET SLASHED SOME TO THE POOL SOME TO THE REPORTERS
+	- every post is scored with some point system, if the points to remove > 100 or something, and 2x score of regular vots, it gets shadowbanned in some way
+
+12. redirected to wrong page after follow
+13. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
+14. BUY ADS TO PUT ON THE MAIN PAGE, ALL GOES TO POOL, BUY ADS TO PUT ON A PERSONS PAGE, 50% GOES TO THEM, 50% GOES TO POOL
+
+
 
 IMPORTANT BUT LATER
 ===================
+make the history look less hsit
+	-0. EVENTUALLY DO THE FOLDER THING!
+#liek clauses case insensitive
 #UNIT TEST THHIS, WHEN COMMITING, DEMONSTRATE IT'S OFF
 #ALSO SOME WEIRD SESSION ISSUES, if it thinks youre logged in, you cant go to the log in screen, maybe redirect to profile or something instead, and if there is no profile, , redirect o login
 #CHANGE TESTNET PAYPAL OFF LIVE
+#CHALLENGES OF THE DAY WITH MONETARY INCENTIVE, vote on next questions of the day?
+ public tribunal for banned words and shit like that
+	whichever searcch has the most votes at the time becomes the default search algo
+
 
 SEARCH
 =======
@@ -82,10 +113,10 @@ DEVOPS
 ===============
 1. DATABASE BACKUPS
 2. REMOTE FILESYTEM?
-DONE. STREAMLINE UPDATES TO THE SYSTEM
+
 4. HIDE SENSATIVE INFO
 
-DONE. HTTPS 
+
 7.create a backup of the DB on every daily reset
 8. CREATE  DEV NET ALONGSIDE TEST NET, CREATE UNIT TESTS
 
@@ -114,10 +145,11 @@ QUALITY OF LIFE
 ===============
 email noam chomsky about the consequneces of substrate independant information processing
 20x12. change user on structure to be able to show users name when signedinto session
+X. NOT SURE UGNNA DO. POST TO LIKE RATIO NEXT TO LIST ON PROFILE OF WHO BLOCKS? RATING OF ACCOUNTS?
 0. Might be a good idea to have each user have a config file JSON object for all kinds of parameters
+1. NATIVE BOLD/ ITALICS/ UNDERLINE/STRIKETHROUGH FONTS
 1. ABLE TO UPLOAD ONCE A [TIME INTERVAL] IF NOT SUBSCRIBED
 2. IN THE CSV PRODUCED IN THE HISTORY, ADD SITE COSTS
-
 4. ACHIEVMENTS
 5. Tell when user has registered successfully or not and why
 6. PUBLIC POLLS (coming soon, with similar distribution, think "https://secure.runescape.com/m=poll/oldschool/#_ga=2.149377974.1498537872.1665427969-62632821.1665427968")
