@@ -16,9 +16,10 @@
             THIS IS WHERE PEOPLE WILL BUY ADS
           </div>
           <div>
-            askljhfalkjsddsafasdafds
+            {{can_scroll}}
           </div>
         </div>
+
         <div class="col-7">
             {%for i in range(0, username_len )%}
             <div class="col">
@@ -50,7 +51,7 @@
                         {% endif %}
 
                         <span id="like"><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/like">LIKES: {{likes[i]}}</a></button></span>
-
+                        <span id="dislike"><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/dislike">DISLIKES: {{dislikes[i]}}</a></button></span>
                     </div>
 
                     
@@ -84,9 +85,6 @@
                             <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_ids_list[i]}})" aria-expanded="false">
                                 REPLY
                             </button>
-                            <button class="btn btn-secondary" type="button" aria-expanded="false">
-                                REPOST
-                            </button>
                         </small>
                         <small class="text-muted" id="post_details">
                             <a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">ID:{{file_ids_list[i]}} </a>
@@ -109,12 +107,7 @@
         </div>
 
         <!--DOING THE SEARCH-->
-        <div class="col-3">
-            
-            <form action="https://google.com">
-                <input class="inline btn btn-primary" type="submit" value="Save Current Algorithm" />
-            </form>
-          
+        <div class="col-3"> 
             <form action="/" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
                 <input class="d-inline form-control mr-sm-2" id="search" name="search" type="search" placeholder="(can be empty)" aria-label="search">
                     <button class="btn btn-primary">Search</button>
@@ -188,10 +181,21 @@
                             <div>
                                 ALGORITHM FAVOURITES (5 Max)
                             </div>
+
                             <div class="btn btn-outline-success">
                                 <input type="radio" name="order_check" value="a-demo" id="a-demo">
                                 <label for="a-demo" unselectable>a-demo</label>
                             </div>
+                            <div class="btn btn-outline-success">
+                                <input type="radio" name="order_check" value="andrfore-demo" id="andrfore-demo">
+                                <label for="andrfore-demo" unselectable>andrfore-demo</label>
+                            </div>
+
+                            <div class="btn btn-outline-success">
+                                <input type="radio" name="order_check" value="foreandr-demo" id="foreandr-demo">
+                                <label for="foreandr-demo" unselectable>foreandr-demo</label>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -253,7 +257,13 @@
                 </div>
             </form>
 
+                    
+            <form action="https://google.com">
+                <input class="inline btn btn-primary" type="submit" value="Save Current Algorithm" />
+            </form>
+
         </div>
+
 
     </div>
 </div>
@@ -577,8 +587,12 @@
         js_can_scroll = '{{can_scroll}}'
         //javascript bool is fucking stupid
         if (js_can_scroll == "true" || js_can_scroll == "True" ){
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            if (scroll_disabler <1) {
+            console.log("WINDOW HEIGHT:", window.innerHeight + window.scrollY)
+            console.log("DOCUMENT BODY:",document.body.scrollHeight)
+            
+            if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+                
+                if (scroll_disabler <1) {
                 scroll_disabler += 1
                 console.log("BOTTOM OF PAGE")
                 
@@ -593,6 +607,7 @@
                 
                 }
             }
+            
         } 
         else{
             console.log(js_can_scroll)

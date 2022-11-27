@@ -200,6 +200,7 @@ def CONNECTION_CREATE_TABLE():
                 Friendship_Id SERIAL PRIMARY KEY,
                 User_Id1 INT,
                 User_Id2 INT,
+                creation_date timestamp,
                 
                 FOREIGN KEY (User_Id1) REFERENCES USERS(User_Id),
                 FOREIGN KEY (User_Id2) REFERENCES USERS(User_Id)
@@ -219,13 +220,15 @@ def CONNECTION_INSERT(user_id1, user_id2):
     try:
         cursor.execute(
             f"""
-            INSERT INTO CONNECTIONS (User_Id1, User_Id2)
-                VALUES({user_id1}, {user_id2})
+                INSERT INTO CONNECTIONS (User_Id1, User_Id2, creation_date)
+                VALUES({user_id1}, {user_id2}, NOW())
             """)
         conn.commit()
+        print_green(f"CONNECTED {user_id1} -> {user_id2}")
     except Exception as e:
-         cursor.execute("ROLLBACK")
-         print("ERROR:  [INSERT INTO CONNECTIONS] " + str(e))
+        cursor.execute("ROLLBACK")
+        print("ERROR:  [INSERT INTO CONNECTIONS] " + str(e))
+        log_function(e) 
     
     cursor.close()
     conn.close()
@@ -250,6 +253,8 @@ def CONNECTION_REMOVE(user_id_first, user_id_second):
 def CONNECTION_INSERT_MULTIPLE():
     CONNECTION_INSERT( user_id1=1, user_id2=2)
     CONNECTION_INSERT( user_id1=1, user_id2=3)
+    big_reset_file.GIANT_CONNECTION_INSERT()
+    
     print_green("USER MULTI INSERT CONNECTIONS COMPLETED\n")
 
 
@@ -279,7 +284,7 @@ def LIKES_CREATE_TABLE():
         
         cursor.execute("ROLLBACK")
         print_error("\nHAD TO ROLLBACK LIKES TABLE CREATION" + str(e) )
-        exit()
+        # exit()
 
     cursor.close()
     conn.close()
@@ -335,9 +340,85 @@ def LIKE_LOGIC(liker_username, file_id):
         print("FAILED LIKE INSERT")
         LIKES_REMOVE(liker_username, file_id)
 
+def DILIKES_CREATE_TABLE():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
 
+    try:
+        cursor.execute(f"DROP TABLE IF EXISTS DISLIKES;")
+        cursor.execute(
+                f"""
+                CREATE TABLE DISLIKES(
+                    Dislike_Id SERIAL PRIMARY KEY,
+                    File_id INT,
+                    Disliker_Username varchar(50),
+                    Date_Time timestamp, 
 
+                    ---CONSTRAINTS
+                    FOREIGN KEY (File_id) REFERENCES FILES(File_id),
+                    UNIQUE (File_id, Disliker_Username) --this should allow someone to only have one like per post
+                );
+                """)
+        conn.commit()
 
+        print_green("DISLIKES CREATE COMPLETED\n")
+    except Exception as e:
+        
+        cursor.execute("ROLLBACK")
+        print_error("\nHAD TO ROLLBACK DISLIKES TABLE CREATION" + str(e) )
+        # exit()
+
+    cursor.close()
+    conn.close()
+
+def DISLIKES_INSERT(disliker_username, file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            f"""
+            INSERT INTO DISLIKES
+            (File_id, Disliker_Username, Date_Time)
+            VALUES
+            ({file_id}, '{disliker_username}', CURRENT_TIMESTAMP);
+            """)
+        conn.commit()
+        return True
+    except Exception as e:
+            # print(e)
+            log_function("error", e)
+            cursor.execute("ROLLBACK")
+            # log_function(F"USER:{uploader} FILE INSEERT FAILED")      
+            cursor.close()
+            conn.close() 
+            return False
+
+def DISLIKES_REMOVE(disliker_username, file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(
+            f"""
+            DELETE FROM DISLIKES
+            WHERE Disliker_username = '{disliker_username}' AND File_id = {file_id}
+            """)
+        conn.commit()
+    except Exception as e:
+            # print(e)
+            log_function("error", e)
+            cursor.execute("ROLLBACK")
+            # log_function(F"USER:{uploader} FILE INSEERT FAILED")      
+            cursor.close()
+            conn.close() 
+
+def DISLIKE_LOGIC(disliker_username, file_id):
+    if DISLIKES_INSERT(disliker_username, file_id): # RETURNS TRUE IF SMOOTH
+        print("SUCCESSFUL DISLIKE INSERT")
+        
+    else:
+        print("FAILED DISLIKE INSERT")
+        DISLIKES_REMOVE(disliker_username, file_id)
 
 def GET_COUNT_LIKES_BY_ID(file_id):
     cursor.execute(f"""
@@ -349,12 +430,21 @@ def GET_COUNT_LIKES_BY_ID(file_id):
     likes = cursor.fetchall()[0][0]
     print("NUM LIKES:",likes)
     return likes
+
+
 def LIKES_DEMO_INSERT():
     LIKES_INSERT("foreandr", 1)
     LIKES_INSERT("foreandr", 2)
     LIKES_INSERT("foreandr", 3)
     LIKES_INSERT("foreandr", 4)
-    LIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
+    #LIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
+
+def DISLIKES_DEMO_INSERT():
+    DISLIKES_INSERT("foreandr", 1)
+    DISLIKES_INSERT("foreandr", 2)
+    DISLIKES_INSERT("foreandr", 3)
+    DISLIKES_INSERT("foreandr", 4)
+    #DISLIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
 
 
 def FILE_VOTE_CREATE_TABLE():
@@ -723,7 +813,7 @@ def USER_FULL_RESET():
     
     # SET TIMEZONE
     # SET_TIME_ZONE(conn)
-    FUNCTION_AND_PROCEDURES()
+    
 
     # DROPPING ALL TABLES
     DROP_ALL_TABLES()
@@ -735,10 +825,18 @@ def USER_FULL_RESET():
     CREATE_PAYOUTS_TABLE()
     FILE_CREATE_TABLE()   
     LIKES_CREATE_TABLE()
+    DILIKES_CREATE_TABLE()
+    
     FILE_VOTE_CREATE_TABLE() 
     CONNECTION_CREATE_TABLE()
     CREATE_MANSURA_TABLE()
     SEARCH_ALGO_CREATE_TABLE()
+    CREATE_TABLE_SEARCH_VOTES()
+    CREATE_TABLE_SEARCH_FAVOURITES()
+    CREATE_TABLE_POST_FAVOURITES()
+    EQUITY_CREATE_TABLE()
+
+    FUNCTION_AND_PROCEDURES()
 
     USER_INSERT_MULTIPLE()
     CONNECTION_INSERT_MULTIPLE()
@@ -747,9 +845,11 @@ def USER_FULL_RESET():
     FILE_VOTE_INSERT_DEMO() # VOTES ON CSVS
     SEARCH_ALGO_INSERT_DEMO_MULTIPLE()
     LIKES_DEMO_INSERT()
+    DISLIKES_DEMO_INSERT()
+    DEFAULT_EQUITY_INSERT()
     # EQUITY CAN GO LAST, DOESN'T INTERFERE WITH ANYTHING
-    EQUITY_CREATE_TABLE()
-    TRANSFER_EQUITY(buyer="a", seller="foreandr", amount=2)
+    
+    # TRANSFER_EQUITY(buyer="a", seller="foreandr", amount=2)
 
     # MODEL_MULTIPLE_INSERT(conn) # MODELS
     # MODEL_VOTE_INSERT_DEMO(conn) # VOTES ON MODELS \
@@ -766,9 +866,41 @@ def DROP_ALL_TABLES():
     conn = connection.test_connection()
     print_title("\nDROPPING TABELS..")
     cursor = conn.cursor()
-    try:     
+    try:
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS LIKES;")
+            cursor.execute(f"DROP TABLE IF EXISTS POST_FAVOURITES CASCADE;")
+            conn.commit()
+            print_green("DROPPED TABLE IF EXISTS POST_FAVOURITES;")
+        except Exception as e:
+            cursor.execute("ROLLBACK")
+            log_function("error", e)
+        
+        try:
+            cursor.execute(f"DROP TABLE IF EXISTS SEARCH_FAVOURITES CASCADE;")
+            conn.commit()
+            print_green("DROPPED TABLE IF EXISTS SEARCH_FAVOURITES;")
+        except Exception as e:
+            cursor.execute("ROLLBACK")
+            log_function("error", e)
+
+        try:
+            cursor.execute(f"DROP TABLE IF EXISTS SEARCH_VOTES CASCADE;")
+            conn.commit()
+            print_green("DROPPED TABLE IF EXISTS SEARCH_VOTES ;")
+        except Exception as e:
+            cursor.execute("ROLLBACK")
+            log_function("error", e)
+
+        try:
+            cursor.execute(f"DROP TABLE IF EXISTS DISLIKES CASCADE;")
+            conn.commit()
+            print_green("DROPPED TABLE IF EXISTS DISLIKES;")
+        except Exception as e:
+            cursor.execute("ROLLBACK")
+            log_function("error", e)
+
+        try:
+            cursor.execute(f"DROP TABLE IF EXISTS LIKES CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS LIKES;")
         except Exception as e:
@@ -776,7 +908,7 @@ def DROP_ALL_TABLES():
             log_function("error", e)
         
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS SEARCH_ALGORITHMS;")
+            cursor.execute(f"DROP TABLE IF EXISTS SEARCH_ALGORITHMS CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS SEARCH_ALGORITHMS;")
         except Exception as e:
@@ -784,7 +916,7 @@ def DROP_ALL_TABLES():
             log_function("error", e)
 
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS EQUITY;")
+            cursor.execute(f"DROP TABLE IF EXISTS EQUITY CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS EQUITY;")
         except Exception as e:
@@ -792,7 +924,7 @@ def DROP_ALL_TABLES():
             print_error("[EQUITY] " + str(e))
 
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS SUBSCRIPTIONS_MENSURA;")
+            cursor.execute(f"DROP TABLE IF EXISTS SUBSCRIPTIONS_MENSURA CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS SUBSCRIPTIONS_MENSURA;")
         except Exception as e:
@@ -800,7 +932,7 @@ def DROP_ALL_TABLES():
             print_error("[SUBSCRIPTIONS_MENSURA] " + str(e))
                
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS MODEL_VOTES;")
+            cursor.execute(f"DROP TABLE IF EXISTS MODEL_VOTES CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS MODEL_VOTES;")
         except Exception as e:
@@ -808,7 +940,7 @@ def DROP_ALL_TABLES():
             print_error("[MODEL VOTES] " + str(e))
             
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS MODEL;")
+            cursor.execute(f"DROP TABLE IF EXISTS MODEL CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS MODEL;")
         except Exception as e:
@@ -816,7 +948,7 @@ def DROP_ALL_TABLES():
             print_error("[MODEL] " + str(e))
                  
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS FILE_VOTES;")
+            cursor.execute(f"DROP TABLE IF EXISTS FILE_VOTES CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS FILE_VOTES;")
         except Exception as e:
@@ -824,7 +956,7 @@ def DROP_ALL_TABLES():
             print_error("[FILE_VOTES] " + str(e) )
 
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS FILES;")
+            cursor.execute(f"DROP TABLE IF EXISTS FILES CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS FILES;")
         except Exception as e:
@@ -832,7 +964,7 @@ def DROP_ALL_TABLES():
             print_error("[FILES] " + str(e))
 
         try:
-            cursor.execute(f"DROP TABLE IF EXISTS CONNECTIONS;")
+            cursor.execute(f"DROP TABLE IF EXISTS CONNECTIONS CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS CONNECTIONS;")
         except Exception as e:
@@ -840,7 +972,7 @@ def DROP_ALL_TABLES():
             print_error("[CONNECTIONS]" + str(e))
 
         try:        
-            cursor.execute(f"DROP TABLE IF EXISTS USERS;")
+            cursor.execute(f"DROP TABLE IF EXISTS USERS CASCADE;")
             conn.commit()
             print_green("DROPPED TABLE IF EXISTS USERS;")
         except Exception as e:
@@ -1634,38 +1766,55 @@ def TRANSFER_EQUITY(buyer, seller, amount):
     CLOSE_CURSOR_AND_CONN(cursor, conn)
 
 def EQUITY_INSERT():
-        
-    conn = connection.test_connection()
-    cursor = conn.cursor()
-    cursor.execute(f"""
-            INSERT INTO EQUITY(username, percentage)
-            VALUES ('foreandr', 100)
-    """)
-    conn.commit()
+    try:
+        conn = connection.test_connection()
+        cursor = conn.cursor()
+        cursor.execute(f"""
+                INSERT INTO EQUITY(username, percentage)
+                VALUES ('foreandr', 100)
+        """)
+        conn.commit()
+    except Exception as e:
+        log_function(e)
+
 
 def EQUITY_CREATE_TABLE():
     conn = connection.test_connection()
     cursor = conn.cursor()
-    cursor.execute(f"DROP TABLE IF EXISTS EQUITY;")
-    cursor.execute(f"""
-    CREATE TABLE EQUITY 
-    (
-        username varchar(200) UNIQUE,
-        percentage Decimal,
-        FOREIGN KEY (username) REFERENCES USERS(username)
-    );
-    """)
-
-    cursor.execute(
-        f"""
-        INSERT INTO EQUITY  (username, percentage)
-        VALUES('foreandr', 100)
+    try:
+        cursor.execute(f"DROP TABLE IF EXISTS EQUITY;")
+        cursor.execute(f"""
+        CREATE TABLE EQUITY 
+        (
+            username varchar(200) UNIQUE,
+            percentage Decimal,
+            FOREIGN KEY (username) REFERENCES USERS(username)
+        );
         """)
-    conn.commit()
-
+        conn.commit()
+        print_green("EQUITY_CREATE_TABLE SUCCESSFUL")
+    except Exception as e:
+        log_function(e)
+    
     CLOSE_CURSOR_AND_CONN(cursor, conn)
 
 
+def DEFAULT_EQUITY_INSERT():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    try:
+
+        cursor.execute(
+            f"""
+            INSERT INTO EQUITY (username, percentage)
+            VALUES('foreandr', 100)
+        """)
+        conn.commit()
+
+    except Exception as e:
+        log_function(e)
+    
+    CLOSE_CURSOR_AND_CONN(cursor, conn)
 
 def home_dataset_function(page_no, sort_time_frame, how_many, session_username='None'):
     conn = connection.test_connection()
@@ -2452,6 +2601,28 @@ def CHECK_FILE_EXISTS(File_id_):
     else:
         return False
 
+def CUSTOM_GET_HIGHEST_VALUE_IN_DICT_SLOW(my_dict):
+    '''
+    I ONLY WROTE THIS BECAUSE PYTHONS MAX FUNCTION HAS ALL KINDS OF ABSOLUTELY INSANE RULES
+
+    SHOULD BE MUCH SLOWER TTHAN ITS NEEDS TO BE, COULD BE RE-WRITTEN IN LOWER LVL LANGUGAE
+    '''
+    
+    # my_dict = {"": "", "a-1": 5, "andrfore-3": 3, "foreandr-2": 3}
+    
+    highest_key = None
+    highest_num = 0
+    for key, value in my_dict.items():
+        
+        if type(value) == int:
+            # print(key, value, type(value))
+            if value >= highest_num: # this should ensure the last search wins
+                highest_num = value 
+                highest_key = key
+    
+    # print(highest_key)
+    return  highest_key
+
 def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, searcher):
     #print("\nINSIDE TURNING INTO JSON\n")
     #print("ITEM SEARCH       :", search) # DONE
@@ -2504,25 +2675,41 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
             # COUNTING SEARCHES
             if searcher != "": # SEARCHER IS RELATED TO SESSION, VOTES ONLINE COUNT IF SIGNED IN
                 # COULD ADD AN ADDITIONAL CRITERIA ABOUT SUBSCRIPTION
-                # JSON IN
-                with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'r') as f:
-                    data = json.load(f)
-                    # print("data:\n",data)
-                    data = dict(data)
-                    # print("coming back from file:",data)
-                    if order_check in data:
-                        # print("in")
-                        data[order_check] += 1
-                    else:
-                        # print("not in")
-                        data[order_check] = 1
-                # JSON OUT
-                with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'w') as f:    
-                    json_object = json.dumps(data) 
-                    # print("NEW DICT", data)
-                    # print("json_object", json_object)
-                    f.write(json_object)
-                    
+
+                if CHECK_DATE(searcher):
+                    # JSON IN
+                    with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'r') as f:
+                        data = json.load(f)
+                        # print("data:\n",data)
+                        data = dict(data)
+                        # print("coming back from file:",data)
+
+                        current_max= CUSTOM_GET_HIGHEST_VALUE_IN_DICT_SLOW(data)
+                        #print("PRE DICT:",data )
+                        if order_check in data:
+                            # print("in")
+                            data[order_check] += int(1)
+                        else:
+                            # print("not in")
+                            data[order_check] = int(1)
+
+                        #UPDATE MAJORITY SEARCH FOR THAT USER if new high
+                        #print("POS DECT:",data )
+                        new_max = CUSTOM_GET_HIGHEST_VALUE_IN_DICT_SLOW(data)
+
+                        #print("current_max:", current_max)
+                        #print("new_max    :", new_max)
+                        
+                        if new_max != current_max:
+                            UPDATE_TABLE_SEARCH_VOTES(searcher, new_max)
+                                          
+                    # JSON OUT
+                    with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'w') as f:    
+                        json_object = json.dumps(data) 
+                        # print("NEW DICT", data)
+                        # print("json_object", json_object)
+                        f.write(json_object)
+                        
             order_clause = data_["ORDER_BY_CLAUSE"]
             personal_where_clause = data_["WHERE_CLAUSE"]
 
@@ -2626,6 +2813,61 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
     }
     return demo_json
 
+def UPDATE_TABLE_SEARCH_VOTES(voter_username, search_algo_name):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(f"""
+    SELECT COUNT(*)
+    FROM SEARCH_VOTES
+    WHERE Voter_Username = '{voter_username}'
+    """)
+
+    vote_exists = cursor.fetchall()[0][0]
+    print("VOTE EXISTS", vote_exists)
+    
+    search_id = GET_SEARCH_ALGO_ID_BY_PATH(search_algo_name)
+    
+    print(search_id)
+    print(search_algo_name)
+    if vote_exists == 0:
+        print("INSERTING SEARCH VOTE")
+        cursor.execute(f"""
+            INSERT INTO SEARCH_VOTES(Search_id, Voter_Username)
+            VALUES ({search_id}, '{voter_username}');
+        """)
+        conn.commit()
+    else:
+        print("UPDATING SEARCH VOTE")
+        cursor.execute(f"""
+            UPDATE SEARCH_VOTES
+            SET Search_id = {search_id}
+            WHERE Voter_Username = '{voter_username}'
+        """)
+        conn.commit()
+    
+    cursor.close()
+    conn.close()
+
+def GET_SEARCH_ALGO_ID_BY_PATH(algo_path):
+    print("GET_SEARCH_ALGO_ID_BY_PATH")
+
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(f"""
+        SELECT Search_id
+        FROM SEARCH_ALGORITHMS
+        WHERE Search_Path = '{algo_path}'
+    """)
+
+    search_id = ""
+    for i in cursor.fetchall():
+        search_id = i[0] 
+    print("ENTERED ALGO NAME  :",algo_path, len(algo_path))
+    print("RETIURNED SEARCH ID:",search_id )
+    return search_id
+
 
 def GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME(order_check):
     print("GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME")
@@ -2662,6 +2904,88 @@ def SEARCH_ALGO_CREATE_TABLE():
         Date_Time timestamp,      
         FOREIGN KEY (Username) REFERENCES USERS(Username)
         );
+        """)
+    conn.commit()
+    
+    # CLOSE CURSOR AND CONNECTION [MANDATORY]        
+    cursor.close()
+    conn.close()
+
+
+def CREATE_TABLE_POST_FAVOURITES():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(f"DROP TABLE IF EXISTS POST_FAVOURITES;")
+        cursor.execute(
+                f"""
+                CREATE TABLE POST_FAVOURITES(
+                    Favourite_Id SERIAL PRIMARY KEY,
+                    File_id INT,
+                    Favouriter_Username varchar(50),
+                    Date_Time timestamp, 
+
+                    ---CONSTRAINTS
+                    FOREIGN KEY (File_id) REFERENCES FILES(File_id),
+                    UNIQUE (File_id, Favouriter_Username) --this should allow someone to only have one favourite per post
+                );
+                """)
+        conn.commit()
+
+        print_green("POST_FAVOURITES CREATE COMPLETED\n")
+    except Exception as e:
+        
+        cursor.execute("ROLLBACK")
+        print_error("\nHAD TO ROLLBACK POST_FAVOURITES TABLE CREATION" + str(e) )
+        # exit()
+
+    cursor.close()
+    conn.close()
+
+def CREATE_TABLE_SEARCH_FAVOURITES():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(f"DROP TABLE IF EXISTS SEARCH_FAVOURITES;")
+        cursor.execute(
+                f"""
+                CREATE TABLE SEARCH_FAVOURITES(
+                    Search_Favourite_Id SERIAL PRIMARY KEY,
+                    Search_id INT,
+                    Favouriter_Username varchar(50),
+                    Date_Time timestamp, 
+
+                    ---CONSTRAINTS
+                    FOREIGN KEY (Search_id) REFERENCES SEARCH_ALGORITHMS(Search_id),
+                    UNIQUE (Search_id, Favouriter_Username) --this should allow someone to only have one favourite per post
+                );
+                """)
+        conn.commit()
+
+        print_green("POST_FAVOURITES CREATE COMPLETED")    
+
+    except Exception as e:       
+        cursor.execute("ROLLBACK")
+        print_error("HAD TO ROLLBACK  CREATE_TABLE_SEARCH_FAVOURITES TABLE CREATION" + str(e))   
+        log_function(e)      
+
+    cursor.close()
+    conn.close()
+
+
+def CREATE_TABLE_SEARCH_VOTES():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute("""DROP TABLE IF EXISTS SEARCH_VOTES""")
+    cursor.execute(
+        f"""
+            CREATE TABLE SEARCH_VOTES(
+            Search_Vote_Id SERIAL PRIMARY KEY,
+            Search_id INT,
+            Voter_Username varchar,
+            FOREIGN KEY (Search_id) REFERENCES SEARCH_ALGORITHMS(Search_id)
+        )
         """)
     conn.commit()
     
@@ -2715,8 +3039,8 @@ def SEARCH_ALGO_INSERT(username, Algorithm_Name, order_by_clause, where_clause):
 def SEARCH_ALGO_INSERT_DEMO_MULTIPLE():
     # username, Algorithm_Name, order_by_clause, where_clause
     SEARCH_ALGO_INSERT(username='a', Algorithm_Name='a-demo', order_by_clause="ORDER BY F.Date_Time, U.username ASC", where_clause="")
-    SEARCH_ALGO_INSERT('foreandr', 'foreandr-basic-top-month', "ORDER BY U.username ASC", "")
-    SEARCH_ALGO_INSERT('andrfore', 'andrfore-basic-top-month', "ORDER BY U.username ASC", f"AND U.username LIKE 'foreandr%'")
+    SEARCH_ALGO_INSERT('foreandr', 'foreandr-demo', "ORDER BY U.username ASC", "")
+    SEARCH_ALGO_INSERT('andrfore', 'andrfore-demo', "ORDER BY U.username ASC", f"AND U.username LIKE 'foreandr%'")
     print_green("SEARCH_ALGO_INSERT_DEMO_MULTIPLE()")
 
 
@@ -2895,6 +3219,11 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
                 SELECT COUNT(*)
                 FROM LIKES likes
                 WHERE likes.File_id = F.File_id 
+            ),
+            (
+                SELECT COUNT(*)
+                FROM DISLIKES dislikes
+                WHERE dislikes.File_id = F.File_id 
             )
 
         FROM FILES F
@@ -2936,7 +3265,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     year_votes = []
     total_votes = []
     likes = []
-
+    dislikes = []
     #INDIVIDUAL USER
     daily_left = ""
     monthly_left = "" 
@@ -2977,6 +3306,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         except:
             pass
         likes.append(i[18])
+        dislikes.append(i[19])
         
 
     if daily_left != "":
@@ -3017,7 +3347,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     conn.close()
     #print("THESE ARE MY SERVER SIDE SEARCH ARGUMENTS")
     #print(search_arguments)
-    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, search_arguments
+    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, search_arguments
 
 
 def GRAB_SEARCH_ALGO(search_algo_path):
@@ -3116,3 +3446,133 @@ def GET_VOTES_AND_BALANCE_AND_PAYOUTS(username):
         yearly_pool = value[6]
     
     return balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool
+
+def GET_NOTIFICATIONS_BY_USER_ID(user_id):
+    # TODO:GOING TO HAVE TO BE ABLE TO SPECIFY WHICH ONES YOU WANT TO SEE
+    # TODO: SHOULD BE SIMPLIFED, ALSO DATE SORTING ISNT WORKING
+    conn = connection.test_connection()
+
+    # 1. GET INCOMING FOLLOWERS   
+    cursor = conn.cursor()
+    cursor.execute(f"""
+        SELECT  creation_date,Friendship_Id, User_Id1, User_Id2
+        FROM CONNECTIONS
+        WHERE User_Id2 = {user_id} --USER_ID2 BECAUSE YOU'RE THE RECIEVER NOT THE SENDER
+        ORDER BY creation_date       
+    """)
+    
+    NOTIFS = []
+    for i in cursor.fetchall():
+        NOTIFS.append(["NEW FOLLOWER", [i[0],i[1],i[2],i[3]]])
+    cursor.close()
+
+    cursor = conn.cursor()
+    cursor.execute(f"""
+        SELECT File_Id
+        FROM FILES file
+        WHERE file.UserId = {user_id}
+    """)
+    
+    user_file_ids = []
+    for i in cursor.fetchall():
+        user_file_ids.append(i[0])
+    cursor.close()
+    #print(user_file_ids)
+
+    # 2. GET POSTS
+    REPLYING_TO_ID = []
+    LIKES_TO_ID = []
+    DISLIKES_TO_ID = []
+    VOTES_TO_ID = []
+    for i in user_file_ids:
+        # REPLIES
+        cursor = conn.cursor()
+        cursor.execute(f"""
+            SELECT  Date_Time, File_id, File_PATH,  Uploader, UserId, Post_foreign_id_source
+            FROM FILES file
+            WHERE file.Post_foreign_id_source = '{i}'
+            ORDER BY Date_Time 
+            LIMIT 100
+        """)
+        
+        for j in cursor.fetchall():
+            REPLYING_TO_ID.append([j[0],j[1],j[2],j[3],j[4],j[5]])
+        cursor.close()
+
+        # LIKES
+        cursor = conn.cursor()
+        cursor.execute(f"""
+            SELECT Date_Time, Like_Id, File_id, Liker_Username
+            FROM LIKES 
+            WHERE File_id = '{i}'
+            ORDER BY Date_Time
+            LIMIT 100
+            """)
+        
+        
+        for k in cursor.fetchall():
+            LIKES_TO_ID.append([k[0],k[1],k[2],k[3]])
+        cursor.close()
+
+        # DISLIKES
+        cursor = conn.cursor()
+        cursor.execute(f"""
+            SELECT Date_Time, Dislike_Id, File_id, Disliker_Username, Date_Time
+            FROM DISLIKES 
+            WHERE File_id = '{i}'
+            ORDER BY Date_Time
+            LIMIT 100
+            """)
+        
+        for y in cursor.fetchall():
+            DISLIKES_TO_ID.append([y[0],y[1],y[2],y[3]])
+        cursor.close()
+
+        # VOTES
+        cursor = conn.cursor()
+        cursor.execute(f"""
+            SELECT Date_Time, File_Vote_Id, File_id, Vote_Type, Voter_Username
+            FROM FILE_VOTES 
+            WHERE File_id = '{i}'
+            ORDER BY Date_Time
+            LIMIT 100
+            """)
+        
+        for t in cursor.fetchall():
+            VOTES_TO_ID.append([t[0],t[1],t[2],t[3],t[4],])
+        cursor.close()
+
+        # TAGS
+        #TODO: IMPEMENT
+        # FINANCIAL
+        #TODO: IMPEMENT
+            # - got money, withrdraw etc
+
+
+        # MESSAGES
+
+    for i in REPLYING_TO_ID:
+        NOTIFS.append(["REPLY",i])
+    for i in LIKES_TO_ID:
+        NOTIFS.append(["LIKE",i])
+    for i in DISLIKES_TO_ID:
+        NOTIFS.append(["DISLIKE", i])
+    for i in VOTES_TO_ID:
+        NOTIFS.append(["VOTES", i])
+
+
+
+    # 5. DAILY REWARD X
+    # CREATE TABLE CASH_NOTIFICATIONS
+    # PAYPAL MONEY ON ITS WAY
+    # GOT YOUR FUNDS!
+    # RECOVERY ETC
+    # MESSAGES
+
+
+    
+    #for i in NOTIFS:
+    #    print(i)
+    
+    return NOTIFS
+

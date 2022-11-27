@@ -37,6 +37,10 @@ DONE. Files that have iomages or not sort
 NOT DOING. show publicly how many people have blocked this person
 NOT DOING. LIMIT NUM POSTS PER DAY, GOOD QUERIES WILL LIMIT BOTS
 DONE. IF NUM POSTS GOTTEN FROM UNIVERSAL < 100, OR WHATEVER THE COUNT IS, DISABLE SCROLL FUNCTIONALITY
+DONE. ALLOW HISTORY TO BE DOWNLOADABLE
+DONE. add search to distrobution
+DONE.notifications 
+	- I SHOULD MAKE THE QUERIES SEPARATE SO THE DATES ARE CORRECT
 
 MINIMUM VIABLE PRODUCT
 ========================
@@ -46,10 +50,14 @@ MOTTO
 	- PAID TO SHARE
 	- PAID TO SEARCH
 
+ chat ROOM
+public chat rooms by algorithm vs private char rooms
 
-0. add search to distrobution
-2. ALLOW HISTORY TO BE DOWNLOADABLE
-	- EVENTUALLY DO THE FOLDER THING!
+
+THE  REPORT SYSTEM
+	report button
+	block button
+		-
 1. CHANGE VOTING TO 30 4 1
 2. First n people to join this month get in free, (xd)
 	- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
@@ -62,6 +70,7 @@ MOTTO
 
 4. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
 	- add tags to text inserts to help the search algo
+	
 5. GET UPLOADS ACTUALLY WORKING, 
 	- CHECK having modal issue
 	- CHECKSOME UPLOADS HAVE RANDOM SLASHES IN THEM FOR UPLOAD NUMS
@@ -94,6 +103,8 @@ MOTTO
 
 IMPORTANT BUT LATER
 ===================
+make the history look less hsit
+	-0. EVENTUALLY DO THE FOLDER THING!
 #liek clauses case insensitive
 #UNIT TEST THHIS, WHEN COMMITING, DEMONSTRATE IT'S OFF
 #ALSO SOME WEIRD SESSION ISSUES, if it thinks youre logged in, you cant go to the log in screen, maybe redirect to profile or something instead, and if there is no profile, , redirect o login

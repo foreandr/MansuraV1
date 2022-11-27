@@ -27,6 +27,9 @@ COMMON PROBLEMS
     5. TRANSPARENCY
         - public distribution log for every time there is a reset
 
+HOW IT WORKS
+.
+
 
 
 
