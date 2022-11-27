@@ -254,37 +254,21 @@ def user_profile():
     # print(request)
     if "email" not in session:
         return redirect(url_for('login'))
-    elif request.method == "GET":
-        #print('USING USER PROFILE - GET')
-        #print(session)
-        # return redirect(url_for("user_profile"))
+    
+    
+    if request.method == "GET":
         return redirect(url_for('user_profile_name', username=session['user']))
-
-        # return render_template(f"user_profiles/{session['user']}.html", friends=my_friends,account_name=session['user'])
-
+    
     elif request.method == "POST":
-
-        #password = session["password"]  # DON'T NEED?
-        #email = session["email"]  # DON'T NEED?
         user = session["user"]
         id = session["id"]
 
-        # print("ID:", id)
-        # print("USERNAME:", user)
-        # print("PASSWORD:", password)
-        # print("EMAIL   :", email)
-        # print("-------")
         if request.files:
-            file = request.files['file']  # because name in HTML FORM is file
-            my_description = ""  # only here because needs to be global
-            my_file_size = 0
-            # print(request.headers)
+            file = request.files['file']  
+            my_description = ""  
 
-            # print(file)
-            # print(app.config["FILE UPLOADS"])
-            # print(file.filename)
             my_path_with_file = ""
-            # print("FILE", file.content_type, type(file.content_type))
+
             if file.content_type == "text/csv":  # if it's a csv file, store it at the user location
                 my_path_with_file = f"{app.config['FILE UPLOADS']}/{user}/csv_files/{file.filename}"
                 file.save(my_path_with_file)
@@ -296,20 +280,6 @@ def user_profile():
                 my_path_with_file = f"{app.config['FILE UPLOADS']}/{user}/profile/profile_pic.jpg"  # overriding file type
                 file.save(my_path_with_file)
 
-            # print("MY PATH:", my_path)
-            #print("MY PATH W/F:", my_path_with_file)
-            '''
-            database.FILE_INSERT(
-                connection,
-                file_path=my_path_with_file,
-                description=my_description,
-                user_id=id,
-                file_size=my_file_size
-            )
-            '''
-            #print("OUT OF CHECKING FILETYPE-------")
-            #print("Saved and completed")
-        # return redirect(url_for("user_profile", message="hi")) # THIS APPEARS IN THE ADDRESS BAR AS A QUERY
         return redirect(url_for("user_profile"))
     
 
@@ -1001,11 +971,13 @@ def FAQ():
     return render_template(f"FAQ.html",
     )
 
+
 @app.route("/instructions", methods=['GET'])
 def instructions():
     helpers.log_function("request", request)
     return render_template(f"instructions.html",
     )
+
 
 @app.route("/leaderboards", methods=['GET'])
 def leaderboards():
@@ -1057,6 +1029,7 @@ def notifications():
         NEW_FOLLOWER=NEW_FOLLOWER
     )
 
+
 @app.route("/tribunal", methods=['GET'])
 def tribunal():
     helpers.log_function("request", request)
@@ -1069,6 +1042,7 @@ def patch_notes():
     helpers.log_function("request", request)
     return render_template(f"patch_notes.html",
     )
+
 
 @app.route("/newsletter", methods=['GET'])
 def newsletter():
