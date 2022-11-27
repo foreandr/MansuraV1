@@ -1,3 +1,22 @@
+REFRESH PROCESS
+source venv/bin/activate
+
+IF INSTALLED NEW LIBRARIES
+1. pip install -r requirmentx.txt
+IF CHANGE DB
+2. python3 database_local.py
+3. sudo nginx -s reload 
+
+ps ax|grep gunicorn
+4. pkill gunicorn
+5. kill -HUP 66173
+
+6. systemctl daemon-reload
+7. sudo systemctl start mansura
+8. sudo systemctl enable mansura
+9. sudo systemctl status mansura
+
+
 # IT SEEMS TO DO ANYTHING DATABASE RELATED ARBIRTARILY, I WILL HAVE TO USE THE database.local FILE
 
 #TEST WITH THIS LOCALLY FOR ERRORS
