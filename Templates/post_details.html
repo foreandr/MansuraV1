@@ -1,8 +1,11 @@
 {% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
 {%block main %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/post_details.css') }}">
+
+</br>
+</br>
 <div class="container">
-    <div class="col" style="width: 93%">
+    <div id="og_post_div" class="col" style="width: 100%">
         <div class="card mb-4 shadow-sm">
             <div class="card-header">
                 MAIN POST
@@ -83,10 +86,22 @@
         </div>
     </div>
 
+</div>
 
-    <div class="container">
-        {%for i in range(0, username_len )%}
-        <div class="col" style="width: 90%">
+<div class="container-fluid">
+    <div class="row justify-content-md-center">
+        <div class="col-2">
+          <div>
+            THIS IS WHERE PEOPLE WILL BUY ADS
+          </div>
+          <div>
+            {{can_scroll}}
+          </div>
+        </div>
+
+        <div class="col-7">
+            {%for i in range(0, username_len )%}
+            <div class="col">
             <div class="card mb-4 shadow-sm border-dark mb-3">
                 <div class="card-body">
                     <!-- TODO: CHANGE TO AN HREF TO GO TO THEIR PROFILE -->
@@ -99,22 +114,25 @@
                         {% else %}
                         <span id="daily_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Daily">D: {{day_votes[i]}}</a></button></span>
                         {% endif %}
-    
+
                         <!--MONTHLY -->
                         {% if monthly_left == 0 %}
                         <span id="monthly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
                         {% else %}
                         <span id="monthly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
                         {% endif %}
-    
+
                         <!--YEARLY -->
                         {% if yearly_left == 0 %}
                         <span id="yearly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
                         {% else %}
                         <span id="yearly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
                         {% endif %}
+
+                        <span id="like"><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/like">LIKES: {{likes[i]}}</a></button></span>
+                        <span id="dislike"><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/dislike">DISLIKES: {{dislikes[i]}}</a></button></span>
                     </div>
-    
+
                     
                     <!-- POST TEXT -->
                     <div id="text_span">
@@ -137,8 +155,8 @@
                     {% endif %}
                     <!--PROFILE PICTURE-->
                     <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='30' height='30' />
-    
-    
+
+
                     <!-- PUTTING SHIT AT THE BOTTOM -->
                     <div><br /></div>
                     <div class=" card-footer d-flex justify-content-between align-items-center">
@@ -149,28 +167,187 @@
                         </small>
                         <small class="text-muted" id="post_details">
                             <a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">ID:{{file_ids_list[i]}} </a>
-    
+
                             {% if age_18_list[i] == "older_18" %}
                             <u>18+</u>
                             {% endif %}
                             Source:<a href='{{source_list[i]}}'>{{source_list[i]}}</a>
-                            {% if post_sources_list[i] != "N-A" %}
-                            Referencing: {{post_sources_list[i]}}
-    
+                            {% if post_sources_list[i] != "" %}
+                            Referencing:<a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">{{post_sources_list[i]}} </a>
                             {% endif %}
                             {{dates_list[i]}}
-    
+
                         </small>
                     </div>
                 </div>
             </div>
+            </div>
+            {%endfor%}
         </div>
-        {%endfor%}
-    
-    </div>
-    
 
+        <!--DOING THE SEARCH-->
+        <div class="col-3"> 
+            <form action="/" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
+                <input class="d-inline form-control mr-sm-2" id="search" name="search" type="search" placeholder="(can be empty)" aria-label="search">
+                    <button class="btn btn-primary">Search</button>
+                </input>
+
+               
+                <!-- DATE SECTION -->
+                <div>
+                    <div>
+                    </br>
+                        UPLOAD DATE:
+                    </div>
+                    <div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="date_check" value="ALL" id="ALL" checked>
+                            <label for="ALL" unselectable>ALL</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="date_check" value="YEAR" id="YEAR">
+                            <label for="YEAR" unselectable>YEAR</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="date_check" value="MONTH" id="MONTH">
+                            <label for="MONTH" unselectable>MONTH</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="date_check" value="DAY" id="DAY">
+                            <label for="DAY" unselectable>DAY</label>
+                        </div>                       
+                    </div>
+                </div>
+
+                
+                <!-- ORDER BBY SECTION-->
+                <div>
+                    <div>
+                    </br>
+                        ALGORITHM DEFAULT
+                    </div>
+                    <div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="order_check" value="TOP" id="TOP" checked>
+                            <label for="TOP" unselectable>TOP</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="order_check" id="HOT" disabled>
+                            <label for="HOT" unselectable >HOT</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="order_check" id="NEW" disabled>
+                            <label for="NEW" unselectable>NEW</label>
+                        </div>
+                        <div>
+                        </br>
+                            ALGORITHM MANSURA CUSTOM / AI
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="order_check" value="EIGENVECTOR CENTRALITY" id="EIGENVECTOR CENTRALITY" disabled>
+                            <label for="EIGENVECTOR CENTRALITY" unselectable>EIGENVECTOR CENTRALITY</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="order_check" value="BASIC NEURAL NET" id="BASIC NEURAL NET" disabled>
+                            <label for="BASIC NEURAL NET" unselectable>BASIC NEURAL NET</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="order_check" value="NOOB PAGERANK" id="NOOB PAGERANK" disabled>
+                            <label for="NOOB PAGERANK" unselectable>NOOB PAGERANK</label>
+                        </div>
+                        <div> 
+                            </br>
+                            <div>
+                                ALGORITHM FAVOURITES (5 Max)
+                            </div>
+
+                            <div class="btn btn-outline-success">
+                                <input type="radio" name="order_check" value="a-demo" id="a-demo">
+                                <label for="a-demo" unselectable>a-demo</label>
+                            </div>
+                            <div class="btn btn-outline-success">
+                                <input type="radio" name="order_check" value="andrfore-demo" id="andrfore-demo">
+                                <label for="andrfore-demo" unselectable>andrfore-demo</label>
+                            </div>
+
+                            <div class="btn btn-outline-success">
+                                <input type="radio" name="order_check" value="foreandr-demo" id="foreandr-demo">
+                                <label for="foreandr-demo" unselectable>foreandr-demo</label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+                </br>
+                </br>
+                </br>
+                </br>
+                
+                <!-- WHERE CLAUSES BY SECTION-->
+                <div>
+                    <div>
+                        WHERE CLAUSES 
+                        <button class="btn btn-outline-success" type="button" onclick="add_another_where_clause()">+</button>
+                        <button class="btn btn-outline-danger"  type="button" onclick="remove_another_where_clause()">-</button>
+                        (max 10 for now)
+                    </div>
+                </div>
+                <div id="where_clause_additions">
+                    <div>
+                        <select name="and_or_clause" id="and_or_clause" class="dropdown-content">
+                            <option id="AND">AND</option>           
+                            <option id="OR">OR</option>
+                        </select> 
+                        <select name="where_clauses" id="where_clauses" class="dropdown-content">
+                            <option id="DAY VOTES">POST DAY VOTES</option>
+                            <option id="MONTH VOTES">POST MONTH VOTES</option>
+                            <option id="YEAR VOTES">POST YEAR VOTES</option>            
+                            <option id="LIKES"disabled>POST LIKES</option>           
+                            <option id="REPLIES"disabled>POST REPLIES</option>
+                            <option id="POST SENTIMENT ANALYSIS"disabled>POST SENTIMENT</option>
+                            <option id="POST HAS IMAGE" disabled>POST HAS IMAGE T/F</option>
+                            <option id="HAS SOURCE"disabled>HAS SOURCE</option>
+                            <option id="USER FOLLOWING"disabled>USER FOLLOWING</option>
+                            <option id="USER FOLLOWERS"disabled>USER FOLLOWERS</option>
+                            <option id="USER USER BLOCKED THEM" disabled>USER NUM BLOCKED</option>
+                            <option id="FRIENDS WITH" disabled>USER FRIENDS WITH</option>
+                            <option id="Post/Like Ratio" disabled>USER POST/LIKE RATIO</option>
+                            <option id="USER POLARIZATION" disabled>USER POLARIZATION</option>
+                            <option id="USER FOLLOWING (x)" disabled>USER FOLLOWING (x)</option>
+                            <option id="USER FOLLOWED BY (x)" disabled>USER FOLLOWED BY (x)</option>
+                            <option id="USER 18+" disabled>USER 18+</option>
+                            <option id="USER FROM COUNTRY (x)" disabled>USER FROM COUNTRY (x)</option>    
+                        </select> 
+                        <select name="higher_equal_lower" id="higher_equal_lower" class="dropdown-content">
+                            <option id="greater_equal">>=</option>           
+                            <option id="equal_equal">==</option>
+                            <option id="less_equal"><=</option>
+                        </select> 
+                        <input name="num_search_text" id="num_search_text" type="text"maxlength="4" size="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ><br><br>
+                    </div>
+                </div>
+
+                <div>
+                    <input type="hidden" id="search_arguments" name="search_arguments" value="{{search_arguments}}" /> <!--search_arguments:{{search_arguments}}-->
+                </div>
+                <div>
+                    <input type="hidden" id="page_number" name="page_number" value={{page_no}} /><!--Page Test:{{page_no}}--> 
+                </div>
+            </form>
+
+                    
+            <form action="https://google.com">
+                <input class="inline btn btn-primary" type="submit" value="Save Current Algorithm" />
+            </form>
+
+        </div>
+
+
+    </div>
 </div>
+
+
 
 <!-- reply_modal  -->
 <div id="reply_modal" class="modal">
@@ -237,12 +414,12 @@
 </div>
 </div>
 <script>
+    console.log("{{username}}")
     var slider = `Sections: 1-10
         <div class="slidecontainer" >
             <input type="range" min="1" max="10" value="5" class="slider" id="myRange" name="how_many_sections_">
         </div>
         `
-
 
     function howmanysectionsfunc(){
 
@@ -264,12 +441,19 @@
     m_votes_left = '{{ monthly_left }}';
     y_votes_left = '{{ yearly_left }}';
     daily_pool = '{{dailypool}}'
+    len_text = '{{  len_text }}';
+    og_post_text = '{{ og_post_text }}';
+    og_post_img = '{{ og_post_img }}';
+    og_post_src = '{{og_post_src}}'
+
+
+
     console.log(daily_pool)
     console.log("HELLO WORLD")
 
-    document.getElementById("index_daily").innerHTML = 'DAILY POOL: ${{daily_pool}}';
-    document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: ${{monthly_pool }}';
-    document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: ${{yearly_pool }}';
+    document.getElementById("index_daily").innerHTML = 'DAILY POOL: ${{dailypool}}';
+    document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: ${{monthlypool }}';
+    document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: ${{yearlypool }}';
 
     document.getElementById("daily_votes_left").innerHTML = `DAY VOTES LEFT:  ${d_votes_left}`;
     document.getElementById("monthly_votes_left").innerHTML = `MON VOTES LEFT: ${m_votes_left}`;

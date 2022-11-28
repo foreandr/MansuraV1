@@ -3115,6 +3115,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         else:
             profile_search_clause = F"AND U.username = U.username"
     else:
+        print("SHOWING IT IS A POST SEARCH")
         foreign_id_text_entry = F"AND F.Post_foreign_id_source = '{file_id}'"
         profile_search_clause = F"AND U.username = U.username"
 
@@ -3129,36 +3130,36 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
 
     #for key, value in custom_clauses.items():
     #    print(key, value)
-    print("custom clauses", type(custom_clauses), custom_clauses)
+    #print("custom clauses", type(custom_clauses), custom_clauses)
     where_clause = custom_clauses["WHERE_CLAUSE"] 
-    print("=======================================")
+    #print("=======================================")
     #if custom_clauses != None and custom_clauses !="None":
     #    where_clause = where_clause + custom_clauses["WHERE_CLAUSE"]
     
     # print("OG ORDER BY", order_by_clause)
     # print("NW ORDDR BY", custom_clauses["WHERE_CLAUSE"])
-    print("NEW GIANT ORDER CLAUSE:")
+    #print("NEW GIANT ORDER CLAUSE:")
     order_by_clause = custom_clauses["ORDER_BY_CLAUSE"]
-    print(len(order_by_clause))
-    print(order_by_clause)
+    #print(len(order_by_clause))
+    #print(order_by_clause)
 
     if len(order_by_clause) == 0:
-        print("got here it == 0 ")
+        #print("got here it == 0 ")
         order_by_clause = "ORDER BY (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Yearly') DESC"
-    print("========================================")
+    #print("========================================")
     
     #print("NEW GIANT WHERE CLAUSE:")
     #print(where_clause)
     #print("========================================")
     
-    print("QUERIES ENTERED",)
-    print("foreign_id_text_entry:", foreign_id_text_entry)
-    print("profile_search_clause:", profile_search_clause)
-    print("where_clause         :", where_clause)
-    print("========================================")
-    print("FULL WHERE QUERY")
-    where_full_query = f"{profile_search_clause} {profile_search_clause} {where_clause}"
-    print(where_full_query)
+    #print("QUERIES ENTERED",)
+    #print("foreign_id_text_entry:", foreign_id_text_entry)
+    #print("profile_search_clause:", profile_search_clause)
+    #print("where_clause         :", where_clause)
+    #print("========================================")
+    #print("FULL WHERE QUERY")
+    where_full_query = f"{foreign_id_text_entry} {profile_search_clause} {where_clause}"
+    #print(where_full_query)
     query = f"""
         SELECT
             F.File_id, 
@@ -3234,7 +3235,6 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
 
         WHERE U.username = U.username -- DO THIS SO ALL OTHERC ALUSES CAN BE AND CLAUSES
         {where_full_query}
-
         {order_by_clause}
 
         OFFSET (({page_no} - 1) * 100)
@@ -3372,7 +3372,7 @@ def GET_TOP_N_SEARCH_ALGORITHMS(N=100):
     """)
     all_algos_without_counts = []
     for i in cursor.fetchall():
-        print(i)
+        # print(i)
         all_algos_without_counts.append([i[0],i[1],i[2],i[3]])
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        

@@ -359,10 +359,6 @@ def user_profile_name(username):
     if username == "favicon.ico": # check weird username issue
         #print("FAVICON ISSUE")
         return redirect(url_for('home'))
-    """
-    if request.method == "POST":
-        print("USERNAME POSTING")
-    """
     # CHECK USER INFO
     if username == session['user']: # Check some user info
         is_session_user = True  
@@ -374,6 +370,7 @@ def user_profile_name(username):
     #   CHECK WHICH ONE OF THE OTHERS IT UIS
     #=======================================================
     if username.endswith('-post_page'): # CHECK IF GOING TO A PARTICULAR POST
+        print("GOING TO A PARTICULAR POST")
         if "email" in session:
             balance = database.GET_USER_BALANCE_SIMPLE( session["user"])
         else:
@@ -389,116 +386,139 @@ def user_profile_name(username):
         final_filename = new_filename[0]
         file_id = final_filename.split("-")[1]
         num_replies = database.GET_NUM_REPLIES(file_id)
+        
+        
         reply_array = database.GET_ALL_REPLIES(file_id)
         post_username, post_file_path, post_user_id, post_foreign_id_source, post_date, file_id_ = database.GET_SINGLE_DATASET_INFO(final_filename)
-            
-        file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, search_arguments= database.universal_dataset_function(search_type="post", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], file_id=file_id)
 
-        #MIGHT BE WRTH CONSOLIDATIING INTO ONE FUNCTION
+        #print("NUM REPLIES", num_replies)
+        #print("file_id", file_id)
+        #print("file_id_", file_id_)
+
+        # GOING TO A USER
+        search_json = {}
+        json_search_clauses = "None"
+        if request.method == 'POST':
+            search = request.form.get("search")   
+            date_check = request.form.get("date_check")  
+            order_check = request.form.get("order_check")  
+            and_or_clauses, where_clauses, hi_eq_low, num_search_text = helpers.GET_ALL_QUERY_INFO_FROM_REQUEST_FORM(request)
+            clauses_dict = [
+                and_or_clauses, 
+                where_clauses, 
+                hi_eq_low, 
+                num_search_text
+            ]
+            json_search_clauses = database.TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, session_username)
+
+        returned_search_arguments = request.form.get("search_arguments")
+        page_no = request.form.get("page_number")
+        
+        new_json_search_clauses = helpers.COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses)
+        if page_no == None or str(page_no) == "None":
+                page_no = 1
+                
+        # file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, search_arguments = database.universal_dataset_function(search_type="prof", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], profile_username=username)
+        file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, search_arguments = database.universal_dataset_function(search_type="post", page_no=page_no, search_user=session['user'], custom_clauses=new_json_search_clauses, file_id=file_id_)
+        username_len = len(usernames_list)
         if len(file_ids_list) == 0:
+            # print("THERE IS NOTHING NO FILES ON HOMEPAGE HERE", session['user'])
             user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user']) # THIS ASSUMES ALREADY IN SESSION, SHOULD BE
+
+        if len(file_ids_list) < 90: # this 100 number needs to be better coded, hard coding is going to cause issues
+            can_scroll = False
+        else:
+            can_scroll = True
+
 
         text_list = []
         age_18_list = []
         source_list = []
         image_path_list = []
-        usernames_list = []
-        paths_list = []
         distro_details_list = []
-
-        for i in range(len(reply_array)):
-            #print(i)
-            #print(i[1])
-            usernames_list.append(reply_array[i][0])
-            paths_list.append(reply_array[i][1])
-            my_path = f"static/#UserData/{reply_array[i][0]}/files/{reply_array[i][1]}"
-            # print("PATH    :", my_path)
-            
+        #print(usernames_list)
+        #print(len(usernames_list))
+        # print(file_id)
+        for i in range(len(usernames_list)): # GETTING POST INFO FROM PATH
+            # exit(0)
+            my_path = f"static/#UserData/{usernames_list[i]}/files/{paths_list[i]}"
+            # print(my_path)
             post_text, post_age_18, post_sources, post_image_path, distro_details = helpers.get_postinfo_from_path(my_path)
             age_18_list.insert(i, post_age_18)
             source_list.insert(i, post_sources)
             text_list.insert(i, post_text)
             image_path_list.insert(i, post_image_path)
-            distro_details_list.insert(i, distro_details)
+            distro_details_list.insert(i,distro_details)
         
-        my_og_path = f"static/#UserData/{new_username}/files/{post_file_path}"
-        og_post_text, og_post_18, og_post_src, og_post_img, og_post_distro_details = helpers.get_postinfo_from_path(my_og_path)
-
-        # GET LENGTHS OF TEXT
+        og_post_text = ""
+        og_post_18 = ""
+        og_post_src = ""
+        og_post_img = ""
+        og_post_distro_details = ""
+        # print(text_list)
         lengths_of_text_files = []
         for i in text_list:
             lengths_of_text_files.append(len(i))
-            # print(i, len(i))
-        '''
-        print("=====================DETAILS=======================")
-        print("DATES LIST:", dates_list)
-        print("RAW NAME :", username)
-        print("USERNAME :", new_username)
-        print("FILENAME :", final_filename)
-        print("FILE  ID :", file_id)
-        print("NUM REPL :", num_replies)
-        # print("ARR REPL:", reply_array)        
-        print("POST USER:", post_username)
-        print("POST PATH:",post_file_path)
-        print("POST U ID:",post_user_id)
-        print("POST F ID:",post_foreign_id_source)
-        print("POST DATE:",post_date)
-        
-        print("POST DATE:",og_post_text)
-        print("IMG PATH :",og_post_img)
-        print("POST SORC:",og_post_src)
-        print("POST OV18:",og_post_18)
-        '''
+            my_og_path = f"static/#UserData/{post_username}/files/{post_file_path}"
+            og_post_text, og_post_18, og_post_src, og_post_img, og_post_distro_details = helpers.get_postinfo_from_path(my_og_path)
+            
+            lengths_of_text_files = []
+            for i in text_list:
+                lengths_of_text_files.append(len(i))
+        print("OG POST DETAILS")
+        print(og_post_text)
+        print(og_post_18)
+        print( og_post_src)
+        print(og_post_img )
+        print(og_post_distro_details)
         return render_template('post_details.html',
-                            # POST DETAILS
+                                # POST DETAILS
 
-                            len_text=len(og_post_text),
-                            og_post_text=og_post_text,
-                            og_post_img=og_post_img ,
-                            og_post_src=og_post_src,
-                            og_post_18=og_post_18,
-                            og_post_distro_details=og_post_distro_details,
+                                len_text=len(og_post_text),
+                                og_post_text=og_post_text,
+                                og_post_img=og_post_img ,
+                                og_post_src=og_post_src,
+                                og_post_18=og_post_18,
+                                og_post_distro_details=og_post_distro_details,
+                                test_message="post_details.html page",
+                                lengths_of_text_files=lengths_of_text_files,
+                                username_len=len(usernames_list),
+                                username=post_username,
+                                final_filename=final_filename,
+                                file_id=file_id,
+                                num_replies=num_replies,
+                                post_user_id=post_user_id,
+                                post_foreign_id_source=post_foreign_id_source,
+                                post_date=post_date,
+                                reply_array=reply_array,
 
-                            test_message="post_details.html page",
-                            lengths_of_text_files=lengths_of_text_files,
-                            text_list=text_list,
-                            age_18_list=age_18_list,
-                            source_list=source_list,
-                            image_path_list=image_path_list,
-                            username_len=len(usernames_list),
-                            username=new_username,
-                            final_filename=final_filename,
-                            file_id=file_id,
-                            num_replies=num_replies,
-                            post_user_id=post_user_id,
-                            post_foreign_id_source=post_foreign_id_source,
-                            post_date=post_date,
-                            reply_array=reply_array,
-
-                            file_ids_list=file_ids_list,
-                            usernames_list=usernames_list,
-                            paths_list=paths_list,
-                            dates_list=dates_list,
-                            post_sources_list=post_sources_list,
-                            distro_details_list=distro_details_list,
-
-                            daily_left=daily_left,
-                            monthly_left=monthly_left,
-                            yearly_left=yearly_left,
-                            
-                            day_votes=day_votes,
-                            month_votes=month_votes,
-                            year_votes=year_votes,
-
-                            daily_pool=dailypool,
-                            monthly_pool=monthlypool,
-                            yearly_pool=yearlypool,
-                            user_balance=user_balance,
-
-                            daily_dataset_votes=daily_votes_singular,
-                            monthly_dataset_votes=monthly_votes_singular,
-                            yearly_dataset_votes=yearly_votes_singular
-                        )        
+                                usernames_list=usernames_list,
+                                file_ids_list=file_ids_list,
+                                session_username=session["user"],
+                                paths_list=paths_list,
+                                dates_list=dates_list,
+                                post_sources_list=post_sources_list,
+                                likes=likes,
+                                dislikes=dislikes,
+                                day_votes=day_votes,
+                                month_votes=month_votes,
+                                year_votes=year_votes,
+                                dailypool = dailypool,
+                                monthlypool = monthlypool,
+                                yearlypool = yearlypool,
+                                daily_left = daily_left,
+                                monthly_left = monthly_left,
+                                yearly_left = yearly_left,
+                                user_balance = user_balance,                           
+                                text_list=text_list,
+                                age_18_list=age_18_list,
+                                source_list=source_list,
+                                image_path_list=image_path_list,
+                                distro_details_list=distro_details_list,                            
+                                search_arguments=search_arguments,
+                                page_no=page_no,
+                                can_scroll=can_scroll
+                            )        
     else:
         # print(username, "does not end with -post_page")
         pass
@@ -527,7 +547,6 @@ def user_profile_name(username):
         #print("\nTHIS SHOWS ITS GETTING TO settings funds")
         return redirect(url_for('settings'))  
     #=======================================================
-
 
     #print(F"GOING TO A USER PROFILE: ", username)
     # ASSUME IT'S JUST SOMEBODIES NAME THEN?
