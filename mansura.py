@@ -389,7 +389,9 @@ def user_profile_name(username):
         
         
         reply_array = database.GET_ALL_REPLIES(file_id)
-        post_username, post_file_path, post_user_id, post_foreign_id_source, post_date, file_id_ = database.GET_SINGLE_DATASET_INFO(final_filename)
+        post_username, post_file_path, post_user_id, post_foreign_id_source, post_date, file_id_, single_day_votes, single_month_votes, single_year_votes, single_likes, single_dislikes = database.GET_SINGLE_DATASET_INFO(final_filename)
+        print(single_likes)
+        print(single_dislikes)
 
         #print("NUM REPLIES", num_replies)
         #print("file_id", file_id)
@@ -465,12 +467,12 @@ def user_profile_name(username):
             lengths_of_text_files = []
             for i in text_list:
                 lengths_of_text_files.append(len(i))
-        print("OG POST DETAILS")
-        print(og_post_text)
-        print(og_post_18)
-        print( og_post_src)
-        print(og_post_img )
-        print(og_post_distro_details)
+        #print("OG POST DETAILS")
+        #print(og_post_text)
+        #print(og_post_18)
+        #print( og_post_src)
+        #print(og_post_img )
+        #print(og_post_distro_details)
         return render_template('post_details.html',
                                 # POST DETAILS
 
@@ -491,6 +493,15 @@ def user_profile_name(username):
                                 post_foreign_id_source=post_foreign_id_source,
                                 post_date=post_date,
                                 reply_array=reply_array,
+
+                                daily_dataset_votes=single_day_votes, 
+                                monthly_dataset_votes=single_month_votes,
+                                yearly_dataset_votes=single_year_votes, 
+                                single_likes=single_likes, 
+                                single_dislikes=single_dislikes,
+
+
+
 
                                 usernames_list=usernames_list,
                                 file_ids_list=file_ids_list,

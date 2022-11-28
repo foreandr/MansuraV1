@@ -2197,10 +2197,40 @@ def GET_SINGLE_DATASET_INFO(filename):
     conn = connection.test_connection()
     cursor = conn.cursor()
 
-    cursor.execute(f"""
-        SELECT file.Uploader, file.File_PATH, file.UserId, file.Post_foreign_id_source, file.Date_Time, file.File_id
-        FROM FILES file
-        WHERE file.File_PATH = '{filename}'
+    cursor.execute(f"""            
+        SELECT F.Uploader, F.File_PATH, F.UserId, F.Post_foreign_id_source, F.Date_Time, F.File_id,
+        (   
+            SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
+            FROM FILE_VOTES file 
+            WHERE file.File_id = F.File_id 
+            AND Vote_Type = 'Daily'
+        ), 
+        (   
+            SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
+            FROM FILE_VOTES file 
+            WHERE file.File_id = F.File_id 
+            AND Vote_Type = 'Monthly'
+        ),
+        (  
+            SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
+            FROM FILE_VOTES file 
+            WHERE file.File_id = F.File_id 
+            AND Vote_Type = 'Yearly'
+        ),
+        (
+            SELECT COUNT(*)
+            FROM LIKES likes
+            WHERE likes.File_id = F.File_id 
+        ),
+        (
+            SELECT COUNT(*)
+            FROM DISLIKES dislikes
+            WHERE dislikes.File_id = F.File_id 
+        )
+
+
+        FROM FILES F
+        WHERE F.File_PATH = '{filename}'
     """)
     
     info_array = []
@@ -2215,8 +2245,8 @@ def GET_SINGLE_DATASET_INFO(filename):
     #    print(i)
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     CLOSE_CURSOR_AND_CONN(cursor, conn)
-
-    return info_array[0], info_array[1], info_array[2], info_array[3], info_array[4], info_array[5]
+                                                                                                     # daily        # month        # year        #likes         #dislikes
+    return info_array[0], info_array[1], info_array[2], info_array[3], info_array[4], info_array[5], info_array[6], info_array[7], info_array[8],info_array[9], info_array[10],
 
 
 def GET_NUM_REPLIES(file_id):
