@@ -44,22 +44,21 @@ DONE.notifications
 
 MINIMUM VIABLE PRODUCT
 ========================
+WRITE UP THE PAPER
 MOTTO
 	- PAID TO POST
 	- PAID TO LIKE
 	- PAID TO SHARE
 	- PAID TO SEARCH
 
-
-
-
+HAVE TO BE ABLE TO DISPROVE OF OR APPROVE ADS, FOR X TIME PERIOD AS WELL
 
 1. CHANGE VOTING TO 30 4 1
 2. First n people to join this month get in free, (xd)
 	- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
 	- the correct judgment is if reffered you get EXTRA
 	- person who refers gets 1 monthly vote for EACH refer
-3. WRITE UP THE PAPER
+
 4. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
 	- add tags to text inserts to help the search algo
 5. GET UPLOADS ACTUALLY WORKING, 

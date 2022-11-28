@@ -531,77 +531,106 @@ def user_profile_name(username):
 
     #print(F"GOING TO A USER PROFILE: ", username)
     # ASSUME IT'S JUST SOMEBODIES NAME THEN?
-    name_exists = database.CHECK_IF_NAME_EXISTS(username=username) #TODO:IMPLEMENT FUNCTION
+    name_exists = database.CHECK_IF_NAME_EXISTS(username=username) 
     my_friends, friend_count = database.GET_FOLLOWING(username)
     my_followers, follow_count = database.GET_FOLLOWERS(username=username)
-    # #TODO:might be worth doing a check befroe before the big query someday
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, search_arguments = database.universal_dataset_function(search_type="prof", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], profile_username=username)
+    search_json = {}
+    json_search_clauses = "None"
+    if request.method == 'POST':
+        search = request.form.get("search")   
+        date_check = request.form.get("date_check")  
+        order_check = request.form.get("order_check")  
+        and_or_clauses, where_clauses, hi_eq_low, num_search_text = helpers.GET_ALL_QUERY_INFO_FROM_REQUEST_FORM(request)
+        clauses_dict = [
+            and_or_clauses, 
+            where_clauses, 
+            hi_eq_low, 
+            num_search_text
+        ]
+        json_search_clauses = database.TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, session_username)
+
+    returned_search_arguments = request.form.get("search_arguments")
+    page_no = request.form.get("page_number")
     
+    new_json_search_clauses = helpers.COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses)
+    if page_no == None or str(page_no) == "None":
+            page_no = 1
+            
+    # file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, search_arguments = database.universal_dataset_function(search_type="prof", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], profile_username=username)
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, search_arguments = database.universal_dataset_function(search_type="prof", page_no=page_no, search_user=session['user'], profile_username=username, custom_clauses=new_json_search_clauses)
+    print("UNIVERSAL PROFILE GOT", file_ids_list)
+    username_len = len(usernames_list)
     if len(file_ids_list) == 0:
         # print("THERE IS NOTHING NO FILES ON HOMEPAGE HERE", session['user'])
         user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user']) # THIS ASSUMES ALREADY IN SESSION, SHOULD BE
-        
+
+    if len(file_ids_list) < 90: # this 100 number needs to be better coded, hard coding is going to cause issues
+        can_scroll = False
+    else:
+        can_scroll = True
+
+    profile_bio = helpers.GET_USER_BIO(username)
+
     text_list = []
     age_18_list = []
     source_list = []
     image_path_list = []
-    
-    profile_bio = helpers.GET_USER_BIO(username)
-    #print("USER BIO LEN  :", len(profile_bio))
-    #print("USER BIOL     :", profile_bio)
-
-    for i in range(len(usernames_list)):
-        # print(usernames_list[i], paths_list[i])
+    distro_details_list = []
+    for i in range(len(usernames_list)): # GETTING POST INFO FROM PATH
         my_path = f"static/#UserData/{usernames_list[i]}/files/{paths_list[i]}"
         post_text, post_age_18, post_sources, post_image_path, distro_details = helpers.get_postinfo_from_path(my_path)
         age_18_list.insert(i, post_age_18)
         source_list.insert(i, post_sources)
         text_list.insert(i, post_text)
         image_path_list.insert(i, post_image_path)
+        distro_details_list.insert(i,distro_details)
 
-    # print("FILENAMES: ", filenames)
     lengths_of_text_files = []
     for i in text_list:
         lengths_of_text_files.append(len(i))
 
     if name_exists:
-        
-        return render_template(f"user_profile.html",
-                #SPECIFIC TO USER PROFILE
-                followers=my_followers,
-                friends=my_friends,
-                profile_bio=profile_bio,
-                friend_count=friend_count,
-                follow_count=follow_count,
+        return render_template('user_profile.html',
+                                message="user_profile.html page",
+                                host_user=username,
+                                followers=my_followers,
+                                friends=my_friends,
+                                friend_count=friend_count,
+                                follow_count=follow_count,
+                                profile_bio=profile_bio,
 
-                # NORMAL FOR ALL
-                usernames_list=usernames_list,
-                username_len=len(usernames_list),
-                paths_list=paths_list,
-                post_sources_list=post_sources_list,
-                file_ids_list=file_ids_list,
-                account_name=username,
-                dates_list=dates_list,
-                host_account=[username, session['user'], is_session_user, is_following],
-                
-                day_votes=day_votes,
-                month_votes=month_votes,
-                year_votes=year_votes,
+                                usernames_list=usernames_list,
+                                file_ids_list=file_ids_list,
+                                session_username=session['user'],
+                                username_len=username_len,
+                                paths_list=paths_list,
+                                dates_list=dates_list,
+                                post_sources_list=post_sources_list,
+                                likes=likes,
+                                dislikes=dislikes,
+                                day_votes=day_votes,
+                                month_votes=month_votes,
+                                year_votes=year_votes,
+                                dailypool = dailypool,
+                                monthlypool = monthlypool,
+                                yearlypool = yearlypool,
+                                daily_left = daily_left,
+                                monthly_left = monthly_left,
+                                yearly_left = yearly_left,
+                                user_balance = user_balance,
+                            
+                                text_list=text_list,
+                                lengths_of_text_files=lengths_of_text_files,
+                                age_18_list=age_18_list,
+                                source_list=source_list,
+                                image_path_list=image_path_list,
+                                distro_details_list=distro_details_list,
+                                
+                                search_arguments=search_arguments,
+                                page_no=page_no,
+                                can_scroll=can_scroll
 
-                dailypool=dailypool,
-                monthlypool=monthlypool,
-                yearlypool=yearlypool,
-                daily_votes_left=daily_left,
-                monthly_votes_left=monthly_left,
-                yearly_votes_left=yearly_left,
-                user_balance = user_balance,
-
-                text_list=text_list,
-                lengths_of_text_files=lengths_of_text_files,
-                age_18_list=age_18_list,
-                source_list=source_list,
-                image_path_list=image_path_list              
-            )
+                            )
     else:                             
         return redirect(url_for('home'))
 

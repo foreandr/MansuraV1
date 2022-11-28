@@ -2,121 +2,298 @@
 {%block main %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/user_profile.css') }}">
 <!-- SESSION VARIABLES-->
-<div id="profile picture">
-    <h1>{{host_account[0]}}</h1>
-    <img id="profile_picture"
-        src="{{url_for('static', filename='#UserData/' + account_name + '/profile/profile_pic.jpg')}} " width='200' height='200' 
-    />  
-     
-    <div id="add_new_profile_picture"></div>
+<div id="profile_details" class="d-flex justify-content-center">
+    <div id="profile picture">
+        <h1>{{host_user}}</h1>
+        <img id="profile_picture"
+            src="{{url_for('static', filename='#UserData/' + host_user + '/profile/profile_pic.jpg')}} " width='200' height='200' 
+        />  
+        <div id="add_new_profile_picture"></div>     
+        <br>
+    </div>
+    
+    <div id="non_host_add_remove">
+    </div>
+
+</div>
+<div class="d-flex justify-content-center">
     <textarea id="w3review" maxlength="40" name="w3review" rows="4" cols="40" disabled>{{profile_bio}}</textarea>
-    
-
-    
-    <br>
 </div>
-
-<div id="non_host_add_remove">
-</div>
-
-
-<div class="dropdown">
-    <br>
-    <button onclick="get_following()" class="dropbtn">Following  {{friend_count}}</button>
-    <div id="my_following_dropdown" class="dropdown-content">
-    </div>
-</div>
-<div class="dropdown">
-    <br>
-    <button onclick="get_followers()" class="dropbtn">Followers {{follow_count}}</button>
-    <div id="my_followers_dropdown" class="dropdown-content">
-    </div>
-</div>
-
-<div class="container">
-    {%for i in range(0, username_len )%}
-    <div class="col" style="width: 90%">
-        <div class="card mb-4 shadow-sm border-dark mb-3">
-            <div class="card-body">
-                <!-- TODO: CHANGE TO AN HREF TO GO TO THEIR PROFILE -->
-                <div > <!--CARD TITLE-->                  
-                    <a href="/{{usernames_list[i]}}">{{usernames_list[i]}}</a>
-                                            
-                    <!--DAILY -->
-                    {% if daily_left == 0 %}
-                    <span id="daily_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Daily">D: {{day_votes[i]}}</a></button></span>
-                    {% else %}
-                    <span id="daily_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Daily">D: {{day_votes[i]}}</a></button></span>
-                    {% endif %}
-
-                    <!--MONTHLY -->
-                    {% if monthly_left == 0 %}
-                    <span id="monthly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
-                    {% else %}
-                    <span id="monthly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
-                    {% endif %}
-
-                    <!--YEARLY -->
-                    {% if yearly_left == 0 %}
-                    <span id="yearly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
-                    {% else %}
-                    <span id="yearly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
-                    {% endif %}
-                </div>
-
-                
-                <!-- POST TEXT -->
-                <div id="text_span">
-                    {% if lengths_of_text_files[i] > 300 %}
-                        {{text_list[i][:300]}}...
-                        <div>
-                            <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page">see more...</a>
-                        </div>
-                    {% else %}
-                        {{text_list[i]}}
-                        <div>
-                            <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page">see more...</a>
-                        </div>
-                    {% endif %}            
-                </div>
-                
-                <!-- POST IMAGE -->
-                {% if image_path_list[i] != "" %}
-                <img onclick="enlargeImg()" id="post_pic" src="{{url_for('static', filename=image_path_list[i])}} " width='400' height='200' />
-                {% endif %}
-                <!--PROFILE PICTURE-->
-                <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='30' height='30' />
-
-
-                <!-- PUTTING SHIT AT THE BOTTOM -->
-                <div><br /></div>
-                <div class=" card-footer d-flex justify-content-between align-items-center">
-                    <small class="text-muted">
-                        <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_ids_list[i]}})" aria-expanded="false">
-                            REPLY
-                        </button>
-                    </small>
-                    <small class="text-muted" id="post_details">
-                        <a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">ID:{{file_ids_list[i]}} </a>
-
-                        {% if age_18_list[i] == "older_18" %}
-                        <u>18+</u>
-                        {% endif %}
-                        Source:<a href='{{source_list[i]}}'>{{source_list[i]}}</a>
-                        {% if post_sources_list[i] != "N-A" %}
-                        Referencing: {{post_sources_list[i]}}
-
-                        {% endif %}
-                        {{dates_list[i]}}
-
-                    </small>
-                </div>
-            </div>
+<div class="d-flex justify-content-center">
+    <div class="dropdown">
+        <br>
+        <button class="dropbtn">Following  {{friend_count}}</button> <!-- TODO GO TO A PERSONS FOLLOWER PAGE-->
+        <div id="my_following_dropdown" class="dropdown-content">
         </div>
     </div>
-    {%endfor%}
-
+    <div class="dropdown">
+        <br>
+        <button class="dropbtn">Followers {{follow_count}}</button>
+        <div id="my_followers_dropdown" class="dropdown-content">
+        </div>
+    </div>
 </div>
+
+
+<div class="container-fluid">
+    <div class="row justify-content-md-center">
+        <div class="col-2">
+          <div>
+            THIS IS WHERE PEOPLE WILL BUY ADS
+          </div>
+          <div>
+            {{can_scroll}}
+          </div>
+        </div>
+
+        <div class="col-7">
+            {%for i in range(0, username_len )%}
+            <div class="col">
+            <div class="card mb-4 shadow-sm border-dark mb-3">
+                <div class="card-body">
+                    <!-- TODO: CHANGE TO AN HREF TO GO TO THEIR PROFILE -->
+                    <div > <!--CARD TITLE-->                  
+                        <a href="/{{usernames_list[i]}}">{{usernames_list[i]}}</a>
+                                                
+                        <!--DAILY -->
+                        {% if daily_left == 0 %}
+                        <span id="daily_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Daily">D: {{day_votes[i]}}</a></button></span>
+                        {% else %}
+                        <span id="daily_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Daily">D: {{day_votes[i]}}</a></button></span>
+                        {% endif %}
+
+                        <!--MONTHLY -->
+                        {% if monthly_left == 0 %}
+                        <span id="monthly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
+                        {% else %}
+                        <span id="monthly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
+                        {% endif %}
+
+                        <!--YEARLY -->
+                        {% if yearly_left == 0 %}
+                        <span id="yearly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
+                        {% else %}
+                        <span id="yearly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
+                        {% endif %}
+
+                        <span id="like"><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/like">LIKES: {{likes[i]}}</a></button></span>
+                        <span id="dislike"><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/dislike">DISLIKES: {{dislikes[i]}}</a></button></span>
+                    </div>
+
+                    
+                    <!-- POST TEXT -->
+                    <div id="text_span">
+                        {% if lengths_of_text_files[i] > 300 %}
+                            {{text_list[i][:300]}}...
+                            <div>
+                                <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page">see more...</a>
+                            </div>
+                        {% else %}
+                            {{text_list[i]}}
+                            <div>
+                                <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page">see more...</a>
+                            </div>
+                        {% endif %}            
+                    </div>
+                    
+                    <!-- POST IMAGE -->
+                    {% if image_path_list[i] != "" %}
+                    <img onclick="enlargeImg()" id="post_pic" src="{{url_for('static', filename=image_path_list[i])}} " width='400' height='200' />
+                    {% endif %}
+                    <!--PROFILE PICTURE-->
+                    <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='30' height='30' />
+
+
+                    <!-- PUTTING SHIT AT THE BOTTOM -->
+                    <div><br /></div>
+                    <div class=" card-footer d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_ids_list[i]}})" aria-expanded="false">
+                                REPLY
+                            </button>
+                        </small>
+                        <small class="text-muted" id="post_details">
+                            <a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">ID:{{file_ids_list[i]}} </a>
+
+                            {% if age_18_list[i] == "older_18" %}
+                            <u>18+</u>
+                            {% endif %}
+                            Source:<a href='{{source_list[i]}}'>{{source_list[i]}}</a>
+                            {% if post_sources_list[i] != "" %}
+                            Referencing:<a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">{{post_sources_list[i]}} </a>
+                            {% endif %}
+                            {{dates_list[i]}}
+
+                        </small>
+                    </div>
+                </div>
+            </div>
+            </div>
+            {%endfor%}
+        </div>
+
+        <!--DOING THE SEARCH-->
+        <div class="col-3"> 
+            <form action="/" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
+                <input class="d-inline form-control mr-sm-2" id="search" name="search" type="search" placeholder="(can be empty)" aria-label="search">
+                    <button class="btn btn-primary">Search</button>
+                </input>
+
+               
+                <!-- DATE SECTION -->
+                <div>
+                    <div>
+                    </br>
+                        UPLOAD DATE:
+                    </div>
+                    <div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="date_check" value="ALL" id="ALL" checked>
+                            <label for="ALL" unselectable>ALL</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="date_check" value="YEAR" id="YEAR">
+                            <label for="YEAR" unselectable>YEAR</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="date_check" value="MONTH" id="MONTH">
+                            <label for="MONTH" unselectable>MONTH</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="date_check" value="DAY" id="DAY">
+                            <label for="DAY" unselectable>DAY</label>
+                        </div>                       
+                    </div>
+                </div>
+
+                
+                <!-- ORDER BBY SECTION-->
+                <div>
+                    <div>
+                    </br>
+                        ALGORITHM DEFAULT
+                    </div>
+                    <div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="order_check" value="TOP" id="TOP" checked>
+                            <label for="TOP" unselectable>TOP</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="order_check" id="HOT" disabled>
+                            <label for="HOT" unselectable >HOT</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="order_check" id="NEW" disabled>
+                            <label for="NEW" unselectable>NEW</label>
+                        </div>
+                        <div>
+                        </br>
+                            ALGORITHM MANSURA CUSTOM / AI
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="order_check" value="EIGENVECTOR CENTRALITY" id="EIGENVECTOR CENTRALITY" disabled>
+                            <label for="EIGENVECTOR CENTRALITY" unselectable>EIGENVECTOR CENTRALITY</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="order_check" value="BASIC NEURAL NET" id="BASIC NEURAL NET" disabled>
+                            <label for="BASIC NEURAL NET" unselectable>BASIC NEURAL NET</label>
+                        </div>
+                        <div class="btn btn-outline-success">
+                            <input type="radio" name="order_check" value="NOOB PAGERANK" id="NOOB PAGERANK" disabled>
+                            <label for="NOOB PAGERANK" unselectable>NOOB PAGERANK</label>
+                        </div>
+                        <div> 
+                            </br>
+                            <div>
+                                ALGORITHM FAVOURITES (5 Max)
+                            </div>
+
+                            <div class="btn btn-outline-success">
+                                <input type="radio" name="order_check" value="a-demo" id="a-demo">
+                                <label for="a-demo" unselectable>a-demo</label>
+                            </div>
+                            <div class="btn btn-outline-success">
+                                <input type="radio" name="order_check" value="andrfore-demo" id="andrfore-demo">
+                                <label for="andrfore-demo" unselectable>andrfore-demo</label>
+                            </div>
+
+                            <div class="btn btn-outline-success">
+                                <input type="radio" name="order_check" value="foreandr-demo" id="foreandr-demo">
+                                <label for="foreandr-demo" unselectable>foreandr-demo</label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+                </br>
+                </br>
+                </br>
+                </br>
+                
+                <!-- WHERE CLAUSES BY SECTION-->
+                <div>
+                    <div>
+                        WHERE CLAUSES 
+                        <button class="btn btn-outline-success" type="button" onclick="add_another_where_clause()">+</button>
+                        <button class="btn btn-outline-danger"  type="button" onclick="remove_another_where_clause()">-</button>
+                        (max 10 for now)
+                    </div>
+                </div>
+                <div id="where_clause_additions">
+                    <div>
+                        <select name="and_or_clause" id="and_or_clause" class="dropdown-content">
+                            <option id="AND">AND</option>           
+                            <option id="OR">OR</option>
+                        </select> 
+                        <select name="where_clauses" id="where_clauses" class="dropdown-content">
+                            <option id="DAY VOTES">POST DAY VOTES</option>
+                            <option id="MONTH VOTES">POST MONTH VOTES</option>
+                            <option id="YEAR VOTES">POST YEAR VOTES</option>            
+                            <option id="LIKES"disabled>POST LIKES</option>           
+                            <option id="REPLIES"disabled>POST REPLIES</option>
+                            <option id="POST SENTIMENT ANALYSIS"disabled>POST SENTIMENT</option>
+                            <option id="POST HAS IMAGE" disabled>POST HAS IMAGE T/F</option>
+                            <option id="HAS SOURCE"disabled>HAS SOURCE</option>
+                            <option id="USER FOLLOWING"disabled>USER FOLLOWING</option>
+                            <option id="USER FOLLOWERS"disabled>USER FOLLOWERS</option>
+                            <option id="USER USER BLOCKED THEM" disabled>USER NUM BLOCKED</option>
+                            <option id="FRIENDS WITH" disabled>USER FRIENDS WITH</option>
+                            <option id="Post/Like Ratio" disabled>USER POST/LIKE RATIO</option>
+                            <option id="USER POLARIZATION" disabled>USER POLARIZATION</option>
+                            <option id="USER FOLLOWING (x)" disabled>USER FOLLOWING (x)</option>
+                            <option id="USER FOLLOWED BY (x)" disabled>USER FOLLOWED BY (x)</option>
+                            <option id="USER 18+" disabled>USER 18+</option>
+                            <option id="USER FROM COUNTRY (x)" disabled>USER FROM COUNTRY (x)</option>    
+                        </select> 
+                        <select name="higher_equal_lower" id="higher_equal_lower" class="dropdown-content">
+                            <option id="greater_equal">>=</option>           
+                            <option id="equal_equal">==</option>
+                            <option id="less_equal"><=</option>
+                        </select> 
+                        <input name="num_search_text" id="num_search_text" type="text"maxlength="4" size="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ><br><br>
+                    </div>
+                </div>
+
+                <div>
+                    <input type="hidden" id="search_arguments" name="search_arguments" value="{{search_arguments}}" /> <!--search_arguments:{{search_arguments}}-->
+                </div>
+                <div>
+                    <input type="hidden" id="page_number" name="page_number" value={{page_no}} /><!--Page Test:{{page_no}}--> 
+                </div>
+            </form>
+
+                    
+            <form action="https://google.com">
+                <input class="inline btn btn-primary" type="submit" value="Save Current Algorithm" />
+            </form>
+
+        </div>
+
+
+    </div>
+</div>
+
 
 <!-- reply_modal  -->
 <div id="reply_modal" class="modal">
@@ -284,7 +461,7 @@
 
     // CHECKING WHO'S PROFILE IT IS TO SEE IF THERE NEEDS TO BE AN ADD USER SPOT
     // THE TRIPLE === COULD LEAD TO FUNKY BEHAVIOUR
-    full_hostcheck_array = ('{{host_account}}');
+    // full_hostcheck_array = ('{{host_user}}');
     console.log(full_hostcheck_array)
     full_hostcheck_array_cleaned = full_hostcheck_array.slice(1, -1);
     console.log(full_hostcheck_array_cleaned)
@@ -300,22 +477,22 @@
         if (already_follows == "true") {
             document.getElementById("non_host_add_remove").innerHTML = `
 
-                <form action="/add_user/{{account_name}}" method="POST">
-                    <button class="btn btn-primary"  name="add_user_button" type="submit" disabled>Follow {{account_name}}</button>
+                <form action="/add_user/{{host_user}}" method="POST">
+                    <button class="btn btn-primary"  name="add_user_button" type="submit" disabled>Follow {{host_user}}</button>
                 </form>
 
-                <form action="/remove_user/{{account_name}}" method="POST">
-                    <button class="btn btn-primary" name="remove_user_button" type="submit">Unfollow {{account_name}}</button>
+                <form action="/remove_user/{{host_user}}" method="POST">
+                    <button class="btn btn-primary" name="remove_user_button" type="submit">Unfollow {{host_user}}</button>
                 </form>`
         } else {
             document.getElementById("non_host_add_remove").innerHTML = `
 
-                <form action="/add_user/{{account_name}}" method="POST">
-                    <button class="btn btn-primary" name="add_user_button" type="submit">Follow {{account_name}}</button>
+                <form action="/add_user/{{host_user}}" method="POST">
+                    <button class="btn btn-primary" name="add_user_button" type="submit">Follow {{host_user}}</button>
                 </form>
 
-                <form action="/remove_user/{{account_name}}" method="POST">
-                    <button class="btn btn-primary" name="remove_user_button" type="submit">Unfollow {{account_name}}</button>
+                <form action="/remove_user/{{host_user}}" method="POST">
+                    <button class="btn btn-primary" name="remove_user_button" type="submit">Unfollow {{host_user}}</button>
                 </form>`
         }
 
