@@ -15,17 +15,17 @@ from datetime import datetime
 import pytz
 import json
 
+
+''' #TOP/BOPTTOM=================================
 import Python.db_connection as connection
-from Python.helpers import print_green, print_title, log_function
+from Python.helpers import print_green, print_title, print
 from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
-
 ''' #MIDDLE========================================
-
 from generating_excel import WRITE_HEADERS_TO_EXCEL
 import db_connection as connection
 from  helpers import print_green, print_title, log_function
 
-''' #TOP/BOPTTOM=================================
+
 
 def GET_REPLYING_TO(file_id):
     
@@ -389,7 +389,7 @@ def UPDATE_BALANCE_FROM_FINAL_DICT(final_dict, vote_type, testing=False):
     try:
         for key, value in final_dict.items():        
             if key != "EQUITY" and key != "SEARCH":
-                print("FINAL POST/VOTE UPDATES:")
+                # print("FINAL POST/VOTE UPDATES:")
                 #print("i")
                 #UPDATE ALL THE PLAYERS IN THE GAME 
                 
@@ -402,7 +402,7 @@ def UPDATE_BALANCE_FROM_FINAL_DICT(final_dict, vote_type, testing=False):
                 conn.commit()
      
             elif key == "EQUITY": # UPDATING ALL THE PEOPLE WHO HOLD EQUITY
-                print("FINAL EQUITY UPDATES:")
+                # print("FINAL EQUITY UPDATES:")
                 # print(key, value)
                 #print("j")
                 equity_holders_dict = GET_ALL_EQUITY_HOLDERS()
@@ -451,7 +451,7 @@ def UPDATE_BALANCE_FROM_FINAL_DICT(final_dict, vote_type, testing=False):
           
     except Exception as e:
         cursor.execute("ROLLBACK")
-        print(e)
+        log_function(e)
     conn.commit()
 
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
@@ -511,7 +511,7 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
     
     FINAL_DICT = {} 
     for key, value in update_dict.items():
-        # print(key, value)
+        # print("LKASJHGDKASHGJKAHDGKJHAGFSD", key, value)
         if key != "EQUITY" and key != "SEARCH":
             name_array = value['ORDER']            
             dataset_id_total_capital = (value['VALUE']['AMOUNT'])    
@@ -519,17 +519,24 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
             # temp dict is a dictionary that goes into [NAME ARRAY] in order, and has distributed the capital
             #print(dataset_id_total_capital, name_array)
             ALGO = GET_DISTRO_ALGO_BY_FILE_ID(key)
+            # print("ALGO", ALGO)
             # print(key, ALGO)
             if ALGO[0] == "EQUAL DISTRIBUTION":
+                #print("error","EQUAL")
+                #print("error", ( "CHECK DATA: " + str(name_array) + str(dataset_id_total_capital)))
                 temp_dict = EQUAL_DISTRIBUTION(float(dataset_id_total_capital), name_array)
                 # print("EQU DISTRO",dataset_id_total_capital, temp_dict)
             elif ALGO[0] == "LOG DISTRIBUTION": 
                 temp_dict = PURE_LOG_DISTRIBUTION(float(dataset_id_total_capital), name_array) 
+                # print("error","LOG")
                 #print("LOG DISTRO", dataset_id_total_capital, temp_dict)
                 #exit()
             elif ALGO[0] == "LOG EQUAL DISTRIBUTION":
+                # print("error","LOG EQUAL")
                 temp_dict = SECTIONED_EQUAL_DISTRIBUTION(float(dataset_id_total_capital), name_array, float(ALGO[1]))
             else:
+                 #print("error","DEFAULT")
+                # print("error", name_array, dataset_id_total_capital)
                 temp_dict = EQUAL_DISTRIBUTION(float(dataset_id_total_capital), name_array)
             
             all_temp_dicts[key] = {
@@ -537,7 +544,7 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
                 "VALUE":value,
             }
             # exit() # GENERATIONG EXCEL CHECKPOINT
-            
+            # print("error", str("TEMPT DICT: " + str(temp_dict)))
             for key_, value_ in temp_dict.items(): # THIS MAKES EVERYTHING SO MUCH SLOWER
                 if key_ not in FINAL_DICT:
                     # print(f"FIRST TIME SEEING {key}")
@@ -546,24 +553,40 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
                     #org = FINAL_DICT[key_]                  
                     FINAL_DICT[key_] += BROKEN_ROUNDING(float(value_))
                     # print(f"DUPE KEY={key} | ORIG={org} + {value} = NEW={FINAL_DICT[key]}")
-            
+                #print("NORMAL POST", FINAL_DICT[key_],value)
             # GRABBING THE REPLY DETAILS            
             if "REPLY" in value:
+                # continue
                 #print(value["REPLY"])
+                name = value["REPLY"]['REPLYING_TO']
+                # print("error", str("REPLY NAME: " +  str(name)))
+                # print("error", str("REPLY REPLY: " +  str(value["REPLY"])))
+                # print("error", str("WHOLE VALUE: " +  str(value)))
+            
                 if value["REPLY"]['REPLYING_TO'] not in FINAL_DICT:
                     FINAL_DICT[value["REPLY"]['REPLYING_TO']] = BROKEN_ROUNDING(float(value["REPLY"]['AMOUNT']))
                 else:
                     #org = FINAL_DICT[value['REPLY']['REPLYING_TO']]                  
                     FINAL_DICT[value['REPLY']['REPLYING_TO']] += BROKEN_ROUNDING(float(value['REPLY']['AMOUNT']))
                     #print(f"DUPE KEY={value['REPLY']['REPLYING_TO']} | ORIG={org} + {value['REPLY']['AMOUNT']} = NEW={FINAL_DICT[value['REPLY']['REPLYING_TO']]}") 
-            
+                    # print(FINAL_DICT[value])
             # RATIO DETIALS
             if "RATIO" in value:
                 username = str((list(value["RATIO"].keys())[0]))
+            
+                my_value = value["RATIO"][username]
+                #print("USERNAME CHECK", username)
+                #print("VALUE", my_value)
+                # print(F"(RATIO) THIS SHOULD BE A POSITIVE NUMBER", my_value, type(my_value))
                 if username not in FINAL_DICT:
-                    FINAL_DICT[username] = float(value["RATIO"][username])
+                    FINAL_DICT[username] = BROKEN_ROUNDING(my_value)  
+                    #print("CREATE", FINAL_DICT[username])
                 else:
-                    FINAL_DICT[username] += float(value["RATIO"][username])
+                    #print("BEFORE", FINAL_DICT[username])
+                    FINAL_DICT[username] += BROKEN_ROUNDING(my_value)  
+                    #print("ADD", FINAL_DICT[username])
+                # print("PRINT RATIO CHANGES", FINAL_DICT[username], value)
+
         elif key == "EQUITY":
             # prEint("DOING ANY OF THIS?")
             equity_dict = GET_ALL_EQUITY_HOLDERS()
@@ -580,11 +603,12 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
             
             dict_of_search_details = {}
             for key__, value__ in search_dict.items():
-                
+                # print("SEARCH", key__, value__)
                 dollar_amount = total_search_equity * value__['PERCENTAGE']
                 amount_for_creator = BROKEN_ROUNDING(dollar_amount / 2) #creator half
                 dollar_amount -= amount_for_creator
-
+                #print(dollar_amount)
+                #print(amount_for_creator)
                 #print(key__, value__, dollar_amount)
                 # dict_of_search_details[key__] = BROKEN_ROUNDING(dollar_amount / len(value__['SEARCHERS_LIST']))
                 creator = value__["SEARCH_CREATOR"]
@@ -593,14 +617,17 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
                     dict_of_search_details[i] = BROKEN_ROUNDING(dollar_amount / len(value__["SEARCHERS_LIST"]))
                     #print(i, dict_of_search_details[i])
                 dict_of_search_details[creator] = amount_for_creator
+                # print(amount_for_creator)
                 #print("SEARCH AMOUNT FOR CREATOR", amount_for_creator)
 
             FINAL_DICT[key] = dict_of_search_details
             # print(dict_of_search_details)
     #print("\nFINAL DICT INFO")
     #print("GOT TO WRITING TO DIST EXCEL")
+    #for key, value in FINAL_DICT.items():
+    #    print(key, value)
     for key, value in FINAL_DICT.items():
-        #print(key, value)
+        # print(key, value)
         if type(value) is not dict:
             num = BROKEN_ROUNDING(value)
             temp_array_ = [key, num]
@@ -825,8 +852,8 @@ def RUN_WITH_TIME_TEST():
     # get the start time
     st = time.time()
 
-    # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Daily", testing=True)
-    FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly", testing=True)
+    FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Daily", testing=True)
+    #FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly", testing=True)
     
     # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Yearly", testing=True)
         
@@ -990,9 +1017,13 @@ def EQUAL_DISTRIBUTION(TOTAL, my_array):
     for key, value in new_dict.items():
         # print(key, value)
         new_sum  += value
-
-
+    TOTAL = BROKEN_ROUNDING(TOTAL) #TODO:THERE ARE PLACES WHERE PYTHONS DEFAULT ROUNDING WILL GO TERRIBLY WRONG
+    new_sum = BROKEN_ROUNDING(new_sum)
+    #print("TOTAL", TOTAL)
+    #print("new_sum", new_sum)
     EXTRA_CAPITAL = TOTAL - new_sum
+    #print(EXTRA_CAPITAL)
+    #exit(0)
     each_second = BROKEN_ROUNDING(EXTRA_CAPITAL / array_length)
     for i in range(len(my_array)):
         # print(my_array[i])
@@ -1001,14 +1032,16 @@ def EQUAL_DISTRIBUTION(TOTAL, my_array):
     # CHECK AT THE END
     new_sum = 0
     for key, value in new_dict.items():
+        #print("OG", key, value)
         new_dict[key] = BROKEN_ROUNDING(value)
-        
+        #print("CH", new_dict[key], BROKEN_ROUNDING(value))
         new_sum  += value
 
     #print(F"TOTAL : {TOTAL}")
     #print(F"EACH  : {each}")
     # print(F"RE-SUM: {round(new_sum, 2)}")
-
+    for key, value in new_dict.items():
+        print(key, value)
     return new_dict
 
 
@@ -1035,7 +1068,7 @@ def SECTIONED_EQUAL_DISTRIBUTION(TOTAL, my_array, sections=2):
             ordered_temp_array.append(temp_holder)
         
         amount_left = TOTAL - array_of_initial_amounts
-
+        amount_left = BROKEN_ROUNDING(amount_left) 
         dict_of_nums_arrays = {}
         for i in range(len(ordered_temp_array)):
             dict_of_nums_arrays[ordered_temp_array[i]] = my_arrays[i]
@@ -1071,7 +1104,7 @@ def SECTIONED_EQUAL_DISTRIBUTION(TOTAL, my_array, sections=2):
         return FINAL_DICT
     except Exception as e:
         # THERE WAS SOME KIND OF ERROR SO JUST DO EQUALITY
-        log_function(e)
+        print("error", e)
         return EQUAL_DISTRIBUTION(TOTAL, my_array)
     # return new_dict
 
@@ -1203,5 +1236,6 @@ def GET_NUM_SEARCH_VOTES():
 # GET_DISTRO_ALGO_BY_FILE_ID(1)
 # PURE_LOG_DISTRIBUTION(100.00, test_ordered_array)
 # EQUAL_DISTRIBUTION(100.00, test_ordered_array)
-# SECTIONED_EQUAL_DISTRIBUTION(19.91, test_ordered_array, sections=2)
-# RUN_WITH_TIME_TEST()
+# SECTIONED_EQUAL_DISTRIBUTION(19.91, test_ordered_array, sections=2)RUN_WITH_TIME_TEST()
+# print(EQUAL_DISTRIBUTION(2.59, ['Valen', 'Rayne', 'Philippa', 'Lindsee', 'Tel', 'Phuoc', 'Kameka']))
+RUN_WITH_TIME_TEST()

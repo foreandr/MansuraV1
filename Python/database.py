@@ -2699,7 +2699,7 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
 
                         #print("current_max:", current_max)
                         #print("new_max    :", new_max)
-                        
+                        # print("SEARCH VOTE CHECKER?")
                         if new_max != current_max:
                             UPDATE_TABLE_SEARCH_VOTES(searcher, new_max)
                                           
@@ -2709,7 +2709,8 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
                         # print("NEW DICT", data)
                         # print("json_object", json_object)
                         f.write(json_object)
-                        
+                else:
+                    print(f"{searcher} NOT SUBSCRIBED")        
             order_clause = data_["ORDER_BY_CLAUSE"]
             personal_where_clause = data_["WHERE_CLAUSE"]
 
@@ -3349,7 +3350,38 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     #print(search_arguments)
     return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, search_arguments
 
+def GET_TOP_N_SEARCH_ALGORITHMS(N=100):
+    conn = conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
 
+
+            SELECT search.Username,     
+            (   
+                SELECT COUNT(*) 
+                FROM SEARCH_VOTES votes
+                WHERE votes.Search_id = search.Search_id
+            ) as VOTE_COUNT,
+            search.Algorithm_Name, search.Date_Time
+            
+            FROM SEARCH_ALGORITHMS search
+            
+            order by VOTE_COUNT desc
+            LIMIT {N}
+
+    """)
+    all_algos_without_counts = []
+    for i in cursor.fetchall():
+        print(i)
+        all_algos_without_counts.append([i[0],i[1],i[2],i[3]])
+    
+    # CLOSE CURSOR AND CONNECTION [MANDATORY]        
+    cursor.close()
+    conn.close()
+    
+    return all_algos_without_counts
+
+    
 def GRAB_SEARCH_ALGO(search_algo_path):
     # THIS PRESUPPOSED THE ALGO HAS BEEN CHECKED ON TEST NETs
     

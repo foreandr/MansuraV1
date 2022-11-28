@@ -52,9 +52,11 @@ def home():
         session_username = session["user"]
     else:
         session_username = ""
-
+    
+    '''
     print("REQUEST TYP:",request.method)
     print("REQUEST URL:",request.url)
+    '''
 
     search_json = {}
 
@@ -78,13 +80,15 @@ def home():
 
 
     new_json_search_clauses = helpers.COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses)
+    '''
     print("COMPOSE_SEARCHARGS_AND_JSONCLAUSE")
     print(new_json_search_clauses)
     print("===================================")
-
+    '''
     page_no = request.form.get("page_number")
-    print("CURRENT PAGE NUMBER:", type(page_no), page_no)
-    print("===================================")
+    #print("CURRENT PAGE NUMBER:", type(page_no), page_no)
+    # print("===================================")
+
     if page_no == None or str(page_no) == "None":
         page_no = 1
 
@@ -956,7 +960,12 @@ def terms_and_conditions():
 @app.route("/search_algorithms_page", methods=['GET', 'POST'])
 def search_algorithms_page():
     helpers.log_function("request", request)
+    if "email" not in session:
+        return redirect(url_for('login'))
+    algos = database.GET_TOP_N_SEARCH_ALGORITHMS()
+
     return render_template(f"search_algorithms_page.html",
+        algos=algos
     )
 
 

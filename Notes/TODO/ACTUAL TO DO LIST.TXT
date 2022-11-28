@@ -44,19 +44,25 @@ DONE.notifications
 
 MINIMUM VIABLE PRODUCT
 ========================
-1. TEXT CHECK AND IMAGE CHECK WORKING PROPERLY, mild frontend checks as well
-2. LIKES TABLE (WITH SIMILAR LOGIC TO VOTES)[MAY NOT NEED DATE SOME OTHER MINOR STUFF]
-	- LIKES WILL INFORM SEARCH
-3. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
-	- SOMETHING wrong with the ordering of files
-	- should test their search ona test net, tell them it will be verified over a business day
-		- if test net no shenanigans, create place somewhere to store query
-		- perm ban if shenanigans from submitting search algo
-5. withdrawl isn't finishe
-4.CREATE TWTICH/TIKTOK CHANNEL TO TALK TO PEOLPE
-6. GET UPLOADS ACTUALLY WORKING, 
-	- RESCRICT UPLOADS TO PEOPLE WHO ARE SUBBED
-	-. LIMIT NUM POSTS PER DAY
+MOTTO
+	- PAID TO POST
+	- PAID TO LIKE
+	- PAID TO SHARE
+	- PAID TO SEARCH
+
+
+
+
+
+1. CHANGE VOTING TO 30 4 1
+2. First n people to join this month get in free, (xd)
+	- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
+	- the correct judgment is if reffered you get EXTRA
+	- person who refers gets 1 monthly vote for EACH refer
+3. WRITE UP THE PAPER
+4. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
+	- add tags to text inserts to help the search algo
+5. GET UPLOADS ACTUALLY WORKING, 
 	- CHECK having modal issue
 	- CHECKSOME UPLOADS HAVE RANDOM SLASHES IN THEM FOR UPLOAD NUMS
 6. allow for profile bio
@@ -64,13 +70,13 @@ MINIMUM VIABLE PRODUCT
 	- a full page on it's own for editing profile including picture and bio, and presumabley other things of that nature
 7. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
 8. REPOST, ability to take another post and endorse it somehow 
+9. redirected to wrong page after follow
+10. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
+11. BUY ADS TO PUT ON THE MAIN PAGE, ALL GOES TO POOL, BUY ADS TO PUT ON A PERSONS PAGE, 50% GOES TO THEM, 50% GOES TO POOL
 
-9. DO THIS BY REPORT(NO WAY IM GOING TO MANAGE THIS WITH SEARCH)
-	- if a post is character for character the same, look for the one with the earliest timestamp, they get all the winnings
-	- SUCCESSFULL REPORTER GETS 50% 
-	- OPY OF SOMETHING ELSE REPORT LOGIC
 
-10. RETWEET LOGIC
+
+
 
 11.REPORT POST LOGIC
   	- HEAD TO HEADS (incomplete but something like this should be thought through carefully)
@@ -79,10 +85,14 @@ MINIMUM VIABLE PRODUCT
 		- else they just lost their vote for the month
 	-	IF A POST GETS REPORTED, AND THE REPORT IS SUCCESSFUL (NEED LOGIC FOR DETERMINING THAT), THAT POST GETS PINNED ON THEIR PROFILE, AND THEY GET SLASHED SOME TO THE POOL SOME TO THE REPORTERS
 	- every post is scored with some point system, if the points to remove > 100 or something, and 2x score of regular vots, it gets shadowbanned in some way
-
-12. redirected to wrong page after follow
-13. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
-14. BUY ADS TO PUT ON THE MAIN PAGE, ALL GOES TO POOL, BUY ADS TO PUT ON A PERSONS PAGE, 50% GOES TO THEM, 50% GOES TO POOL
+	9. DO THIS BY REPORT(NO WAY IM GOING TO MANAGE THIS WITH SEARCH)
+	- if a post is character for character the same, look for the one with the earliest timestamp, they get all the winnings
+	- SUCCESSFULL REPORTER GETS 50% 
+	- OPY OF SOMETHING ELSE REPORT LOGIC
+THE  REPORT SYSTEM
+	report button
+	block button
+		-
 
 
 
@@ -97,7 +107,9 @@ make the history look less hsit
 #CHALLENGES OF THE DAY WITH MONETARY INCENTIVE, vote on next questions of the day?
  public tribunal for banned words and shit like that
 	whichever searcch has the most votes at the time becomes the default search algo
-
+ chat ROOM
+public chat rooms by algorithm vs private char rooms
+10. RETWEET LOGIC
 
 SEARCH
 =======
@@ -237,7 +249,7 @@ https://www.youtube.com/watch?v=HJSwA3Cv38s
 https://dev.to/thetrebelcc/how-to-run-a-flask-app-over-https-using-waitress-and-nginx-2020-235c
 https://math.stackexchange.com/questions/1694311/is-sigma-sigma-a-mathematical-way-of-doing-a-for-loop
 https://www.golinuxcloud.com/flask-gunicorn-nginx/
-
+https://www.geeksforgeeks.org/how-to-catch-all-javascript-errors-and-send-them-to-server/
 
 UNUSED LIBRARIES:
 beautifulsoup4==4.11.1
