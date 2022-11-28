@@ -43,7 +43,7 @@
                 
                    <!--POST IMAGE-->
                    {% if og_post_img != "" %}
-                       <img id="og_post_pic" src="{{url_for('static', filename=og_post_img)}} " width='400' height='200' />
+                       <img id="og_post_pic" src="{{url_for('static', filename=og_post_img)}}" style="width:auto; height:300px" />
                    {% endif %}
    
                    <!--POST TEXT MAKE LESS THAN SO AND SON-->
@@ -155,7 +155,7 @@
                     
                     <!-- POST IMAGE -->
                     {% if image_path_list[i] != "" %}
-                    <img onclick="enlargeImg()" id="post_pic" src="{{url_for('static', filename=image_path_list[i])}} " width='400' height='200' />
+                    <img onclick="enlargeImg()" id="post_pic" src="{{url_for('static', filename=image_path_list[i])}} " style="width:auto; height:300px" />
                     {% endif %}
                     <!--PROFILE PICTURE-->
                     <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='30' height='30' />

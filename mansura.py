@@ -6,7 +6,7 @@
 from waitress import serve
 import flask
 import os
-
+from os import path
 
 from flask import Flask, render_template, request, session, redirect, url_for, g, send_from_directory, Response, send_file
 from psycopg2 import connect
@@ -459,14 +459,26 @@ def user_profile_name(username):
         og_post_distro_details = ""
         # print(text_list)
         lengths_of_text_files = []
+
+        my_og_path = f"static/#UserData/{post_username}/files/{post_file_path}"
+
         for i in text_list:
             lengths_of_text_files.append(len(i))
-            my_og_path = f"static/#UserData/{post_username}/files/{post_file_path}"
+            
             og_post_text, og_post_18, og_post_src, og_post_img, og_post_distro_details = helpers.get_postinfo_from_path(my_og_path)
             
             lengths_of_text_files = []
             for i in text_list:
                 lengths_of_text_files.append(len(i))
+            # DOUBLE CHECK IMG PATH BECAUSE ABOVE MIGHT BE EMPTY
+        
+        pic_path = os.path.join(my_og_path + "/pic.jpg").strip()
+        if not path.exists(pic_path):
+            og_post_img = ""
+        else:
+            og_post_img = pic_path[7:]
+
+
         #print("OG POST DETAILS")
         #print(og_post_text)
         #print(og_post_18)
@@ -499,9 +511,6 @@ def user_profile_name(username):
                                 yearly_dataset_votes=single_year_votes, 
                                 single_likes=single_likes, 
                                 single_dislikes=single_dislikes,
-
-
-
 
                                 usernames_list=usernames_list,
                                 file_ids_list=file_ids_list,
@@ -1139,7 +1148,7 @@ if __name__ == '__main__':
     thread = Thread(target = distribution_algorithm.TESTING_TIMING, args = ())
     thread.start()
 
-    app.run(host=host, port="8088", use_reloader=False)  # host is to get off localhost
+    app.run(host=host, port="8089", use_reloader=False)  # host is to get off localhost
     #serve(app, host=host)    
 
     # If the debugger is on, I can change my files in real time after saving
