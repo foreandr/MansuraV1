@@ -6,12 +6,12 @@ from sqlite3 import DatabaseError
 from PIL import Image
 import datetime
 import json
-
+import re
 
 from psycopg2 import Error
 import Python.procedures as procedures
 # from Python.db_connection import connection
-from  Python.helpers import print_green, print_title, print_error, turn_pic_to_hex, check_and_save_dir, print_warning, log_function, TURN_WHERE_CLAUSE_TO_STRING
+from  Python.helpers import print_green, print_title, print_error, turn_pic_to_hex, check_and_save_dir, print_warning, log_function, TURN_WHERE_CLAUSE_TO_STRING, NLP_KEYWORD_EXTRACTOR
 import Python.db_connection as connection
 import Python.big_reset_file as big_reset_file
 
@@ -814,7 +814,6 @@ def USER_FULL_RESET():
     # SET TIMEZONE
     # SET_TIME_ZONE(conn)
     
-
     # DROPPING ALL TABLES
     DROP_ALL_TABLES()
     REMOVE_ALL_USER_DIRECTORIES()
@@ -823,13 +822,17 @@ def USER_FULL_RESET():
     
     USER_CREATE_TABLE()
     CREATE_PAYOUTS_TABLE()
-    FILE_CREATE_TABLE()   
+    FILE_CREATE_TABLE()  
+
     LIKES_CREATE_TABLE()
     DILIKES_CREATE_TABLE()
     
+    CREATE_TABLE_KEYWORDS()
+    CREATE_TABLE_FILE_KEYWORDS()
+
     FILE_VOTE_CREATE_TABLE() 
     CONNECTION_CREATE_TABLE()
-    CREATE_MANSURA_TABLE()
+    CREATE_MANSURA_TABLE() # SUBSCRIPTIONS
     SEARCH_ALGO_CREATE_TABLE()
     CREATE_TABLE_SEARCH_VOTES()
     CREATE_TABLE_SEARCH_FAVOURITES()
@@ -855,12 +858,127 @@ def USER_FULL_RESET():
     # MODEL_VOTE_INSERT_DEMO(conn) # VOTES ON MODELS \
     #TODO:EQUITY INSIRT
     
-
-
     print_title("USER FULL RESET COMPLETED")
 
 
+def GET_ALL_KEY_words():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute(
+        f"""
+        SELECT * FROM KEYWORDS
+        """)
+    print("KEYWORDS:")
+    for i in cursor.fetchall():
+        print(i)
 
+
+def ADD_POST_KEYWORDS_TO_DATABASE(list_of_keywords, file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    # GET_ALL_KEY_words()
+
+    new_list_of_keywords = STRIP_KEYWORDS_OF_SPECIAL_CHARS(list_of_keywords)
+
+    for i in new_list_of_keywords:  
+        cursor.execute(f"""
+            INSERT INTO KEYWORDS(key_name) 
+            VALUES ('{i}')
+            ON CONFLICT DO NOTHING
+            """
+            )
+        conn.commit()
+
+        cursor.execute(f"""
+            INSERT INTO FILE_KEYWORDS(key_name, File_Id) 
+            VALUES ('{i}', {file_id})
+            ON CONFLICT DO NOTHING
+            """
+            )
+        conn.commit()
+
+    #GET_ALL_KEY_words()
+    #GET_ALL_FILE_KEY_words()
+
+def STRIP_KEYWORDS_OF_SPECIAL_CHARS(list_of_keywords):
+    
+    badwords_path = "/root/mansura/Python/bad_words_username.txt"
+    f = open(badwords_path, 'r')
+    bad_words = f.read().split(",")
+    f.close()
+    
+    final_list = []
+    for i in list_of_keywords:
+        stringless = i.replace(" ", "") # stringless means spaceless lol sorry tired
+        lower_bad_words = [x.lower() for x in bad_words]
+        if (i.lower() in lower_bad_words):
+            continue
+        elif(bool(re.search('^[a-zA-Z0-9]*$',stringless))==False): # checking special chars
+            continue
+        else:
+            final_list.append(i)
+    return final_list
+
+def GET_ALL_FILE_KEY_words():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute(
+        f"""
+        SELECT * 
+        FROM FILE_KEYWORDS
+        """)
+    print("FILE KEYWORDS:")
+    for i in cursor.fetchall():
+        print(i)
+
+
+
+def CREATE_TABLE_KEYWORDS():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""DROP TABLE IF EXISTS KEYWORDS CASCADE""")
+        cursor.execute(
+            f"""
+                CREATE TABLE KEYWORDS
+                (
+                Keyword_id SERIAL PRIMARY KEY,   
+                key_name varchar UNIQUE
+                );
+            """)
+        conn.commit()
+        print_green("KEYWORDS CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        print_error("\nHAD TO ROLLBACK USER CREATION" + str(e) )
+    
+    cursor.close()
+    conn.close()
+
+
+def CREATE_TABLE_FILE_KEYWORDS():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""DROP TABLE IF EXISTS FILE_KEYWORDS CASCADE""")
+        cursor.execute(
+            f"""
+                CREATE TABLE FILE_KEYWORDS
+                (
+                Key_Usage_Id SERIAL PRIMARY KEY,   
+                key_name Varchar, 
+                File_Id BIGINT,
+                FOREIGN KEY (key_name) REFERENCES KEYWORDS(key_name),
+                FOREIGN KEY (File_id) REFERENCES FILES(File_id)
+                );
+            """)
+        conn.commit()
+        print_green("FILE_KEYWORDS CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        print_error("\nHAD TO ROLLBACK USER CREATION" + str(e) )
 
 def DROP_ALL_TABLES():
     conn = connection.test_connection()
@@ -1093,7 +1211,7 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
                 # print("ENTERED INTO TARGET", target)
             except Exception as e:
                 log_function(str(e) + "FILE ERROR ENTRY OF SOME KIND!!!!!")    
-           
+
         # 5. INSERT INTO FILE SYSTEM           
         FILE_INSERT_STORAGE(
             username = uploader, 
@@ -1104,6 +1222,13 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
             distro_details=distro_details
 
         )
+
+        # INSERT INTO POSTKEYS
+        # 6. 
+        ADD_POST_KEYWORDS_TO_DATABASE(NLP_KEYWORD_EXTRACTOR(post_text), CURRENT_FILE_ID)
+
+
+
         # exit() 
         print_green(f"FILE INSERT COMPLETED {uploader}, {new_path}")
             
@@ -2666,7 +2791,13 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
     personal_order_by_clause=""
     if len(search) > 0:
         # print("search is a string with len", search)
-        LIKE_QUERY = F"AND LOWER(U.username) LIKE LOWER('%{search}%')"
+        tag_query = f"""
+            OR (0 < (SELECT COUNT(*) FROM FILE_KEYWORDS fkey WHERE fkey.File_Id = F.File_Id AND key_name = '{search}'))"""
+
+        # print("tag_query:", tag_query)
+        LIKE_QUERY = F"AND (LOWER(U.username) LIKE LOWER('%{search}%') {tag_query})"
+        print(LIKE_QUERY)
+        # exit()
 
     # DATE CHECK 
     if date_check == "ALL":
@@ -2705,7 +2836,6 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
             # COUNTING SEARCHES
             if searcher != "": # SEARCHER IS RELATED TO SESSION, VOTES ONLINE COUNT IF SIGNED IN
                 # COULD ADD AN ADDITIONAL CRITERIA ABOUT SUBSCRIPTION
-
                 if CHECK_DATE(searcher):
                     # JSON IN
                     with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'r') as f:
@@ -2745,7 +2875,9 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
             personal_where_clause = data_["WHERE_CLAUSE"]
 
 
-   
+
+
+
     #print("======================")
     #print(LIKE_QUERY)
     #print(date_clause)
@@ -3093,7 +3225,7 @@ def COMPOSE_ORDER_BY_CLAUSES(order_by_clause, custom_clauses_order_by):
     return order_by_clause
 
 
-def universal_dataset_function(search_type, page_no="1", search_user="None", file_id="None", profile_username="None", custom_clauses="None"):
+def universal_dataset_function(search_type, page_no="1", search_user="None", file_id="None", profile_username="None", custom_clauses="None",):
     conn = conn = connection.test_connection()
     cursor = conn.cursor()
     """
@@ -3148,6 +3280,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         print("SHOWING IT IS A POST SEARCH")
         foreign_id_text_entry = F"AND F.Post_foreign_id_source = '{file_id}'"
         profile_search_clause = F"AND U.username = U.username"
+    
 
 
     # order_by_clause, where_clause = GRAB_SEARCH_ALGO(search_algo_path)
@@ -3183,13 +3316,15 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     #print("========================================")
     
     #print("QUERIES ENTERED",)
-    #print("foreign_id_text_entry:", foreign_id_text_entry)
-    #print("profile_search_clause:", profile_search_clause)
-    #print("where_clause         :", where_clause)
+    print("foreign_id_text_entry:", foreign_id_text_entry)
+    print("profile_search_clause:", profile_search_clause)
+    print("where_clause         :", where_clause)
+
     #print("========================================")
     #print("FULL WHERE QUERY")
     where_full_query = f"{foreign_id_text_entry} {profile_search_clause} {where_clause}"
-    #print(where_full_query)
+    #print("where_full_query",where_full_query)
+    
     query = f"""
         SELECT
             F.File_id, 

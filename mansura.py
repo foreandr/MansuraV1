@@ -59,9 +59,9 @@ def home():
     '''
 
     search_json = {}
-
     json_search_clauses = "None"
-    
+    search = "None"
+
     if request.method == 'POST':
         search = request.form.get("search")   
         date_check = request.form.get("date_check")  
@@ -322,6 +322,9 @@ def upload():
         print("=============================================")
 
         post_text = helpers.POST_TEXT_CHECK(post_text)
+
+        # helpers.ADD_POST_KEYWORDS_TO_DATABASE(post_text) #TODO:IMPLEMENT THIS
+
         if len(post_file.filename) != 0: #THERE IS A FILE
             if helpers.POST_IMG_CHECK(post_file):
                 pass

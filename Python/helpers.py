@@ -1,8 +1,40 @@
 import os.path
 import random
 import json
-from nudenet import NudeClassifier
+
 from os import path
+import yake # NATURAL LANGUAGE PROCESSING
+from nudenet import NudeClassifier # NUDITY CLASSIFIER
+
+def NLP_KEYWORD_EXTRACTOR(text):
+    check_text = text.split(" ")
+    if len(check_text) < 13:
+        return check_text
+
+    kw_extractor = yake.KeywordExtractor()
+    # text = """spaCy is an open-source software library for advanced natural language processing, written in the programming languages Python and Cython. The library is published under the MIT license and its main developers are Matthew Honnibal and Ines Montani, the founders of the software company Explosion."""
+    language = "en"
+    max_ngram_size = 3 # The max_ngram_size is limit the word count of the extracted keyword. If you keep max_ngram_size=3, then keyword length will not increase more than 3. But, It will also have keywords with a size less than 3.
+    deduplication_threshold = 0.3 # 1 (no dupes) -> 9 (lots of dupes)
+    numOfKeywords = 13
+    custom_kw_extractor = yake.KeywordExtractor(lan=language, n=max_ngram_size, dedupLim=deduplication_threshold, top=numOfKeywords, features=None)
+    keywords = custom_kw_extractor.extract_keywords(text)
+
+    #print(type(keywords))
+    #print(keywords)
+
+    list_of_keywords = []
+    for i in keywords:
+        list_of_keywords.append(i[0])
+
+    #for i in list_of_keywords:
+    #    print(i)
+    
+    return keywords
+
+NLP_KEYWORD_EXTRACTOR("""spaCy is an open-source software library for advanced natural language processing, 
+written in the programming languages Python and Cython. The library is published under the MIT license
+and its main developers are Matthew Honnibal and Ines Montani, the founders of the software company Explosion.""")
 
 class bcolors:
     HEADER = '\033[95m'
@@ -457,6 +489,8 @@ def SPLIT_AND_RECOMPOSE_ORDER_BY_CLAUSES(giant_order_string):
     new_order_by_string = new_order_by_string[:-1]
     #print(new_order_by_string)
     return new_order_by_string
+
+
 
 
 def COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses):
