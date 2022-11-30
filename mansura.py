@@ -334,8 +334,6 @@ def upload():
         distribution_algorithm_ = str(request.form.get("distro_algo"))
         how_many_sections = str(request.form.get("how_many_sections_"))
         
-        
-
         ''''''
         print("UPLOAD DETAILS ==============================")
         print("UPLOADER   :" + str(session['user']))
@@ -349,8 +347,6 @@ def upload():
         distro_details = [distribution_algorithm_, how_many_sections]
         print(distro_details)
         print("=============================================")
-
-
 
         post_text = helpers.POST_TEXT_CHECK(post_text)
 
@@ -500,9 +496,7 @@ def user_profile_name(username):
             #print("getting values", session['user'])
             _1, daily_left, monthly_left, yearly_left, _1, _2, _3 = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user']) # THIS ASSUMES ALREADY IN SESSION, SHOULD BE
             #print(daily_left, monthly_left, yearly_left)
-            single_day_votes=4
-            single_month_votes=5
-            single_year_votes=6
+            single_day_votes, single_month_votes, single_year_votes =  database.GET_FILE_ALL_VOTES_BY_ID(file_id)
 
         og_post_text = ""
         og_post_18 = ""
@@ -941,25 +935,27 @@ def file_vote(file_id, vote_type):
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
-    print("voting", file_id, vote_type)
     
+    # print("voting", file_id, vote_type)
+    name, path = database.GET_POST_URL_BY_ID(file_id)
+    return_path = name + "_" + path + "-post_page"
+
+            
     if vote_type == "like":
-        print("DOING LIKE LOGIC")
+        #print("DOING LIKE LOGIC")
         database.LIKE_LOGIC(session["user"], file_id)
-        return redirect(url_for("home"))
+        return redirect(url_for('user_profile_name', username=return_path))
     
     if vote_type == "dislike":
-        print("DOING DISLIKE LOGIC")
+        #print("DOING DISLIKE LOGIC")
         database.DISLIKE_LOGIC(session["user"], file_id)
-        return redirect(url_for("home"))
+        return redirect(url_for('user_profile_name', username=return_path))
     
-
-	
     is_already_subbed_this_month = database.CHECK_DATE( session["user"])
     if is_already_subbed_this_month:
         #print(is_already_subbed_this_month)
         database.FILE_VOTE_INSERT( session["user"], file_id, vote_type)
-        return redirect(url_for("home"))
+        return redirect(url_for('user_profile_name', username=return_path))
     else:
         return redirect(url_for("subscribe"))
 

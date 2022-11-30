@@ -3820,3 +3820,27 @@ def GET_POST_URL_BY_ID(file_id):
     cursor.close()
     conn.close()
     return name, path
+
+
+def GET_FILE_ALL_VOTES_BY_ID(file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    DAILY = 0
+    cursor.execute(f"""SELECT GET_FILE_VOTE_COUNT_TYPED({file_id}, 'Daily')""")
+    for i in cursor.fetchall():
+        DAILY = i[0]
+    
+    MONTHLY = 0
+    cursor.execute(f"""SELECT GET_FILE_VOTE_COUNT_TYPED({file_id}, 'Monthly')""")
+    for i in cursor.fetchall():
+        MONTHLY = i[0]
+    
+    YEARLY = 0
+    cursor.execute(f"""SELECT GET_FILE_VOTE_COUNT_TYPED({file_id}, 'Yearly')""")
+    for i in cursor.fetchall():
+        YEARLY = i[0]
+
+    # print(DAILY, MONTHLY, YEARLY)
+    cursor.close()
+    conn.close()
+    return DAILY, MONTHLY, YEARLY
