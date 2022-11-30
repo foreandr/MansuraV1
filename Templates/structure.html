@@ -25,192 +25,94 @@
 </head>
 
 <body>
-    <!--
-            <nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav_test">
+    <body>
+
+
+      
+    
+
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="nav_test">
       <a id="navbar_name" class="navbar-brand mx-3" href="./">Mansura</a>
-        
-      <span>
-          <a class="nav-link" id="index_daily"></a>
-      </span>
-
-      <span>
-            <a class="nav-link" id="index_monthly"></a>
-      </span>
-
-      <span>
-            <a class="nav-link" id="index_yearly"></a>
-      </span>
-
-      <ul class="navbar-nav ms-auto" id="ULBUTTONS">
-        
-         <li>
-            <div class="dropdown" id="nav_dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="user_balance" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    BALANCE:
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="nav-link" href="./add_funds" disabled><h6>Subscribe</h6></a>
-                    <a class="nav-link" href="./withdraw_funds" disabled><h6>Withdraw</h6></a>
+      <span><a class="nav-link" id="index_daily"></a></span>
+      <span><a class="nav-link" id="index_monthly"></a></span>
+      <span><a class="nav-link" id="index_yearly"></a></span>
+      
+      <div class="collapse navbar-collapse" id="navbarSupportedContent15">
+        <ul class="navbar-nav ms-auto" id="ULBUTTONS">
+            <li>
+               <div class="dropdown" id="nav_dropdown">
+                   <button class="btn btn-secondary dropdown-toggle" type="button" id="user_balance" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       BALANCE:
+                   </button>
+                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                       <a class="nav-link" href="./add_funds" disabled>Subscribe</a>
+                       <a class="nav-link" href="./withdraw_funds" disabled>Withdraw</a>
+                   </div>
+               </div>
+            </li>  
+   
+             <li>
+               <div class="dropdown" id="nav_dropdown">
+                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       VOTES:
+                   </button>
+                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                       <span> <a class="nav-link" id="daily_votes_left">DAILY VOTES:</a></span>                  
+                       <span><a class="nav-link" id="monthly_votes_left">MONTHLY VOTES:</a></span>
+                       <span><a class="nav-link" id="yearly_votes_left">YEARLY VOTES:</a></span>                  
+                   </div>
+               </div>
+             </li>
+   
+             <li>
+               <div class="dropdown" id="nav_dropdown">
+                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">METRICS</button>
+                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                       <a href="./leaderboards"           class="nav-link">Leaderboards</a>
+                       <a href="./history"                class="nav-link">Distribution History</a>
+                       <a href="./search_algorithms_page" class="nav-link">Search Algorithms</a>
+                       <a href="./tribunal"               class="nav-link">Tribunal</a>
+                   </div>
+               </div>
+             </li>
+   
+             <li>
+                 <div class="dropdown" id="nav_dropdown">
+                     <button class="btn btn-secondary dropdown-toggle" type="button" id="user_name_location" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         USER:
+                     </button>
+                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
+                         <a id="username_location" class="nav-link" href="./user_profile">Profile</a>
+                         <a class="nav-link" href="./register">Register</a>
+                         <a class="nav-link" href="./messages">Messages</a>
+                         <a class="nav-link" href="./notifications">Notifications</a>
+                         <a class="nav-link" href="./login">Login</a>
+                         <a class="nav-link" href="./logout">Logout</a>
+                     </div>
+                 </div>
+             </li>
+                
+             <li>
+                <div class="dropdown" id="nav_dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        HELP
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
+                        <a href="./settings" class="nav-link">Settings</a>
+                        <a href="./contact" class="nav-link">Contact</a>
+                        <a href="./instructions" class="nav-link">Intstructions</a>
+                        <a href="./FAQ" class="nav-link">FAQ</a>
+                        <a href="./terms_and_conditions" class="nav-link">Terms and Conditions</a>
+                        <a href="./patch_notes" class="nav-link">Patch Notes</a>
+                        <a href="./newsletter" class="nav-link">Newsletter</a>
+                    </div>
                 </div>
-            </div>
-         </li>  
-
-          <li>
-            <div class="dropdown" id="nav_dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    VOTES:
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <span>
-                    <a class="nav-link" id="daily_votes_left">DAILY VOTES:</a>
-                  </span>
-                  <span>
-                      <a class="nav-link" id="monthly_votes_left">MONTHLY VOTES:</a>
-                  </span>
-                  <span>
-                      <a class="nav-link" id="yearly_votes_left">YEARLY VOTES:</a>
-                  </span> 
-                </div>
-            </div>
-          </li>
-
-          <li>
-            <div class="dropdown" id="nav_dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    METRICS
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="nav-link" href="./leaderboards" disabled>Leaderboards</a>
-                    <a class="nav-link" href="./history">History</a>
-                </div>
-            </div>
-          </li>
-
-          <li>
-              <div class="dropdown" id="nav_dropdown">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="user_name_location" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      USER:
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
-                      <a id="username_location" class="nav-link" href="./user_profile">Profile</a>
-                      <a class="nav-link" href="./register">Register</a>
-                      <a class="nav-link" href="./login">Login</a>
-                      <a class="nav-link" href="./logout">Logout</a>
-                      <a class="nav-link" href="./settings">Settings</a>
-                  </div>
-              </div>
-          </li>
-
-
-      </ul>
+            </li>   
+         </ul>
+      </div>
+      
     </nav>
-    -->
-
-    
-    <!--DANIELS 
-    
-    -->
-	<div class="site-mobile-menu site-navbar-target"> <!--I HAVE NO IDEA HOW A TON OF THIS WORKS-->
-		<div class="site-mobile-menu-header">
-			<div class="site-mobile-menu-close mt-3">
-				<span class="icon-close2 js-menu-toggle"></span>
-			</div>
-		</div>
-		<div class="site-mobile-menu-body"></div>
-	</div>
-
-	<header class="site-navbar js-sticky-header site-navbar-target" role="banner">
-		<div class="container-fluid">
-			<div class="row align-items-center">
-                    <h1 class="mb-0 site-logo"><a href="index.html">MANSURA<h6>open beta 0.1</h6><span class="text-primary"></span></a></h1>		
-
-
-				<div>
-					<nav class="site-navigation position-relative text-right" role="navigation">						
-						<ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block" id="adjust_nav_bar">
-                            <li>
-                                <a  id="index_daily" class="nav-link"></a>
-                            </li> 
-                            <li>
-                                <a  id="index_monthly" class="nav-link"></a>
-                            </li> 
-
-                            <li>
-                                <a  id="index_yearly" class="nav-link"></a>
-                            </li> 
-							<li class="has-children">
-								<a id="user_balance" >Balance</a>
-								<ul class="dropdown">
-									<li><a class="nav-link" href="./add_funds" disabled><h6>Subscribe</h6></a></li>
-									<li><a class="nav-link" href="./withdraw_funds" disabled><h6>Withdraw</h6></a></li>
-
-								</ul>
-							</li>
-							
-							<li class="has-children">
-								<a>User</a>
-								<ul class="dropdown">
-									<li><a id="username_location" class="nav-link" href="./user_profile">Profile</a></li>
-									<li><a class="nav-link" href="./register">Register</a></li>
-                                    <li><a class="disabled-link" href="./messages">Messages</a></li>
-                                    <li><a class="nav-link" href="./notifications">Notifications</a></li>
-									<li><a class="nav-link" href="./login">Login</a></li>
-									<li><a class="nav-link" href="./logout">Logout</a></li>
-								</ul>
-							</li>
-
-							<li class="has-children">
-								<a>Votes</a>
-								<ul class="dropdown">
-									<span>
-										<a class="nav-link" id="daily_votes_left">DAILY VOTES:</a>
-									  </span>
-									  <span>
-										  <a class="nav-link" id="monthly_votes_left">MONTHLY VOTES:</a>
-									  </span>
-									  <span>
-										  <a class="nav-link" id="yearly_votes_left">YEARLY VOTES:</a>
-									  </span> 						
-								</ul>
-							</li>
-
-							<li class="has-children">
-								<a>Metrics</a>
-								<ul class="dropdown">
-									<li><a href="./leaderboards" class="disabled-link">Leaderboards</a></li>
-									<li><a href="./history" class="nav-link">Distribution History</a></li>
-                                    <li><a href="./search_algorithms_page" class="nav-link">Search Algorithms</a></li>
-                                    <li><a href="./tribunal" class="disabled-link">Tribunal</a></li>
-								</ul>
-							</li>
-
-							<li class="has-children">
-								<a>Help</a>
-								<ul class="dropdown">
-									<li><a href="./settings" class="disabled-link">Settings</a></li>
-									<li><a href="./contact" class="disabled-link">Contact</a></li>
-									<li><a href="./instructions" class="disabled-link">Intstructions</a></li>
-									<li><a href="./FAQ" class="disabled-link">FAQ</a></li>
-                                    <li><a href="./terms_and_conditions" class="nav-link">Terms and Conditions</a></li>
-                                    <li><a href="./patch_notes" class="disabled-link">Patch Notes</a></li>
-                                    <li><a href="./newsletter" class="disabled-link">Newsletter</a></li>
-								</ul>
-							</li>
-
-						</ul>
-					</nav>
-				</div>
-				<div class="col-6 d-inline-block d-xl-none ml-md-0 py-3" style="position: relative; top: 3px">
-					<a href="#" class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h2"></span></a>																					
-				</div>
-			</div>
-		</div>
-	</header>
-
-    </br>
-    </br>
-    </br>
-    </br>
 
     <div id="title_block">
         {% block main %}
@@ -244,6 +146,7 @@
     -->
     <!-- Production version POPPER -->
     <!-- HAVE TO MAKE CHANGES TO THE BROWSER -->
+
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="static/js/bootstrap-js/bootstrap.js"></script>
     

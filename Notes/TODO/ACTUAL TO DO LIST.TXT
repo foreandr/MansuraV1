@@ -56,12 +56,12 @@ MOTTO
 	- PAID TO SHARE
 	- PAID TO SEARCH
 
-
+IMPLEMENT FILE FAVOURITES AND POST FAVOURITES
 1. First n people to join this month get in free, (xd)
 	- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
 	- the correct judgment is if reffered you get EXTRA
 	- person who refers gets 1 monthly vote for EACH refer
-	
+
 2. GET UPLOADS ACTUALLY WORKING, 
 	- CHECK having modal issue	
 3. allow for profile bio
