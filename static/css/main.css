@@ -18,13 +18,13 @@
 */
   
 #daily_votes_left{
-    color: red;
+    color:black;
 }
 #monthly_votes_left {
-    color: red;
+    color: black;
 }
 #yearly_votes_left {
-    color: blue;
+    color: black;
 }
 
 #adjust_nav_bar{
@@ -39,5 +39,6 @@
   color:red
 }
 #navbarSupportedContent15{
-  margin-left:650px;
+  position: absolute;
+  right: 10%;
 }

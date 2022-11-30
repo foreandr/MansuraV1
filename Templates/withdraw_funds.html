@@ -3,9 +3,21 @@
 <!-- PAYPAL BUY BUTTON--> 
 {{balance}}
 <form name="my_form" method="POST">
-    <input id="withdrawl_amount" type="text" name="withdraw_amount"  onkeyup="disableButton()"/>
-    <input id="myBtn" type="submit" name="withdraw_button" value="withdraw" disabled/>Min 0.50 (else paypal will take everything and you get nothing)
+
 </form>
+
+<div class="container">
+    <form name="my_form" class="form-signup" method="POST" >
+      <h2 class="form-signup-heading">How much would you like sent to your paypal account?</h2>
+      
+      <input class="form-control" id="withdrawl_amount" type="text" name="withdraw_amount"  onkeyup="disableButton()" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
+      <input class="form-control" id="myBtn" type="submit" name="withdraw_button" value="withdraw" disabled/>Min 0.50 (else paypal will take everything and you get nothing)
+
+    </form>
+
+
+
+</div>
 <script>
 
     function disableButton() {

@@ -241,7 +241,7 @@
                             <option id="equal_equal">==</option>
                             <option id="less_equal"><=</option>
                         </select> 
-                        <input name="num_search_text" id="num_search_text" type="text"maxlength="4" size="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ><br><br>
+                        <input name="num_search_text" id="num_search_text" type="text"maxlength="4" size="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"><br><br>
                     </div>
                 </div>
 
@@ -437,7 +437,7 @@
                 <option id="log">==</option>
                 <option id="log_equal"><=</option>
             </select> 
-            <input name="num_search_text${where_counter}" id="num_search_text${where_counter}" size="4" type="text"maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ><br><br>
+            <input name="num_search_text${where_counter}" id="num_search_text${where_counter}" size="4" type="text"maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"><br><br>
         </div>
     </div>
     `
@@ -488,7 +488,7 @@
                     <option id="log">==</option>
                     <option id="log_equal"><=</option>
                 </select> 
-                <input name="num_search_text${where_counter}" id="num_search_text${where_counter}" size="4" type="text"maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ><br><br>
+                <input name="num_search_text${where_counter}" id="num_search_text${where_counter}" size="4" type="text"maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"><br><br>
             </div>
         </div>
         `

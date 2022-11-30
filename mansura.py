@@ -712,7 +712,7 @@ def add_funds():
             if is_already_subbed_this_month:
                 return redirect(url_for('home'))#TODO:COULD REDIRECT TO SUB PAGE AND SAY ALREADY SUBBED
 
-            subscribed = database.MANSURA_SUBSCRIBE( session["user"])
+            subscribed = database.MANSURA_SUBSCRIBE(session["user"])
             #print("REQUEST", request)
             #print("SUBBED", subscribed)
             if subscribed: # IF SUBSCRIBE SUCCESSFULL
