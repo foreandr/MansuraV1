@@ -6,6 +6,15 @@ from os import path
 import yake # NATURAL LANGUAGE PROCESSING
 from nudenet import NudeClassifier # NUDITY CLASSIFIER
 
+
+def CHECK_IF_MOBILE(request):
+    devices = ["Android", "webOS", "iPhone", "iPad", "iPod", "BlackBerry", "IEMobile", "Opera Mini"]
+    result = False
+    if any (device in request.environ["HTTP_USER_AGENT"] for device in devices): 
+        result = True 
+    # print("REQUEST AGENT:", request.environ["HTTP_USER_AGENT"], result)
+    return result
+
 def NLP_KEYWORD_EXTRACTOR(text):
     check_text = text.split(" ")
     if len(check_text) < 13:

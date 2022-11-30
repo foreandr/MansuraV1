@@ -7,6 +7,7 @@ from PIL import Image
 import datetime
 import json
 import re
+import hashlib
 
 from psycopg2 import Error
 import Python.procedures as procedures
@@ -169,11 +170,12 @@ def USER_INSERT_MULTIPLE():
     except Exception as e:
         print("could not remove static/#UserData/", e)
 
-    full_register('a', 'password', 'MensuraHost@gmail.com', 'MensuraHost@gmail.com', 5)
-    full_register('foreandr', 'password', 'foreandr@gmail.com', 'foreandr@gmail.com', 5)
-    full_register('andrfore', 'password', 'andrfore@gmail.com', 'andrfore@gmail.com', 5)
-    full_register('cheatsie', 'password', 'cheatsieog@gmail.com', 'cheatsieog@gmail.com', 5)
-    full_register('dnutty', 'password', 'dnutty@gmail.com', 'dnutty@gmail.com', 5)
+
+    full_register('a', hashlib.sha256("password".encode('utf-8')).hexdigest(), 'MensuraHost@gmail.com', 'MensuraHost@gmail.com', 5)
+    full_register('foreandr', hashlib.sha256("password".encode('utf-8')).hexdigest(), 'foreandr@gmail.com', 'foreandr@gmail.com', 5)
+    full_register('andrfore', hashlib.sha256("password".encode('utf-8')).hexdigest(), 'andrfore@gmail.com', 'andrfore@gmail.com', 5)
+    full_register('cheatsie', hashlib.sha256("password".encode('utf-8')).hexdigest(), 'cheatsieog@gmail.com', 'cheatsieog@gmail.com', 5)
+    full_register('dnutty', hashlib.sha256("password".encode('utf-8')).hexdigest(), 'dnutty@gmail.com', 'dnutty@gmail.com', 5)
     
     # ====
 
@@ -1226,15 +1228,13 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
         # INSERT INTO POSTKEYS
         # 6. 
         ADD_POST_KEYWORDS_TO_DATABASE(NLP_KEYWORD_EXTRACTOR(post_text), CURRENT_FILE_ID)
-
-
-
         # exit() 
         print_green(f"FILE INSERT COMPLETED {uploader}, {new_path}")
             
         # CLOSE CURSOR AND CONNECTION [MANDATORY]        
         cursor.close()
         conn.close()
+        return CURRENT_FILE_ID
 
          # return new_path #TODO: not sure if this needs to return anything
     except Exception as e:
@@ -3647,6 +3647,11 @@ def GET_VOTES_AND_BALANCE_AND_PAYOUTS(username):
         monthly_pool = value[5]
         yearly_pool = value[6]
     
+
+    daily_votes_left =  1 if (int(daily_votes_left) == 0) else 0
+    monthly_votes_left =  1 if (int(monthly_votes_left) == 0) else 0
+    yearly_votes_left =  1 if (int(yearly_votes_left) == 0) else 0
+    
     return balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool
 
 def GET_NOTIFICATIONS_BY_USER_ID(user_id):
@@ -3778,3 +3783,40 @@ def GET_NOTIFICATIONS_BY_USER_ID(user_id):
     
     return NOTIFS
 
+def GET_PAYPAL_EMAIL_BY_USERNAME(username):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+    SELECT paypal_email 
+    FROM USERS
+    where username = '{username}'
+
+    """)
+    paypal_email = ''
+    for i in cursor.fetchall():
+        paypal_email = i[0]
+        print("paypal_email:", paypal_email)
+        # print(i)
+    cursor.close()
+    conn.close()
+    return paypal_email
+
+def GET_POST_URL_BY_ID(file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute(f"""
+        SELECT Uploader, File_PATH
+        FROM FILES
+        WHERE File_Id = '{file_id}'
+    """)
+    name = ''
+    path = ''
+    for i in cursor.fetchall():
+        name = i[0]
+        path = i[1]
+        # print(i)
+    # print(name, path)
+    cursor.close()
+    conn.close()
+    return name, path

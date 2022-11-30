@@ -46,8 +46,14 @@ DONE. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
 	- add tags to text inserts to help the search algo
 DONE. UPLOADS SEEM TO WORK?
 	- CHECKSOME UPLOADS HAVE RANDOM SLASHES IN THEM FOR UPLOAD NUMS
-MINIMUM VIABLE PRODUCT
 
+
+1. First n people to join this month get in free, (xd)
+	- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
+	- the correct judgment is if reffered you get EXTRA
+	- person who refers gets 1 monthly vote for EACH refer
+
+MINIMUM VIABLE PRODUCT
 ========================
 WRITE UP THE PAPER
 MOTTO
@@ -57,10 +63,11 @@ MOTTO
 	- PAID TO SEARCH
 
 IMPLEMENT FILE FAVOURITES AND POST FAVOURITES
-1. First n people to join this month get in free, (xd)
-	- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
-	- the correct judgment is if reffered you get EXTRA
-	- person who refers gets 1 monthly vote for EACH refer
+
+search on other packages
+search algo voting page	
+
+give a new monthly vote every day
 
 2. GET UPLOADS ACTUALLY WORKING, 
 	- CHECK having modal issue	

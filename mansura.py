@@ -23,7 +23,7 @@ import sys
 import urllib.parse
 import requests
 import datetime
-from datetime import datetime
+from datetime import datetime, date
 from csv import writer
 
 import hashlib
@@ -47,7 +47,11 @@ app.config["FILE UPLOADS"] = "static/#UserData"
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
     if "email" not in session: # testasdkjhfaks
+        return redirect(url_for('register'))
+    if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
+
+
 
     helpers.log_function("request", request)
     if "user" in session.keys():
@@ -194,19 +198,19 @@ def register():
             email = my_dict['email'][0]
             paypal_email =my_dict['paypal_email'][0]
 
-            print("\nREGISTRATION DETAILS")
-            print("registering_username   :", registering_username)
-            print("password               :", password)
+            #print("\nREGISTRATION DETAILS")
+            #print("registering_username   :", registering_username)
+            #print("password               :", password)
             password = password.encode('utf-8')
             hashedPassword = hashlib.sha256(password).hexdigest()
-            print("hashedPassword         :",hashedPassword)
-            print("email                  :", email)
-            print("paypal_email           :",paypal_email)
+            #print("hashedPassword         :",hashedPassword)
+            #print("email                  :", email)
+            #print("paypal_email           :",paypal_email)
 
             # CHECK WHETHER VALUES ARE IN RESTRICTED LIST
             
             has_bad_words = helpers.USERNAME_PROFANITY_CHECK(registering_username)
-            print("has_bad_words", has_bad_words)
+            # print("has_bad_words", has_bad_words)
             if not has_bad_words:
 
                 # print(registering_username, "is registering their account!")
@@ -281,8 +285,7 @@ def user_profile():
     # print(request)
     if "email" not in session:
         return redirect(url_for('login'))
-    
-    
+
     if request.method == "GET":
         return redirect(url_for('user_profile_name', username=session['user']))
     
@@ -318,6 +321,9 @@ def upload():
     if not database.CHECK_DATE(session["user"]):
         return redirect(url_for("add_funds"))
     if request.method == "POST": # UPLOADING SOMETHING
+        
+        print(request.url)
+        
         #print("GOT TO WHETHER SOMETHING IS BEING POISTED OR NOT ==================================")
         post_text = request.form.get("textbox")
         post_file = request.files['file']
@@ -327,6 +333,8 @@ def upload():
         external_link = request.form.get("external_source_link")
         distribution_algorithm_ = str(request.form.get("distro_algo"))
         how_many_sections = str(request.form.get("how_many_sections_"))
+        
+        
 
         ''''''
         print("UPLOAD DETAILS ==============================")
@@ -341,6 +349,8 @@ def upload():
         distro_details = [distribution_algorithm_, how_many_sections]
         print(distro_details)
         print("=============================================")
+
+
 
         post_text = helpers.POST_TEXT_CHECK(post_text)
 
@@ -361,16 +371,24 @@ def upload():
             #print("filename:", post_file.filename, type(post_file.filename), len(post_file.filename))
             return redirect(url_for("home"))
             
-        database.FILE_INSERT( uploader=session["user"], uploaderId=database.GET_USER_ID(session["user"]), size="10", post_foreign_id_source=forign_id_source, 
+        file_id = database.FILE_INSERT( uploader=session["user"], uploaderId=database.GET_USER_ID(session["user"]), size="10", post_foreign_id_source=forign_id_source, 
                 file_path="N-A", post_file=post_file, 
                 post_text=post_text, age_18=plus_18, 
                 external_link=external_link,
                 distro_details=distro_details
                 )
-        #TODO: THIS SHOULD REDIRECT TO THE PAGE OF THE POST 
-        return redirect(url_for("home"))
+
+        if forign_id_source != "None":
+            name, path = database.GET_POST_URL_BY_ID(forign_id_source)
+            return_path = name + "_" + path + "-post_page"
+            # return redirect(url_for("user_profile_name")) 
+            return redirect(url_for('user_profile_name', username=return_path))
+        else:
+            name, path = database.GET_POST_URL_BY_ID(file_id)
+            return_path = name + "_" + path + "-post_page"        
+            return redirect(url_for('user_profile_name', username=return_path))
     else:
-        #TODO: THIS SHOULD REDIRECT TO INDEX.HTML        
+        
         return redirect(url_for("home"))
 
 
@@ -428,7 +446,9 @@ def user_profile_name(username):
             search = request.form.get("search")   
             date_check = request.form.get("date_check")  
             order_check = request.form.get("order_check")  
+            
             and_or_clauses, where_clauses, hi_eq_low, num_search_text = helpers.GET_ALL_QUERY_INFO_FROM_REQUEST_FORM(request)
+            
             clauses_dict = [
                 and_or_clauses, 
                 where_clauses, 
@@ -475,7 +495,15 @@ def user_profile_name(username):
             text_list.insert(i, post_text)
             image_path_list.insert(i, post_image_path)
             distro_details_list.insert(i,distro_details)
-        
+
+        if len(text_list) == 0: # IF NOTHING RETURNED GET VOTE DETAILS
+            #print("getting values", session['user'])
+            _1, daily_left, monthly_left, yearly_left, _1, _2, _3 = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user']) # THIS ASSUMES ALREADY IN SESSION, SHOULD BE
+            #print(daily_left, monthly_left, yearly_left)
+            single_day_votes=4
+            single_month_votes=5
+            single_year_votes=6
+
         og_post_text = ""
         og_post_18 = ""
         og_post_src = ""
@@ -483,17 +511,14 @@ def user_profile_name(username):
         og_post_distro_details = ""
         # print(text_list)
         lengths_of_text_files = []
-
         my_og_path = f"static/#UserData/{post_username}/files/{post_file_path}"
-
         for i in text_list:
             lengths_of_text_files.append(len(i))
-            
-            og_post_text, og_post_18, og_post_src, og_post_img, og_post_distro_details = helpers.get_postinfo_from_path(my_og_path)
-            
-            lengths_of_text_files = []
-            for i in text_list:
-                lengths_of_text_files.append(len(i))
+        
+        og_post_text, og_post_18, og_post_src, og_post_img, og_post_distro_details = helpers.get_postinfo_from_path(my_og_path)
+        lengths_of_text_files = []
+        for i in text_list:
+            lengths_of_text_files.append(len(i))
             # DOUBLE CHECK IMG PATH BECAUSE ABOVE MIGHT BE EMPTY
         
         pic_path = os.path.join(my_og_path + "/pic.jpg").strip()
@@ -570,7 +595,7 @@ def user_profile_name(username):
         #print("NAME DOESNT EXIST")
         return redirect(url_for('home'))             
     if username == 'upload':
-        #print("THIS SHOWS ITS GETTING TO UPLOAD")
+        print("THIS SHOWS ITS GETTING TO UPLOAD")
         return redirect(url_for('upload'))
     if username == 'subscribe':
         #print("THIS SHOWS ITS GETTING TO SUBSCRIBE")
@@ -783,7 +808,7 @@ def withdraw_funds():
             
                 # Pass the list as an argument into
                 # the writerow()
-                my_writer.writerow([session_username, withdrawl_amount, date.today()])
+                my_writer.writerow([session_username, withdrawl_amount, date.today(), database.GET_PAYPAL_EMAIL_BY_USERNAME(session_username)])
             
                 # Close the file object
                 f.close()
