@@ -1291,8 +1291,13 @@ def full_register(username, password, email, paypal_email, balance):
     #    DELETE_USER_FILES(username)
     # except:
     #    print_error("User doesn't exist")
-    USER_INSERT(username, password, email, paypal_email, balance)
-    register_user_files(username)
+    try:
+        USER_INSERT(username, password, email, paypal_email, balance)
+        register_user_files(username)
+        return True
+    except Exception as e:
+        log_function(e)
+        return False
     # FILE_INSERT(connection
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        

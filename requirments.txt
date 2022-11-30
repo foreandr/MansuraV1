@@ -17,3 +17,4 @@ nsfw-detector==1.1.1
 NudeNet==2.0.9
 tensorflow
 yake==0.4.8
+bcrypt==4.0.1

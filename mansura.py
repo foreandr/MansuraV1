@@ -26,6 +26,7 @@ import datetime
 from datetime import datetime
 from csv import writer
 
+import hashlib
 # CUSTOM CODE
 import Python.helpers as helpers
 from Python import my_email
@@ -195,6 +196,9 @@ def register():
             print("\nREGISTRATION DETAILS")
             print("registering_username   :", registering_username)
             print("password               :", password)
+            password = password.encode('utf-8')
+            hashedPassword = hashlib.sha256(password).hexdigest()
+            print("hashedPassword         :",hashedPassword)
             print("email                  :", email)
             print("paypal_email           :",paypal_email)
 
@@ -208,14 +212,18 @@ def register():
                 # print(password)
 
                 # database.create_user(conn=connection, username="hello", password="password", email="bce@hotmail.com")
-                database.full_register(username=registering_username[0], password=password[0],email=email[0], paypal_email=paypal_email[0] , balance=0)
-
+                if database.full_register(username=registering_username, password=hashedPassword, email=email, paypal_email=paypal_email, balance=0):
+                    return redirect(url_for('login'))
                 # GO TO THEIR PROFILE
-                return redirect(url_for('login'))
+                else:
+                    return render_template('register.html', 
+                    return_message="Name already exists"
+                )
+                
 
             else:
                 return render_template('register.html', 
-                    return_message="YOU HAD SOME BAD WORDS YOU SHOULDNT HAVE IN YOUR USERNAMER"
+                    return_message="Mansura thinks you either have a bad word, or something that could be used for an SQL attack of some kind."
                 )
 
         except Exception as e:
@@ -239,7 +247,11 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
 
-        signed_in = database.validate_user_from_session(email, password)
+        print("password               :", password)
+        password = password.encode('utf-8')
+        hashedPassword = hashlib.sha256(password).hexdigest()
+
+        signed_in = database.validate_user_from_session(email, hashedPassword)
 
         if signed_in[0]:
             session["id"] = signed_in[1]
@@ -1151,6 +1163,12 @@ def patch_notes():
 def newsletter():
     helpers.log_function("request", request)
     return render_template(f"newsletter.html",
+    )
+
+@app.route("/cover_page", methods=['GET'])
+def cover_page():
+    helpers.log_function("request", request)
+    return render_template(f"cover_page.html",
     )
 
 
