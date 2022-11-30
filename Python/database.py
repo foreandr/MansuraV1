@@ -3396,6 +3396,18 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
                 SELECT COUNT(*)
                 FROM DISLIKES dislikes
                 WHERE dislikes.File_id = F.File_id 
+            ),
+            (
+                SELECT COUNT(*)
+                FROM LIKES likes
+                WHERE likes.File_id = F.File_id 
+                AND '{search_user}' = likes.Liker_Username
+            ),
+            (
+                SELECT COUNT(*)
+                FROM DISLIKES dislikes
+                WHERE dislikes.File_id = F.File_id 
+                AND '{search_user}' = dislikes.Disliker_Username
             )
 
         FROM FILES F
@@ -3437,6 +3449,9 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     total_votes = []
     likes = []
     dislikes = []
+    searcher_has_liked =[]
+    searcher_has_disliked =[]
+
     #INDIVIDUAL USER
     daily_left = ""
     monthly_left = "" 
@@ -3478,8 +3493,10 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
             pass
         likes.append(i[18])
         dislikes.append(i[19])
+        searcher_has_liked.append(i[20])
+        searcher_has_disliked.append(i[21])
         
-
+    # THIS SEEMED TO NOT WORK FOR PARTICULAR PROFILES #TODO: WORK INFESTIGATING WHY IT DIDN'T RUN
     if daily_left != "":
         if CHECK_DATE(search_user):
             #print(session_username, " IS SUBSCRIBED")
@@ -3518,7 +3535,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     conn.close()
     #print("THESE ARE MY SERVER SIDE SEARCH ARGUMENTS")
     #print(search_arguments)
-    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, search_arguments
+    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, search_arguments
 
 def GET_TOP_N_SEARCH_ALGORITHMS(N=100):
     conn = conn = connection.test_connection()

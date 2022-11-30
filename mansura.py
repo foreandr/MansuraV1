@@ -51,8 +51,6 @@ def home():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
 
-
-
     helpers.log_function("request", request)
     if "user" in session.keys():
         session_username = session["user"]
@@ -101,8 +99,9 @@ def home():
     #TODO: what I may have to do is do a similar query to the one below, but just returning a path list, grab all the paths that meet the criteria, then stick is back into
     # a function that returns the correct info with the search value in there as welll
 
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
-    
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
+    #print(searcher_has_liked)
+    #print(searcher_has_disliked)
     
     #FOR DIABLING OR ACTIVATING SCROLL LOGIC
     numposts = len(file_ids_list)
@@ -180,6 +179,7 @@ def home():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    
     # print('EXECUTING REGISTER FUNCTION')
     helpers.log_function("request", request)
     if "email" in session:
@@ -280,6 +280,8 @@ def logout():
 
 @app.route('/user_profile', methods=['GET', 'POST'])
 def user_profile():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     #print('USING USER PROFILE')
     helpers.log_function("request", request)
     # print(request)
@@ -315,6 +317,8 @@ def user_profile():
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
@@ -390,6 +394,8 @@ def upload():
 
 @app.route('/<username>', methods=['GET', 'POST'])
 def user_profile_name(username):
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     #print('EXECUTING WITH ARGUMENT: ', username)
     helpers.log_function("request", request)
     if "email" not in session:
@@ -460,8 +466,8 @@ def user_profile_name(username):
         if page_no == None or str(page_no) == "None":
                 page_no = 1
                 
-        # file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, search_arguments = database.universal_dataset_function(search_type="prof", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], profile_username=username)
-        file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, search_arguments = database.universal_dataset_function(search_type="post", page_no=page_no, search_user=session['user'], custom_clauses=new_json_search_clauses, file_id=file_id_)
+        
+        file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, search_arguments = database.universal_dataset_function(search_type="post", page_no=page_no, search_user=session['user'], custom_clauses=new_json_search_clauses, file_id=file_id_)
         username_len = len(usernames_list)
         if len(file_ids_list) == 0:
             # print("THERE IS NOTHING NO FILES ON HOMEPAGE HERE", session['user'])
@@ -649,8 +655,8 @@ def user_profile_name(username):
     if page_no == None or str(page_no) == "None":
             page_no = 1
             
-    # file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, search_arguments = database.universal_dataset_function(search_type="prof", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], profile_username=username)
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, search_arguments = database.universal_dataset_function(search_type="prof", page_no=page_no, search_user=session['user'], profile_username=username, custom_clauses=new_json_search_clauses)
+
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, search_arguments = database.universal_dataset_function(search_type="prof", page_no=page_no, search_user=session['user'], profile_username=username, custom_clauses=new_json_search_clauses)
     # print("UNIVERSAL PROFILE GOT", file_ids_list)
     username_len = len(usernames_list)
     if len(file_ids_list) == 0:
@@ -732,6 +738,8 @@ def user_profile_name(username):
 
 @app.route("/add_funds", methods=['GET', 'POST'])
 def add_funds():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
@@ -781,6 +789,8 @@ def add_funds():
 
 @app.route("/withdraw_funds", methods=['GET', 'POST'])
 def withdraw_funds():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
@@ -832,6 +842,8 @@ def withdraw_funds():
 
 @app.route("/get_csv/<account_name>/<folder>/<filename>", methods=['GET', 'POST'])
 def get_csv(account_name, folder, filename):
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     #print('Filename:', account_name, folder, filename)
     full_file = "static/" + "#UserData/" + account_name + "/" + folder + "/" + filename
@@ -848,6 +860,8 @@ def get_csv(account_name, folder, filename):
 
 @app.route("/add_user/<username>", methods=['POST'])
 def add_user(username):
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
@@ -867,6 +881,8 @@ def add_user(username):
 
 @app.route("/remove_user/<username>", methods=['POST'])
 def remove_user(username):
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
@@ -894,6 +910,8 @@ def password_recovery():
 
 @app.route("/password_reset", methods=['GET', 'POST'])
 def password_reset():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     print("got here 1")
     if request.method == "POST":
@@ -919,7 +937,8 @@ def password_reset():
 
 @app.route("/user_download_excel/<vote_timeframe>/<vote_date>", methods=['GET', 'POST'])
 def user_download_excel(vote_timeframe, vote_date):
-	print("hello")
+	if helpers.CHECK_IF_MOBILE(request):
+		return redirect(url_for('cover_page'))
 	try:
 		og_path = "/root/mansura/Python/HISTORY/"
 		custom_path = og_path + vote_timeframe +"/" + vote_date
@@ -932,6 +951,8 @@ def user_download_excel(vote_timeframe, vote_date):
 
 @app.route("/vote/<file_id>/<vote_type>", methods=['GET', 'POST'])
 def file_vote(file_id, vote_type):
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
@@ -962,6 +983,8 @@ def file_vote(file_id, vote_type):
 
 @app.route("/paypalsuccess", methods=['GET', 'POST'])
 def paypalsuccess():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     print((type(request)),":", request)
     #if request.method == "POST":
@@ -973,12 +996,16 @@ def paypalsuccess():
 
 @app.route("/paypalfailure", methods=['GET'])
 def paypalfailure():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     return render_template(f"paypalfailure.html")
 
 
 @app.route("/PayPal_IPN", methods=['GET','POST'])
 def PayPal_IPN():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     # print("REQUESt:    ", request)
     
@@ -1033,6 +1060,8 @@ def PayPal_IPN():
 
 @app.route("/history", methods=['GET'])
 def history():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
@@ -1068,6 +1097,8 @@ def history():
 
 @app.route("/settings", methods=['GET', 'POST'])
 def settings():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     
     # print("SETTINGS IS BEING SELECTED")
@@ -1078,6 +1109,8 @@ def settings():
 
 @app.route("/terms_and_conditions", methods=['GET'])
 def terms_and_conditions():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     return render_template(f"terms_and_conditions.html",
     )
@@ -1085,6 +1118,8 @@ def terms_and_conditions():
 
 @app.route("/search_algorithms_page", methods=['GET', 'POST'])
 def search_algorithms_page():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
@@ -1097,6 +1132,8 @@ def search_algorithms_page():
 
 @app.route("/contact", methods=['GET'])
 def contact():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     return render_template(f"contact.html",
     )
@@ -1104,6 +1141,8 @@ def contact():
 
 @app.route("/FAQ", methods=['GET'])
 def FAQ():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     return render_template(f"FAQ.html",
     )
@@ -1111,6 +1150,8 @@ def FAQ():
 
 @app.route("/instructions", methods=['GET'])
 def instructions():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     return render_template(f"instructions.html",
     )
@@ -1118,6 +1159,8 @@ def instructions():
 
 @app.route("/leaderboards", methods=['GET'])
 def leaderboards():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     return render_template(f"leaderboards.html",
     )
@@ -1125,6 +1168,8 @@ def leaderboards():
 
 @app.route("/messages", methods=['GET'])
 def messages():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     return render_template(f"messages.html",
     )
@@ -1132,6 +1177,8 @@ def messages():
 
 @app.route("/notifications", methods=['GET'])
 def notifications():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
@@ -1169,6 +1216,8 @@ def notifications():
 
 @app.route("/tribunal", methods=['GET'])
 def tribunal():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     return render_template(f"tribunal.html",
     )
@@ -1176,6 +1225,8 @@ def tribunal():
 
 @app.route("/patch_notes", methods=['GET'])
 def patch_notes():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     return render_template(f"patch_notes.html",
     )
@@ -1183,6 +1234,8 @@ def patch_notes():
 
 @app.route("/newsletter", methods=['GET'])
 def newsletter():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     return render_template(f"newsletter.html",
     )
