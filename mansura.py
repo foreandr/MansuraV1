@@ -247,7 +247,7 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
 
-        print("password               :", password)
+        # print("password               :", password)
         password = password.encode('utf-8')
         hashedPassword = hashlib.sha256(password).hexdigest()
 
@@ -337,7 +337,7 @@ def upload():
         print("POST 18+   :" + str(plus_18))
         print("DISTRO ALGO:" + distribution_algorithm_, type(distribution_algorithm_))
         print("DISTRO SECT:" + str(how_many_sections))
-        distro_details =[distribution_algorithm_, how_many_sections]
+        distro_details = [distribution_algorithm_, how_many_sections]
         print(distro_details)
         print("=============================================")
 
