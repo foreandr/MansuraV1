@@ -47,7 +47,8 @@ app.config["FILE UPLOADS"] = "static/#UserData"
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
     if "email" not in session: # testasdkjhfaks
-        return redirect(url_for('login'))
+        return redirect(url_for('cover_page'))
+
     helpers.log_function("request", request)
     if "user" in session.keys():
         session_username = session["user"]
