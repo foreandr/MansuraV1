@@ -1,44 +1,27 @@
 {% extends "structure.html" %}
 
 {%block main %}
-    <div>
-        {{ return_message }} 
-    </div>
-    <div>
-        YOU CANNOT CHANGE YOUR USERNAME <!-- message is a variable-->
-    </div>
-
-    <form method="POST">
-        <div>
-            <input name=username type="text" placeholder="Enter Username"  required>
-            <label id="username"></label>
-        </div>
-
-        <div>
-            <input name=password type="password" placeholder="Enter Password" required>
-            <label id="password"></label>
-        </div>
-
-        <div>
-            <input name=email type="email" placeholder="Enter Email" required>
-            <label id="email"></label>
-        </div>
-
-        <div>   
-            <input name=paypal_email type="email" placeholder="Enter Paypal Email" required>
-            <label id="paypal_email"></label>
-        </div>
+    <div class="container">
+        <form class="form-signup" method="POST" >
+          <h2 class="form-signup-heading">Please Sign Up</h2>
+          
+          <label class="sr-only" id="username"></label>
+          <input name=username type="text" class="form-control" placeholder="Enter Username (cannot change)" required>
+          
+          <label class="sr-only" id="email">Email address</label>
+          <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email address (for recovery)">
         
-        <div>
-            <button name="submit_button" value="submit" type="submit">Submit</button>
-        </div>
+          <label class="sr-only" id="paypal_email">Paypal Email</label>
+          <input name=paypal_email type="email"  class="form-control"placeholder="PAYPAL EMAIL [This is the location all of the capital will be sent (pls double check it)] - :)" required>
+          
+          <label class="sr-only" id="password">Password</label>
+          <input name="password" type="password" class="form-control" placeholder="Password (is encrypted and hashed)" required>
 
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+        </form>
+  
+      </div>
 
-
-
-
-        
-    </form>
 
 
 {% endblock main %}

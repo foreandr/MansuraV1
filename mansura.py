@@ -184,16 +184,24 @@ def register():
 
     if request.method == 'POST':
         my_dict = request.form.to_dict(flat=False)
+        #print(my_dict)
         try:  # DO NOT EXECUTE UNTIL SUBMIT IS CLICKED
-            registering_username = my_dict['username']
-            password = my_dict['password']
-            email = my_dict['email']
-            paypal_email =my_dict['paypal_email']
+            #print("INSIDE REGISTER POST")
+            registering_username = my_dict['username'][0]
+            password = my_dict['password'][0]
+            email = my_dict['email'][0]
+            paypal_email =my_dict['paypal_email'][0]
+
+            print("\nREGISTRATION DETAILS")
+            print("registering_username   :", registering_username)
+            print("password               :", password)
+            print("email                  :", email)
+            print("paypal_email           :",paypal_email)
 
             # CHECK WHETHER VALUES ARE IN RESTRICTED LIST
             
-            has_bad_words = helpers.USERNAME_PROFANITY_CHECK(registering_username[0])
-
+            has_bad_words = helpers.USERNAME_PROFANITY_CHECK(registering_username)
+            print("has_bad_words", has_bad_words)
             if not has_bad_words:
 
                 # print(registering_username, "is registering their account!")
@@ -373,7 +381,7 @@ def user_profile_name(username):
     #   CHECK WHICH ONE OF THE OTHERS IT UIS
     #=======================================================
     if username.endswith('-post_page'): # CHECK IF GOING TO A PARTICULAR POST
-        print("GOING TO A PARTICULAR POST")
+        # print("GOING TO A PARTICULAR POST")
         if "email" in session:
             balance = database.GET_USER_BALANCE_SIMPLE( session["user"])
         else:
@@ -393,8 +401,8 @@ def user_profile_name(username):
         
         reply_array = database.GET_ALL_REPLIES(file_id)
         post_username, post_file_path, post_user_id, post_foreign_id_source, post_date, file_id_, single_day_votes, single_month_votes, single_year_votes, single_likes, single_dislikes = database.GET_SINGLE_DATASET_INFO(final_filename)
-        print(single_likes)
-        print(single_dislikes)
+        #print(single_likes)
+        #print(single_dislikes)
 
         #print("NUM REPLIES", num_replies)
         #print("file_id", file_id)
@@ -576,6 +584,17 @@ def user_profile_name(username):
     name_exists = database.CHECK_IF_NAME_EXISTS(username=username) 
     my_friends, friend_count = database.GET_FOLLOWING(username)
     my_followers, follow_count = database.GET_FOLLOWERS(username=username)
+
+    if session["user"] == username: # BOOLEAN HAS TO BE THIS DUMB WAY FOR JAVASCRIPT iLL ADVISED
+        is_host = "true"
+        can_follow = "false"
+    else:
+        is_host = "false"
+        if session["user"] in my_followers:
+            can_follow = "false"
+        else:
+            can_follow = "true"
+
     search_json = {}
     json_search_clauses = "None"
     if request.method == 'POST':
@@ -600,7 +619,7 @@ def user_profile_name(username):
             
     # file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, search_arguments = database.universal_dataset_function(search_type="prof", search_algo_path="foreandr-1", page_no="1", search_user=session['user'], profile_username=username)
     file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, search_arguments = database.universal_dataset_function(search_type="prof", page_no=page_no, search_user=session['user'], profile_username=username, custom_clauses=new_json_search_clauses)
-    print("UNIVERSAL PROFILE GOT", file_ids_list)
+    # print("UNIVERSAL PROFILE GOT", file_ids_list)
     username_len = len(usernames_list)
     if len(file_ids_list) == 0:
         # print("THERE IS NOTHING NO FILES ON HOMEPAGE HERE", session['user'])
@@ -670,7 +689,9 @@ def user_profile_name(username):
                                 
                                 search_arguments=search_arguments,
                                 page_no=page_no,
-                                can_scroll=can_scroll
+                                can_scroll=can_scroll, 
+                                is_host=is_host,
+                                can_follow=can_follow
 
                             )
     else:                             

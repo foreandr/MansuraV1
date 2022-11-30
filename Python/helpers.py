@@ -165,12 +165,13 @@ def USERNAME_PROFANITY_CHECK(word, testing=False): #todo: this is particular to 
     # BASIC CHECK IF == TO ANY
     bad_words = f.read().split(",")
     for i in bad_words:
-        if i in word:
-            print(F"FOUND {i} in {word} {len(i)}")
-            return True
-        else:
-            pass
-            #print("NOT FOUND",i, {len(i)})
+        if i != "" and i != " ":
+            if i in word:
+                print(F"FOUND {i} in {word} {len(i)}")
+                return True
+            else:
+                pass
+                #print("NOT FOUND",i, {len(i)})
     # 1. my word check
     if word.lower() in bad_words:
         print("it is in list of bad words")

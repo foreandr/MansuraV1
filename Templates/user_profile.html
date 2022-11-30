@@ -12,8 +12,7 @@
         <br>
     </div>
     
-    <div id="non_host_add_remove">
-    </div>
+
 
 </div>
 <div class="d-flex justify-content-center">
@@ -32,17 +31,21 @@
         <div id="my_followers_dropdown" class="dropdown-content">
         </div>
     </div>
+
 </div>
+<div  class="d-flex justify-content-center">
+    <div id="non_host_add_remove">
+    </div>
+</div>
+
+
 
 
 <div class="container-fluid">
     <div class="row justify-content-md-center">
         <div class="col-2">
           <div>
-            THIS IS WHERE PEOPLE WILL BUY ADS
-          </div>
-          <div>
-            {{can_scroll}}
+            <!--(ads here in the future..)-->
           </div>
         </div>
 
@@ -461,20 +464,11 @@
 
     // CHECKING WHO'S PROFILE IT IS TO SEE IF THERE NEEDS TO BE AN ADD USER SPOT
     // THE TRIPLE === COULD LEAD TO FUNKY BEHAVIOUR
-    // full_hostcheck_array = ('{{host_user}}');
-    console.log(full_hostcheck_array)
-    full_hostcheck_array_cleaned = full_hostcheck_array.slice(1, -1);
-    console.log(full_hostcheck_array_cleaned)
-    boolean_string = full_hostcheck_array_cleaned.split(",")[2].toLowerCase();
-    console.log(boolean_string)
-    host_profile = boolean_string.replace(/ /g,"");
-
-    // CHECKING IF SO AND SO ALREADY FOLLOWS SO AND SO
-    already_follows = full_hostcheck_array_cleaned.split(",")[3].toLowerCase().replace(/ /g,""); // unintelligble but correct
-    console.log(already_follows)
-
+    host_profile = "{{is_host}}"
+    can_follow = "{{can_follow}}"
+    console.log(host_profile)
     if (host_profile != "true") {
-        if (already_follows == "true") {
+        if (can_follow == "false") {
             document.getElementById("non_host_add_remove").innerHTML = `
 
                 <form action="/add_user/{{host_user}}" method="POST">
@@ -492,7 +486,7 @@
                 </form>
 
                 <form action="/remove_user/{{host_user}}" method="POST">
-                    <button class="btn btn-primary" name="remove_user_button" type="submit">Unfollow {{host_user}}</button>
+                    <button class="btn btn-primary" name="remove_user_button" type="submit" disabled>Unfollow {{host_user}}</button>
                 </form>`
         }
 

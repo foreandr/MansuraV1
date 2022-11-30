@@ -224,7 +224,7 @@ def CONNECTION_INSERT(user_id1, user_id2):
                 VALUES({user_id1}, {user_id2}, NOW())
             """)
         conn.commit()
-        print_green(f"CONNECTED {user_id1} -> {user_id2}")
+        # print_green(f"CONNECTED {user_id1} -> {user_id2}")
     except Exception as e:
         cursor.execute("ROLLBACK")
         print("ERROR:  [INSERT INTO CONNECTIONS] " + str(e))
@@ -1371,7 +1371,7 @@ def GET_FOLLOWING(username):
 def GET_FOLLOWERS(username):
     conn = connection.test_connection()
     
-    print('GET FOLLOWERS: ', username)
+    # print('GET FOLLOWERS: ', username)
     cursor = conn.cursor()
     cursor.execute(f"SELECT GET_FOLLOWERS('{username}');")
     user_friends = []
@@ -3277,7 +3277,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         else:
             profile_search_clause = F"AND U.username = U.username"
     else:
-        print("SHOWING IT IS A POST SEARCH")
+        # print("SHOWING IT IS A POST SEARCH")
         foreign_id_text_entry = F"AND F.Post_foreign_id_source = '{file_id}'"
         profile_search_clause = F"AND U.username = U.username"
     
@@ -3316,9 +3316,9 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     #print("========================================")
     
     #print("QUERIES ENTERED",)
-    print("foreign_id_text_entry:", foreign_id_text_entry)
-    print("profile_search_clause:", profile_search_clause)
-    print("where_clause         :", where_clause)
+    #print("foreign_id_text_entry:", foreign_id_text_entry)
+    #print("profile_search_clause:", profile_search_clause)
+    #print("where_clause         :", where_clause)
 
     #print("========================================")
     #print("FULL WHERE QUERY")
