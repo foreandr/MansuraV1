@@ -3861,3 +3861,40 @@ def GET_FILE_ALL_VOTES_BY_ID(file_id):
     cursor.close()
     conn.close()
     return DAILY, MONTHLY, YEARLY
+
+
+def GET_SEARCH_LIKES_SINGLE_POST(searcher, file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+        (
+            SELECT COUNT(*)
+            FROM LIKES likes
+            WHERE likes.File_id = {file_id}
+            AND '{searcher}' = likes.Liker_Username
+        )
+    """)
+    likes = ""
+    for i in cursor.fetchall():
+        #print(i)
+        likes = i[0]
+    # FOR SOME STUPID REASON I CAN'T FIGURE OUT HOW TO GET BOTH OF THESE IN ONE QUERY, MAJOR EFFICIENCY BRAINFART
+    
+    cursor.execute(f"""
+        (
+            SELECT COUNT(*)
+            FROM DISLIKES dislikes
+            WHERE dislikes.File_id = {file_id}
+            AND '{searcher}' = dislikes.Disliker_Username
+        )
+    """)
+    dislikes = ""
+    for i in cursor.fetchall():
+        #print(i)
+        dislikes = i[0]
+
+    cursor.close()
+    conn.close()
+    # print(likes, dislikes)
+    
+    return likes, dislikes

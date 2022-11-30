@@ -99,7 +99,7 @@ def home():
     #TODO: what I may have to do is do a similar query to the one below, but just returning a path list, grab all the paths that meet the criteria, then stick is back into
     # a function that returns the correct info with the search value in there as welll
 
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, searcher_has_liked, searcher_has_disliked, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
     #print(searcher_has_liked)
     #print(searcher_has_disliked)
     
@@ -149,6 +149,8 @@ def home():
                             post_sources_list=post_sources_list,
                             likes=likes,
 							dislikes=dislikes,
+							searcher_has_liked=searcher_has_liked, 
+							searcher_has_disliked=searcher_has_disliked,
                             
                             day_votes=day_votes,
                             month_votes=month_votes,
@@ -504,6 +506,8 @@ def user_profile_name(username):
             #print(daily_left, monthly_left, yearly_left)
             single_day_votes, single_month_votes, single_year_votes =  database.GET_FILE_ALL_VOTES_BY_ID(file_id)
 
+        searcher_like_single, searcher_dislike_single = database.GET_SEARCH_LIKES_SINGLE_POST(session['user'], file_id)
+
         og_post_text = ""
         og_post_18 = ""
         og_post_src = ""
@@ -560,6 +564,14 @@ def user_profile_name(username):
                                 yearly_dataset_votes=single_year_votes, 
                                 single_likes=single_likes, 
                                 single_dislikes=single_dislikes,
+
+                                searcher_like_single=searcher_like_single, 
+                                searcher_dislike_single=searcher_dislike_single,
+								
+								searcher_has_liked=searcher_has_liked, 
+								searcher_has_disliked=searcher_has_disliked,
+
+
 
                                 usernames_list=usernames_list,
                                 file_ids_list=file_ids_list,
@@ -717,7 +729,9 @@ def user_profile_name(username):
                                 monthly_left = monthly_left,
                                 yearly_left = yearly_left,
                                 user_balance = user_balance,
-                            
+	
+								searcher_has_liked=searcher_has_liked, 
+								searcher_has_disliked=searcher_has_disliked,
                                 text_list=text_list,
                                 lengths_of_text_files=lengths_of_text_files,
                                 age_18_list=age_18_list,
