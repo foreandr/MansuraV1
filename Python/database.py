@@ -3202,10 +3202,15 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     conn.close()
     #print("THESE ARE MY SERVER SIDE SEARCH ARGUMENTS")
     #print(search_arguments)
-
     where_clause_list_ = search_arguments['where_full_query'].split("AND")
     #print(where_clause_list_)
     search_arguments['where_full_query'] = list(dict.fromkeys(where_clause_list_))# getting rid of dupes
+    search_arguments_with_and = ""
+    for i in search_arguments['where_full_query']:
+        if i != "":    
+            j = "AND " + i
+            search_arguments_with_and += j
+    search_arguments['where_full_query'] = search_arguments_with_and
     #print(f"-----\n{search_arguments}\n-----")
 
     # search_arguments['where_full_query'] = list(dict.fromkeys(search_arguments['where_full_query']))

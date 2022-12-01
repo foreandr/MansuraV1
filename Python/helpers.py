@@ -510,8 +510,11 @@ def COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_cla
     if str(returned_search_arguments) != "None":
         if type(returned_search_arguments) != dict:
             returned_search_arguments = eval(returned_search_arguments)
-        new_composed_where_clause = returned_search_arguments['where_full_query'] + " " + json_search_clauses['WHERE_CLAUSE']
-        #print("new_composed_where_clause", new_composed_where_clause)
+        new_composed_where_clause = str(returned_search_arguments['where_full_query']) + " " + str(json_search_clauses['WHERE_CLAUSE'])
+        
+        print("\nnew_composed_where_clause:", new_composed_where_clause)
+        print("\nreturned_search_arguments['where_full_query']:", returned_search_arguments['where_full_query'])
+        print("\njson_search_clauses['WHERE_CLAUSE']:", json_search_clauses['WHERE_CLAUSE'])
     
     if str(json_search_clauses) != "None":
         if type(json_search_clauses) != dict:
