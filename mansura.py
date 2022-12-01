@@ -1283,4 +1283,3 @@ if __name__ == '__main__':
     #serve(app, host=host)    
 
     # If the debugger is on, I can change my files in real time after saving
-    pass
