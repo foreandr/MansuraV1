@@ -2969,11 +2969,13 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     # print("NW ORDDR BY", custom_clauses["WHERE_CLAUSE"])
     #print("NEW GIANT ORDER CLAUSE:")
     order_by_clause = custom_clauses["ORDER_BY_CLAUSE"]
+    print("OG ORDER BY:\n:", order_by_clause )
     #print(len(order_by_clause))
     #print(order_by_clause)
 
     if len(order_by_clause) == 0:
         #print("got here it == 0 ")
+        print("ORDER BY IS ZERO, DOING BABY ORDER BY:\n:", order_by_clause )
         order_by_clause = "ORDER BY (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Yearly') DESC"
     #print("========================================")
     
