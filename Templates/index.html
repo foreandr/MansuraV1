@@ -109,11 +109,17 @@
         <!--DOING THE SEARCH-->
         <div class="col-3"> 
             <form action="/" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
-                <input class="d-inline form-control mr-sm-2" id="search" name="search" type="search" placeholder="(can be empty)" aria-label="search">
-                    <button class="btn btn-primary">Search</button>
+                <input class="input-medium form-control" id="search" name="search" type="search" placeholder="empty / single word (beta)" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')">
+                    <div>
+                        <button class="btn btn-primary">Search</button>
+                        <button class="btn btn-primary" value="reset" name="reset">Reset</button>
+                        <button class="btn btn-primary" value="save_algo" name="save_algo" >Save Algo</button>
+                        <button class="btn btn-primary" type="button" onclick="show_current_algo()">Show Algo</button>  
+                        <div id="algo_show_location"></div>
+                    </div> 
+                       
                 </input>
-                <button class="btn btn-primary">Reset</button>
-                <button class="btn btn-primary">Save Algo</button>
+
 
                
                 <!-- DATE SECTION -->
@@ -394,7 +400,14 @@
 </div>
 <!-- post_modal  -->
 <script>
-
+    function show_current_algo(){
+        if (document.getElementById("algo_show_location").innerHTML == ""){
+            document.getElementById("algo_show_location").innerHTML= "{{search_arguments}}"
+        }else{
+            document.getElementById("algo_show_location").innerHTML= ""
+        }
+            
+    }
 
 
     // console.log(document.getElementById("search_arguments").value)
@@ -412,8 +425,7 @@
                             <option id="OR">OR</option>
             </select>  
             <select name="where_clauses${where_counter}" id="where_clauses${where_counter}" class="dropdown-content">
-                <option id="DAY VOTES">POST DAY VOTES</option>
-                <option id="DAY VOTES">POST DAY VOTES</option>
+                            <option id="DAY VOTES">POST DAY VOTES</option>
                             <option id="MONTH VOTES">POST MONTH VOTES</option>
                             <option id="YEAR VOTES">POST YEAR VOTES</option>            
                             <option id="LIKES"disabled>POST LIKES</option>           
@@ -463,8 +475,7 @@
                             <option id="OR">OR</option>
                 </select>  
                 <select name="where_clauses${where_counter}" id="where_clauses${where_counter}" class="dropdown-content">
-                    <option id="DAY VOTES">POST DAY VOTES</option>
-                    <option id="DAY VOTES">POST DAY VOTES</option>
+                            <option id="DAY VOTES">POST DAY VOTES</option>
                             <option id="MONTH VOTES">POST MONTH VOTES</option>
                             <option id="YEAR VOTES">POST YEAR VOTES</option>            
                             <option id="LIKES"disabled>POST LIKES</option>           

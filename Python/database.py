@@ -2959,6 +2959,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     #    print(key, value)
     #print("custom clauses", type(custom_clauses), custom_clauses)
     where_clause = custom_clauses["WHERE_CLAUSE"] 
+    print("CURRENT WHERE CLAUSE TEST")
     #print("=======================================")
     #if custom_clauses != None and custom_clauses !="None":
     #    where_clause = where_clause + custom_clauses["WHERE_CLAUSE"]

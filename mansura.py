@@ -68,7 +68,18 @@ def home():
     search = "None"
 
     if request.method == 'POST':
+        
         search = request.form.get("search")   
+        reset = request.form.get("reset")
+        save_algo = request.form.get("save_algo")
+        
+        if save_algo != "None" and save_algo != None:
+            returned_search_arguments = request.form.get("search_arguments")
+            print("CURRENT ARGS TO BE SAVED", returned_search_arguments)
+        if reset != "None" and save_algo != None:
+            print("CLICKED RESET")
+            return redirect(url_for("home"))
+
         date_check = request.form.get("date_check")  
         order_check = request.form.get("order_check")  
         and_or_clauses, where_clauses, hi_eq_low, num_search_text = helpers.GET_ALL_QUERY_INFO_FROM_REQUEST_FORM(request)

@@ -68,6 +68,7 @@ TO DO. might be worth allowing other fieltypes in the future
 	-<iframe width="560" height="315" src="https://webapp-va.tiktok.com/ac4d3b3877416c9cf69d4f7e6666e9d9/638881e6/tos-useast2a-v-0068/39093d1ecebb4281a4bf32650f7e8409?a=1988&ch=0&cr=0&dr=0&lr=tiktok_m&cd=0%7C0%7C0%7C0&br=5210&bt=2605&cs=0&ds=3&ft=_4N7gvvfQ9wUxKZfl2HC~YzItGaeW.RUXuv4kag3-B4kS&mime_type=video_mp4&qs=13&rc=NXZpTGRTaFBnKWZzZXpoaGRmM2l5OTk6ZnhmaDMzNzgzM0BpM2l5OTk6ZnhmaDMzNzgzM0BTbGt2aXFEOmpoXitiK2p0OiNgX2hrcjQwbTBgLS1kLzZzYSNgX2hrcjQwbTBgLS1kLzZzcw%3D%3D&l=202212010428190102230821520F8F1E1E&btag=40000&policy=eyJ2bSI6MywidWlkIjoiNjkxNjYxNzI5MjIxNTMzNzk5MCJ9" frameborder="0" allowfullscreen></iframe>
 DONE. on new search textquery, remove all previous where clauses
 DONE.add users to search
+TODO. MAKE SEARCH WORK BETTER WITH SPACES
 
 TODO. FILE FAVOURITES,
 MINIMUM VIABLE PRODUCT
@@ -83,6 +84,8 @@ MOTTO
 1. SEARCH FAVOURITES
 2. SEARCH RELATED:
 	search algo voting page	search_arguments
+	validate the search data
+	make 
 3.tribunal
 	- IF num dislikes > 10, tag post for tribunal, if num likes > dislikes, no changes, else strip the text from the post, and change the json, and remove the image,
 		if the likes go back to above, then restore

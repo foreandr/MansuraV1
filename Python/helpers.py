@@ -456,6 +456,8 @@ def TURN_WHERE_CLAUSE_TO_STRING(query_list):
     comparison = query_list[2]
     amount = query_list[3]
 
+    if comparison == "==":
+        comparison = "="
     #print("and_or      :", and_or)
     #print("question    :", question)
     #print("comparison  :", comparison)
@@ -512,9 +514,9 @@ def COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_cla
             returned_search_arguments = eval(returned_search_arguments)
         new_composed_where_clause = str(returned_search_arguments['where_full_query']) + " " + str(json_search_clauses['WHERE_CLAUSE'])
         
-        print("\nnew_composed_where_clause:", new_composed_where_clause)
-        print("\nreturned_search_arguments['where_full_query']:", returned_search_arguments['where_full_query'])
-        print("\njson_search_clauses['WHERE_CLAUSE']:", json_search_clauses['WHERE_CLAUSE'])
+        #print("\nnew_composed_where_clause:", new_composed_where_clause)
+        #print("\nreturned_search_arguments['where_full_query']:", returned_search_arguments['where_full_query'])
+        #print("\njson_search_clauses['WHERE_CLAUSE']:", json_search_clauses['WHERE_CLAUSE'])
     
     if str(json_search_clauses) != "None":
         if type(json_search_clauses) != dict:
