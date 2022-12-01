@@ -869,7 +869,7 @@ def GET_ALL_KEY_words():
         f"""
         SELECT * FROM KEYWORDS
         """)
-    print("KEYWORDS:")
+    #print("KEYWORDS:")
     for i in cursor.fetchall():
         print(i)
 
@@ -884,7 +884,7 @@ def ADD_POST_KEYWORDS_TO_DATABASE(list_of_keywords, file_id):
     for i in new_list_of_keywords:  
         cursor.execute(f"""
             INSERT INTO KEYWORDS(key_name) 
-            VALUES ('{i}')
+            VALUES (LOWER('{i}'))
             ON CONFLICT DO NOTHING
             """
             )
@@ -892,7 +892,7 @@ def ADD_POST_KEYWORDS_TO_DATABASE(list_of_keywords, file_id):
 
         cursor.execute(f"""
             INSERT INTO FILE_KEYWORDS(key_name, File_Id) 
-            VALUES ('{i}', {file_id})
+            VALUES (LOWER('{i}'), {file_id})
             ON CONFLICT DO NOTHING
             """
             )
@@ -902,7 +902,7 @@ def ADD_POST_KEYWORDS_TO_DATABASE(list_of_keywords, file_id):
     #GET_ALL_FILE_KEY_words()
 
 def STRIP_KEYWORDS_OF_SPECIAL_CHARS(list_of_keywords):
-    
+    # print("KEYWORDS",list_of_keywords)
     badwords_path = "/root/mansura/Python/bad_words_username.txt"
     f = open(badwords_path, 'r')
     bad_words = f.read().split(",")
@@ -910,14 +910,18 @@ def STRIP_KEYWORDS_OF_SPECIAL_CHARS(list_of_keywords):
     
     final_list = []
     for i in list_of_keywords:
-        stringless = i.replace(" ", "") # stringless means spaceless lol sorry tired
+        my_string = i #THIS WILL NEED TO BE INDEX IF USING THE NLP FROM BEFORE (i[0])
+        # print(my_string)
+        stringless = my_string.replace(" ", "") # stringless means spaceless lol sorry tired
         lower_bad_words = [x.lower() for x in bad_words]
-        if (i.lower() in lower_bad_words):
+        if (stringless.lower() in lower_bad_words):
             continue
         elif(bool(re.search('^[a-zA-Z0-9]*$',stringless))==False): # checking special chars
             continue
         else:
-            final_list.append(i)
+            final_list.append(my_string)
+    
+    #print("FINAL LIST OF KEYWORDS", final_list)
     return final_list
 
 def GET_ALL_FILE_KEY_words():
@@ -2454,7 +2458,7 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
     if len(search) > 0:
         # print("search is a string with len", search)
         tag_query = f"""
-            OR (0 < (SELECT COUNT(*) FROM FILE_KEYWORDS fkey WHERE fkey.File_Id = F.File_Id AND key_name = '{search}'))"""
+            OR (0 < (SELECT COUNT(*) FROM FILE_KEYWORDS fkey WHERE fkey.File_Id = F.File_Id AND key_name = LOWER('{search}'))"""
 
         # print("tag_query:", tag_query)
         LIKE_QUERY = F"AND (LOWER(U.username) LIKE LOWER('%{search}%') {tag_query})"

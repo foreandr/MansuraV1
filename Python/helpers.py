@@ -3,7 +3,7 @@ import random
 import json
 
 from os import path
-import yake # NATURAL LANGUAGE PROCESSING
+
 from nudenet import NudeClassifier # NUDITY CLASSIFIER
 
 
@@ -16,10 +16,11 @@ def CHECK_IF_MOBILE(request):
     return result
 
 def NLP_KEYWORD_EXTRACTOR(text):
-    check_text = text.split(" ")
-    if len(check_text) < 13:
-        return check_text
+    keywords = text.split(" ")
 
+    # NOT GOING TO USE NLP
+    '''
+    import yake # NATURAL LANGUAGE PROCESSING
     kw_extractor = yake.KeywordExtractor()
     # text = """spaCy is an open-source software library for advanced natural language processing, written in the programming languages Python and Cython. The library is published under the MIT license and its main developers are Matthew Honnibal and Ines Montani, the founders of the software company Explosion."""
     language = "en"
@@ -28,17 +29,17 @@ def NLP_KEYWORD_EXTRACTOR(text):
     numOfKeywords = 13
     custom_kw_extractor = yake.KeywordExtractor(lan=language, n=max_ngram_size, dedupLim=deduplication_threshold, top=numOfKeywords, features=None)
     keywords = custom_kw_extractor.extract_keywords(text)
-
+    '''
     #print(type(keywords))
     #print(keywords)
 
-    list_of_keywords = []
-    for i in keywords:
-        list_of_keywords.append(i[0])
+    #list_of_keywords = []
+    #for i in keywords:
+    #    list_of_keywords.append(i[0])
 
     #for i in list_of_keywords:
     #    print(i)
-    
+    # print("POST KEYWORDS:", keywords)
     return keywords
 
 NLP_KEYWORD_EXTRACTOR("""spaCy is an open-source software library for advanced natural language processing, 

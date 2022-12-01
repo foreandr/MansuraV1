@@ -64,6 +64,9 @@ DONE. give a new monthly vote every day
 TO DO STIL. REPOST, ability to take another post and endorse it somehow 
 TO DO. BUY ADS TO PUT ON THE MAIN PAGE, ALL GOES TO POOL, BUY ADS TO PUT ON A PERSONS PAGE, 50% GOES TO THEM, 50% GOES TO POOL
 TO DO. might be worth allowing other fieltypes in the future
+	-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=ScStHRH4NJA" frameborder="0" allowfullscreen></iframe>
+	-<iframe width="560" height="315" src="https://webapp-va.tiktok.com/ac4d3b3877416c9cf69d4f7e6666e9d9/638881e6/tos-useast2a-v-0068/39093d1ecebb4281a4bf32650f7e8409?a=1988&ch=0&cr=0&dr=0&lr=tiktok_m&cd=0%7C0%7C0%7C0&br=5210&bt=2605&cs=0&ds=3&ft=_4N7gvvfQ9wUxKZfl2HC~YzItGaeW.RUXuv4kag3-B4kS&mime_type=video_mp4&qs=13&rc=NXZpTGRTaFBnKWZzZXpoaGRmM2l5OTk6ZnhmaDMzNzgzM0BpM2l5OTk6ZnhmaDMzNzgzM0BTbGt2aXFEOmpoXitiK2p0OiNgX2hrcjQwbTBgLS1kLzZzYSNgX2hrcjQwbTBgLS1kLzZzcw%3D%3D&l=202212010428190102230821520F8F1E1E&btag=40000&policy=eyJ2bSI6MywidWlkIjoiNjkxNjYxNzI5MjIxNTMzNzk5MCJ9" frameborder="0" allowfullscreen></iframe>
+TODO. FILE FAVOURITES,
 MINIMUM VIABLE PRODUCT
 ========================
 WRITE UP THE PAPER
@@ -72,7 +75,9 @@ MOTTO
 	- PAID TO LIKE
 	- PAID TO SHARE
 	- PAID TO SEARCH
-1. FILE FAVOURITES AND POST FAVOURITES, SEARCH FAVOURITES
+
+
+ SEARCH FAVOURITES
 2. SEARCH RELATED:
 	search algo voting page	
 	on new search textquery, remove all previous where clauses
@@ -84,6 +89,8 @@ MOTTO
 
 IMPORTANT BUT LATER
 ===================
+add users to search
+
 7. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
 make the history look less hsit
 	-0. EVENTUALLY DO THE FOLDER THING!

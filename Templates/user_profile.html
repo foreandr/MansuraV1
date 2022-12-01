@@ -10,12 +10,9 @@
         />  
         <div id="add_new_profile_picture"></div>     
         <br>
+    </div>
 </div>
-    
-</div>
-
-<div>
-    
+      
 <form action="/edit_bio" method="POST" >
     {% if is_host == "true" %}
     <div class="d-flex justify-content-center">
@@ -28,8 +25,6 @@
     </div>
     {% endif %}
 </form>
-
-
 
 <div class="d-flex justify-content-center">
     <div class="dropdown">
@@ -46,6 +41,7 @@
     </div>
 
 </div>
+
 <div  class="d-flex justify-content-center">
     <div id="non_host_add_remove">
     </div>
@@ -159,10 +155,11 @@
 
         <!--DOING THE SEARCH-->
         <div class="col-3"> 
-            <form action="/" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
+            <form action="/{{host_user}}" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
                 <input class="d-inline form-control mr-sm-2" id="search" name="search" type="search" placeholder="(can be empty)" aria-label="search">
                     <button class="btn btn-primary">Search</button>
                 </input>
+
                 <!-- DATE SECTION -->
                 <div>
                     <div>

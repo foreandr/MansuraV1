@@ -389,6 +389,7 @@ def upload():
 
 @app.route('/<username>', methods=['GET', 'POST'])
 def user_profile_name(username):
+    # print("I AM IN USERNAME")
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     #print('EXECUTING WITH ARGUMENT: ', username)
@@ -396,7 +397,7 @@ def user_profile_name(username):
     if "email" not in session:
         return redirect(url_for('login'))
     if username == "favicon.ico": # check weird username issue
-        #print("FAVICON ISSUE")
+
         return redirect(url_for('home'))
     # CHECK USER INFO
     if username == session['user']: # Check some user info
@@ -452,7 +453,7 @@ def user_profile_name(username):
                 hi_eq_low, 
                 num_search_text
             ]
-            json_search_clauses = database.TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, session_username)
+            json_search_clauses = database.TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, session['user'])
 
         returned_search_arguments = request.form.get("search_arguments")
         page_no = request.form.get("page_number")
@@ -651,7 +652,7 @@ def user_profile_name(username):
             hi_eq_low, 
             num_search_text
         ]
-        json_search_clauses = database.TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, session_username)
+        json_search_clauses = database.TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, session["user"])
 
     returned_search_arguments = request.form.get("search_arguments")
     page_no = request.form.get("page_number")
