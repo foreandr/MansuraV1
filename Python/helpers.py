@@ -496,9 +496,7 @@ def SPLIT_AND_RECOMPOSE_ORDER_BY_CLAUSES(giant_order_string):
     new_order_by_string = new_order_by_string[:-1]
     #print(new_order_by_string)
     return new_order_by_string
-
-
-
+    
 
 def COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses):
     # print("==============WITHIN COMPOSE SEARCH AND JSON==============")

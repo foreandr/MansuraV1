@@ -3202,6 +3202,14 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     conn.close()
     #print("THESE ARE MY SERVER SIDE SEARCH ARGUMENTS")
     #print(search_arguments)
+
+    where_clause_list_ = search_arguments['where_full_query'].split("AND")
+    #print(where_clause_list_)
+    search_arguments['where_full_query'] = list(dict.fromkeys(where_clause_list_))# getting rid of dupes
+    #print(f"-----\n{search_arguments}\n-----")
+
+    # search_arguments['where_full_query'] = list(dict.fromkeys(search_arguments['where_full_query']))
+
     return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, search_arguments
 
 def GET_TOP_N_SEARCH_ALGORITHMS(N=100):
