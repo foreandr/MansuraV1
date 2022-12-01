@@ -1279,7 +1279,11 @@ if __name__ == '__main__':
     thread = Thread(target = distribution_algorithm.TESTING_TIMING, args = ())
     thread.start()
 
+<<<<<<< HEAD
     app.run(host=host, port="8090", use_reloader=False)  # host is to get off localhost
+=======
+    app.run(host=host, port="8091", use_reloader=False)  # host is to get off localhost
+>>>>>>> dev
     #serve(app, host=host)    
 
     # If the debugger is on, I can change my files in real time after saving
