@@ -2977,7 +2977,6 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         #print("got here it == 0 ")
         print("ORDER BY IS ZERO, DOING BABY ORDER BY:\n:", order_by_clause )
         order_by_clause = "ORDER BY (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Yearly') DESC"
-        print("herllo world testing bozo heheheh xd lolol")
     #print("========================================")
     
     #print("NEW GIANT WHERE CLAUSE:")
