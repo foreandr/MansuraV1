@@ -157,9 +157,9 @@ def FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT(vote_type, testing=False):
     #PROBABLY THE BEST THING TO PRINT TO KNOW WHAT'S GOING ON
     #NOTE, RATIO HAS ALREADY BEEN TAKEN OUT OF AMOUNT, IT ISN'T INCORRECT, CAN BE CHECKED WITH ALGOS
     
-    for key, value in non_equity_dict.items():
-        print(key, ":", value)
-    exit(0)
+    #for key, value in non_equity_dict.items():
+    #    print(key, ":", value)
+    # exit(0)
     #exit()  #THIS IS WHERE IM WORKIN CHECKPOINT 1
     UPDATE_BALANCES_TYPED(vote_type, non_equity_dict, testing)
     
