@@ -2974,17 +2974,17 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         #print("got here it == 0 ")
         order_by_clause = "ORDER BY (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Yearly') DESC"
     
-    print("ENTIRE ORDER BY CLAUSE\n", order_by_clause)
+    #print("ENTIRE ORDER BY CLAUSE\n", order_by_clause)
     #print("========================================")
     
     #print("NEW GIANT WHERE CLAUSE:")
     #print(where_clause)
     #print("========================================")
     
-    print()
-    print("foreign_id_text_entry:", foreign_id_text_entry)
-    print("profile_search_clause:", profile_search_clause)
-    print("where_clause         :", where_clause)
+    #print()
+    #print("foreign_id_text_entry:", foreign_id_text_entry)
+    #print("profile_search_clause:", profile_search_clause)
+    #print("where_clause         :", where_clause)
 
     #print("========================================")
     #print("FULL WHERE QUERY")

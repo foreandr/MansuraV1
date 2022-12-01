@@ -483,18 +483,14 @@ def TURN_WHERE_CLAUSE_TO_STRING(query_list):
 
 
 def SPLIT_AND_RECOMPOSE_ORDER_BY_CLAUSES(giant_order_string):
-    # print(giant_order_string)
     order_by_sections = giant_order_string.split("ORDER BY")
-    # print(len(order_by_sections))
+    #print("==========CHECKING FOR DUPES===================")
+    order_by_sections= list(dict.fromkeys(order_by_sections))
     new_order_by_string = "ORDER BY"
     for i in range(len(order_by_sections)):
         # print(i, len(order_by_sections[i]), order_by_sections[i])
         if len(order_by_sections[i]) > 1: # THIS SHOULD BE 0 THERE IS AN EXTRA SPACE CREATED SOMEWHERE IN THE CODE, so it has to be > 1
             new_order_by_string += order_by_sections[i] + ","
-    
-    # i should also remove duplicates here
-    print("ERROR!!!! THIS IS A BUG, NEED TO REMOVE DUPLICATES THAT ARE IN CHRONOLOGIAL ORDER!!!!!")
-    
 
     #print(new_order_by_string)
     new_order_by_string = new_order_by_string[:-1]
@@ -525,7 +521,10 @@ def COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_cla
         # print("GOT HERE CHECKPOINT")
         #print(returned_search_arguments['order_by_clause'])
         #print(json_search_clauses['ORDER_BY_CLAUSE'])
-        new_composed_order_by_clause = SPLIT_AND_RECOMPOSE_ORDER_BY_CLAUSES(returned_search_arguments['order_by_clause']+ " " + json_search_clauses['ORDER_BY_CLAUSE'])
+        new_composed_order_by_clause = SPLIT_AND_RECOMPOSE_ORDER_BY_CLAUSES(returned_search_arguments['order_by_clause'] + json_search_clauses['ORDER_BY_CLAUSE'])
+        #print("CHECK 1", returned_search_arguments['order_by_clause'])
+        #print("CHECK 2", json_search_clauses['ORDER_BY_CLAUSE'])
+        #print("CHECK 3", new_composed_order_by_clause)
         #print("new_composed_order_by_clause\n", new_composed_order_by_clause)
     
     #TODO: SOMETHING IN HERE TO DELETE ALL THE EXTRA TIMES IT SAYS AND USERNAME == USERNAME
