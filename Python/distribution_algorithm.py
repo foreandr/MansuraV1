@@ -26,8 +26,6 @@ import db_connection as connection
 from  helpers import print_green, print_title, log_function
 ''' #TOP/BOPTTOM=================================
 
-
-
 def GET_REPLYING_TO(file_id):
     
     conn = connection.test_connection()
@@ -523,16 +521,22 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
             # print("ALGO", ALGO)
             # print(key, ALGO)
             if ALGO[0] == "EQUAL DISTRIBUTION":
+                if testing:
+                    print("EQUAL DISTRIBUTION")
                 #print("error","EQUAL")
                 #print("error", ( "CHECK DATA: " + str(name_array) + str(dataset_id_total_capital)))
                 temp_dict = EQUAL_DISTRIBUTION(float(dataset_id_total_capital), name_array)
                 # print("EQU DISTRO",dataset_id_total_capital, temp_dict)
             elif ALGO[0] == "LOG DISTRIBUTION": 
                 temp_dict = PURE_LOG_DISTRIBUTION(float(dataset_id_total_capital), name_array) 
+                if testing:
+                    print("PURE_LOG_DISTRIBUTION")
                 # print("error","LOG")
                 #print("LOG DISTRO", dataset_id_total_capital, temp_dict)
                 #exit()
             elif ALGO[0] == "LOG EQUAL DISTRIBUTION":
+                if testing:
+                    print("LOG EQUAL DISTRIBUTION")
                 # print("error","LOG EQUAL")
                 temp_dict = SECTIONED_EQUAL_DISTRIBUTION(float(dataset_id_total_capital), name_array, float(ALGO[1]))
             else:
@@ -625,8 +629,11 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
             # print(dict_of_search_details)
     #print("\nFINAL DICT INFO")
     #print("GOT TO WRITING TO DIST EXCEL")
+    count = 0
     #for key, value in FINAL_DICT.items():
-    #    print(key, value)
+    #    print("COUNT", count, "-", key, value, )
+    #    count +=1 
+    #exit(0)
     for key, value in FINAL_DICT.items():
         # print(key, value)
         if type(value) is not dict:
@@ -854,7 +861,7 @@ def RUN_WITH_TIME_TEST():
     st = time.time()
 
     FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Daily", testing=True)
-    #FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly", testing=True)
+    # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly")
     
     # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Yearly", testing=True)
         
@@ -1213,8 +1220,6 @@ def GET_CREATOR_OF_SEARCH_ALGO_BY_SEARCH_ID(search_id):
     username = ""
     for i in cursor.fetchall():
         username = i[0]
-
-
     return username
 
 
@@ -1239,4 +1244,5 @@ def GET_NUM_SEARCH_VOTES():
 # EQUAL_DISTRIBUTION(100.00, test_ordered_array)
 # SECTIONED_EQUAL_DISTRIBUTION(19.91, test_ordered_array, sections=2)RUN_WITH_TIME_TEST()
 # print(EQUAL_DISTRIBUTION(2.59, ['Valen', 'Rayne', 'Philippa', 'Lindsee', 'Tel', 'Phuoc', 'Kameka']))
+
 # RUN_WITH_TIME_TEST()

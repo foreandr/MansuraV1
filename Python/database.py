@@ -513,13 +513,10 @@ def GET_NUM_FILE_VOTES_LEFT(username, my_vote_type):
         # CLOSE CURSOR AND CONNECTION [MANDATORY]        
         cursor.close()
         conn.close()
-                
-        if num == 1:
-            #print(f"{username} HAS 0 VOTES LEFT FOR {my_vote_type}")
-            return 0
-        elif num == 0: 
-            #print(f"{username} HAS 1 VOTE LEFT FOR {my_vote_type}")
-            return 1
+        votes_left = 10 - num
+        return votes_left
+        
+        # PREVIOUS CODE
     else:
         # CLOSE CURSOR AND CONNECTION [MANDATORY]        
         cursor.close()
@@ -580,6 +577,7 @@ def FILE_VOTE_INSERT(username, File_Id, vote_type):
     if (is_already_subbed_this_month):
         # CHECK IF THEY HAVE A VOTE OF TYPE X FOR THIS TIME PERIOD
         num_votes = GET_NUM_FILE_VOTES_LEFT(username, vote_type)
+        print(F"{username} has {num_votes} votes left of type:{vote_type}")
         if num_votes == 0:
             print_error("[{username}] HAS ALREADY VOTED FOR TIMEFRAME [{vote_type}]. [{num_votes} VOTES]") 
         else:
@@ -2099,164 +2097,6 @@ def home_dataset_function(page_no, sort_time_frame, how_many, session_username='
     return File_ids, usernames, paths, dates, Post_total_size, post_sources, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, total_votes, dailypool, monthlypool, yearlypool
 
 
-def profile_dataset_function(session_username):
-    conn = connection.test_connection()
-    cursor = conn.cursor() 
-    cursor.execute(f"""
-        SELECT 
-            U.username, --0
-            (                   --1
-                SELECT balance
-                FROM USERS 
-                WHERE username = '{session_username}'
-             
-            ),  
-            F.File_PATH, --2
-            F.Date_Time, --3
-            F.Post_total_size, --4
-            F.Post_foreign_id_source,--5
-            F.File_id,--6
-                   
-            ( --7
-                SELECT COUNT(*) -- daily num votes LEFT
-                FROM FILE_VOTES file_vote 
-                WHERE Vote_Type = 'Daily'
-                AND Voter_Username = '{session_username}'
-                AND Date_Time >= date_trunc('day', now())::date
-            ),
-            ( --8
-                SELECT COUNT(*) -- monthly num votes LEFT
-                FROM FILE_VOTES file_vote
-                WHERE Vote_Type = 'Monthly'
-                AND Voter_Username = '{session_username}'
-                AND Date_Time >= date_trunc('month', now())::date
-            ),
-            (   --9
-                SELECT COUNT(*) -- yearly num votes LEFT
-                FROM FILE_VOTES file_vote
-                WHERE Vote_Type = 'Yearly'
-                AND Voter_Username = '{session_username}'
-                AND Date_Time >= date_trunc('year', now())::date
-            ),
-            (   --10
-                SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
-                FROM FILE_VOTES file 
-                WHERE file.File_id = F.File_id 
-                AND Vote_Type = 'Daily'
-            ),
-            (   --11
-                SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
-                FROM FILE_VOTES file 
-                WHERE file.File_id = F.File_id 
-                AND Vote_Type = 'Monthly'
-            ),
-            (   --12
-                SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
-                FROM FILE_VOTES file 
-                WHERE file.File_id = F.File_id 
-                AND Vote_Type = 'Yearly'
-            ), 
-            (SELECT Daily FROM PAYOUTS) -- 13 PAYMENT INFO
-                                                   
-        FROM FILES F
-        
-        INNER JOIN USERS U
-        on U.username = F.Uploader
-
-        WHERE U.username = '{session_username}'
-        
-        ORDER BY F.Date_Time
-    """)
-
-
-    File_ids = ""
-    usernames = ""
-    paths = ""
-    dates = ""
-    Post_total_size = ""
-    post_sources = ""
-    day_votes = ""
-    month_votes = ""
-    year_votes = ""
-    total_votes = ""
-    daily_left = ""
-    monthly_left = ""
-    yearly_left = ""
-    user_balance = ""
-
-    home_dataset_info = cursor.fetchall()
-    for i in home_dataset_info:
-        # print(i)
-        usernames += i[0] + "//"
-        user_balance = str(i[1])
-        paths += str(i[2]) + "//"
-        dates += str(i[3]) + "//"
-        Post_total_size += str(i[4]) + "//"
-        post_sources += str(i[5]) + "//"
-        File_ids += str(i[6]) + "//"      
-        daily_left = str(i[7])
-        monthly_left = str(i[8])
-        yearly_left = str(i[9])
-
-        day_votes += str(i[10]) + "//"
-        month_votes +=  str(i[11]) + "//"
-        year_votes +=  str(i[12]) + "//"
-        total_votes_ = i[10] + i[11] + i[12]
-        total_votes += str(total_votes_) + "//"
-    
-    if CHECK_DATE(session_username):
-        # NULLS CAUSE PROBLEMS HERE
-        print(session_username, " IS SUBSCRIBED")
-        if daily_left != "":
-            daily_left =  1 if (int(daily_left) == 0) else 0
-        else:
-             daily_left = GET_NUM_FILE_VOTES_LEFT(session_username, 'Daily')
-        
-        if monthly_left != "":
-            monthly_left =  1 if (int(daily_left) == 0) else 0
-        else:
-             monthly_left = GET_NUM_FILE_VOTES_LEFT(session_username, 'Monthly')
-        
-        if yearly_left != "":
-            yearly_left =  1 if (int(daily_left) == 0) else 0
-        else:
-            yearly_left = GET_NUM_FILE_VOTES_LEFT(session_username, 'Yearly')
-             
-    else:
-        daily_left, monthly_left, yearly_left = 0,0,0
-
-    cursor.execute(f"""
-    SELECT * 
-    FROM PAYOUTS
-    """)
-    pools = cursor.fetchall()
-    for i in pools:
-        # print(i, len(i))
-        dailypool = i[1]
-        monthlypool = i[2]
-        yearlypool = i[3]
-  
-    '''
-        print(f"""\nHOME DETAILS:
-    0:  {usernames}
-    1:  {user_balance}
-    2:  {paths}
-    3:  {dates}
-    4:  {Post_total_size}
-    5:  {File_ids}
-    6:  {post_sources}
-    7:  {daily_left}    {session_username} DAILY VOTES LEFT
-    8:  {monthly_left}    {session_username} MONTHLY VOTES LEFT
-    9:  {yearly_left}    {session_username} YEARLY VOTES LEFT
-    10: {day_votes}
-    11: {month_votes}
-    12: {year_votes}
-    13: {total_votes}
-    """)
-    '''
-    CLOSE_CURSOR_AND_CONN(cursor, conn)
-    return File_ids, usernames, paths, dates, Post_total_size, post_sources, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, total_votes, user_balance, dailypool, monthlypool, yearlypool
-
 
 def FILE_INSERT_STORAGE(username, path_name, text, age_18, external_source, distro_details):
     # print(f"username: {username}\npath_name: {path_name}\ntext: {text}\nmy_file: {my_file}\nage_18: {age_18}\nexternal_source: {external_source}")
@@ -2481,189 +2321,6 @@ def GET_UPLOAD_DATES_BY_ID(file_id):
     CLOSE_CURSOR_AND_CONN(cursor, conn)
 
 
-def post_dataset_function(file_id, session_username):
-    conn = connection.test_connection()
-    cursor = conn.cursor() 
-    # GETTING INFO FOR MULTIPLE 
-    cursor.execute(f"""
-        SELECT 
-            F.File_PATH, --0
-            F.Date_Time, --1
-            F.Post_total_size, --2
-            F.Post_foreign_id_source,--3
-            F.File_id,--4
-                   
-            ( --5
-                SELECT COUNT(*) -- daily num votes LEFT
-                FROM FILE_VOTES file_vote 
-                WHERE Vote_Type = 'Daily'
-                AND Voter_Username = '{session_username}'
-                AND Date_Time >= date_trunc('day', now())::date
-            ),
-            ( --6
-                SELECT COUNT(*) -- monthly num votes LEFT
-                FROM FILE_VOTES file_vote
-                WHERE Vote_Type = 'Monthly'
-                AND Voter_Username = '{session_username}'
-                AND Date_Time >= date_trunc('month', now())::date
-            ),
-            (   --7
-                SELECT COUNT(*) -- yearly num votes LEFT
-                FROM FILE_VOTES file_vote
-                WHERE Vote_Type = 'Yearly'
-                AND Voter_Username = '{session_username}'
-                AND Date_Time >= date_trunc('year', now())::date
-            ),
-            (   --8
-                SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
-                FROM FILE_VOTES file 
-                WHERE file.File_id = F.File_id 
-                AND Vote_Type = 'Daily'
-            ),
-            (   --9
-                SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
-                FROM FILE_VOTES file 
-                WHERE file.File_id = F.File_id 
-                AND Vote_Type = 'Monthly'
-            ),
-            (   --10
-                SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
-                FROM FILE_VOTES file 
-                WHERE file.File_id = F.File_id 
-                AND Vote_Type = 'Yearly'
-            ), 
-            (
-                SELECT U.balance -- yearly num votes LEFT
-                FROM USERS U
-                WHERE Username = '{session_username}'
-            ),
-            (SELECT Daily FROM PAYOUTS), 
-            (SELECT Monthly FROM PAYOUTS), 
-            (SELECT Yearly FROM PAYOUTS),
-            (   
-                    SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
-                    FROM FILE_VOTES file 
-                    WHERE file.File_id = F.File_id 
-                    AND Vote_Type = 'Daily'
-            ), 
-            (   --11
-                    SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
-                    FROM FILE_VOTES file 
-                    WHERE file.File_id = F.File_id 
-                    AND Vote_Type = 'Monthly'
-            ),
-            (   --12
-                    SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
-                    FROM FILE_VOTES file 
-                    WHERE file.File_id = F.File_id 
-                    AND Vote_Type = 'Yearly'
-            )
-
-
-                                                   
-        FROM FILES F
-
-        WHERE F.Post_foreign_id_source = '{file_id}'
-        
-        ORDER BY F.Date_Time
-    """)
-
-    File_ids = ""
-    #usernames = ""
-    paths = ""
-    dates = ""
-    Post_total_size = ""
-    post_sources = ""
-
-    day_votes = ""
-    month_votes = ""
-    year_votes = ""
-    total_votes = ""
-    
-    daily_left = ""
-    monthly_left = ""
-    yearly_left = ""
-
-    user_balance = ""
-
-    dailypool =""
-    monthlypool = ""
-    yearlypool = ""
-
-    daily_dataset_votes = ""
-    monthly_dataset_votes = ""
-    yearly_dataset_votes = ""
-    home_dataset_info = cursor.fetchall()
-    for i in home_dataset_info:
-        # print(i)
-        #usernames += i[0] + "//"
-        user_balance = str(i[11])
-        paths += str(i[0]) + "//"
-        dates += str(i[1]) + "//"
-        Post_total_size += str(i[2]) + "//"
-        post_sources += str(i[3]) + "//"
-        File_ids += str(i[4]) + "//"      
-        daily_left = str(i[5])
-        monthly_left = str(i[6])
-        yearly_left = str(i[7])
-
-        day_votes += str(i[8]) + "//"
-        month_votes +=  str(i[9]) + "//"
-        year_votes +=  str(i[10]) + "//"
-        total_votes_ = i[8] + i[9] + i[10]
-        total_votes += str(total_votes_) + "//"
-        dailypool = str(i[12])
-        monthlypool = str(i[13])
-        yearlypool = str(i[14])
-        
-        daily_dataset_votes = str(i[15])
-        monthly_dataset_votes = str(i[16])
-        yearly_dataset_votes = str(i[17])
-    
-    if CHECK_DATE(session_username):
-        # NULLS CAUSE PROBLEMS HERE
-        print(session_username, " IS SUBSCRIBED")
-        if daily_left != "":
-            daily_left =  1 if (int(daily_left) == 0) else 0
-        else:
-             daily_left = GET_NUM_FILE_VOTES_LEFT(session_username, 'Daily')
-        
-        if monthly_left != "":
-            monthly_left =  1 if (int(daily_left) == 0) else 0
-        else:
-             monthly_left = GET_NUM_FILE_VOTES_LEFT(session_username, 'Monthly')
-        
-        if yearly_left != "":
-            yearly_left =  1 if (int(daily_left) == 0) else 0
-        else:
-            yearly_left = GET_NUM_FILE_VOTES_LEFT(session_username, 'Yearly')       
-    else:
-        daily_left, monthly_left, yearly_left = 0,0,0
-    
-    print(f"""\npost:
-            0:  paths
-            1:  dates
-            2:  sizes
-            3:  {File_ids}
-            4:  {post_sources}
-            5:  {daily_left}    {session_username} DAILY VOTES LEFT
-            6:  {monthly_left}    {session_username} MONTHLY VOTES LEFT
-            7:  {yearly_left}    {session_username} YEARLY VOTES LEFT
-            8:  dailyvotes  :{day_votes}
-            9:  monthlyvotes:{month_votes}
-            10: yearlyvotes :{year_votes}
-            11: totalvotes  :{total_votes}
-            12: daily:{dailypool}
-            13: monthly:{monthlypool}
-            14: yearly:{yearlypool}
-            15: BALANCE: {user_balance} 
-            16: MAIN VOTES D:{daily_dataset_votes}
-            17: MAIN VOTES M:{monthly_dataset_votes}
-            18: MAIN VOTES Y:{yearly_dataset_votes}
-    """)
-    
-    CLOSE_CURSOR_AND_CONN(cursor, conn)
-    return File_ids, paths, dates, Post_total_size, post_sources, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, total_votes, user_balance, dailypool, monthlypool, yearlypool, daily_dataset_votes, monthly_dataset_votes, yearly_dataset_votes
 
 
 def GET_USERNAME_BY_EMAIL(paypal_email):
@@ -3500,9 +3157,13 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     if daily_left != "":
         if CHECK_DATE(search_user):
             #print(session_username, " IS SUBSCRIBED")
-            daily_left =  1 if (int(daily_left) == 0) else 0
-            monthly_left = 1 if (int(monthly_left) == 0) else 0
-            yearly_left = 1 if (int(yearly_left) == 0) else 0
+            #daily_left =  1 if (int(daily_left) == 0) else 0
+            #monthly_left = 1 if (int(monthly_left) == 0) else 0
+            #yearly_left = 1 if (int(yearly_left) == 0) else 0
+
+            daily_left = 10 - daily_left
+            monthly_left= 10 - monthly_left
+            yearly_left  = 10 - yearly_left 
         else:
             daily_left, monthly_left, yearly_left = 0, 0, 0
     '''
@@ -3600,15 +3261,6 @@ def GRAB_SEARCH_ALGO(search_algo_path):
 def GET_VOTES_AND_BALANCE_AND_PAYOUTS(username):
     conn = conn = connection.test_connection()
     cursor = conn.cursor()
-    """
-    REPLACING:
-
-    daily_votes_left = database.GET_NUM_FILE_VOTES_LEFT( session["user"], "Daily")
-    monthly_votes_left = database.GET_NUM_FILE_VOTES_LEFT( session["user"], "Monthly") 
-    yearly_votes_left = database.GET_NUM_FILE_VOTES_LEFT( session["user"], "Yearly")
-    balance = database.GET_USER_BALANCE_SIMPLE( session["user"])
-
-    """
     cursor = conn.cursor()
     cursor.execute(f"""
         SELECT
@@ -3664,10 +3316,9 @@ def GET_VOTES_AND_BALANCE_AND_PAYOUTS(username):
         monthly_pool = value[5]
         yearly_pool = value[6]
     
-
-    daily_votes_left =  1 if (int(daily_votes_left) == 0) else 0
-    monthly_votes_left =  1 if (int(monthly_votes_left) == 0) else 0
-    yearly_votes_left =  1 if (int(yearly_votes_left) == 0) else 0
+    daily_votes_left = 10 - daily_votes_left
+    monthly_votes_left = 10 - monthly_votes_left
+    yearly_votes_left = 10 - yearly_votes_left
     
     return balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool
 

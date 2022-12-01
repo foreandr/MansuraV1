@@ -49,15 +49,21 @@ DONE. UPLOADS SEEM TO WORK?
 DONE. GET UPLOADS ACTUALLY WORKING, 
 	- CHECK having modal issue	
 DONE. 
-3. allow for profile bio
+DONE. allow for profile bio
 	- EDIT BIO
 	- a full page on it's own for editing profile including picture and bio, and presumabley other things of that nature
-	
-1. First n people to join this month get in free, (xd)
+
+NOT DONE. First n people to join this month get in free, (xd)
 	- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
 	- the correct judgment is if reffered you get EXTRA
 	- person who refers gets 1 monthly vote for EACH refer
 
+DONE. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
+DONE. redirected to wrong page after follow
+DONE. give a new monthly vote every day
+TO DO STIL. REPOST, ability to take another post and endorse it somehow 
+TO DO. BUY ADS TO PUT ON THE MAIN PAGE, ALL GOES TO POOL, BUY ADS TO PUT ON A PERSONS PAGE, 50% GOES TO THEM, 50% GOES TO POOL
+TO DO. might be worth allowing other fieltypes in the future
 MINIMUM VIABLE PRODUCT
 ========================
 WRITE UP THE PAPER
@@ -66,38 +72,15 @@ MOTTO
 	- PAID TO LIKE
 	- PAID TO SHARE
 	- PAID TO SEARCH
-
-IMPLEMENT FILE FAVOURITES AND POST FAVOURITES
-
-search on other packages
-search algo voting page	
-
-give a new monthly vote every day
-
-
-
-4. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
-5. REPOST, ability to take another post and endorse it somehow 
-6. redirected to wrong page after follow
-7. search algo page
-8. BUY ADS TO PUT ON THE MAIN PAGE, ALL GOES TO POOL, BUY ADS TO PUT ON A PERSONS PAGE, 50% GOES TO THEM, 50% GOES TO POOL
-11.REPORT POST LOGIC
-  	- HEAD TO HEADS (incomplete but something like this should be thought through carefully)
-	- YOU can report someones post, and then that inverts the vote ratio so you have a head to head between reports and votes for that month
-	- the people who report if successful will get the winnings of what that page would have got
-		- else they just lost their vote for the month
-	-	IF A POST GETS REPORTED, AND THE REPORT IS SUCCESSFUL (NEED LOGIC FOR DETERMINING THAT), THAT POST GETS PINNED ON THEIR PROFILE, AND THEY GET SLASHED SOME TO THE POOL SOME TO THE REPORTERS
-	- every post is scored with some point system, if the points to remove > 100 or something, and 2x score of regular vots, it gets shadowbanned in some way
-	9. DO THIS BY REPORT(NO WAY IM GOING TO MANAGE THIS WITH SEARCH)
-	- if a post is character for character the same, look for the one with the earliest timestamp, they get all the winnings
-	- SUCCESSFULL REPORTER GETS 50% 
-	- OPY OF SOMETHING ELSE REPORT LOGIC
-THE  REPORT SYSTEM
-	report button
-	block button
-		-
-
-
+1. FILE FAVOURITES AND POST FAVOURITES, SEARCH FAVOURITES
+2. SEARCH RELATED:
+	search algo voting page	
+	on new search textquery, remove all previous where clauses
+3.tribunal
+	- IF num dislikes > 10, tag post for tribunal, if num likes > dislikes, no changes, else strip the text from the post, and change the json, and remove the image,
+		if the likes go back to above, then restore
+	if in tribunal negative the contents of the post are hidden and just shown to be (in tribunal)
+4. change excel to produce proper changed shit
 
 IMPORTANT BUT LATER
 ===================

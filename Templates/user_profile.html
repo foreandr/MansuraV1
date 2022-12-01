@@ -133,6 +133,9 @@
                             <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_ids_list[i]}})" aria-expanded="false">
                                 REPLY
                             </button>
+                            <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
+                                REPOST (coming)
+                            </button>
                         </small>
                         <small class="text-muted" id="post_details">
                             <a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">ID:{{file_ids_list[i]}} </a>
@@ -396,9 +399,9 @@
 
 
     document.getElementById("reply_external_source_link").disabled = true; // setting default to disabled
-    d_votes_left = '{{ daily_votes_left }}';
-    m_votes_left = '{{ monthly_votes_left }}';
-    y_votes_left = '{{ yearly_votes_left }}';
+    d_votes_left = '{{ daily_left }}';
+    m_votes_left = '{{ monthly_left }}';
+    y_votes_left = '{{ yearly_left }}';
     day_vote_list = '{{day_votes}}'
     month_vote_list = '{{month_votes}}'
     year_vote_list = '{{year_votes}}'

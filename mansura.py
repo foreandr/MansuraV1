@@ -751,7 +751,7 @@ def add_funds():
     if "email" not in session:
         return redirect(url_for('login'))
     #print("GOT TO ADD FUNDS HERE")
-
+    
     if request.method == 'POST':
         #print("DOING POST METHOD")
         if request.form['subscribe_button'] == 'SUBSCRIBE':
@@ -883,7 +883,7 @@ def add_user(username):
     else:
         print("inserting connection betrween: FOLLOWER=", user_id_first,"->FOLLOWING=", user_id_second)
         database.CONNECTION_INSERT( user_id_first, user_id_second)
-        return redirect(url_for('user_profile_name', username=session['user']))
+        return redirect(url_for('user_profile_name', username=username))
 
 
 @app.route("/remove_user/<username>", methods=['POST'])
