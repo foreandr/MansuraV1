@@ -2457,12 +2457,10 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
     personal_order_by_clause=""
     if len(search) > 0:
         # print("search is a string with len", search)
-        tag_query = f"""
-            OR (0 < (SELECT COUNT(*) FROM FILE_KEYWORDS fkey WHERE fkey.File_Id = F.File_Id AND key_name = LOWER('{search}'))"""
-
+        tag_query = f"""OR (0 < (SELECT COUNT(*) FROM FILE_KEYWORDS fkey WHERE fkey.File_Id = F.File_Id AND key_name = LOWER('{search}')))"""
         # print("tag_query:", tag_query)
         LIKE_QUERY = F"AND (LOWER(U.username) LIKE LOWER('%{search}%') {tag_query})"
-        print(LIKE_QUERY)
+        # print(LIKE_QUERY)
         # exit()
 
     # DATE CHECK 
@@ -2694,7 +2692,7 @@ def GET_SEARCH_ALGO_ID_BY_PATH(algo_path):
     for i in cursor.fetchall():
         search_id = i[0] 
     print("ENTERED ALGO NAME  :",algo_path, len(algo_path))
-    print("RETIURNED SEARCH ID:",search_id )
+    print("RETURNED SEARCH ID:",search_id )
     return search_id
 
 
@@ -2975,20 +2973,23 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     if len(order_by_clause) == 0:
         #print("got here it == 0 ")
         order_by_clause = "ORDER BY (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Yearly') DESC"
+    
+    print("ENTIRE ORDER BY CLAUSE\n", order_by_clause)
     #print("========================================")
     
     #print("NEW GIANT WHERE CLAUSE:")
     #print(where_clause)
     #print("========================================")
     
-    #print("QUERIES ENTERED",)
-    #print("foreign_id_text_entry:", foreign_id_text_entry)
-    #print("profile_search_clause:", profile_search_clause)
-    #print("where_clause         :", where_clause)
+    print()
+    print("foreign_id_text_entry:", foreign_id_text_entry)
+    print("profile_search_clause:", profile_search_clause)
+    print("where_clause         :", where_clause)
 
     #print("========================================")
     #print("FULL WHERE QUERY")
-    where_full_query = f"{foreign_id_text_entry} {profile_search_clause} {where_clause}"
+    where_full_query = f"{foreign_id_text_entry} {profile_search_clause} {where_clause}" # THIS EXTRA PAREN SEEMS TO NEED TO BE HERE???
+    # print("FULL WHERE CLAUSE\n", where_full_query)
     #print("where_full_query",where_full_query)
     
     query = f"""
@@ -3078,6 +3079,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
 
         WHERE U.username = U.username -- DO THIS SO ALL OTHERC ALUSES CAN BE AND CLAUSES
         {where_full_query}
+        
         {order_by_clause}
 
         OFFSET (({page_no} - 1) * 100)
