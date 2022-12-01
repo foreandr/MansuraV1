@@ -1245,4 +1245,4 @@ def GET_NUM_SEARCH_VOTES():
 # SECTIONED_EQUAL_DISTRIBUTION(19.91, test_ordered_array, sections=2)RUN_WITH_TIME_TEST()
 # print(EQUAL_DISTRIBUTION(2.59, ['Valen', 'Rayne', 'Philippa', 'Lindsee', 'Tel', 'Phuoc', 'Kameka']))
 
-RUN_WITH_TIME_TEST()
+# RUN_WITH_TIME_TEST()
