@@ -46,8 +46,13 @@ DONE. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
 	- add tags to text inserts to help the search algo
 DONE. UPLOADS SEEM TO WORK?
 	- CHECKSOME UPLOADS HAVE RANDOM SLASHES IN THEM FOR UPLOAD NUMS
-
-
+DONE. GET UPLOADS ACTUALLY WORKING, 
+	- CHECK having modal issue	
+DONE. 
+3. allow for profile bio
+	- EDIT BIO
+	- a full page on it's own for editing profile including picture and bio, and presumabley other things of that nature
+	
 1. First n people to join this month get in free, (xd)
 	- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
 	- the correct judgment is if reffered you get EXTRA
@@ -69,11 +74,8 @@ search algo voting page
 
 give a new monthly vote every day
 
-2. GET UPLOADS ACTUALLY WORKING, 
-	- CHECK having modal issue	
-3. allow for profile bio
-	- EDIT BIO
-	- a full page on it's own for editing profile including picture and bio, and presumabley other things of that nature
+
+
 4. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
 5. REPOST, ability to take another post and endorse it somehow 
 6. redirected to wrong page after follow

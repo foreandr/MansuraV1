@@ -534,7 +534,15 @@ def COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_cla
         'ORDER_BY_CLAUSE':new_composed_order_by_clause
     }
     return new_return_clause
-    
+
+def CHANGE_BIO(my_string, user):
+    my_path = f"/root/mansura/static/#UserData/{user}/config.json"
+    with open(my_path, "r") as jsonFile:
+        data = json.load(jsonFile)
+    data["bio"] = my_string
+    with open(my_path, "w") as jsonFile:
+        json.dump(data, jsonFile)
+
 
 #demo_list = ['AND', 'POST DAY VOTES', '==', '9']
 #demo_list2 = ['OR', 'POST MONTH VOTES', '<=', '10']

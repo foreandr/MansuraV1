@@ -13,9 +13,24 @@
 </div>
     
 </div>
-<div class="d-flex justify-content-center">
-    <textarea id="w3review" maxlength="40" name="w3review" rows="4" cols="40" disabled>{{profile_bio}}</textarea>
-</div>
+
+<div>
+    
+<form action="/edit_bio" method="POST" >
+    {% if is_host == "true" %}
+    <div class="d-flex justify-content-center">
+        <textarea id="edit_bio" maxlength="150" name="edit_bio" rows="4" cols="40">{{profile_bio}}</textarea>
+        <button type="submit" class="btn btn-primary"  name="edit_bio" type="submit">Save Bio</button>
+    </div>
+    {% else %}
+    <div class="d-flex justify-content-center">
+        <textarea id="edit_bio" maxlength="40" name="edit_bio" rows="4" cols="40" disabled>{{profile_bio}}</textarea>
+    </div>
+    {% endif %}
+</form>
+
+
+
 <div class="d-flex justify-content-center">
     <div class="dropdown">
         <br>
@@ -108,7 +123,7 @@
                     <img onclick="enlargeImg()" id="post_pic" src="{{url_for('static', filename=image_path_list[i])}} " width='400' height='200' />
                     {% endif %}
                     <!--PROFILE PICTURE-->
-                    <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='30' height='30' />
+                    <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='70' height='70' />
 
 
                     <!-- PUTTING SHIT AT THE BOTTOM -->

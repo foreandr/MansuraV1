@@ -81,10 +81,10 @@
                     <img onclick="enlargeImg()" id="post_pic" src="{{url_for('static', filename=image_path_list[i])}} " width='400' height='200' />
                     {% endif %}
                     <!--PROFILE PICTURE-->
-                    <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='30' height='30' />
+                    <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='70' height='70' />
 
 
-                    <!-- PUTTING SHIT AT THE BOTTOM -->
+                   
                     <div><br /></div>
                     <div class=" card-footer d-flex justify-content-between align-items-center">
                         <small class="text-muted">
@@ -93,17 +93,8 @@
                             </button>
                         </small>
                         <small class="text-muted" id="post_details">
-                            <a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">ID:{{file_ids_list[i]}} </a>
-
-                            {% if age_18_list[i] == "older_18" %}
-                            <u>18+</u>
-                            {% endif %}
-                            Source:<a href='{{source_list[i]}}'>{{source_list[i]}}</a>
-                            {% if post_sources_list[i] != "" %}
-                            Referencing:<a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">{{post_sources_list[i]}} </a>
-                            {% endif %}
+                             <!-- <a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">ID:{{file_ids_list[i]}} </a> -->
                             {{dates_list[i]}}
-
                         </small>
                     </div>
                 </div>

@@ -42,29 +42,21 @@
                         <span id="dislike"><button class="btn btn-outline-danger"><a href="/vote/{{file_id}}/dislike">DISLIKES: {{single_dislikes}}</a></button></span>
                         {% else %}
                         <span id="dislike"><button class="btn btn-danger"><a href="/vote/{{file_id}}/dislike" style="color: black;">DISLIKES: {{single_dislikes}}</a></button></span>
-                    {% endif %} 
-
-                    
+                    {% endif %}
                     
 
-                </div>
-                   <!--PROFILE PICTURE-->
-                   <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + username + '/profile/profile_pic.jpg')}} " width='100' height='100' />
-                
-                   <!--POST IMAGE-->
-                   {% if og_post_img != "" %}
-                       <img id="og_post_pic" src="{{url_for('static', filename=og_post_img)}}" style="width:auto; height:300px" />
-                   {% endif %}
+                    </div>
+                    <!--PROFILE PICTURE-->
+                    <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + username + '/profile/profile_pic.jpg')}} " width='100' height='100' />
+                                    <!--POST TEXT MAKE LESS THAN SO AND SON-->
+                    <div id="text_span">
+                        {{og_post_text}}
+                    </div>
+                    <!--POST IMAGE-->
+                    {% if og_post_img != "" %}
+                        <img id="og_post_pic" src="{{url_for('static', filename=og_post_img)}}" style="width:auto; height:300px" />
+                    {% endif %}
    
-                   <!--POST TEXT MAKE LESS THAN SO AND SON-->
-                   <div id="text_span">
-                       {{og_post_text}}
-                   </div>
-                
-
-
-
-
                     <!-- PUTTING SHIT AT THE BOTTOM -->
                     <div><br /></div>
                     <div class=" card-footer d-flex justify-content-between align-items-center">
@@ -74,21 +66,17 @@
                             </button>
                         </small>
                         <small class="text-muted" id="post_details">
-                            <a href="{{username}}_{{paths_list[i]}}-post_page">ID:{{file_id}} </a>
+                            <!--<a href="{{username}}_{{paths_list[i]}}-post_page">ID:{{file_id}} </a>-->
                            
-                            <!--OVER 18?-->
-                            {% if og_post_18 == "older_18" %}
-                                <u>18+</u>
-                            {% endif %}
 
-                            {% if og_post_src != "" %}
-                            Source:<a href='{{og_post_src}}'>{{og_post_src}}</a>
+                            {% if og_post_src != ""  and og_post_src != "None"%}
+                            Source:{{og_post_src}}</a>
                             {% endif %}
                             
                             <!--FOREIGN ID SOURCE?-->
                             {% if post_foreign_id_source != "N-A" %}
                                 {% if post_foreign_id_source != "" %}
-                                    Referencing: {{post_foreign_id_source}}
+                                    Replying_To: {{post_foreign_id_source}}
                                 {% endif %}
                             {% endif %}
 
@@ -172,7 +160,7 @@
                     <img onclick="enlargeImg()" id="post_pic" src="{{url_for('static', filename=image_path_list[i])}} " style="width:auto; height:300px" />
                     {% endif %}
                     <!--PROFILE PICTURE-->
-                    <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='30' height='30' />
+                    <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='70' height='70' />
 
 
                     <!-- PUTTING SHIT AT THE BOTTOM -->

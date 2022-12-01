@@ -298,21 +298,15 @@ def user_profile():
         id = session["id"]
 
         if request.files:
-            file = request.files['file']  
-            my_description = ""  
-
-            my_path_with_file = ""
-
-            if file.content_type == "text/csv":  # if it's a csv file, store it at the user location
-                my_path_with_file = f"{app.config['FILE UPLOADS']}/{user}/csv_files/{file.filename}"
-                file.save(my_path_with_file)
-
-                my_description = request.form["description"]
-                my_file_size = request.form["hidden_file_size"]
-
-            elif file.content_type == "image/jpeg" or file.content_type == "image/png":
-                my_path_with_file = f"{app.config['FILE UPLOADS']}/{user}/profile/profile_pic.jpg"  # overriding file type
-                file.save(my_path_with_file)
+            file = request.files['file']
+            my_path_with_file = f"{app.config['FILE UPLOADS']}/{user}/profile/profile_pic.jpg"  
+            if file.content_type == "image/jpeg" or file.content_type == "image/png":
+                if helpers.POST_IMG_CHECK(file):
+                    print("should be saving the file")
+                    file.stream.seek(0)
+                    file.save(my_path_with_file)
+                else:
+                    return redirect(url_for("terms_and_conditions"))
 
         return redirect(url_for("user_profile"))
     
@@ -390,7 +384,6 @@ def upload():
             return_path = name + "_" + path + "-post_page"        
             return redirect(url_for('user_profile_name', username=return_path))
     else:
-        
         return redirect(url_for("home"))
 
 
@@ -1260,6 +1253,12 @@ def cover_page():
     return render_template(f"cover_page.html",
     )
 
+@app.route("/edit_bio", methods=['GET', "POST"])
+def edit_bio():
+    new_bio = request.form.get("edit_bio")  
+    new_bio = helpers.POST_TEXT_CHECK(new_bio)
+    helpers.CHANGE_BIO(new_bio, session['user'])
+    return redirect(url_for("user_profile"))
 
 
 if __name__ == '__main__':
