@@ -157,8 +157,10 @@ def FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT(vote_type, testing=False):
     #PROBABLY THE BEST THING TO PRINT TO KNOW WHAT'S GOING ON
     #NOTE, RATIO HAS ALREADY BEEN TAKEN OUT OF AMOUNT, IT ISN'T INCORRECT, CAN BE CHECKED WITH ALGOS
     
-    #for key, value in non_equity_dict.items():
-    #    print(key, ":", value)
+    for key, value in non_equity_dict.items():
+        log_string = key + ":" + value
+        log_function(msg_type="distro", log_string=log_string, vote_type=vote_type, distro_type="initial")
+        # print(key, ":", value)
     # exit(0)
     #exit()  #THIS IS WHERE IM WORKIN CHECKPOINT 1
     UPDATE_BALANCES_TYPED(vote_type, non_equity_dict, testing)
@@ -635,7 +637,9 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
     #    count +=1 
     #exit(0)
     for key, value in FINAL_DICT.items():
-        # print(key, value)
+        log_string = key + ":" + value
+        log_function(msg_type="distro", log_string=log_string, vote_type=vote_type, distro_type="final")
+        
         if type(value) is not dict:
             num = BROKEN_ROUNDING(value)
             temp_array_ = [key, num]

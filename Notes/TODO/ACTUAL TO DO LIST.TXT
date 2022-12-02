@@ -84,7 +84,8 @@ empty search pages still need values
 1. SEARCH FAVOURITES
 2. SEARCH RELATED:
 	search algo voting page	search_arguments
-	validate the search data
+	validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
+reset isnt workinhg
 
 3.tribunal
 	- IF num dislikes > 10, tag post for tribunal, if num likes > dislikes, no changes, else strip the text from the post, and change the json, and remove the image,

@@ -1140,8 +1140,15 @@ def settings():
     helpers.log_function("request", request)
     
     # print("SETTINGS IS BEING SELECTED")
-
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"settings.html",
+        daily_votes_left=daily_votes_left,
+        monthly_votes_left=monthly_votes_left,
+        yearly_votes_left=yearly_votes_left,
+        balance=balance,
+        daily_pool=daily_pool, 
+        monthly_pool=monthly_pool, 
+        yearly_pool=yearly_pool
     )
 
 
@@ -1162,9 +1169,17 @@ def search_algorithms_page():
     if "email" not in session:
         return redirect(url_for('login'))
     algos = database.GET_TOP_N_SEARCH_ALGORITHMS()
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
 
     return render_template(f"search_algorithms_page.html",
-        algos=algos
+        algos=algos,
+        daily_votes_left=daily_votes_left,
+        monthly_votes_left=monthly_votes_left,
+        yearly_votes_left=yearly_votes_left,
+        balance=balance,
+        daily_pool=daily_pool, 
+        monthly_pool=monthly_pool, 
+        yearly_pool=yearly_pool
     )
 
 
@@ -1173,7 +1188,15 @@ def contact():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"contact.html",
+        daily_votes_left=daily_votes_left,
+        monthly_votes_left=monthly_votes_left,
+        yearly_votes_left=yearly_votes_left,
+        balance=balance,
+        daily_pool=daily_pool, 
+        monthly_pool=monthly_pool, 
+        yearly_pool=yearly_pool
     )
 
 
@@ -1182,7 +1205,15 @@ def FAQ():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"FAQ.html",
+        daily_votes_left=daily_votes_left,
+        monthly_votes_left=monthly_votes_left,
+        yearly_votes_left=yearly_votes_left,
+        balance=balance,
+        daily_pool=daily_pool, 
+        monthly_pool=monthly_pool, 
+        yearly_pool=yearly_pool
     )
 
 
@@ -1191,7 +1222,16 @@ def instructions():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"instructions.html",
+        daily_votes_left=daily_votes_left,
+        monthly_votes_left=monthly_votes_left,
+        yearly_votes_left=yearly_votes_left,
+        balance=balance,
+        daily_pool=daily_pool, 
+        monthly_pool=monthly_pool, 
+        yearly_pool=yearly_pool
+
     )
 
 
@@ -1200,7 +1240,15 @@ def leaderboards():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"leaderboards.html",
+        daily_votes_left=daily_votes_left,
+        monthly_votes_left=monthly_votes_left,
+        yearly_votes_left=yearly_votes_left,
+        balance=balance,
+        daily_pool=daily_pool, 
+        monthly_pool=monthly_pool, 
+        yearly_pool=yearly_pool
     )
 
 
@@ -1209,7 +1257,15 @@ def messages():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"messages.html",
+        daily_votes_left=daily_votes_left,
+        monthly_votes_left=monthly_votes_left,
+        yearly_votes_left=yearly_votes_left,
+        balance=balance,
+        daily_pool=daily_pool, 
+        monthly_pool=monthly_pool, 
+        yearly_pool=yearly_pool
     )
 
 
@@ -1242,13 +1298,21 @@ def notifications():
             VOTES.append(i[1])        
         if i[0] == "NEW FOLLOWER":
             NEW_FOLLOWER.append(i[1])    
-    
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"notifications.html",
         LIKES=LIKES,
         DISLIKES=DISLIKES,
         REPLY=REPLY,
         VOTES=VOTES,
-        NEW_FOLLOWER=NEW_FOLLOWER
+        NEW_FOLLOWER=NEW_FOLLOWER,
+        
+        daily_votes_left=daily_votes_left,
+        monthly_votes_left=monthly_votes_left,
+        yearly_votes_left=yearly_votes_left,
+        balance=balance,
+        daily_pool=daily_pool, 
+        monthly_pool=monthly_pool, 
+        yearly_pool=yearly_pool
     )
 
 
@@ -1257,7 +1321,15 @@ def tribunal():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"tribunal.html",
+        daily_votes_left=daily_votes_left,
+        monthly_votes_left=monthly_votes_left,
+        yearly_votes_left=yearly_votes_left,
+        balance=balance,
+        daily_pool=daily_pool, 
+        monthly_pool=monthly_pool, 
+        yearly_pool=yearly_pool
     )
 
 
@@ -1266,7 +1338,16 @@ def patch_notes():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
+
     return render_template(f"patch_notes.html",
+        daily_votes_left=daily_votes_left,
+        monthly_votes_left=monthly_votes_left,
+        yearly_votes_left=yearly_votes_left,
+        balance=balance,
+        daily_pool=daily_pool, 
+        monthly_pool=monthly_pool, 
+        yearly_pool=yearly_pool
     )
 
 
@@ -1275,7 +1356,9 @@ def newsletter():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"newsletter.html",
+
     )
 
 @app.route("/cover_page", methods=['GET'])

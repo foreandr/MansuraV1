@@ -901,6 +901,7 @@ def ADD_POST_KEYWORDS_TO_DATABASE(list_of_keywords, file_id):
     #GET_ALL_KEY_words()
     #GET_ALL_FILE_KEY_words()
 
+
 def STRIP_KEYWORDS_OF_SPECIAL_CHARS(list_of_keywords):
     # print("KEYWORDS",list_of_keywords)
     badwords_path = "/root/mansura/Python/bad_words_username.txt"
@@ -924,6 +925,7 @@ def STRIP_KEYWORDS_OF_SPECIAL_CHARS(list_of_keywords):
     #print("FINAL LIST OF KEYWORDS", final_list)
     return final_list
 
+
 def GET_ALL_FILE_KEY_words():
     conn = connection.test_connection()
     cursor = conn.cursor()
@@ -936,7 +938,6 @@ def GET_ALL_FILE_KEY_words():
     print("FILE KEYWORDS:")
     for i in cursor.fetchall():
         print(i)
-
 
 
 def CREATE_TABLE_KEYWORDS():
@@ -983,6 +984,7 @@ def CREATE_TABLE_FILE_KEYWORDS():
     except Exception as e:
         cursor.execute("ROLLBACK")
         print_error("\nHAD TO ROLLBACK USER CREATION" + str(e) )
+
 
 def DROP_ALL_TABLES():
     conn = connection.test_connection()
@@ -2865,9 +2867,9 @@ def SEARCH_ALGO_INSERT(username, Algorithm_Name, order_by_clause, where_clause):
 
 def SEARCH_ALGO_INSERT_DEMO_MULTIPLE():
     # username, Algorithm_Name, order_by_clause, where_clause
-    SEARCH_ALGO_INSERT(username='a', Algorithm_Name='a-demo', order_by_clause="ORDER BY F.Date_Time, U.username ASC", where_clause="")
-    SEARCH_ALGO_INSERT('foreandr', 'foreandr-demo', "ORDER BY U.username ASC", "")
-    SEARCH_ALGO_INSERT('andrfore', 'andrfore-demo', "ORDER BY U.username ASC", f"AND U.username LIKE 'foreandr%'")
+    SEARCH_ALGO_INSERT(username='a', Algorithm_Name='a-demo', order_by_clause="", where_clause="")
+    SEARCH_ALGO_INSERT('foreandr', 'foreandr-demo', "", "")
+    SEARCH_ALGO_INSERT('andrfore', 'andrfore-demo', "", f"AND U.username LIKE 'foreandr%'")
     print_green("SEARCH_ALGO_INSERT_DEMO_MULTIPLE()")
 
 
@@ -2918,16 +2920,6 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         )
         
         """
-    '''
-    print("QUERY DETAIL-------------------------")
-    print("search_type           :", search_type)
-    print("search_algo_path      :", search_algo_path)
-    print("page_no               :", page_no)
-    print("search_user           :", search_user)
-    print("file_id               :", file_id)
-    print("profile_username      :", profile_username)
-    '''
-
     if search_type != "post":
         # payouts because small table, wasnt sure if size would effect query time
         POST_SEARCH_QUERIES = """ 
@@ -3064,8 +3056,6 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         "order_by_clause":order_by_clause
     }
 
-    # print(F"ARGS: {search_arguments}")
-
     file_ids_list = []
     usernames_list = []
     paths_list = []
@@ -3127,41 +3117,12 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     # THIS SEEMED TO NOT WORK FOR PARTICULAR PROFILES #TODO: WORK INFESTIGATING WHY IT DIDN'T RUN
     if daily_left != "":
         if CHECK_DATE(search_user):
-            #print(session_username, " IS SUBSCRIBED")
-            #daily_left =  1 if (int(daily_left) == 0) else 0
-            #monthly_left = 1 if (int(monthly_left) == 0) else 0
-            #yearly_left = 1 if (int(yearly_left) == 0) else 0
-
             daily_left = 10 - daily_left
             monthly_left= 10 - monthly_left
             yearly_left  = 10 - yearly_left 
         else:
             daily_left, monthly_left, yearly_left = 0, 0, 0
-    '''
-    # print("\nCUSTOM QUERY             :", where_clause, order_by_clause)
-    print("PROFILE SEARCH CLAUSE      :",profile_search_clause)
-    print("FOREIGN ID                 :", foreign_id_text_entry)
-    print("=============     QUERY RESULTS       ============")
-    print("file_ids_list              :", file_ids_list)
-    print("USERNAMES                  :", usernames_list)
-    print("paths_list                 :", paths_list)
-    # print("dates_list           :", dates_list)
-    print("post_sources_list          :", post_sources_list)
-    print("day_votes                  :", day_votes)
-    print("month_votes                :", month_votes)
-    print("year_votes                 :", year_votes)
-    print("user_balance               :", user_balance)
-    print("daily_left                 :", daily_left)
-    print("monthly_left               :", monthly_left)
-    print("yearly_left                :", yearly_left)
-    print("dailypool                  :", dailypool)
-    print("monthlypool                :", monthlypool)
-    print("yearlypool                 :", yearlypool )
-    
-    print("POST_PAGE MAIN_DAILY       :", daily_votes_singular)
-    print("POST_PAGE MAIN_MONTHLY     :", monthly_votes_singular)
-    print("POST_PAGE MAIN_YEARLY      :", yearly_votes_singular)
-    '''
+
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
@@ -3186,6 +3147,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
 
     # search_arguments['where_full_query'] = list(dict.fromkeys(search_arguments['where_full_query']))
     '''
+    print("ORDER BY CLAUSE", search_arguments)
     return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, search_arguments
 
 def GET_TOP_N_SEARCH_ALGORITHMS(N=100):

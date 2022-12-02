@@ -219,9 +219,14 @@ def CHANGE_TO_JSON_FORMATTED(my_string):
     contents_of_clause = contents_of_clause.replace("',", '",')
 
     #print("contents_of_clause       :", contents_of_clause)
-    contents_of_clause = contents_of_clause[:-1] + '"'
+    if contents_of_clause[0] == " ":
+        contents_of_clause = '"' + contents_of_clause[2:-1] + '"'
+    elif contents_of_clause[0] == "'":
+        contents_of_clause = '"' + contents_of_clause[1:-1] + '"'
+    
     final_content = string_array[0] + ":" + contents_of_clause
-    #print("final_content",final_content)
+   
+    # print("final_content",final_content)
     return final_content
 
 
@@ -240,7 +245,9 @@ def TURN_STRING_TO_DICT(my_string):
         else:
             #print("BEFORE", i)
             if count == 4:
+                print(count, i, "UNCHANGED")
                 i = CHANGE_TO_JSON_FORMATTED(i)
+                print(count, i, "CHANGED")
             # print("AFTER", i)
         
         if count != 5:
@@ -421,7 +428,7 @@ def STRING_SIMILARITY_CHECK(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 
-def log_function(msg_type, log_string):
+def log_function(msg_type, log_string, vote_type="None", distro_type="None"):
     #if log_string == "write() argument must be str, not None":
     #    print("got here")
     #    return "" # THIS ERROR CAN BE IGNORED
@@ -439,11 +446,18 @@ def log_function(msg_type, log_string):
         print("==========LOGGING AN ERROR PLS NOTICE!=========")
         with open(f'/root/mansura/Python/logs/errors/{current_date}.txt', 'a') as f:
             f.write(err_string)
-
     elif msg_type == "request":
         with open(f'/root/mansura/Python/logs/access/{current_date}.txt', 'a') as f:
             f.write(err_string)
-
+    elif msg_type == "distro":
+        err_string = f"{log_string}"
+        if distro_type == "initial":
+            with open(f'/root/mansura/Python/logs/distro/{vote_type}/1-initial/{current_date}.txt', 'a') as f:
+                f.write(err_string)
+        elif distro_type =="final":
+            with open(f'/root/mansura/Python/logs/distro/{vote_type}/3-final/{current_date}.txt', 'a') as f:
+                f.write(err_string)
+        
 
 def remove_values_from_list(the_list):
    return [value for value in the_list if value != "None" or value != None ]
