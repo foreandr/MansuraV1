@@ -80,12 +80,24 @@ MOTTO
 	- PAID TO SHARE
 	- PAID TO SEARCH
 
-empty search pages still need values
-1. SEARCH FAVOURITES
-2. SEARCH RELATED:
+1. GET SEARCH FAVOURITES DEMO FOR FOREANDR
+2. SEE SEARCH FAVORUITES IN PROFILE
+3. GO TO SEARCH ALGO PAGE ORDER THE SEARCH ALGOS
+4. HAVE A SEARCH BUTTON THAT ALLOWS TO FAVOURITE AN ALGO, 
+5. SHOW IT ON THE FRONT PAGE
+6. SHOW DISTRIBUTION OF SEARCH ALGOS IN DISTRIBUTION TXT FILE
+
+
+1. empty search pages still need values
+2. if on own profile can post without it being a reply
+
+3. fix recov page, 1 time entry etc
+4. notifications proper
+5. SEARCH FAVOURITES
+6. SEARCH RELATED:
 	search algo voting page	search_arguments
 	validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
-reset isnt workinhg
+7. reset isnt workinhg
 
 3.tribunal
 	- IF num dislikes > 10, tag post for tribunal, if num likes > dislikes, no changes, else strip the text from the post, and change the json, and remove the image,

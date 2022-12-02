@@ -245,9 +245,9 @@ def TURN_STRING_TO_DICT(my_string):
         else:
             #print("BEFORE", i)
             if count == 4:
-                print(count, i, "UNCHANGED")
+                #print(count, i, "UNCHANGED")
                 i = CHANGE_TO_JSON_FORMATTED(i)
-                print(count, i, "CHANGED")
+                #print(count, i, "CHANGED")
             # print("AFTER", i)
         
         if count != 5:
@@ -453,10 +453,10 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None"):
         err_string = f"{log_string}"
         if distro_type == "initial":
             with open(f'/root/mansura/Python/logs/distro/{vote_type}/1-initial/{current_date}.txt', 'a') as f:
-                f.write(err_string)
+                f.write(err_string + ",\n")
         elif distro_type =="final":
             with open(f'/root/mansura/Python/logs/distro/{vote_type}/3-final/{current_date}.txt', 'a') as f:
-                f.write(err_string)
+                f.write(err_string + ",\n")
         
 
 def remove_values_from_list(the_list):
