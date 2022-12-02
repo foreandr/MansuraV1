@@ -5,7 +5,7 @@
 <div class="justify-content-between align-items-center" id="post_div">
     <button class="btn btn-secondary" type="button" onclick="post_modal_toggle()" aria-expanded="false">
         POST
-</button>
+    </button>
 </div>
 
 <div class="container-fluid">
@@ -113,8 +113,8 @@
                     <div>
                         <button class="btn btn-primary">Search</button>
                         <button class="btn btn-primary" value="reset" name="reset">Reset</button>
-                        <button class="btn btn-primary" value="save_algo" name="save_algo" >Save Algo</button>
-                        <button class="btn btn-primary" type="button" onclick="show_current_algo()">Show Algo</button>  
+                        <button class="btn btn-primary" type="button" onclick="save_modal_toggle()">Save Algo</button>
+                        <button class="btn btn-primary" type="button" onclick="show_current_algo('not_modal')">Show Algo</button>  
                         <div id="algo_show_location"></div>
                     </div> 
                        
@@ -271,6 +271,28 @@
 </div>
 
 
+<!--save algo modal-->
+<div id="save_modal" class="modal">
+    <div class="modal-content">
+        <form action="upload" method="POST" enctype="multipart/form-data">
+            <input class="input-medium form-control" id="Algorithm Name" name="Algorithm Name" type="Algorithm Name" placeholder="Algorithm Name" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')" required>
+                <div>
+                    <button class="btn btn-primary" value="save_algo" name="save_algo" onclick="put_arguments_in_div_before_saving()">Save Algo</button>
+                    <button class="btn btn-primary" type="button" onclick="show_current_algo('modal')">Show Algo</button>  
+                    <input type="hidden" id="hidden_search_arguments" name="hidden_search_arguments" value="{{search_arguments}}" /> 
+                    
+                    <div name="div_with_algo" value="div_with_algo"></div>
+                    
+                    
+                    <div id="algo_show_location_modal"></div>
+                </div> 
+            </input>
+        </form>
+    </div>
+</div>
+<!--save algo modal-->
+
+
 <!-- reply_modal  -->
 <div id="reply_modal" class="modal">
 
@@ -399,15 +421,28 @@
     </div>
 </div>
 <!-- post_modal  -->
+
+
 <script>
-    function show_current_algo(){
-        if (document.getElementById("algo_show_location").innerHTML == ""){
-            document.getElementById("algo_show_location").innerHTML= "{{search_arguments}}"
+    function show_current_algo(div_called_from){
+        console.log(div_called_from)
+        if (div_called_from == 'modal'){
+            if (document.getElementById("algo_show_location_modal").innerHTML == ""){
+            document.getElementById("algo_show_location_modal").innerHTML= "{{search_arguments}}"
+            }else{
+                document.getElementById("algo_show_location_modal").innerHTML= ""
+            }
         }else{
-            document.getElementById("algo_show_location").innerHTML= ""
+            if (document.getElementById("algo_show_location").innerHTML == ""){
+            document.getElementById("algo_show_location").innerHTML= "{{search_arguments}}"
+            }else{
+                document.getElementById("algo_show_location").innerHTML= ""
+            }
         }
-            
+        /*algo_show_location_modal*/      
     }
+
+
 
 
     // console.log(document.getElementById("search_arguments").value)
@@ -566,7 +601,6 @@
     m_votes_left = '{{ monthly_left }}';
     y_votes_left = '{{ yearly_left }}';
 
-
     document.getElementById("index_daily").innerHTML = 'DAILY POOL: ${{dailypool}}';
     document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: ${{monthlypool }}';
     document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: ${{yearlypool }}';
@@ -654,15 +688,23 @@
         modal.style.display = "block";
     }
 
+    function save_modal_toggle(file_id) {
+        // console.log(file_id)
+        var modal = document.getElementById("save_modal");
+        modal.style.display = "block";
+    }
+
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
         var modal = document.getElementById("reply_modal");
         var modal2 = document.getElementById("post_modal");
+        var modal3 = document.getElementById("save_modal");
         
-        if ((event.target == modal) || (event.target == modal2)) {
+        if ((event.target == modal) || (event.target == modal2) || (event.target == modal3)) {
 
             modal.style.display = "none";
             modal2.style.display = "none";
+            modal3.style.display = "none";
         }
     }
 

@@ -68,7 +68,6 @@ def home():
     search = "None"
 
     if request.method == 'POST':
-        
         search = request.form.get("search")   
         reset = request.form.get("reset")
         save_algo = request.form.get("save_algo")
@@ -76,9 +75,12 @@ def home():
         if save_algo != "None" and save_algo != None:
             returned_search_arguments = request.form.get("search_arguments")
             print("CURRENT ARGS TO BE SAVED", returned_search_arguments)
+            database.SAVE_CURRENT_ALGO(returned_search_arguments)
+            
         if reset != "None" and save_algo != None:
             print("CLICKED RESET")
             return redirect(url_for("home"))
+        
 
         date_check = request.form.get("date_check")  
         order_check = request.form.get("order_check")  
@@ -333,8 +335,22 @@ def upload():
     if not database.CHECK_DATE(session["user"]):
         return redirect(url_for("add_funds"))
     if request.method == "POST": # UPLOADING SOMETHING
+        # print(request.url)
+
+        save_algo = request.form.get("save_algo")
+        hidden_search_arguments = request.form.get("hidden_search_arguments")
+        hidden_search_arguments = helpers.TURN_STRING_TO_DICT(hidden_search_arguments)
+        print(type(hidden_search_arguments),hidden_search_arguments)
         
-        print(request.url)
+        if save_algo != "None" and save_algo != None:
+            where_clause = hidden_search_arguments['where_full_query']
+            order_by_clause = hidden_search_arguments['order_by_clause']
+            user_name = session["user"]
+            search_algo_name = request.form.get("Algorithm Name")
+            database.SEARCH_ALGO_INSERT(username=session["user"], Algorithm_Name=search_algo_name, order_by_clause=order_by_clause, where_clause=where_clause)
+            
+            return render_template('search_algorithms_page.html')
+        
         
         #print("GOT TO WHETHER SOMETHING IS BEING POISTED OR NOT ==================================")
         post_text = request.form.get("textbox")

@@ -210,6 +210,43 @@ def USERNAME_PROFANITY_CHECK(word, testing=False): #todo: this is particular to 
     return False
 
 
+def TURN_STRING_TO_DICT(my_string):
+    # my_string = my_string.replace("'", '"')
+    
+   
+    #my_string = my_string.replace("'search_type'", '"search_type"')
+    #my_string = my_string.replace("'page_no'", '"page_no"')
+    #my_string = my_string.replace("'search_user'", '"search_user"')
+    #my_string = my_string.replace("'file_id'", '"file_id"')
+    #my_string = my_string.replace("'where_full_query'", '"where_full_query"')
+    #my_string = my_string.replace("'order_by_clause'", '"order_by_clause"')
+    
+    my_string_array = my_string.split(',')
+    
+    count = 0
+    reconstructed_string = ""
+    for i in my_string_array:
+
+        if count != 4 and count != 5:
+            i = i.replace("'", '"')
+        else:
+            pass
+        if count != 5:
+            reconstructed_string += i +","
+        else:
+            reconstructed_string += i
+
+        count+=1
+
+    reconstructed_string = reconstructed_string.replace("'where_full_query'",'"where_full_query"')
+    reconstructed_string = reconstructed_string.replace("'order_by_clause'",'"order_by_clause"')
+
+
+    print(reconstructed_string)
+    return json.loads(reconstructed_string, strict=False)
+
+
+
 def GIANT_FILE_INSERT():
     f = open("names.txt", "r")
     Lines = f.readlines()
