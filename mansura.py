@@ -46,6 +46,7 @@ app.config["FILE UPLOADS"] = "static/#UserData"
 
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
+    print("RENDERING TEMPLATE")
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     if "email" not in session: # testasdkjhfaks
@@ -195,7 +196,7 @@ def home():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    
+    print("RENDERING TEMPLATE")
     # print('EXECUTING REGISTER FUNCTION')
     helpers.log_function("request", request)
     if "email" in session:
@@ -296,6 +297,7 @@ def logout():
 
 @app.route('/user_profile', methods=['GET', 'POST'])
 def user_profile():
+    print("RENDERING TEMPLATE")
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     #print('USING USER PROFILE')
@@ -340,7 +342,7 @@ def upload():
         save_algo = request.form.get("save_algo")
         hidden_search_arguments = request.form.get("hidden_search_arguments")
         hidden_search_arguments = helpers.TURN_STRING_TO_DICT(hidden_search_arguments)
-        print(type(hidden_search_arguments),hidden_search_arguments)
+        # print(type(hidden_search_arguments),hidden_search_arguments)
         
         if save_algo != "None" and save_algo != None:
             where_clause = hidden_search_arguments['where_full_query']
@@ -1307,8 +1309,8 @@ if __name__ == '__main__':
     thread = Thread(target = distribution_algorithm.TESTING_TIMING, args = ())
     thread.start()
 
-    app.run(host=host, port="8091", use_reloader=False)  # host is to get off localhost
-    #serve(app, host=host)    
+    app.run(host=host, port="8091", debug=False, use_reloader=False)  # host is to get off localhost
+    #serve(app, host=host,port="8091")    
 
     # If the debugger is on, I can change my files in real time after saving
     pass

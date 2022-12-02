@@ -210,29 +210,41 @@ def USERNAME_PROFANITY_CHECK(word, testing=False): #todo: this is particular to 
     return False
 
 
+def CHANGE_TO_JSON_FORMATTED(my_string):
+    #print(my_string)
+    string_array = my_string.split(":")
+    contents_of_clause = string_array[1]
+    #print("contents_of_clause       :", contents_of_clause)
+    contents_of_clause = contents_of_clause.replace("'AND", '"AND')
+    contents_of_clause = contents_of_clause.replace("',", '",')
+
+    #print("contents_of_clause       :", contents_of_clause)
+    contents_of_clause = contents_of_clause[:-1] + '"'
+    final_content = string_array[0] + ":" + contents_of_clause
+    #print("final_content",final_content)
+    return final_content
+
+
 def TURN_STRING_TO_DICT(my_string):
-    # my_string = my_string.replace("'", '"')
-    
-   
-    #my_string = my_string.replace("'search_type'", '"search_type"')
-    #my_string = my_string.replace("'page_no'", '"page_no"')
-    #my_string = my_string.replace("'search_user'", '"search_user"')
-    #my_string = my_string.replace("'file_id'", '"file_id"')
-    #my_string = my_string.replace("'where_full_query'", '"where_full_query"')
-    #my_string = my_string.replace("'order_by_clause'", '"order_by_clause"')
-    
+    # LOTS OF ARBITRARY SHIT IN HERE BUT IT WORKS...for now..
+    #JSON FORMATTING IS TREMENDOUSLY ANNOYING
+    # https://jsonlint.com/ # this is becomming the most disgusting piece of filt ive ever seen
     my_string_array = my_string.split(',')
     
     count = 0
     reconstructed_string = ""
     for i in my_string_array:
-
+        #print(count, i)
         if count != 4 and count != 5:
             i = i.replace("'", '"')
         else:
-            pass
+            #print("BEFORE", i)
+            if count == 4:
+                i = CHANGE_TO_JSON_FORMATTED(i)
+            # print("AFTER", i)
+        
         if count != 5:
-            reconstructed_string += i +","
+            reconstructed_string += i + ","
         else:
             reconstructed_string += i
 
@@ -241,10 +253,11 @@ def TURN_STRING_TO_DICT(my_string):
     reconstructed_string = reconstructed_string.replace("'where_full_query'",'"where_full_query"')
     reconstructed_string = reconstructed_string.replace("'order_by_clause'",'"order_by_clause"')
 
-
+    print("===========================")
     print(reconstructed_string)
+    print("===========================")
+    #print(reconstructed_string)
     return json.loads(reconstructed_string, strict=False)
-
 
 
 def GIANT_FILE_INSERT():

@@ -2929,70 +2929,34 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     '''
 
     if search_type != "post":
-        #payouts because small table, wasnt sure if size would effect query time
+        # payouts because small table, wasnt sure if size would effect query time
         POST_SEARCH_QUERIES = """ 
         (SELECT count(*) FROM PAYOUTS WHERE 1 = 0),
         (SELECT count(*) FROM PAYOUTS WHERE 1 = 0),
         (SELECT count(*) FROM PAYOUTS WHERE 1 = 0)
         """ # THIS IS JUST A NOTHING QUERY
-        foreign_id_text_entry = F"AND U.username = U.username" # a meaningless statement        
+        foreign_id_text_entry = F"" # a meaningless statement        
         if search_type == "prof":
             profile_search_clause = F"AND U.username = '{profile_username}'"      
         else:
-            profile_search_clause = F"AND U.username = U.username"
+            profile_search_clause = F""
     else:
-        # print("SHOWING IT IS A POST SEARCH")
         foreign_id_text_entry = F"AND F.Post_foreign_id_source = '{file_id}'"
-        profile_search_clause = F"AND U.username = U.username"
-    
+        profile_search_clause = F""
 
-
-    # order_by_clause, where_clause = GRAB_SEARCH_ALGO(search_algo_path)
-    
-    #print("\n\n")
-    #print("CURRENT CLAUSE SETUP===================")
-    #print("ORDER BY OG   :",order_by_clause)
-    #print("WHR CLAUS OG  :",where_clause)
-    ##print("CUSTOM CLAUSES:",custom_clauses)
-
-    #for key, value in custom_clauses.items():
-    #    print(key, value)
-    #print("custom clauses", type(custom_clauses), custom_clauses)
     where_clause = custom_clauses["WHERE_CLAUSE"] 
-    # print("CURRENT WHERE CLAUSE TEST")
-    #print("=======================================")
-    #if custom_clauses != None and custom_clauses !="None":
-    #    where_clause = where_clause + custom_clauses["WHERE_CLAUSE"]
-    
-    # print("OG ORDER BY", order_by_clause)
-    # print("NW ORDDR BY", custom_clauses["WHERE_CLAUSE"])
-    #print("NEW GIANT ORDER CLAUSE:")
     order_by_clause = custom_clauses["ORDER_BY_CLAUSE"]
-    #print(len(order_by_clause))
-    #print(order_by_clause)
+    
 
     if len(order_by_clause) == 0:
-        #print("got here it == 0 ")
         order_by_clause = "ORDER BY (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Yearly') DESC"
-    
-    #print("ENTIRE ORDER BY CLAUSE\n", order_by_clause)
-    #print("========================================")
-    
-    #print("NEW GIANT WHERE CLAUSE:")
-    #print(where_clause)
-    #print("========================================")
-    
-    #print()
-    #print("foreign_id_text_entry:", foreign_id_text_entry)
-    #print("profile_search_clause:", profile_search_clause)
-    #print("where_clause         :", where_clause)
 
-    #print("========================================")
-    #print("FULL WHERE QUERY")
     where_full_query = f"{foreign_id_text_entry} {profile_search_clause} {where_clause}" # THIS EXTRA PAREN SEEMS TO NEED TO BE HERE???
-    # print("FULL WHERE CLAUSE\n", where_full_query)
-    #print("where_full_query",where_full_query)
-    
+    #print("SEARCH CLAUSE", profile_search_clause)
+    #print("ORDER  CLAUSE", order_by_clause)
+    #print("WHERE  CLAUSE", where_clause)
+    #print("FOREI  CLAUSE", foreign_id_text_entry)
+
     query = f"""
         SELECT
             F.File_id, 
@@ -3201,8 +3165,10 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
+    ''' GETTING RID OF DUPES CAUSIGN WAY TOO MANY TROUBLWES RIGHT NOW
     #print("THESE ARE MY SERVER SIDE SEARCH ARGUMENTS")
     #print(search_arguments)
+    print("TESTING!!!!", search_arguments["where_full_query"])
     where_clause_list_ = search_arguments['where_full_query'].split("AND")
     #print(where_clause_list_)
     search_arguments['where_full_query'] = list(dict.fromkeys(where_clause_list_))# getting rid of dupes
@@ -3212,10 +3178,14 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
             j = "AND " + i
             search_arguments_with_and += j
     search_arguments['where_full_query'] = search_arguments_with_and
+
+    print("SEARCH ARGS WITH DUPES", where_clause_list_)
+    print("SEARCH ARGS WITH DUPES", search_arguments_with_and)
+
     #print(f"-----\n{search_arguments}\n-----")
 
     # search_arguments['where_full_query'] = list(dict.fromkeys(search_arguments['where_full_query']))
-
+    '''
     return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, search_arguments
 
 def GET_TOP_N_SEARCH_ALGORITHMS(N=100):
