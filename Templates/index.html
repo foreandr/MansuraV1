@@ -112,7 +112,7 @@
                 <input class="input-medium form-control" id="search" name="search" type="search" placeholder="empty / single word (beta)" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')">
                     <div>
                         <button class="btn btn-primary">Search</button>
-                        <button class="btn btn-primary" value="reset" name="reset">Reset</button>
+                        <a class="btn btn-primary" href="/home" role="button">Reset</a>
                         <button class="btn btn-primary" type="button" onclick="save_modal_toggle()">Save Algo</button>
                         <button class="btn btn-primary" type="button" onclick="show_current_algo('not_modal')">Show Algo</button>  
                         <div id="algo_show_location"></div>
@@ -187,23 +187,16 @@
                         <div> 
                             </br>
                             <div>
-                                ALGORITHM FAVOURITES (5 Max)
+                                ALGORITHM FAVOURITES
                             </div>
-
-                            <div class="btn btn-outline-success">
-                                <input type="radio" name="order_check" value="a-demo" id="a-demo">
-                                <label for="a-demo" unselectable>a-demo</label>
+                            <div id="algo_favourites">
+                                {%for i in range(0, favaourites_len )%}
+                                <div class="btn btn-outline-success">
+                                    <input type="radio" name="order_check" value="{{search_favourites[i][2]}}" id="{{search_favourites[i][2]}}">
+                                    <label for="{{search_favourites[i][2]}}" unselectable>{{search_favourites[i][2]}}</label>
+                                </div>
+                                {%endfor%}
                             </div>
-                            <div class="btn btn-outline-success">
-                                <input type="radio" name="order_check" value="andrfore-demo" id="andrfore-demo">
-                                <label for="andrfore-demo" unselectable>andrfore-demo</label>
-                            </div>
-
-                            <div class="btn btn-outline-success">
-                                <input type="radio" name="order_check" value="foreandr-demo" id="foreandr-demo">
-                                <label for="foreandr-demo" unselectable>foreandr-demo</label>
-                            </div>
-
                         </div>
                     </div>
                 </div>
@@ -219,7 +212,7 @@
                         WHERE CLAUSES 
                         <button class="btn btn-outline-success" type="button" onclick="add_another_where_clause()">+</button>
                         <button class="btn btn-outline-danger"  type="button" onclick="remove_another_where_clause()">-</button>
-                        (max 10 for now)
+                        (max 8)
                     </div>
                 </div>
                 <div id="where_clause_additions">
@@ -300,7 +293,7 @@
     <div class="modal-content">
         <form action="upload" method="POST" enctype="multipart/form-data">
             <div>
-                <label for="textbox">Whats on your mind? (10000 chars) [NO EMOJIS FOR NOW SORRY LOL]</label>
+                <label for="textbox">Whats on your mind? (10000 chars)</label>
                 <br>
                 <textarea id="textbox" name="textbox" rows="7" cols="50" maxlength="10000"></textarea>
 
@@ -502,6 +495,7 @@
     }
 
     function add_another_where_clause(){
+        console.log(where_counter)
         var where_clause_string = `
         <div>
             <div>
@@ -539,13 +533,13 @@
         </div>
         `
         //console.log("add_another_where_clause");
-        if (where_counter < 10){
+        if (where_counter < 8){
             document.getElementById("where_clause_additions").innerHTML += where_clause_string
             where_counter +=1
         }
 
         //console.log(where_clause_string)
-        //console.log(where_counter)
+        
     }
     
     function remove_another_where_clause(){

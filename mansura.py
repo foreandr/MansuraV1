@@ -151,6 +151,10 @@ def home():
     for i in text_list:
         lengths_of_text_files.append(len(i))
 
+    # GET SEARCH FAVOURITES
+    search_favourites = database.GET_SEARCH_FAVOURITES_BY_USERNAME(session["user"])
+    favourites_len = len(search_favourites)
+
     return render_template('index.html',
                             message="index.html page",
                            
@@ -189,8 +193,10 @@ def home():
                             
                             search_arguments=search_arguments,
                             page_no=page_no,
-                            can_scroll=can_scroll
-
+                            can_scroll=can_scroll,
+                            
+                            search_favourites=search_favourites,
+                            favaourites_len=favourites_len
                            )
 
 

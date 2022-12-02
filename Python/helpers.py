@@ -283,16 +283,16 @@ def TURN_STRING_TO_DICT(my_string):
     reconstructed_string = reconstructed_string.replace("'where_full_query'",'"where_full_query"')
     reconstructed_string = reconstructed_string.replace("'order_by_clause'",'"order_by_clause"')
 
-    print("===========================")
-    print(reconstructed_string)
-    print("===========================")
+    #print("===========================")
+    #print(reconstructed_string)
+    #print("===========================")
     reconstructed_string = reconstructed_string.replace("***", ",")
-    print(reconstructed_string)
-    print("===========================")
+    #print(reconstructed_string)
+    #print("===========================")
     
     #print(reconstructed_string)
     new_json = json.loads(reconstructed_string, strict=False)
-    print("NEW JSON", new_json)
+    #print("NEW JSON", new_json)
     # exit()
     return new_json
 
@@ -558,7 +558,7 @@ def TURN_WHERE_CLAUSE_TO_STRING(query_list):
     #print("amount      :", amount)
 
     recomposed_string = ""
-
+    print("QUESTION:", question)
     # THIS IS WHERE THE WHERE CLAUSES GET TRANSLATED INTO QUURIES, WILL EVENTUALLY BE TURNED INTO IT'S OWN FUNCTION
     if question == "POST DAY VOTES":
         question_string = "(SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily')"
@@ -574,7 +574,7 @@ def TURN_WHERE_CLAUSE_TO_STRING(query_list):
     recomposed_string += comparison + " "
     recomposed_string += amount + " "
     #print("ENTIRE RECOMPOSED STRING:")
-    #print(recomposed_string)
+    print("ANSWER:", recomposed_string)
     return recomposed_string
 
 
