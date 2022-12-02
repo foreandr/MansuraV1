@@ -108,8 +108,7 @@ x. max length search algo name javascript
 
 IMPORTANT BUT LATER
 ===================
-
-
+vast swatths of the CSS and js can be simplified into single pages
 7. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
 make the history look less hsit
 	-0. EVENTUALLY DO THE FOLDER THING!

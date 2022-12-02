@@ -1165,7 +1165,6 @@ def terms_and_conditions():
 
 @app.route("/search_algorithms_page", methods=['GET', 'POST'])
 def search_algorithms_page():
-    print("getting here")
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
@@ -1178,9 +1177,9 @@ def search_algorithms_page():
         del_algo = request.form.get("del_algo")
         show_all = request.form.get("show_all")
         show_favourites = request.form.get("show_favourites")
-        print("save_algo", save_algo)
-        print("show_all", show_all)
-        print("save_algo", show_favourites)
+        #print("save_algo", save_algo)
+        #print("show_all", show_all)
+        #print("save_algo", show_favourites)
 
         if save_algo != None:
             search_id = database.GET_SEARCH_ALGO_ID_BY_NAME(save_algo)
@@ -1197,16 +1196,25 @@ def search_algorithms_page():
             search_id = database.GET_SEARCH_ALGO_ID_BY_NAME(del_algo)
             database.DEL_SEARCH_FAVOURITE(session["user"], search_id)
     
-    print(len(algos), algos)
+    #print(len(algos), algos)
     if len(algos) == 0:
         algos = database.GET_TOP_N_SEARCH_ALGORITHMS()
-    # print(algos)
+    
+    search_query_details = []
+    count = 0
+    for i in algos:
+        algoname = i[2] 
+        print(count, algoname)
+        search_query_details.append(database.GET_SEARCH_DETAILS_BY_ALGO_NAME(algoname))
+        count += 1
+
     len_algos = len(algos)
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
 
     return render_template(f"search_algorithms_page.html",
         algos=algos,
         len_algos=len_algos,
+        search_query_details=search_query_details,
         
         daily_votes_left=daily_votes_left,
         monthly_votes_left=monthly_votes_left,

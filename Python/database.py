@@ -2491,11 +2491,11 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
             #print(order_check)
 
             #GET UPLOADER AND FILE_ID FROM ALGO NAME
-            uploader, file_id = GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME(order_check)
+            uploader, file_id, search_path = GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME(order_check)
             username = uploader
             order_check = str(uploader) + "-" + str(file_id)
             # print("ALGO BY PERSON DETAILS:", uploader, file_id, order_check)
-            f = open(f'/root/mansura/static/#UserData/{username}/search_algorithms/{order_check}.json')
+            f = open(f'/root/mansura/static/#UserData/{username}/search_algorithms/{search_path}.json')
             data_ = json.load(f)
             f.close()
 
@@ -2700,22 +2700,24 @@ def GET_SEARCH_ALGO_ID_BY_PATH(algo_path):
 
 
 def GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME(order_check):
-    print("GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME")
+    # print("GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME")
     conn = connection.test_connection()
     cursor = conn.cursor()
 
     cursor.execute(f"""
-        SELECT Username, Search_id
+        SELECT Username, Search_id, Search_Path
         FROM SEARCH_ALGORITHMS
         WHERE Algorithm_Name = '{order_check}'
     """)
     name = ""
     search_id = ""
+    search_path = ""
     for i in cursor.fetchall():
         # print(i)
         name = i[0] 
-        search_id = i[1] 
-    return name, search_id
+        search_id = i[1]
+        search_path = i[2]
+    return name, search_id, search_path
 
 
 def SEARCH_ALGO_CREATE_TABLE():
@@ -2771,6 +2773,21 @@ def CREATE_TABLE_POST_FAVOURITES():
 
     cursor.close()
     conn.close()
+
+def GET_SEARCH_DETAILS_BY_ALGO_NAME(algo_name):
+    print(algo_name)
+    #GET UPLOADER AND FILE_ID FROM ALGO NAME
+    uploader, file_id, search_path = GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME(algo_name)
+    username = uploader
+    order_check = str(uploader) + "-" + str(file_id)
+    # print("ALGO BY PERSON DETAILS:", uploader, file_id, order_check)
+    f = open(f'/root/mansura/static/#UserData/{username}/search_algorithms/{search_path}.json')
+    data_ = json.load(f)
+    # print(data_)
+    f.close()
+    return data_
+
+
 def GET_SEARCH_FAVOURITES_BY_USERNAME(username):
     conn = connection.test_connection()
     cursor = conn.cursor()

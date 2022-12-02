@@ -1,10 +1,12 @@
 {% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML value="{{algos[i][2]}}"-->
 {%block main %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/user_profile.css') }}">
+
 <div>
 	<form action="search_algorithms_page" method="post">      
 		<h1><input class="btn btn-primary" type="submit" value="SHOW ALL" name="show_all"/></h1>
 		<h1><input class="btn btn-primary" type="submit" value="SHOW MY FAVOURITES" name="show_favourites"/></h1>
-		<h1><input class="btn btn-primary" type="submit" value="SHOW MINE" name="show_mine" disabled/></h1>
+		<h1><input class="btn btn-primary" type="submit" value="CREATED BY ME" name="show_mine" disabled/></h1>
 		<h1><input class="btn btn-primary" type="submit" value="NEXT PAGE" name="next_page" disabled/></h1>
 	</form>
 	
@@ -31,8 +33,7 @@
                 <td>{{algos[i][0]}}</td>
                 <td>{{algos[i][3]}}</td>
 				<td>
-					<button class="btn btn-primary" id="show_algo_button">SHOW</button>
-
+					<button class="btn btn-primary" id="show_algo_button" onclick="search_show_modal_toggle(this.value)" value="{{search_query_details[i]}}">SHOW</button>
 				</td>
 				<td>
 					<form action="search_algorithms_page" method="post">      
@@ -49,7 +50,27 @@
       </tbody>
     </table>
 </div>
+
+<div id="search_show_modal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content" id="showing_modal_inside">
+		hello world
+    </div>
+</div>
 <script>
+	function search_show_modal_toggle(value) {
+        var modal = document.getElementById("search_show_modal");
+		document.getElementById("showing_modal_inside").innerHTML = value
+        modal.style.display = "block";
+    }
+	
+	window.onclick = function (event) {
+        var modal = document.getElementById("search_show_modal");
+        if ((event.target == modal)) {
+            modal.style.display = "none";
+        }
+    }
+
     d_votes_left = '{{ daily_left }}';
     m_votes_left = '{{ monthly_left }}';
     y_votes_left = '{{ yearly_left }}';
@@ -66,5 +87,11 @@
     document.getElementById("yearly_votes_left").innerHTML = `YEARLY VOTES: ${y_votes_left}`;
     document.getElementById("user_balance").innerHTML = 'BALANCE:${{user_balance}}';
     console.log("TERMS AND CONDITIONS")
+
+	search_query_details = "{{search_query_details}}".slice(1,-1);
+	search_query_details = search_query_details.split(",")
+	console.log(search_query_details.length)
+	console.log(search_query_details)
+	
 </script>
 {% endblock main %}
