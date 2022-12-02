@@ -211,13 +211,24 @@ def USERNAME_PROFANITY_CHECK(word, testing=False): #todo: this is particular to 
 
 
 def CHANGE_TO_JSON_FORMATTED(my_string):
+    # ALL THIS ADHOC-CLEANING IS A NIGHTMARE, NEED A BETTER WAY
+
     #print(my_string)
+    #print(my_string)
+    #print()
+    
     string_array = my_string.split(":")
+    #print(string_array)
+    #print()
+
     contents_of_clause = string_array[1]
+    #print(contents_of_clause)
+    #print()
     #print("contents_of_clause       :", contents_of_clause)
     contents_of_clause = contents_of_clause.replace("'AND", '"AND')
     contents_of_clause = contents_of_clause.replace("',", '",')
-
+    #print(contents_of_clause)
+    #print()
     #print("contents_of_clause       :", contents_of_clause)
     if contents_of_clause[0] == " ":
         contents_of_clause = '"' + contents_of_clause[2:-1] + '"'
@@ -234,8 +245,19 @@ def TURN_STRING_TO_DICT(my_string):
     # LOTS OF ARBITRARY SHIT IN HERE BUT IT WORKS...for now..
     #JSON FORMATTING IS TREMENDOUSLY ANNOYING
     # https://jsonlint.com/ # this is becomming the most disgusting piece of filt ive ever seen
-    my_string_array = my_string.split(',')
+    # print("OG CHECKER1",my_string) 
+
+    #print(my_string)
+    #print("changed")
+    if "now())::date" in my_string:
+        # print("DOING THE REPLACE")
+        my_string = my_string.replace(", now())::date", "*** now())::date")
+        #print(my_string)
+        #exit(0)'
     
+    my_string_array = my_string.split(',')
+
+
     count = 0
     reconstructed_string = ""
     for i in my_string_array:
@@ -246,6 +268,7 @@ def TURN_STRING_TO_DICT(my_string):
             #print("BEFORE", i)
             if count == 4:
                 #print(count, i, "UNCHANGED")
+                # print(i)
                 i = CHANGE_TO_JSON_FORMATTED(i)
                 #print(count, i, "CHANGED")
             # print("AFTER", i)
@@ -263,8 +286,15 @@ def TURN_STRING_TO_DICT(my_string):
     print("===========================")
     print(reconstructed_string)
     print("===========================")
+    reconstructed_string = reconstructed_string.replace("***", ",")
+    print(reconstructed_string)
+    print("===========================")
+    
     #print(reconstructed_string)
-    return json.loads(reconstructed_string, strict=False)
+    new_json = json.loads(reconstructed_string, strict=False)
+    print("NEW JSON", new_json)
+    # exit()
+    return new_json
 
 
 def GIANT_FILE_INSERT():

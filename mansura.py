@@ -96,7 +96,7 @@ def home():
     
     # GRAB THE ARGS FROM QUERY BEFORE THE CURRENT PAGE [GET OR POST]
     returned_search_arguments = request.form.get("search_arguments")
-
+    print(returned_search_arguments)
 
     new_json_search_clauses = helpers.COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses)
     '''
