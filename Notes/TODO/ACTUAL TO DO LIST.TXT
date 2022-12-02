@@ -88,6 +88,7 @@ MOTTO
 6. SHOW DISTRIBUTION OF SEARCH ALGOS IN DISTRIBUTION TXT FILE
 
 
+x. max length search algo name javascript
 1. empty search pages still need values
 2. if on own profile can post without it being a reply
 

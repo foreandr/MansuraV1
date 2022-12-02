@@ -4,6 +4,7 @@
 	<form action="search_algorithms_page" method="post">      
 		<h1><input class="btn btn-primary" type="submit" value="SHOW ALL" name="show_all"/></h1>
 		<h1><input class="btn btn-primary" type="submit" value="SHOW MY FAVOURITES" name="show_favourites"/></h1>
+		<h1><input class="btn btn-primary" type="submit" value="SHOW MINE" name="show_mine" disabled/></h1>
 		<h1><input class="btn btn-primary" type="submit" value="NEXT PAGE" name="next_page" disabled/></h1>
 	</form>
 	
@@ -13,12 +14,13 @@
     <table class="table table-striped table-sm">
         <thead>
             <tr>
-                <th scope="col">Votes</th>
+                <th scope="col">Search Votes</th>
                 <th scope="col">Name</th>
                 <th scope="col">Creator</th>
                 <th scope="col">Creation Date</th>
 				<th scope="col">Algo Details</th>
-				<th scope="col">Save Algo</th>
+				<th scope="col">Add To Favourites</th>
+				<th scope="col">Del From Favourites</th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +37,11 @@
 				<td>
 					<form action="search_algorithms_page" method="post">      
 						<input class="btn btn-primary" type="submit" value="{{algos[i][2]}}" name="save_algo"/>
+					</form>
+				</td>
+				<td>
+					<form action="search_algorithms_page" method="post">      
+						<input class="btn btn-primary" type="submit" value="{{algos[i][2]}}" name="del_algo"/>
 					</form>
 				</td>
             </tr>

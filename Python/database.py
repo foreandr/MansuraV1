@@ -2771,6 +2771,31 @@ def CREATE_TABLE_POST_FAVOURITES():
 
     cursor.close()
     conn.close()
+def GET_SEARCH_FAVOURITES_BY_USERNAME(username):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    query = f"""
+        SELECT algos.Username,     
+            (   
+                SELECT COUNT(*) 
+                FROM SEARCH_VOTES votes
+                WHERE votes.Search_id = algos.Search_id
+            ) as VOTE_COUNT,
+            algos.Algorithm_Name, algos.Date_Time
+        
+        FROM SEARCH_ALGORITHMS algos
+
+        INNER JOIN SEARCH_FAVOURITES favourites
+        ON favourites.Search_id = algos.Search_id
+
+        WHERE favourites.Favouriter_Username = '{username}'
+        """
+    cursor.execute(query)
+    favourited_algos = []
+    for i in cursor.fetchall():
+        favourited_algos.append(i)
+        # print(i)
+    return favourited_algos
 
 def CREATE_TABLE_SEARCH_FAVOURITES():
     conn = connection.test_connection()
@@ -2803,6 +2828,53 @@ def CREATE_TABLE_SEARCH_FAVOURITES():
     cursor.close()
     conn.close()
 
+def GET_SEARCH_ALGO_ID_BY_NAME(algo_name):
+    #print("GET_SEARCH_ALGO_ID_BY_PATH")
+
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(f"""
+        SELECT Search_id
+        FROM SEARCH_ALGORITHMS
+        WHERE Algorithm_Name = '{algo_name}'
+    """)
+
+    search_id = ""
+    for i in cursor.fetchall():
+        search_id = i[0] 
+    #print("ENTERED ALGO NAME  :",algo_name, len(algo_name))
+    #print("RETURNED SEARCH ID:",search_id )
+    return search_id
+
+
+def INSERT_INTO_SEARCH_FAVOURITES(user, search_id):
+    # print("SEARCH FAVE INSERT:", user, search_id)
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+        INSERT INTO SEARCH_FAVOURITES(Search_id, Favouriter_Username)
+        VALUES ({search_id}, '{user}')
+        ON CONFLICT DO NOTHING
+    """)
+    conn.commit()
+    conn.close()
+    cursor.close()
+
+def DEL_SEARCH_FAVOURITE(user, search_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute(f"""
+            DELETE FROM SEARCH_FAVOURITES
+            WHERE Search_id = {search_id} AND Favouriter_Username = '{user}';
+        """)
+        conn.commit()
+    except Exception as e:
+        # print("PROBABLY JUST DOESNT EXIST")
+        pass
+    conn.close()
+    cursor.close()
 
 def CREATE_TABLE_SEARCH_VOTES():
     conn = connection.test_connection()

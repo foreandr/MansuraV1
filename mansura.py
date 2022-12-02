@@ -1172,8 +1172,10 @@ def search_algorithms_page():
     if "email" not in session:
         return redirect(url_for('login'))
     
+    algos = ""
     if request.method == "POST":
         save_algo = request.form.get("save_algo")
+        del_algo = request.form.get("del_algo")
         show_all = request.form.get("show_all")
         show_favourites = request.form.get("show_favourites")
         print("save_algo", save_algo)
@@ -1181,19 +1183,23 @@ def search_algorithms_page():
         print("save_algo", show_favourites)
 
         if save_algo != None:
-            #INSERT INTO SAVE ALGO
+            search_id = database.GET_SEARCH_ALGO_ID_BY_NAME(save_algo)
+            database.INSERT_INTO_SEARCH_FAVOURITES(session["user"], search_id)
             pass
         if show_all != None:
             # DO ORDINARY THING
             pass
-        if show_favourites != None
+        if show_favourites != None:
             # GET SEARCH ALGORITHMS INNER JOIN FAVORUITES ON THIS USERS FAVOURITES
-            pass
+            algos = database.GET_SEARCH_FAVOURITES_BY_USERNAME(session["user"])
 
-        
-
+        if del_algo != None:
+            search_id = database.GET_SEARCH_ALGO_ID_BY_NAME(del_algo)
+            database.DEL_SEARCH_FAVOURITE(session["user"], search_id)
     
-    algos = database.GET_TOP_N_SEARCH_ALGORITHMS()
+    print(len(algos), algos)
+    if len(algos) == 0:
+        algos = database.GET_TOP_N_SEARCH_ALGORITHMS()
     # print(algos)
     len_algos = len(algos)
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
