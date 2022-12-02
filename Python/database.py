@@ -2698,6 +2698,7 @@ def GET_SEARCH_ALGO_ID_BY_PATH(algo_path):
     return search_id
 
 
+
 def GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME(order_check):
     print("GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME")
     conn = connection.test_connection()
@@ -2826,44 +2827,46 @@ def CREATE_TABLE_SEARCH_VOTES():
 def SEARCH_ALGO_INSERT(username, Algorithm_Name, order_by_clause, where_clause):
     conn = connection.test_connection()
     cursor = conn.cursor() 
-    # 1. GET NUM FILES 
-    cursor.execute(f"""
-        SELECT COUNT(*)
-        FROM SEARCH_ALGORITHMS
-    """)  
-    count = cursor.fetchone()[0] + 1
-    new_path = username + "-" + str(count) 
-    # print(count)
+    try:
+        # 1. GET NUM FILES 
+        cursor.execute(f"""
+            SELECT COUNT(*)
+            FROM SEARCH_ALGORITHMS
+        """)  
+        count = cursor.fetchone()[0] + 1
+        new_path = username + "-" + str(count) 
+        # print(count)
 
-    # 2. INSERT INTO TABLE
-    cursor.execute(
-    f"""
-    INSERT INTO SEARCH_ALGORITHMS
-        (Username, Search_Path, Algorithm_Name, Search_TOTAL, Date_Time)
-    VALUES
-        ('{username}', '{new_path}', '{Algorithm_Name}', 0, CURRENT_TIMESTAMP );
-    """)        
-    conn.commit()
+        # 2. INSERT INTO TABLE
+        cursor.execute(
+        f"""
+        INSERT INTO SEARCH_ALGORITHMS
+            (Username, Search_Path, Algorithm_Name, Search_TOTAL, Date_Time)
+        VALUES
+            ('{username}', '{new_path}', '{Algorithm_Name}', 0, CURRENT_TIMESTAMP );
+        """)        
+        conn.commit()
 
-    # 3. SAVE ORDER AND WHERE CLAUSE INTO FOLDER
+        # 3. SAVE ORDER AND WHERE CLAUSE INTO FOLDER
 
-    my_path = F"/root/mansura/static/#UserData/{username}/search_algorithms/{new_path}.json" 
-    config_json = {
-        'ORDER_BY_CLAUSE':f"{order_by_clause}",
-        'WHERE_CLAUSE'   :f"{where_clause}"
-    }
-    jsonString = json.dumps(config_json, indent=4)
-    jsonFile = open(f"{my_path}", "w")
-    jsonFile.write(jsonString)
-    jsonFile.close()
+        my_path = F"/root/mansura/static/#UserData/{username}/search_algorithms/{new_path}.json" 
+        config_json = {
+            'ORDER_BY_CLAUSE':f"{order_by_clause}",
+            'WHERE_CLAUSE'   :f"{where_clause}"
+        }
+        jsonString = json.dumps(config_json, indent=4)
+        jsonFile = open(f"{my_path}", "w")
+        jsonFile.write(jsonString)
+        jsonFile.close()
 
-    # CLOSE CURSOR AND CONNECTION [MANDATORY]        
-    cursor.close()
-    conn.close()
+        # CLOSE CURSOR AND CONNECTION [MANDATORY]        
+        cursor.close()
+        conn.close()
+        return True
+    except Exception as e:
+        log_function("error", e)
+        return False
 
-    #TODO: EVENTUALLY I SHOULD RUN THESE AGAINST A TESTNET OR SOMETHING AUTOMATICALLY AND JUST SEE IF THEY PRODUCE A RESULT
-    #TODO: FOR NOW I WILL JUST CHECK THEM MANUALLY
-    
 
 def SEARCH_ALGO_INSERT_DEMO_MULTIPLE():
     # username, Algorithm_Name, order_by_clause, where_clause
@@ -3147,7 +3150,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
 
     # search_arguments['where_full_query'] = list(dict.fromkeys(search_arguments['where_full_query']))
     '''
-    print("ORDER BY CLAUSE", search_arguments)
+    # print("ORDER BY CLAUSE", search_arguments)
     return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, search_arguments
 
 def GET_TOP_N_SEARCH_ALGORITHMS(N=100):

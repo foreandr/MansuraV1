@@ -1,166 +1,59 @@
-{% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
+{% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML value="{{algos[i][2]}}"-->
 {%block main %}
+<div>
+	<form action="search_algorithms_page" method="post">      
+		<h1><input class="btn btn-primary" type="submit" value="SHOW ALL" name="show_all"/></h1>
+		<h1><input class="btn btn-primary" type="submit" value="SHOW MY FAVOURITES" name="show_favourites"/></h1>
+		<h1><input class="btn btn-primary" type="submit" value="NEXT PAGE" name="next_page" disabled/></h1>
+	</form>
+	
 
-SEARCH 
-ALGORITHMS
-<table>
-    <tr>
-      <th>Company</th>
-      <th>Contact</th>
-      <th>Country</th>
-    </tr>
-    <tr>
-      <td>Alfreds Futterkiste</td>
-      <td>Maria Anders</td>
-      <td>Germany</td>
-    </tr>
-    <tr>
-      <td>Centro comercial</td>
-      <td>Francisco Chang</td>
-      <td>Mexico</td>
-    </tr>
-  </table>
-  {{algos}} <!--WORKING, WILL HANDLE REST TOMRROW-->
-
-  <div class="table-responsive">
+</div>
+<div class="table-responsive">
     <table class="table table-striped table-sm">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Header</th>
-          <th scope="col">Header</th>
-          <th scope="col">Header</th>
-          <th scope="col">Header</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1,001</td>
-          <td>random</td>
-          <td>data</td>
-          <td>placeholder</td>
-          <td>text</td>
-        </tr>
-        <tr>
-          <td>1,002</td>
-          <td>placeholder</td>
-          <td>irrelevant</td>
-          <td>visual</td>
-          <td>layout</td>
-        </tr>
-        <tr>
-          <td>1,003</td>
-          <td>data</td>
-          <td>rich</td>
-          <td>dashboard</td>
-          <td>tabular</td>
-        </tr>
-        <tr>
-          <td>1,003</td>
-          <td>information</td>
-          <td>placeholder</td>
-          <td>illustrative</td>
-          <td>data</td>
-        </tr>
-        <tr>
-          <td>1,004</td>
-          <td>text</td>
-          <td>random</td>
-          <td>layout</td>
-          <td>dashboard</td>
-        </tr>
-        <tr>
-          <td>1,005</td>
-          <td>dashboard</td>
-          <td>irrelevant</td>
-          <td>text</td>
-          <td>placeholder</td>
-        </tr>
-        <tr>
-          <td>1,006</td>
-          <td>dashboard</td>
-          <td>illustrative</td>
-          <td>rich</td>
-          <td>data</td>
-        </tr>
-        <tr>
-          <td>1,007</td>
-          <td>placeholder</td>
-          <td>tabular</td>
-          <td>information</td>
-          <td>irrelevant</td>
-        </tr>
-        <tr>
-          <td>1,008</td>
-          <td>random</td>
-          <td>data</td>
-          <td>placeholder</td>
-          <td>text</td>
-        </tr>
-        <tr>
-          <td>1,009</td>
-          <td>placeholder</td>
-          <td>irrelevant</td>
-          <td>visual</td>
-          <td>layout</td>
-        </tr>
-        <tr>
-          <td>1,010</td>
-          <td>data</td>
-          <td>rich</td>
-          <td>dashboard</td>
-          <td>tabular</td>
-        </tr>
-        <tr>
-          <td>1,011</td>
-          <td>information</td>
-          <td>placeholder</td>
-          <td>illustrative</td>
-          <td>data</td>
-        </tr>
-        <tr>
-          <td>1,012</td>
-          <td>text</td>
-          <td>placeholder</td>
-          <td>layout</td>
-          <td>dashboard</td>
-        </tr>
-        <tr>
-          <td>1,013</td>
-          <td>dashboard</td>
-          <td>irrelevant</td>
-          <td>text</td>
-          <td>visual</td>
-        </tr>
-        <tr>
-          <td>1,014</td>
-          <td>dashboard</td>
-          <td>illustrative</td>
-          <td>rich</td>
-          <td>data</td>
-        </tr>
-        <tr>
-          <td>1,015</td>
-          <td>random</td>
-          <td>tabular</td>
-          <td>information</td>
-          <td>text</td>
-        </tr>
+        <thead>
+            <tr>
+                <th scope="col">Votes</th>
+                <th scope="col">Name</th>
+                <th scope="col">Creator</th>
+                <th scope="col">Creation Date</th>
+				<th scope="col">Algo Details</th>
+				<th scope="col">Save Algo</th>
+            </tr>
+        </thead>
+        <tbody>
+			{%for i in range(0, len_algos )%}
+			<tr>
+                <td>{{algos[i][1]}}</td>
+                <td>{{algos[i][2]}}</td>
+                <td>{{algos[i][0]}}</td>
+                <td>{{algos[i][3]}}</td>
+				<td>
+					<button class="btn btn-primary" id="show_algo_button">SHOW</button>
+
+				</td>
+				<td>
+					<form action="search_algorithms_page" method="post">      
+						<input class="btn btn-primary" type="submit" value="{{algos[i][2]}}" name="save_algo"/>
+					</form>
+				</td>
+            </tr>
+			{%endfor%}
       </tbody>
     </table>
-  </div>
+</div>
 <script>
     d_votes_left = '{{ daily_left }}';
     m_votes_left = '{{ monthly_left }}';
     y_votes_left = '{{ yearly_left }}';
     // console.log(d_votes_left)
-
+    
     document.getElementById("index_daily").innerHTML = 'DAILY POOL: ${{daily_pool}}';
     document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: ${{monthly_pool }}';
     document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: ${{yearly_pool }}';
-
-
-
+    
+    
+    
     document.getElementById("daily_votes_left").innerHTML = `DAILY VOTES: ${d_votes_left}`;
     document.getElementById("monthly_votes_left").innerHTML = `MONTHLY VOTES: ${m_votes_left}`;
     document.getElementById("yearly_votes_left").innerHTML = `YEARLY VOTES: ${y_votes_left}`;

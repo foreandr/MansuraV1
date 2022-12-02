@@ -46,7 +46,7 @@ app.config["FILE UPLOADS"] = "static/#UserData"
 
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
-    print("RENDERING TEMPLATE")
+    #print("RENDERING TEMPLATE")
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     if "email" not in session: # testasdkjhfaks
@@ -196,7 +196,7 @@ def home():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    print("RENDERING TEMPLATE")
+    #print("RENDERING TEMPLATE")
     # print('EXECUTING REGISTER FUNCTION')
     helpers.log_function("request", request)
     if "email" in session:
@@ -297,7 +297,7 @@ def logout():
 
 @app.route('/user_profile', methods=['GET', 'POST'])
 def user_profile():
-    print("RENDERING TEMPLATE")
+    #print("RENDERING TEMPLATE")
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     #print('USING USER PROFILE')
@@ -348,11 +348,13 @@ def upload():
             where_clause = hidden_search_arguments['where_full_query']
             order_by_clause = hidden_search_arguments['order_by_clause']
             user_name = session["user"]
-            search_algo_name = request.form.get("Algorithm Name")
-            database.SEARCH_ALGO_INSERT(username=session["user"], Algorithm_Name=search_algo_name, order_by_clause=order_by_clause, where_clause=where_clause)
-            
-            return render_template('search_algorithms_page.html')
-        
+            search_algo_name = session["user"] + "-" + request.form.get("Algorithm Name")
+            check_success = database.SEARCH_ALGO_INSERT(username=session["user"], Algorithm_Name=search_algo_name, order_by_clause=order_by_clause, where_clause=where_clause)
+            if check_success:
+                return redirect(url_for("search_algorithms_page"))
+            else:
+                print("FAILED CUZ OF DUPE")# todo: gotta find a way to show the user
+                return redirect(url_for("search_algorithms_page"))
         
         #print("GOT TO WHETHER SOMETHING IS BEING POISTED OR NOT ==================================")
         post_text = request.form.get("textbox")
@@ -1163,16 +1165,43 @@ def terms_and_conditions():
 
 @app.route("/search_algorithms_page", methods=['GET', 'POST'])
 def search_algorithms_page():
+    print("getting here")
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
     if "email" not in session:
         return redirect(url_for('login'))
+    
+    if request.method == "POST":
+        save_algo = request.form.get("save_algo")
+        show_all = request.form.get("show_all")
+        show_favourites = request.form.get("show_favourites")
+        print("save_algo", save_algo)
+        print("show_all", show_all)
+        print("save_algo", show_favourites)
+
+        if save_algo != None:
+            #INSERT INTO SAVE ALGO
+            pass
+        if show_all != None:
+            # DO ORDINARY THING
+            pass
+        if show_favourites != None
+            # GET SEARCH ALGORITHMS INNER JOIN FAVORUITES ON THIS USERS FAVOURITES
+            pass
+
+        
+
+    
     algos = database.GET_TOP_N_SEARCH_ALGORITHMS()
+    # print(algos)
+    len_algos = len(algos)
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
 
     return render_template(f"search_algorithms_page.html",
         algos=algos,
+        len_algos=len_algos,
+        
         daily_votes_left=daily_votes_left,
         monthly_votes_left=monthly_votes_left,
         yearly_votes_left=yearly_votes_left,
