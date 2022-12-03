@@ -3,7 +3,7 @@ import random
 import json
 
 from os import path
-
+import os
 from nudenet import NudeClassifier # NUDITY CLASSIFIER
 
 
@@ -487,12 +487,16 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None"):
             f.write(err_string)
     elif msg_type == "distro":
         err_string = f"{log_string}"
+        my_path = f"/root/mansura/Python/logs/distro/{vote_type}/{current_date}"
+        check_and_save_dir(my_path)
         if distro_type == "initial":
-            with open(f'/root/mansura/Python/logs/distro/{vote_type}/1-initial/{current_date}.txt', 'a') as f:
+            with open(f'{my_path}/FULL_SET.txt', 'a') as f:
                 f.write(err_string + ",\n")
-        elif distro_type =="final":
-            with open(f'/root/mansura/Python/logs/distro/{vote_type}/3-final/{current_date}.txt', 'a') as f:
+        else:
+            with open(f'{my_path}/DISTRO.txt', 'a') as f:
                 f.write(err_string + ",\n")
+                
+
         
 
 def remove_values_from_list(the_list):
@@ -637,6 +641,7 @@ def COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_cla
         'ORDER_BY_CLAUSE':new_composed_order_by_clause
     }
     return new_return_clause
+
 
 def CHANGE_BIO(my_string, user):
     my_path = f"/root/mansura/static/#UserData/{user}/config.json"

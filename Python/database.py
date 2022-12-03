@@ -15,6 +15,7 @@ import Python.procedures as procedures
 from  Python.helpers import print_green, print_title, print_error, turn_pic_to_hex, check_and_save_dir, print_warning, log_function, TURN_WHERE_CLAUSE_TO_STRING, NLP_KEYWORD_EXTRACTOR
 import Python.db_connection as connection
 import Python.big_reset_file as big_reset_file
+import Python.my_email as my_email
 
 def validate_user_from_session(email, password):
     conn = connection.test_connection()
@@ -212,6 +213,104 @@ def CONNECTION_CREATE_TABLE():
     cursor.close()
     conn.close()
     print_green("CONNECTION TABLE CREATE COMPLETED\n")
+
+def CREATE_TABLE_1_TIME_PASSWORDS():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""DROP TABLE IF EXISTS ONE_TIME_PASSWORDS;""")
+    cursor.execute("""
+        CREATE TABLE ONE_TIME_PASSWORDS
+        (
+            One_Time_Id SERIAL PRIMARY KEY,
+            Email varchar UNIQUE,
+            Generated_Pass_Code varchar,
+            FOREIGN KEY (Email) REFERENCES USERS(Email)
+        );
+    """)
+    conn.commit()
+    conn.close()
+    cursor.close()
+
+
+def CREATE_ONE_TIME_PASS(length=10):
+    import random
+    import string
+    # choose from all lowercase letter
+    letters = string.ascii_lowercase
+    result_str = ''.join(random.choice(letters) for i in range(length))
+    return result_str
+    # print("Random string of length", length, "is:", result_str)
+
+def GET_ONE_TIME_PASS(email):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute(f"""
+        SELECT Generated_Pass_Code
+        FROM ONE_TIME_PASSWORDS
+        WHERE email = '{email}'
+    """)
+    one_time = ""
+    for i in cursor.fetchall():
+        # print(i)
+        one_time= i[0]
+        
+    conn.commit()
+    conn.close()
+    
+    return one_time
+
+def CHECK_FOR_A_ONE_TIME_PASS(email):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute(f"""
+        SELECT * 
+        FROM ONE_TIME_PASSWORDS
+        WHERE email = '{email}'
+    """)
+    my_array = []
+    for i in cursor.fetchall():
+        # print(i)
+        my_array.append(i)
+        
+    conn.commit()
+    conn.close()
+    
+    if len(my_array) == 0: #empty
+        return False
+    else:
+        return True
+
+def CREATE_AND_SEND_ONE_TIME_PASS_EMAIL(email):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    password = CREATE_ONE_TIME_PASS(length=10)
+
+    if CHECK_FOR_A_ONE_TIME_PASS(email):
+        cursor.execute(f"""
+            UPDATE ONE_TIME_PASSWORDS
+            SET Generated_Pass_Code = '{password}'
+            WHERE Email = '{email}'
+        """)
+        conn.commit()
+        print("SUCCESSFULLY UPDATED PRE EXISTING ONE")
+
+    else:
+        cursor.execute(f"""
+            INSERT INTO ONE_TIME_PASSWORDS(email,Generated_Pass_Code)
+            VALUES ('{email}', '{password}')
+            ON CONFLICT DO NOTHING
+        """)
+        conn.commit()
+        print("SUCCESSFULLY INSERTED NEW ONE")
+
+    conn.close()
+    cursor.close()
+    
+    my_email.send_email(email, password)
 
 
 def CONNECTION_INSERT(user_id1, user_id2):
@@ -577,9 +676,9 @@ def FILE_VOTE_INSERT(username, File_Id, vote_type):
     if (is_already_subbed_this_month):
         # CHECK IF THEY HAVE A VOTE OF TYPE X FOR THIS TIME PERIOD
         num_votes = GET_NUM_FILE_VOTES_LEFT(username, vote_type)
-        print(F"{username} has {num_votes} votes left of type:{vote_type}")
+        # print(F"{username} has {num_votes} votes left of type:{vote_type}")
         if num_votes == 0:
-            print_error("[{username}] HAS ALREADY VOTED FOR TIMEFRAME [{vote_type}]. [{num_votes} VOTES]") 
+            print_error(F"[{username}] HAS ALREADY VOTED FOR TIMEFRAME [{vote_type}]. [{num_votes} VOTES]") 
         else:
             # RUN THE INSERT
             try:
@@ -838,6 +937,7 @@ def USER_FULL_RESET():
     CREATE_TABLE_SEARCH_FAVOURITES()
     CREATE_TABLE_POST_FAVOURITES()
     EQUITY_CREATE_TABLE()
+    CREATE_TABLE_1_TIME_PASSWORDS()
 
     FUNCTION_AND_PROCEDURES()
 
@@ -1322,9 +1422,9 @@ def DELETE_USER_FILES(user):
 
 
 def CHANGE_PASSWORD(email, password):
-    conn = connection.test_connection()
-    cursor = conn.cursor()
-    try:
+    '''old unused code:
+
+        try:
         cursor.execute(
             f"""
                 CALL CHANGE_PASSWORD_FOR_EMAIL('{email}', '{password}');
@@ -1334,11 +1434,23 @@ def CHANGE_PASSWORD(email, password):
         print_green('CHANGE_PASSWORD COMPLETED')
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e)
+        log_function("error", e) 
+    '''
     
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    new_password = hashlib.sha256(f"{password}".encode('utf-8')).hexdigest()
+    cursor.execute(f"""
+        UPDATE USERS SET password = '{new_password}'
+        WHERE email = '{email}';
+    """)
+    conn.commit()
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
+    print(f"CHANGED PASSWORD")
+    print(f"OG {password}")
+    print(f"HASHED {new_password}")
 
 
 def MODEL_GET_NUM_VOTES_BY_MODEL_ID(model_id):
@@ -2916,6 +3028,10 @@ def CREATE_TABLE_SEARCH_VOTES():
 def SEARCH_ALGO_INSERT(username, Algorithm_Name, order_by_clause, where_clause):
     conn = connection.test_connection()
     cursor = conn.cursor() 
+    todays_saved_algos = COUNT_TODAYS_SEATRCH_ALGOS_FOR_USER(username)
+    if todays_saved_algos != 0:
+        print(f"{username} already saved an algo today")
+        return False
     try:
         # 1. GET NUM FILES 
         cursor.execute(f"""
@@ -2961,6 +3077,7 @@ def SEARCH_ALGO_INSERT_DEMO_MULTIPLE():
     # username, Algorithm_Name, order_by_clause, where_clause
     SEARCH_ALGO_INSERT(username='a', Algorithm_Name='a-demo', order_by_clause="", where_clause="")
     SEARCH_ALGO_INSERT('foreandr', 'foreandr-demo', "", "")
+    SEARCH_ALGO_INSERT('foreandr', 'foreandr-demo2', "", "")
     SEARCH_ALGO_INSERT('andrfore', 'andrfore-demo', "", f"AND U.username LIKE 'foreandr%'")
     print_green("SEARCH_ALGO_INSERT_DEMO_MULTIPLE()")
 
@@ -3360,10 +3477,14 @@ def GET_VOTES_AND_BALANCE_AND_PAYOUTS(username):
         monthly_pool = value[5]
         yearly_pool = value[6]
     
-    daily_votes_left = 10 - daily_votes_left
-    monthly_votes_left = 10 - monthly_votes_left
-    yearly_votes_left = 10 - yearly_votes_left
-    
+    if CHECK_DATE(username):
+        daily_votes_left = 10 - daily_votes_left
+        monthly_votes_left = 10 - monthly_votes_left
+        yearly_votes_left = 10 - yearly_votes_left
+    else:
+        daily_votes_left = 0 
+        monthly_votes_left = 0 
+        yearly_votes_left = 0 
     return balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool
 
 def GET_NOTIFICATIONS_BY_USER_ID(user_id):
@@ -3593,4 +3714,23 @@ def GET_SEARCH_LIKES_SINGLE_POST(searcher, file_id):
     # print(likes, dislikes)
     
     return likes, dislikes
+
+def COUNT_TODAYS_SEATRCH_ALGOS_FOR_USER(user):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+        SELECT COUNT(*)
+        FROM SEARCH_ALGORITHMS search_algo
+        WHERE Username = '{user}'
+        AND Date_Time >= date_trunc('day', now())::date
+    """)
+    count = 0
+    for i in cursor.fetchall():
+        print(i)
+        count = i[0]
+    
+    cursor.close()
+    conn.close()
+
+    return count 
 

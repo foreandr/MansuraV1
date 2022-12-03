@@ -53,11 +53,13 @@
 </div>
 
 <!-- SESSION VARIABLES-->
+{% if is_host == "true" %}
 <div class="justify-content-between align-items-center" id="post_div">
     <button class="btn btn-secondary" type="button" onclick="post_modal_toggle()" aria-expanded="false">
         POST
     </button>
 </div>
+{% endif %}
 
 <!-- SESSION VARIABLES-->
 <div class="container-fluid">
@@ -321,9 +323,9 @@
 <div id="save_modal" class="modal">
     <div class="modal-content">
         <form action="upload" method="POST" enctype="multipart/form-data">
-            <input class="input-medium form-control" id="Algorithm Name" name="Algorithm Name" type="Algorithm Name" placeholder="Algorithm Name" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')" required>
+            <input class="input-medium form-control" id="Algorithm Name" name="Algorithm Name" type="Algorithm Name" placeholder="Algorithm Name" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')" maxlength="20" required>
                 <div>
-                    <button class="btn btn-primary" value="save_algo" name="save_algo">Save Algo</button>
+                    <button class="btn btn-primary" value="save_algo" name="save_algo">Save Algo (1 a day)</button>
                     <button class="btn btn-primary" type="button" onclick="show_current_algo('modal')">Show Algo</button>  
                     <input type="hidden" id="hidden_search_arguments" name="hidden_search_arguments" value="{{search_arguments}}" /> 
                     

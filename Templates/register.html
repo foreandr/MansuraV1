@@ -5,7 +5,10 @@
         <form class="form-signup" method="POST" >
         	<h2 class="form-signup-heading">Please Sign Up</h2>
 
-        	{{return_message}}
+        	
+			<div id="pass_feedback">
+				{{return_message}}
+			</div>
           
 			<label class="sr-only" id="username"></label>
 			<input name=username type="text" class="form-control" placeholder="Enter Username (cannot change)" required>
@@ -17,9 +20,9 @@
 			<input name=paypal_email type="email"  class="form-control"placeholder="PAYPAL EMAIL [This is the location all of the capital will be sent (pls double check it)] - :)" required>
 			
 			<label class="sr-only" id="password">Password</label>
-			<input name="password" type="password" class="form-control" placeholder="Password (is encrypted and hashed)" required>
+			<input onkeyup="PASSWORD_VALIDATION(this.value)" id="password" name="password" type="password" class="form-control" placeholder="Password (is encrypted and hashed)" required>
 
-          	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+          	<button id="pass_submit_checked" class="btn btn-lg btn-primary btn-block" type="submit" disabled>Sign Up</button>
         </form>
 
 		<a href="login">
@@ -28,6 +31,28 @@
   
       </div>
 
-
+<script>
+	// console.log("CHECK")
+	function PASSWORD_VALIDATION(value){
+		if (! (special_char_checker(value)) || (!(value.length >= 8))){
+			document.getElementById("pass_feedback").innerHTML = "PASSWORD IS TOO SHORT OR NEEDS A SPECIAL CHARACTER"
+			console.log("NEEDS A SPECIAL CHARACTER")
+			document.getElementById("pass_submit_checked").disabled = true
+		}
+		else{
+			document.getElementById("pass_feedback").innerHTML = "PASS LOOKS GOOD"
+			document.getElementById("pass_submit_checked").disabled = false
+		}
+		
+	}
+	function special_char_checker(string){
+		var format = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+		if(format.test(string)){
+			return true;
+		} else {
+			return false;
+		}
+	}
+</script>
 
 {% endblock main %}

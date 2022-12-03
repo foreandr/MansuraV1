@@ -950,35 +950,42 @@ def password_recovery():
 
     if request.method == "POST":
         recovery_email = request.form["email"]
-        print(recovery_email)
-        my_email.send_email(recovery_email)
+        # print(recovery_email)
+        database.CREATE_AND_SEND_ONE_TIME_PASS_EMAIL(recovery_email)
+        # my_email.send_email(recovery_email)
+        return redirect(url_for('password_reset'))
     return render_template(f"password_recovery.html")
 
 
 @app.route("/password_reset", methods=['GET', 'POST'])
-def password_reset():
+def password_reset():#TODO: GET THIS WORKING, CHECK IF OEN TIME PASS IS THE SMAE
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     helpers.log_function("request", request)
-    print("got here 1")
+
     if request.method == "POST":
-        print("got here 2")
+        print("TEST 1 ")
+        
         email = request.form["email"]
         password = request.form["password"]
-        recov_test_password = request.form["repeat_password"]
-        print(email)
-        print(password)
-        print(recov_test_password)
-        if password == recov_test_password:
+        repeat_pass = request.form["check_password"]
+        one_time_pass = request.form["One Time Password"]
+        current_one_time_pass = database.GET_ONE_TIME_PASS(email)
+        
+        print("email                :",email)
+        print("password             :",password)
+        print("repeat_pass          :",repeat_pass)
+        print("one_time_pass        :",one_time_pass)
+        print("current_one_time_pass:",current_one_time_pass)
+        
+        
 
+        if (password == repeat_pass) and (one_time_pass == current_one_time_pass):
             database.CHANGE_PASSWORD( email, password)
-            print(email, " Password changed")
             return redirect(url_for("login"))
         else:
-            print("got here 3")
-            return render_template(f"password_reset.html", message="Passwords are not the same!")
+            return render_template(f"password_reset.html", message="Passwords are not the same! \nOr One Time Password is Incorrect!")
     else:
-        print("got here 4")
         return render_template(f"password_reset.html")
 
 
@@ -1451,7 +1458,7 @@ if __name__ == '__main__':
     thread = Thread(target = distribution_algorithm.TESTING_TIMING, args = ())
     thread.start()
 
-    app.run(host=host, port="8091", debug=False, use_reloader=False)  # host is to get off localhost
+    app.run(host=host, port="8095", debug=False, use_reloader=False)  # host is to get off localhost
     #serve(app, host=host,port="8091")    
 
     # If the debugger is on, I can change my files in real time after saving

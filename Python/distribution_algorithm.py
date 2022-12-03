@@ -16,15 +16,15 @@ import pytz
 import json
 
 
+try: #LIVE VERSION
+    import Python.db_connection as connection
+    from Python.helpers import print_green, print_title, log_function
+    from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
+except: #TEST VERSION ---#DEFINITELY NOT A GOOD IDEA TO DO THIS
+    from generating_excel import WRITE_HEADERS_TO_EXCEL
+    import db_connection as connection
+    from  helpers import print_green, print_title, log_function
 
-import Python.db_connection as connection
-from Python.helpers import print_green, print_title, log_function
-from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
-''' #MIDDLE========================================
-from generating_excel import WRITE_HEADERS_TO_EXCEL
-import db_connection as connection
-from  helpers import print_green, print_title, log_function
-''' #TOP/BOPTTOM=================================
 
 def GET_REPLYING_TO(file_id):
     
@@ -78,7 +78,7 @@ def GET_REPLYING_TO(file_id):
 
 
 def FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT(vote_type, testing=False):
-    #print(f"CURRENTLY TESTING? : {testing}")
+    print(f"CURRENTLY TESTING? : {testing}")
     #print()
     #print("FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT")
     
@@ -168,6 +168,7 @@ def FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT(vote_type, testing=False):
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
+    print(F"DONE {vote_type} DISTRIBUTION")
 
     #print(new_dict)
     #exit()
@@ -560,11 +561,18 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
             #print("error", str("TEMPT DICT: " + str(temp_dict)))
             for key_, value_ in temp_dict.items(): # THIS MAKES EVERYTHING SO MUCH SLOWER
                 if key_ not in FINAL_DICT:
-                    #print(f"FIRST TIME SEEING {key}")
-                    FINAL_DICT[key_] = BROKEN_ROUNDING(float(value_))
+                    try:
+                        FINAL_DICT[key_] = BROKEN_ROUNDING(float(value_))
+                    except Exception as e:
+                        print(e)
+                        log_function("error", (str(e) + " " + str(key_) + " " + str(value_) + " " + str(temp_dict) + " " + str(ALGO[0]) + "insert"))
                 else:
-                    #org = FINAL_DICT[key_]                  
-                    FINAL_DICT[key_] += BROKEN_ROUNDING(float(value_))
+                    try:
+                        FINAL_DICT[key_] += BROKEN_ROUNDING(float(value_))
+                    except Exception as e:
+                        print(e)
+                        log_function("error", (str(e) + " " + str(key_) + " " + str(value_) + " " + str(temp_dict) + " " + str(ALGO[0])+ "added"))
+
                     #print(f"DUPE KEY={key} | ORIG={org} + {value} = NEW={FINAL_DICT[key]}")
                 #print("NORMAL POST", FINAL_DICT[key_],value)
             # GRABBING THE REPLY DETAILS            
@@ -766,6 +774,7 @@ def CHECK_TIME_EQUIVALENCE_AND_EXECUTE():
 
     write_date_to_csv([current_datetime])
 
+
     
     # IF DATA.DAY > READ(CSV.DAY)
     # IF DATA.MONTH > READ(CSV.MONTH)
@@ -876,8 +885,8 @@ def RUN_WITH_TIME_TEST():
     # get the start time
     st = time.time()
 
-    FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Daily", testing=True)
-    # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly")
+    FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Daily", testing=False)
+    #FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly")
     
     # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Yearly", testing=True)
         
