@@ -96,7 +96,7 @@ def home():
     
     # GRAB THE ARGS FROM QUERY BEFORE THE CURRENT PAGE [GET OR POST]
     returned_search_arguments = request.form.get("search_arguments")
-    print(returned_search_arguments)
+    # print(returned_search_arguments)
 
     new_json_search_clauses = helpers.COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses)
     '''
@@ -128,7 +128,8 @@ def home():
 
     # GRAB STUFF IT'S IT'S EMPTY EITHE RWAY
     if len(file_ids_list) == 0:
-        balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session_username)
+        print("IS EMPTY")
+        user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session_username)
     
     username_len = len(usernames_list)
     # print("USERNAMES LEN", username_len, usernames_list)
@@ -154,6 +155,8 @@ def home():
     # GET SEARCH FAVOURITES
     search_favourites = database.GET_SEARCH_FAVOURITES_BY_USERNAME(session["user"])
     favourites_len = len(search_favourites)
+    if favourites_len > 20:
+        favourites_len = 20
 
     return render_template('index.html',
                             message="index.html page",
@@ -196,7 +199,7 @@ def home():
                             can_scroll=can_scroll,
                             
                             search_favourites=search_favourites,
-                            favaourites_len=favourites_len
+                            favourites_len=favourites_len
                            )
 
 
@@ -343,14 +346,12 @@ def upload():
     if not database.CHECK_DATE(session["user"]):
         return redirect(url_for("add_funds"))
     if request.method == "POST": # UPLOADING SOMETHING
-        # print(request.url)
-
-        save_algo = request.form.get("save_algo")
-        hidden_search_arguments = request.form.get("hidden_search_arguments")
-        hidden_search_arguments = helpers.TURN_STRING_TO_DICT(hidden_search_arguments)
-        # print(type(hidden_search_arguments),hidden_search_arguments)
         
+        save_algo = request.form.get("save_algo")
         if save_algo != "None" and save_algo != None:
+            hidden_search_arguments = request.form.get("hidden_search_arguments")
+            hidden_search_arguments = helpers.TURN_STRING_TO_DICT(hidden_search_arguments)
+            
             where_clause = hidden_search_arguments['where_full_query']
             order_by_clause = hidden_search_arguments['order_by_clause']
             user_name = session["user"]
@@ -465,17 +466,9 @@ def user_profile_name(username):
         file_id = final_filename.split("-")[1]
         num_replies = database.GET_NUM_REPLIES(file_id)
         
-        
         reply_array = database.GET_ALL_REPLIES(file_id)
         post_username, post_file_path, post_user_id, post_foreign_id_source, post_date, file_id_, single_day_votes, single_month_votes, single_year_votes, single_likes, single_dislikes = database.GET_SINGLE_DATASET_INFO(final_filename)
-        #print(single_likes)
-        #print(single_dislikes)
 
-        #print("NUM REPLIES", num_replies)
-        #print("file_id", file_id)
-        #print("file_id_", file_id_)
-
-        # GOING TO A USER
         search_json = {}
         json_search_clauses = "None"
         if request.method == 'POST':
@@ -563,13 +556,10 @@ def user_profile_name(username):
         else:
             og_post_img = pic_path[7:]
 
-
-        #print("OG POST DETAILS")
-        #print(og_post_text)
-        #print(og_post_18)
-        #print( og_post_src)
-        #print(og_post_img )
-        #print(og_post_distro_details)
+        search_favourites = database.GET_SEARCH_FAVOURITES_BY_USERNAME(session["user"])
+        favourites_len = len(search_favourites)
+        if favourites_len > 20:
+            favourites_len = 20
         return render_template('post_details.html',
                                 # POST DETAILS
 
@@ -591,6 +581,9 @@ def user_profile_name(username):
                                 post_date=post_date,
                                 reply_array=reply_array,
 
+                                search_favourites=search_favourites,
+                                favourites_len=favourites_len,
+
                                 daily_dataset_votes=single_day_votes, 
                                 monthly_dataset_votes=single_month_votes,
                                 yearly_dataset_votes=single_year_votes, 
@@ -602,8 +595,6 @@ def user_profile_name(username):
 								
 								searcher_has_liked=searcher_has_liked, 
 								searcher_has_disliked=searcher_has_disliked,
-
-
 
                                 usernames_list=usernames_list,
                                 file_ids_list=file_ids_list,
@@ -628,6 +619,7 @@ def user_profile_name(username):
                                 source_list=source_list,
                                 image_path_list=image_path_list,
                                 distro_details_list=distro_details_list,                            
+                                
                                 search_arguments=search_arguments,
                                 page_no=page_no,
                                 can_scroll=can_scroll
@@ -731,6 +723,11 @@ def user_profile_name(username):
     lengths_of_text_files = []
     for i in text_list:
         lengths_of_text_files.append(len(i))
+    
+    search_favourites = database.GET_SEARCH_FAVOURITES_BY_USERNAME(session["user"])
+    favourites_len = len(search_favourites)
+    if favourites_len > 20:
+        favourites_len = 20
 
     if name_exists:
         return render_template('user_profile.html',
@@ -741,6 +738,10 @@ def user_profile_name(username):
                                 friend_count=friend_count,
                                 follow_count=follow_count,
                                 profile_bio=profile_bio,
+                                
+                                favourites_len=favourites_len,
+                                search_favourites=search_favourites,
+
 
                                 usernames_list=usernames_list,
                                 file_ids_list=file_ids_list,

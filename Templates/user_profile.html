@@ -1,6 +1,7 @@
 {% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
 {%block main %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/user_profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 <!-- SESSION VARIABLES-->
 <div id="profile_details" class="d-flex justify-content-center">
     <div id="profile picture">
@@ -12,7 +13,8 @@
         <br>
     </div>
 </div>
-      
+
+<!-- SESSION VARIABLES--> 
 <form action="/edit_bio" method="POST" >
     {% if is_host == "true" %}
     <div class="d-flex justify-content-center">
@@ -26,6 +28,8 @@
     {% endif %}
 </form>
 
+
+<!-- SESSION VARIABLES-->
 <div class="d-flex justify-content-center">
     <div class="dropdown">
         <br>
@@ -42,11 +46,20 @@
 
 </div>
 
+<!-- SESSION VARIABLES-->
 <div  class="d-flex justify-content-center">
     <div id="non_host_add_remove">
     </div>
 </div>
 
+<!-- SESSION VARIABLES-->
+<div class="justify-content-between align-items-center" id="post_div">
+    <button class="btn btn-secondary" type="button" onclick="post_modal_toggle()" aria-expanded="false">
+        POST
+    </button>
+</div>
+
+<!-- SESSION VARIABLES-->
 <div class="container-fluid">
     <div class="row justify-content-md-center">
         <div class="col-2">
@@ -156,8 +169,15 @@
         <!--DOING THE SEARCH-->
         <div class="col-3"> 
             <form action="/{{host_user}}" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
-                <input class="d-inline form-control mr-sm-2" id="search" name="search" type="search" placeholder="(can be empty)" aria-label="search">
-                    <button class="btn btn-primary">Search</button>
+                <input class="input-medium form-control" id="search" name="search" type="search" placeholder="empty / single word (beta)" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')">
+                    <div>
+                        <button class="btn btn-primary">Search</button>
+                        <a class="btn btn-primary" href="/home" role="button">Reset</a>
+                        <button class="btn btn-primary" type="button" onclick="save_modal_toggle()">Save Algo</button>
+                        <button class="btn btn-primary" type="button" onclick="show_current_algo('not_modal')">Show Algo</button>  
+                        <div id="algo_show_location"></div>
+                    </div> 
+                       
                 </input>
 
                 <!-- DATE SECTION -->
@@ -227,19 +247,13 @@
                             <div>
                                 ALGORITHM FAVOURITES (5 Max)
                             </div>
-
-                            <div class="btn btn-outline-success">
-                                <input type="radio" name="order_check" value="a-demo" id="a-demo">
-                                <label for="a-demo" unselectable>a-demo</label>
-                            </div>
-                            <div class="btn btn-outline-success">
-                                <input type="radio" name="order_check" value="andrfore-demo" id="andrfore-demo">
-                                <label for="andrfore-demo" unselectable>andrfore-demo</label>
-                            </div>
-
-                            <div class="btn btn-outline-success">
-                                <input type="radio" name="order_check" value="foreandr-demo" id="foreandr-demo">
-                                <label for="foreandr-demo" unselectable>foreandr-demo</label>
+                            <div id="algo_favourites">
+                                {%for i in range(0, favourites_len )%}
+                                <div class="btn btn-outline-success">
+                                    <input type="radio" name="order_check" value="{{search_favourites[i][2]}}" id="{{search_favourites[i][2]}}">
+                                    <label for="{{search_favourites[i][2]}}" unselectable>{{search_favourites[i][2]}}</label>
+                                </div>
+                                {%endfor%}
                             </div>
 
                         </div>
@@ -297,18 +311,32 @@
                     <input type="hidden" id="page_number" name="page_number" value={{page_no}} /><!--Page Test:{{page_no}}--> 
                 </div>
             </form>
-
-                    
-            <form action="https://google.com">
-                <input class="inline btn btn-primary" type="submit" value="Save Current Algorithm" />
-            </form>
-
         </div>
 
 
     </div>
 </div>
 
+<!--save algo modal-->
+<div id="save_modal" class="modal">
+    <div class="modal-content">
+        <form action="upload" method="POST" enctype="multipart/form-data">
+            <input class="input-medium form-control" id="Algorithm Name" name="Algorithm Name" type="Algorithm Name" placeholder="Algorithm Name" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')" required>
+                <div>
+                    <button class="btn btn-primary" value="save_algo" name="save_algo">Save Algo</button>
+                    <button class="btn btn-primary" type="button" onclick="show_current_algo('modal')">Show Algo</button>  
+                    <input type="hidden" id="hidden_search_arguments" name="hidden_search_arguments" value="{{search_arguments}}" /> 
+                    
+                    <div name="div_with_algo" value="div_with_algo"></div>
+                    
+                    
+                    <div id="algo_show_location_modal"></div>
+                </div> 
+            </input>
+        </form>
+    </div>
+</div>
+<!--save algo modal-->
 
 <!-- reply_modal  -->
 <div id="reply_modal" class="modal">
@@ -370,6 +398,71 @@
 </div>
 <!-- reply_modal -->
 
+
+<!-- post_modal  -->
+<div id="post_modal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <form action="upload" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="textbox">Whats on your mind? (10000 max chars)</label>
+                <br>
+                <textarea id="textbox" name="textbox" rows="7" cols="50" maxlength="10000"></textarea>
+
+            </div>
+
+            <div class="custom-file">
+                <!-- .mp4,.csv, .onnx,-->
+                <input type="file" class="custom-file-input" name="file" accept=".png, .jpeg, .jpg, .pdf" id="dataset_file">
+
+                <div id="dataset_return_message">
+
+                </div>
+            </div>
+
+            <div>
+                <input type="checkbox" id="built_from_other_file" name="built_from_other_file" value="built_from_other_file" onchange="enable_built_from_other()">
+                <label class="custom-file-label" for="file">Replying to File Id</label>
+                <input type="number" id="external_source" name="external_source" value="" disabled>(this person will get 5% of what your winnings)
+                
+            </div>
+
+            <div>
+                <input type="checkbox" name="button_external_source_link" value="button_external_source_link" onchange="enable_exteral_link()">
+                <label><b>Source:</b></label>
+                <input id="external_source_link" name="external_source_link" type="url" placeholder="Enter Source LINK" disabled>
+            </div>
+
+
+            <div class="dropdown" name="distro_algo">
+                <select id="distro_algo" class="dropdown-content" name="distro_algo" onchange="howmanysectionsfunc()">
+                    <option id="equal">EQUAL DISTRIBUTION</option>           
+                    <option id="log">LOG DISTRIBUTION</option>
+                    <option id="log_equal">LOG EQUAL DISTRIBUTION</option>
+                </select>
+                more coming soon...
+            </div>
+
+            <div id="how_many_sections" name="">
+                
+            </div>
+
+            <div>    <!-- IMAGES -->
+                <img id="equal_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/equal_distribution.png')}}" width='400' height='200' />
+                <img id="log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_distribution.png')}}" width='400' height='200' />
+                <img id="equa_log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_equal_distribution.png')}}" width='400' height='200' />
+            </div>
+
+            <br>
+
+            <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>
+        </form>
+
+    </div>
+</div>
+<!-- post_modal  -->
+
 <div id="dataset_return_message">
 
 </div>
@@ -381,6 +474,26 @@
             <input type="range" min="1" max="10" value="5" class="slider" id="myRange" name="how_many_sections_">
         </div>
         `
+    function show_current_algo(div_called_from){
+        console.log(div_called_from)
+        if (div_called_from == 'modal'){
+            if (document.getElementById("algo_show_location_modal").innerHTML == ""){
+            document.getElementById("algo_show_location_modal").innerHTML= "{{search_arguments}}"
+            }else{
+                document.getElementById("algo_show_location_modal").innerHTML= ""
+            }
+        }else{
+            if (document.getElementById("algo_show_location").innerHTML == ""){
+            document.getElementById("algo_show_location").innerHTML= "{{search_arguments}}"
+            }else{
+                document.getElementById("algo_show_location").innerHTML= ""
+            }
+        }
+        /*algo_show_location_modal*/      
+    }
+
+
+
     function howmanysectionsfunc(){
 
         dist_chosen = document.getElementById("distro_algo").value 
@@ -447,32 +560,6 @@
 
         return second_ampr_split
     }
-
-    var all_friends = '{{ friends }}';
-    var my_friend_Array = all_friends.split(" ");
-    //console.log("NUM FOLLOWING:" + my_friend_Array.length);
-    var name_array = []
-    for (let i = 0; i < my_friend_Array.length; i++) {
-        // console.log(i + ":  " + my_friend_Array[i]);
-        name_array.push(get_wanted_string_following(my_friend_Array[i]));
-    }
-
-    var all_followers = '{{ followers }}';
-    var my_followers_Array = all_followers.split(" ");
-    //console.log("NUM FOLLOWERS:" + my_followers_Array.length);
-    var follower_array = []
-    for (let i = 0; i < my_followers_Array.length; i++) {
-        // console.log(i + ":  " + my_friend_Array[i]);
-        follower_array.push(get_wanted_string_followers(my_followers_Array[i]));
-    }
-
-    var globalVariable = {
-        followers:follower_array,
-        friends:name_array
-    }
-
-
-
 
     // CHECKING WHO'S PROFILE IT IS TO SEE IF THERE NEEDS TO BE AN ADD USER SPOT
     // THE TRIPLE === COULD LEAD TO FUNKY BEHAVIOUR
@@ -557,7 +644,21 @@
         }
 
     }
+    function post_modal_toggle() {
+        var modal = document.getElementById("post_modal");
+        modal.style.display = "block";
+    }
     
+    function save_modal_toggle(file_id) {
+        // console.log(file_id)
+        var modal = document.getElementById("save_modal");
+        modal.style.display = "block";
+    }
+
+    function post_modal_toggle() {
+        var modal = document.getElementById("post_modal");
+        modal.style.display = "block";
+    }
     function reply_modal_toggle(file_id) {
         // console.log(file_id)
         document.getElementById("reply_external_source").value = file_id;
@@ -581,9 +682,14 @@
     document.onclick= function(event) {
         console.log("clicked screen")
         var modal = document.getElementById("reply_modal");
-        if ((event.target == modal)) {
+        var modal2 = document.getElementById("post_modal");
+        var modal3 = document.getElementById("save_modal");
+        if ((event.target == modal) || (event.target == modal2) || (event.target == modal3)) {
 
             modal.style.display = "none";
+            modal2.style.display = "none";
+            modal3.style.display = "none";
+            
         }
     };
 

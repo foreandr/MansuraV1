@@ -187,10 +187,10 @@
                         <div> 
                             </br>
                             <div>
-                                ALGORITHM FAVOURITES
+                                ALGORITHM FAVOURITES (your top 20)
                             </div>
                             <div id="algo_favourites">
-                                {%for i in range(0, favaourites_len )%}
+                                {%for i in range(0, favourites_len )%}
                                 <div class="btn btn-outline-success">
                                     <input type="radio" name="order_check" value="{{search_favourites[i][2]}}" id="{{search_favourites[i][2]}}">
                                     <label for="{{search_favourites[i][2]}}" unselectable>{{search_favourites[i][2]}}</label>

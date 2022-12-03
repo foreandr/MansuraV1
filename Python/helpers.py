@@ -249,6 +249,12 @@ def TURN_STRING_TO_DICT(my_string):
 
     #print(my_string)
     #print("changed")
+    if type(my_string) == "Nonetypee" or my_string == "Nonee":
+        my_json_dict = {"where_full_query":"",
+        "order_by_clause":""}
+        new_json = json.loads(my_json_dict, strict=False)
+        return new_json
+
     if "now())::date" in my_string:
         # print("DOING THE REPLACE")
         my_string = my_string.replace(", now())::date", "*** now())::date")

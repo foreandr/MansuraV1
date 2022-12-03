@@ -199,9 +199,16 @@
 
         <!--DOING THE SEARCH-->
         <div class="col-3"> 
-            <form action="/" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
-                <input class="d-inline form-control mr-sm-2" id="search" name="search" type="search" placeholder="(can be empty)" aria-label="search">
-                    <button class="btn btn-primary">Search</button>
+            <form action="/{{username}}_{{username}}-{{file_id}}-post_page" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
+                <input class="input-medium form-control" id="search" name="search" type="search" placeholder="empty / single word (beta)" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')">
+                    <div>
+                        <button class="btn btn-primary">Search</button>
+                        <a class="btn btn-primary" href="/home" role="button">Reset</a>
+                        <button class="btn btn-primary" type="button" onclick="save_modal_toggle()">Save Algo</button>
+                        <button class="btn btn-primary" type="button" onclick="show_current_algo('not_modal')">Show Algo</button>  
+                        <div id="algo_show_location"></div>
+                    </div> 
+                       
                 </input>
 
                
@@ -272,19 +279,13 @@
                             <div>
                                 ALGORITHM FAVOURITES (5 Max)
                             </div>
-
-                            <div class="btn btn-outline-success">
-                                <input type="radio" name="order_check" value="a-demo" id="a-demo">
-                                <label for="a-demo" unselectable>a-demo</label>
-                            </div>
-                            <div class="btn btn-outline-success">
-                                <input type="radio" name="order_check" value="andrfore-demo" id="andrfore-demo">
-                                <label for="andrfore-demo" unselectable>andrfore-demo</label>
-                            </div>
-
-                            <div class="btn btn-outline-success">
-                                <input type="radio" name="order_check" value="foreandr-demo" id="foreandr-demo">
-                                <label for="foreandr-demo" unselectable>foreandr-demo</label>
+                            <div id="algo_favourites">
+                                {%for i in range(0, favourites_len )%}
+                                <div class="btn btn-outline-success">
+                                    <input type="radio" name="order_check" value="{{search_favourites[i][2]}}" id="{{search_favourites[i][2]}}">
+                                    <label for="{{search_favourites[i][2]}}" unselectable>{{search_favourites[i][2]}}</label>
+                                </div>
+                                {%endfor%}
                             </div>
 
                         </div>
@@ -359,13 +360,10 @@
     </div>
 </div>
 
-
-
 <!-- reply_modal  -->
 <div id="reply_modal" class="modal">
-    
-        <!-- Modal content -->
-        <div class="modal-content">
+    <!-- Modal content -->
+    <div class="modal-content">
             <form action="upload" method="POST" enctype="multipart/form-data">
                 <div>
                     <label for="textbox">Whats on your mind? (10000 chars) [NO EMOJIS FOR NOW SORRY LOL]</label>
@@ -422,11 +420,32 @@
                 <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>
     
             </form>
-        </div>
+    </div>
 </div>
+<!-- reply_modal  -->
+
+<!-- save_modal  -->
+<div id="save_modal" class="modal">
+    <div class="modal-content">
+        <form action="upload" method="POST" enctype="multipart/form-data">
+            <input class="input-medium form-control" id="Algorithm Name" name="Algorithm Name" type="Algorithm Name" placeholder="Algorithm Name" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')" required>
+                <div>
+                    <button class="btn btn-primary" value="save_algo" name="save_algo">Save Algo</button>
+                    <button class="btn btn-primary" type="button" onclick="show_current_algo('modal')">Show Algo</button>  
+                    <input type="hidden" id="hidden_search_arguments" name="hidden_search_arguments" value="{{search_arguments}}" /> 
+                    
+                    <div name="div_with_algo" value="div_with_algo"></div>
+                    
+                    
+                    <div id="algo_show_location_modal"></div>
+                </div> 
+            </input>
+        </form>
+    </div>
 </div>
+<!-- save_modal  -->
+
 <script>
-    
     console.log("{{username}}")
     var slider = `Sections: 1-10
         <div class="slidecontainer" >
@@ -527,6 +546,29 @@
 
         }
     };
+    
+    function show_current_algo(div_called_from){
+        console.log(div_called_from)
+        if (div_called_from == 'modal'){
+            if (document.getElementById("algo_show_location_modal").innerHTML == ""){
+            document.getElementById("algo_show_location_modal").innerHTML= "{{search_arguments}}"
+            }else{
+                document.getElementById("algo_show_location_modal").innerHTML= ""
+            }
+        }else{
+            if (document.getElementById("algo_show_location").innerHTML == ""){
+            document.getElementById("algo_show_location").innerHTML= "{{search_arguments}}"
+            }else{
+                document.getElementById("algo_show_location").innerHTML= ""
+            }
+        }
+        /*algo_show_location_modal*/      
+    }
+    function save_modal_toggle(file_id) {
+        // console.log(file_id)
+        var modal = document.getElementById("save_modal");
+        modal.style.display = "block";
+    }
 
     function reply_modal_toggle(file_id) {
         // console.log(file_id)
@@ -535,15 +577,17 @@
         modal.style.display = "block";
     }
 
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
         var modal = document.getElementById("reply_modal");
         var modal2 = document.getElementById("post_modal");
+        var modal3 = document.getElementById("save_modal");
         
-        if ((event.target == modal) || (event.target == modal2)) {
+        if ((event.target == modal) || (event.target == modal2) || (event.target == modal3)) {
 
             modal.style.display = "none";
             modal2.style.display = "none";
+            modal3.style.display = "none"
         }
     }
 </script>
