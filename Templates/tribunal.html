@@ -8,15 +8,15 @@ TRIBUNAL
     y_votes_left = '{{ yearly_left }}';
     // console.log(d_votes_left)
 
-    document.getElementById("index_daily").innerHTML = 'DAILY POOL: ${{daily_pool}}';
-    document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: ${{monthly_pool }}';
-    document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: ${{yearly_pool }}';
+    document.getElementById("index_daily").innerHTML = 'DAILY POOL: {{daily_pool}}';
+    document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: {{monthly_pool }}';
+    document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: {{yearly_pool }}';
 
 
 
     document.getElementById("daily_votes_left").innerHTML = `DAILY VOTES: ${d_votes_left}`;
     document.getElementById("monthly_votes_left").innerHTML = `MONTHLY VOTES: ${m_votes_left}`;
     document.getElementById("yearly_votes_left").innerHTML = `YEARLY VOTES: ${y_votes_left}`;
-    document.getElementById("user_balance").innerHTML = 'BALANCE:${{user_balance}}';
+    document.getElementById("user_balance").innerHTML = 'BALANCE:{{user_balance}}';
 </script>
 {% endblock main %}
