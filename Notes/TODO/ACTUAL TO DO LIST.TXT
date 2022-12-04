@@ -92,7 +92,11 @@ DONE. change excel to produce proper changed shit
 DONE. for the dailies, only a single person wins
 	DONE. get max num for that day
 	DONE. get all posts with that num do standard distro for those
+LATER. notifications proper
+LATER. SEARCH RELATED:
 
+
+	validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
 MINIMUM VIABLE PRODUCT
 ========================
 WRITE UP THE PAPER
@@ -102,10 +106,8 @@ MOTTO
 	- PAID TO SHARE
 	- PAID TO SEARCH
 
-2. notifications proper
-3. SEARCH RELATED:
-	validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
-4.tribunal
+
+1.tribunal
 	- IF num dislikes > 10, tag post for tribunal, if num likes > dislikes, no changes, else strip the text from the post, and change the json, and remove the image,
 	- if the likes go back to above, then restore
 	- if in tribunal negative the contents of the post are hidden and just shown to be (in tribunal)

@@ -965,6 +965,13 @@ def remove_user(username):
         database.CONNECTION_REMOVE( user_id_first, user_id_second)
         return redirect(url_for('user_profile_name', username=session['user']))
 
+@app.route("/report/<file_id>", methods=['GET','POST'])
+def report(file_id):
+    # INSERT INTO TRIBUNAL
+    print("REPORTING", file_id)
+    database.INSERT_INTO_TRIBUNAL(file_id)
+    return redirect(url_for('home'))
+
 
 @app.route("/password_recovery", methods=['GET', 'POST'])
 def password_recovery():

@@ -922,13 +922,10 @@ def USER_FULL_RESET():
     USER_CREATE_TABLE()
     CREATE_PAYOUTS_TABLE()
     FILE_CREATE_TABLE()  
-
     LIKES_CREATE_TABLE()
     DILIKES_CREATE_TABLE()
-    
     CREATE_TABLE_KEYWORDS()
     CREATE_TABLE_FILE_KEYWORDS()
-
     FILE_VOTE_CREATE_TABLE() 
     CONNECTION_CREATE_TABLE()
     CREATE_MANSURA_TABLE() # SUBSCRIPTIONS
@@ -938,6 +935,7 @@ def USER_FULL_RESET():
     CREATE_TABLE_POST_FAVOURITES()
     EQUITY_CREATE_TABLE()
     CREATE_TABLE_1_TIME_PASSWORDS()
+    CREATE_TABLE_TRIBUNAL()
 
     FUNCTION_AND_PROCEDURES()
 
@@ -2063,157 +2061,6 @@ def DEFAULT_EQUITY_INSERT():
     
     CLOSE_CURSOR_AND_CONN(cursor, conn)
 
-def home_dataset_function(page_no, sort_time_frame, how_many, session_username='None'):
-    conn = connection.test_connection()
-    cursor = conn.cursor() 
-    cursor.execute(f"""
-        SELECT 
-            U.username, --0
-            (                   --1
-                SELECT balance
-                FROM USERS 
-                WHERE username = '{session_username}'
-             
-            ),  
-            F.File_PATH, --2
-            F.Date_Time, --3
-            F.Post_total_size, --4
-            F.Post_foreign_id_source,--5
-            F.File_id,--6
-                   
-            ( --7
-                SELECT COUNT(*) -- daily num votes LEFT
-                FROM FILE_VOTES file_vote 
-                WHERE Vote_Type = 'Daily'
-                AND Voter_Username = '{session_username}'
-                AND Date_Time >= date_trunc('day', now())::date
-            ),
-            ( --8
-                SELECT COUNT(*) -- monthly num votes LEFT
-                FROM FILE_VOTES file_vote
-                WHERE Vote_Type = 'Monthly'
-                AND Voter_Username = '{session_username}'
-                AND Date_Time >= date_trunc('month', now())::date
-            ),
-            (   --9
-                SELECT COUNT(*) -- yearly num votes LEFT
-                FROM FILE_VOTES file_vote
-                WHERE Vote_Type = 'Yearly'
-                AND Voter_Username = '{session_username}'
-                AND Date_Time >= date_trunc('year', now())::date
-            ),
-            (   --10
-                SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
-                FROM FILE_VOTES file 
-                WHERE file.File_id = F.File_id 
-                AND Vote_Type = 'Daily'
-            ),
-            (   --11
-                SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
-                FROM FILE_VOTES file 
-                WHERE file.File_id = F.File_id 
-                AND Vote_Type = 'Monthly'
-            ),
-            (   --12
-                SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
-                FROM FILE_VOTES file 
-                WHERE file.File_id = F.File_id 
-                AND Vote_Type = 'Yearly'
-            ), 
-            (SELECT Daily FROM PAYOUTS) -- 13 PAYMENT INFO                                                   
-        FROM FILES F
-        
-        INNER JOIN USERS U
-        on U.username = F.Uploader
-
-        ORDER BY GET_FILE_VOTE_COUNT_TYPED(F.File_Id, '{sort_time_frame}') DESC
-
-        OFFSET (({page_no} - 1) * 100) 
-        LIMIT {how_many}; 
-    """)
-
-
-    File_ids = ""
-    usernames = ""
-    paths = ""
-    dates = ""
-    Post_total_size = ""
-    post_sources = ""
-    day_votes = ""
-    month_votes = ""
-    year_votes = ""
-    total_votes = ""
-    dailypool = ""
-    monthlypool = ""
-    yearlypool = ""
-    daily_left = ""
-    monthly_left = ""
-    yearly_left = ""
-    user_balance = ""
-
-    home_dataset_info = cursor.fetchall()
-    for i in home_dataset_info:
-        #print(i)
-        usernames += i[0] + "//"
-        user_balance = str(i[1])
-        paths += str(i[2]) + "//"
-        dates += str(i[3]) + "//"
-        Post_total_size += str(i[4]) + "//"
-        post_sources += str(i[5]) + "//"
-        File_ids += str(i[6]) + "//"      
-        daily_left = str(i[7])
-        monthly_left = str(i[8])
-        yearly_left = str(i[9])
-
-        day_votes += str(i[10]) + "//"
-        month_votes +=  str(i[11]) + "//"
-        year_votes +=  str(i[12]) + "//"
-        total_votes_ = i[10] + i[11] + i[12]
-        total_votes += str(total_votes_) + "//"
-        
-    if CHECK_DATE(session_username):
-        #print(session_username, " IS SUBSCRIBED")
-        daily_left =  1 if (int(daily_left) == 0) else 0
-        monthly_left = 1 if (int(monthly_left) == 0) else 0
-        yearly_left = 1 if (int(yearly_left) == 0) else 0
-    else:
-        daily_left, monthly_left, yearly_left = 0, 0, 0
-
-    cursor.execute(f"""
-    SELECT * 
-    FROM PAYOUTS
-    """)
-    pools = cursor.fetchall()
-    for i in pools:
-        # print(i, len(i))
-        dailypool = i[1]
-        monthlypool = i[2]
-        yearlypool = i[3]
-    
-    '''
-    print(f"""\nHOME DETAILS:
-        0:  {usernames}
-        1:  {user_balance}
-        2:  {paths}
-        3:  {dates}
-        4:  {Post_total_size}
-        5:  {File_ids}
-        6:  {post_sources}
-        7:  {daily_left}    {session_username} DAILY VOTES LEFT
-        8:  {monthly_left}    {session_username} MONTHLY VOTES LEFT
-        9:  {yearly_left}    {session_username} YEARLY VOTES LEFT
-        10: {day_votes}
-        11: {month_votes}
-        12: {year_votes}
-        13: {total_votes}
-        14: {dailypool}
-        15: {monthlypool}
-        16: {yearlypool}
-        """)
-    '''        
-    
-    CLOSE_CURSOR_AND_CONN(cursor, conn)
-    return File_ids, usernames, paths, dates, Post_total_size, post_sources, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, total_votes, dailypool, monthlypool, yearlypool
 
 
 
@@ -3257,7 +3104,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         {where_full_query}
         
         {order_by_clause}
-
+        
         OFFSET (({page_no} - 1) * 100)
         LIMIT 100; 
     """
@@ -3764,3 +3611,55 @@ def GET_PATH_BY_FILE_ID(file_id):
 
     return file_path
 
+def CREATE_TABLE_TRIBUNAL():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""DROP TABLE IF EXISTS TRIBUNAL CASCADE""")
+        cursor.execute(
+            f"""
+                CREATE TABLE TRIBUNAL
+                (
+                Tribunal_id SERIAL PRIMARY KEY,   
+                File_Id varchar UNIQUE
+                );
+            """)
+        conn.commit()
+        print("TRIBUNAL CREATE COMPLETED")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        print("\nHAD TO ROLLBACK TRIBUNAL CREATION" + str(e) )
+    
+    cursor.close()
+    conn.close()
+
+def INSERT_INTO_TRIBUNAL(file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+        INSERT INTO TRIBUNAL
+        (File_Id)
+        VALUES('{file_id}')
+        ON CONFLICT DO NOTHING
+    """)
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+def CHECK_IF_FILE_IS_IN_TRIBUNAL(file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(F"""
+    SELECT COUNT(*) 
+    FROM TRIBUNAL WHERE
+    File_Id = '{file_id}'
+    """)
+    count = 0
+    for i in cursor.fetchall():
+        count = i[0]
+    if count > 1:
+        print(True)
+        return True
+    else:
+        print(False)
+        return False
