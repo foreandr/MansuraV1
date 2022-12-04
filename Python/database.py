@@ -2981,6 +2981,16 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         )
         
         """
+    tribunal_query = """AND 
+    (SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) / 
+    (
+        (SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id)
+    ) > .75
+    
+    
+    """
+
+
     if search_type != "post":
         # payouts because small table, wasnt sure if size would effect query time
         POST_SEARCH_QUERIES = """ 
@@ -3094,7 +3104,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
                 FROM FILES 
                 WHERE Post_foreign_id_source = CAST (F.File_id AS  varchar) --bad mistake shouldnt have to cast but whatever
             )
-
+ 
         FROM FILES F
         
         INNER JOIN USERS U
@@ -3102,9 +3112,28 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
 
         WHERE U.username = U.username -- DO THIS SO ALL OTHERC ALUSES CAN BE AND CLAUSES
         {where_full_query}
-        
+
+        AND CASE 
+            WHEN (SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 0
+                THEN 
+                    1 = 2
+            ELSE 1 = 1 
+        END
+
+                
+                
+                
+            
+
+                            
+
         {order_by_clause}
         
+
+                
+                
+               
+            
         OFFSET (({page_no} - 1) * 100)
         LIMIT 100; 
     """
@@ -3621,7 +3650,7 @@ def CREATE_TABLE_TRIBUNAL():
                 CREATE TABLE TRIBUNAL
                 (
                 Tribunal_id SERIAL PRIMARY KEY,   
-                File_Id varchar UNIQUE
+                File_Id INT UNIQUE
                 );
             """)
         conn.commit()
