@@ -87,6 +87,12 @@ DONE . fix recov page, 1 time entry etc
 DONE. cap search algos per day
 DONE. password validation in regiuster and reocfvr
 DONE. shgow num replies on posts]
+DONE. SHOW DISTRIBUTION OF SEARCH ALGOS IN DISTRIBUTION TXT FILE
+DONE. change excel to produce proper changed shit
+DONE. for the dailies, only a single person wins
+	DONE. get max num for that day
+	DONE. get all posts with that num do standard distro for those
+
 MINIMUM VIABLE PRODUCT
 ========================
 WRITE UP THE PAPER
@@ -95,14 +101,6 @@ MOTTO
 	- PAID TO LIKE
 	- PAID TO SHARE
 	- PAID TO SEARCH
-
-for the dailies, only a single person wins
-	get max num for that day
-	get all posts with that num do standard distro for those
-	
-POST TRIBUNAL 
-1. SHOW DISTRIBUTION OF SEARCH ALGOS IN DISTRIBUTION TXT FILE
-	2B. change excel to produce proper changed shit
 
 2. notifications proper
 3. SEARCH RELATED:

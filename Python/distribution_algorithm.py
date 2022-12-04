@@ -127,11 +127,6 @@ def FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT(vote_type, testing=False):
                 value["RATIO"] = {
                         F'{GET_USERNAME_BY_FILE_ID(ratio_file_id)}': BROKEN_ROUNDING(n_percent)
                 }
-                #print(value)
-                #print()
-                
-                #print(value)
-                #print(value["RATIO"], type(value["RATIO"]))
             # remove all votes of particular type from that file id
             if testing:
                 pass
@@ -142,9 +137,7 @@ def FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT(vote_type, testing=False):
                     WHERE File_id = {key}
                     AND Vote_Type = '{vote_type}'
                     """)
-                conn.commit()  
-                
-
+                conn.commit() 
             non_equity_dict[key] = value
         else:
             non_equity_dict[key] = value
@@ -156,10 +149,21 @@ def FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT(vote_type, testing=False):
     #print("\nCHECKPOINT 1")
     #PROBABLY THE BEST THING TO PRINT TO KNOW WHAT'S GOING ON
     #NOTE, RATIO HAS ALREADY BEEN TAKEN OUT OF AMOUNT, IT ISN'T INCORRECT, CAN BE CHECKED WITH ALGOS
-    
+    print(non_equity_dict)
+    log_function(msg_type="distro", log_string=F"MANSURA: {non_equity_dict['EQUITY']}", vote_type=vote_type, distro_type="initial")
+
+
+    log_function(msg_type="distro", log_string="\nPOSTS", vote_type=vote_type, distro_type="initial")
     for key, value in non_equity_dict.items():
-        log_string = str(key) + ":" + str(value)
-        log_function(msg_type="distro", log_string=log_string, vote_type=vote_type, distro_type="initial")
+        # print(value)
+        if key != "EQUITY" and key != "SEARCH": 
+            log_string = f"{str(key)} [{str(GET_DISTRO_ALGO_BY_FILE_ID(key)[0])}] : {str(value)}"
+            log_function(msg_type="distro", log_string=log_string, vote_type=vote_type, distro_type="initial")
+        else:
+            # log_string = str(key) + ":" + str(value)
+            pass
+        # print(log_string)
+        
         #print(key, ":", value)
     # exit(0)
     #exit()  #THIS IS WHERE IM WORKIN CHECKPOINT 1
@@ -227,8 +231,8 @@ def GET_FREQUENCY_DICT_TYPED(my_vote_type):
                 "AMOUNT": ""
                 }
         
-        value["PERCENT"] =  (value["VOTES"] / total_vote_count_typed)
-        value["AMOUNT"] = BROKEN_ROUNDING(value["PERCENT"] * total_capital_typed) 
+        value["PERCENT"] =  (value["VOTES"] / total_vote_count_typed) * 100
+        value["AMOUNT"] = BROKEN_ROUNDING(value["PERCENT"] * total_capital_typed / 100) 
         value["PERCENT"] =  "".join(("%", str(value["PERCENT"])))
 
         new_dict[key] = value
@@ -328,11 +332,16 @@ def GET_TYPED_PAYOUT(vote_type):
     conn.close()
 
 
-def GET_TOTAL_VOTE_COUNT(type):
+def GET_TOTAL_VOTE_COUNT(my_type):
     #print("GET_TOTAL_VOTE_COUNT")
       
     conn = connection.test_connection()
     cursor = conn.cursor()
+    daily_limit_string = ""
+    if my_type == "Daily":
+        count = GET_HIGHEST_VOTE_COUNT() 
+        daily_limit_string = F"AND (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_Id AND Vote_Type = 'Daily') = '{count}'" #limit to max 
+
     try:
         cursor.execute(f"""
         SELECT count(*) 
@@ -341,7 +350,8 @@ def GET_TOTAL_VOTE_COUNT(type):
         INNER JOIN FILE_VOTES votes
         ON F.File_Id = votes.File_id
 
-        WHERE votes.Vote_Type = '{type}'
+        WHERE votes.Vote_Type = '{my_type}'
+        {daily_limit_string}
 
         
         """)
@@ -463,12 +473,44 @@ def UPDATE_BALANCE_FROM_FINAL_DICT(final_dict, vote_type, testing=False):
     conn.close()
 
 
+def GET_HIGHEST_VOTE_COUNT():
+    conn = connection.test_connection()  
+    cursor = conn.cursor()
+
+    cursor.execute(F"""
+    SELECT
+    (   SELECT COUNT(*) 
+        FROM FILE_VOTES file 
+        WHERE file.File_id = F.File_Id
+        AND Vote_Type = 'Daily'
+    ) AS count
+        
+    FROM FILES f
+    order by count desc
+    limit 1
+
+    """)
+    results = cursor.fetchall()
+    highest_count = 0
+    for value in results:
+        highest_count = value[0]
+
+    # print("HIGHEST:", highest_count)
+    return highest_count
+        
+
+
 def GET_ALL_TYPED(my_vote_type):
     #print("GET_ALL_TYPED")
+    daily_limit_string = ""
+    if my_vote_type == "Daily":
+        count = GET_HIGHEST_VOTE_COUNT() 
+        daily_limit_string = F"AND (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_Id AND Vote_Type = 'Daily') = '{count}'" #limit to max 
     
-    conn = connection.test_connection()
-        
+    # print(daily_limit_string)
+    conn = connection.test_connection()  
     cursor = conn.cursor()
+
     try:
         cursor.execute(f"""
                 SELECT F.File_Id, F.file_path, votes.Voter_Username, votes.Date_Time
@@ -478,22 +520,15 @@ def GET_ALL_TYPED(my_vote_type):
                 ON F.File_Id = votes.File_id
 
                 WHERE Vote_Type = '{ my_vote_type }'
+                {daily_limit_string}
 
             """)
         conn.commit()
-
         results = cursor.fetchall()
         all_typed_datasets = []
         for value in results:
-            #print(value)   
-            all_typed_datasets.append(value)
-        
-        # BUILD FREQUENCY TABLE FOR FILE ID'S
-        
-        #for i in all_typed_datasets:
-        # #print(i)
-        
-        # CLOSE CURSOR AND CONNECTION [MANDATORY]        
+            # print(value)   
+            all_typed_datasets.append(value)     
         cursor.close()
         conn.close()
         return all_typed_datasets
@@ -506,11 +541,11 @@ def GET_ALL_TYPED(my_vote_type):
 
 
 def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
-#print("2")
+    #print("2")
     #rint("\n\nupdate_dict")
     #for key_, value_ in update_dict.items():
     ##print(f"{key_}: {value_}")  
-    #print(f'[UPDATE_BALANCES_TYPED]: {vote_type}')
+    # print(f'[UPDATE_BALANCES_TYPED]: {vote_type}')
     
     all_temp_dicts = {}
     
@@ -618,11 +653,14 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
             #print(F"\n\n\n\nEQUITY DICT {key}, {value}")
             #print(equity_dict)
         elif key == "SEARCH":
+            # print("SEARCH HERE")
             #print("GOT TO EARCH FUNCTIONALITY")
             search_dict = CREATE_SEARCH_VOTE_FREQUNCY_DICT()
+            # print(search_dict)
             total_search_equity = value
             
             dict_of_search_details = {}
+            log_function(msg_type="distro", log_string="\nSEARCH", vote_type=vote_type, distro_type="initial")
             for key__, value__ in search_dict.items():
                 #print("SEARCH", key__, value__)
                 dollar_amount = total_search_equity * value__['PERCENTAGE']
@@ -631,15 +669,22 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
                 #print(dollar_amount)
                 #print(amount_for_creator)
                 #print(key__, value__, dollar_amount)
+                
                 # dict_of_search_details[key__] = BROKEN_ROUNDING(dollar_amount / len(value__['SEARCHERS_LIST']))
+                # print("TEST",value__)
+                log_string = f"[{total_search_equity * value__['PERCENTAGE']}]:{str(value__)} "
+                log_function(msg_type="distro", log_string=log_string, vote_type=vote_type, distro_type="initial")
                 creator = value__["SEARCH_CREATOR"]
                 for i in value__["SEARCHERS_LIST"]:
                     #print("EQUATION IS: ", dollar_amount, "/", len(value__["SEARCHERS_LIST"]))
                     dict_of_search_details[i] = BROKEN_ROUNDING(dollar_amount / len(value__["SEARCHERS_LIST"]))
                     #print(i, dict_of_search_details[i])
+                    # print(dict_of_search_details)
+
                 dict_of_search_details[creator] = amount_for_creator
                 #print(amount_for_creator)
-                #print("SEARCH AMOUNT FOR CREATOR", amount_for_creator)
+                #print("SEARCH AMOUNT FOR CREATOR", amount_for_creator
+            
 
             FINAL_DICT[key] = dict_of_search_details
             #print(dict_of_search_details)
@@ -720,8 +765,8 @@ def append_log_to_csv(string):
 
 def TESTING_TIMING():    
     # START AT THE TOP OF THE HOUR, I COULD PROBABLY WRITE CODE TO GET IT PERFECT
-#print_title("\nCREATING THREAD FOR TIME TESTING")
-    
+    #print_title("\nCREATING THREAD FOR TIME TESTING")
+
     from apscheduler.schedulers.background import BackgroundScheduler
 
     scheduler = BackgroundScheduler()
@@ -885,9 +930,8 @@ def RUN_WITH_TIME_TEST():
     # get the start time
     st = time.time()
 
-    FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Daily", testing=False)
-    #FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly")
-    
+    # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Daily", testing=True)
+    FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly", testing=True)
     # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Yearly", testing=True)
         
     # get the end time
@@ -1270,4 +1314,5 @@ def GET_NUM_SEARCH_VOTES():
 # EQUAL_DISTRIBUTION(100.00, test_ordered_array)
 # SECTIONED_EQUAL_DISTRIBUTION(19.91, test_ordered_array, sections=2)RUN_WITH_TIME_TEST()
 #print(EQUAL_DISTRIBUTION(2.59, ['Valen', 'Rayne', 'Philippa', 'Lindsee', 'Tel', 'Phuoc', 'Kameka']))
+
 # RUN_WITH_TIME_TEST()

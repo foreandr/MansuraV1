@@ -949,6 +949,7 @@ def USER_FULL_RESET():
     SEARCH_ALGO_INSERT_DEMO_MULTIPLE()
     LIKES_DEMO_INSERT()
     DISLIKES_DEMO_INSERT()
+    DEMO_SEARCH_VOTE_INSERT()
     DEFAULT_EQUITY_INSERT()
     # EQUITY CAN GO LAST, DOESN'T INTERFERE WITH ANYTHING
     
@@ -2633,13 +2634,13 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
 
                         #UPDATE MAJORITY SEARCH FOR THAT USER if new high
                         #print("POS DECT:",data )
-                        new_max = CUSTOM_GET_HIGHEST_VALUE_IN_DICT_SLOW(data)
+                        new_max_algo_name = CUSTOM_GET_HIGHEST_VALUE_IN_DICT_SLOW(data)
 
                         #print("current_max:", current_max)
                         #print("new_max    :", new_max)
                         # print("SEARCH VOTE CHECKER?")
-                        if new_max != current_max:
-                            UPDATE_TABLE_SEARCH_VOTES(searcher, new_max)
+                        if new_max_algo_name != current_max:
+                            UPDATE_TABLE_SEARCH_VOTES(searcher, new_max_algo_name)
                                           
                     # JSON OUT
                     with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'w') as f:    
@@ -2767,10 +2768,10 @@ def UPDATE_TABLE_SEARCH_VOTES(voter_username, search_algo_name):
     vote_exists = cursor.fetchall()[0][0]
     print("VOTE EXISTS", vote_exists)
     
-    search_id = GET_SEARCH_ALGO_ID_BY_PATH(search_algo_name)
+    search_id = GET_SEARCH_ALGO_ID_BY_NAME(search_algo_name)
     
-    print(search_id)
-    print(search_algo_name)
+    print("search_id", search_id)
+    print("search_algo_name", search_algo_name)
     if vote_exists == 0:
         print("INSERTING SEARCH VOTE")
         cursor.execute(f"""
@@ -3024,7 +3025,11 @@ def CREATE_TABLE_SEARCH_VOTES():
     cursor.close()
     conn.close()
 
-
+def DEMO_SEARCH_VOTE_INSERT():
+    UPDATE_TABLE_SEARCH_VOTES("foreandr", "a-demo")
+    UPDATE_TABLE_SEARCH_VOTES("Maire", "andrfore-demo")
+    UPDATE_TABLE_SEARCH_VOTES("a", "andrfore-demo")
+    UPDATE_TABLE_SEARCH_VOTES("andefore", "a-demo")
 def SEARCH_ALGO_INSERT(username, Algorithm_Name, order_by_clause, where_clause):
     conn = connection.test_connection()
     cursor = conn.cursor() 

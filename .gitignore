@@ -15,8 +15,9 @@ Notes/TODO/STEPS FOR NEW DROPLETS
 Python/__pycache__
 Python/__pychache__
 
-Python/logs/access
-Python/logs/errors
+Python/logs/
+Python/logs/
+Python/logs/distro
 Python/HISTORY
 Python/Paypal
 Python/Stripe
@@ -45,3 +46,4 @@ __pycache__/wsgi.cpython-310.pyc
 Python/AI/code/local_nsfw_detector.py
 Python/AI/code/local_nudenet.py
 Python/AI/code/local_tensorflow.py
+

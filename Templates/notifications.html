@@ -3,7 +3,7 @@
 </br>
 </br>
 <div class="d-flex justify-content-center"><h1>NOTIFICATIONS</h1></div>
-<div class="d-flex justify-content-center">(adding other features and will make this look nice later..)</div>
+<div class="d-flex justify-content-center">(will make this look nice later..)</div>
 <button class="btn btn-primary" onclick="show_notification(this)" value="FOLLOWERS">FOLLOWERS</button>
 <button class="btn btn-primary" onclick="show_notification(this)" value="LIKES">LIKES</button>
 <button class="btn btn-primary" onclick="show_notification(this)" value="DISLIKES">DISLIKES</button>
@@ -11,137 +11,13 @@
 <button class="btn btn-primary" onclick="show_notification(this)" value="REPLIES">REPLIES</button>
 
 
-<div id="show_notifications">
+<div class="table-responsive" id="show_notifications">
 
 </div>
 
-<div class="table-responsive">
-    <table class="table table-striped table-sm">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Header</th>
-          <th scope="col">Header</th>
-          <th scope="col">Header</th>
-          <th scope="col">Header</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1,001</td>
-          <td>random</td>
-          <td>data</td>
-          <td>placeholder</td>
-          <td>text</td>
-        </tr>
-        <tr>
-          <td>1,002</td>
-          <td>placeholder</td>
-          <td>irrelevant</td>
-          <td>visual</td>
-          <td>layout</td>
-        </tr>
-        <tr>
-          <td>1,003</td>
-          <td>data</td>
-          <td>rich</td>
-          <td>dashboard</td>
-          <td>tabular</td>
-        </tr>
-        <tr>
-          <td>1,003</td>
-          <td>information</td>
-          <td>placeholder</td>
-          <td>illustrative</td>
-          <td>data</td>
-        </tr>
-        <tr>
-          <td>1,004</td>
-          <td>text</td>
-          <td>random</td>
-          <td>layout</td>
-          <td>dashboard</td>
-        </tr>
-        <tr>
-          <td>1,005</td>
-          <td>dashboard</td>
-          <td>irrelevant</td>
-          <td>text</td>
-          <td>placeholder</td>
-        </tr>
-        <tr>
-          <td>1,006</td>
-          <td>dashboard</td>
-          <td>illustrative</td>
-          <td>rich</td>
-          <td>data</td>
-        </tr>
-        <tr>
-          <td>1,007</td>
-          <td>placeholder</td>
-          <td>tabular</td>
-          <td>information</td>
-          <td>irrelevant</td>
-        </tr>
-        <tr>
-          <td>1,008</td>
-          <td>random</td>
-          <td>data</td>
-          <td>placeholder</td>
-          <td>text</td>
-        </tr>
-        <tr>
-          <td>1,009</td>
-          <td>placeholder</td>
-          <td>irrelevant</td>
-          <td>visual</td>
-          <td>layout</td>
-        </tr>
-        <tr>
-          <td>1,010</td>
-          <td>data</td>
-          <td>rich</td>
-          <td>dashboard</td>
-          <td>tabular</td>
-        </tr>
-        <tr>
-          <td>1,011</td>
-          <td>information</td>
-          <td>placeholder</td>
-          <td>illustrative</td>
-          <td>data</td>
-        </tr>
-        <tr>
-          <td>1,012</td>
-          <td>text</td>
-          <td>placeholder</td>
-          <td>layout</td>
-          <td>dashboard</td>
-        </tr>
-        <tr>
-          <td>1,013</td>
-          <td>dashboard</td>
-          <td>irrelevant</td>
-          <td>text</td>
-          <td>visual</td>
-        </tr>
-        <tr>
-          <td>1,014</td>
-          <td>dashboard</td>
-          <td>illustrative</td>
-          <td>rich</td>
-          <td>data</td>
-        </tr>
-        <tr>
-          <td>1,015</td>
-          <td>random</td>
-          <td>tabular</td>
-          <td>information</td>
-          <td>text</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+
+
+
 
 <script>
 
@@ -157,19 +33,27 @@
     votes = votes.split("],")        
     followers = followers.split("],")
 
-
-    
-    
-    //console.log(likes)
-    //console.log(dislikes)
-    //console.log(replies)
-    //console.log(votes)
-    //console.log(followers)
-
     function show_notification(notifcation_type){
 
         if (notifcation_type.value == "FOLLOWERS") {
-            follower_div = "<div>[Date Time],[Friendship Id], [Follower Id], [Followee Id]</div>"
+            follower_div = `
+			<table class="table table-striped table-sm">
+			<thead>
+				<tr>
+					<th scope="col">Search Votes</th>
+					<th scope="col">Name</th>
+					<th scope="col">Creator</th>
+					<th scope="col">Creation Date</th>
+					<th scope="col">Algo Details</th>
+					<th scope="col">Add To Favourites</th>
+					<th scope="col">Del From Favourites</th>
+				</tr>
+			</thead>
+			<table class="table table-striped table-sm">
+			`
+            
+            
+            
             for (let i = 0; i < followers.length; i++) {
                 follower_div += `<div> ${followers[i]}
                     </div>`
