@@ -99,6 +99,7 @@ MOTTO
 for the dailies, only a single person wins
 	get max num for that day
 	get all posts with that num do standard distro for those
+	
 POST TRIBUNAL 
 1. SHOW DISTRIBUTION OF SEARCH ALGOS IN DISTRIBUTION TXT FILE
 	2B. change excel to produce proper changed shit

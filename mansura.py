@@ -1017,10 +1017,9 @@ def user_download_excel(vote_timeframe, vote_date):
 	if helpers.CHECK_IF_MOBILE(request):
 		return redirect(url_for('cover_page'))
 	try:
-		og_path = "/root/mansura/Python/HISTORY/"
-		custom_path = og_path + vote_timeframe +"/" + vote_date
-		print("custom_path", custom_path)
-		filename = vote_date
+		custom_path = f"/root/mansura/Python/logs/distro/{vote_timeframe}/{vote_date}/FULL_SET.txt" # SHOULD ADD DISTRO
+		# print(custom_path)
+		filename = "Mansura-"+ vote_date + ".txt"
 		return send_file(custom_path, download_name=filename)
 	except Exception as e:
 		helpers.log_function("error", e)
@@ -1144,11 +1143,11 @@ def history():
         return redirect(url_for('login'))
 
     session_username = session["user"]
-    print("HISTORY IS BEING SELECTED")
+    #print("HISTORY IS BEING SELECTED")
     print(os.getcwd())
-    list_of_history_day = os.listdir( ( os.getcwd() + "/Python/HISTORY/Daily") )
-    list_of_history_month = os.listdir( ( os.getcwd() + "/Python/HISTORY/Monthly") ) 
-    list_of_history_year = os.listdir( ( os.getcwd() + "/Python/HISTORY/Yearly") )  
+    list_of_history_day = os.listdir("/root/mansura/Python/logs/distro/Daily") 
+    list_of_history_month = os.listdir("/root/mansura/Python/logs/distro/Monthly") 
+    list_of_history_year = os.listdir("/root/mansura/Python/logs/distro/Yearly") 
     
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
 
