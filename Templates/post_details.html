@@ -62,26 +62,33 @@
                     <div class=" card-footer d-flex justify-content-between align-items-center">
                         <small class="text-muted">
                             <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_id}})" aria-expanded="false">
-                                REPLY
+                                <span>REPLY: {{single_num_replies}}</span>
                             </button>
                             <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
                                 REPOST (coming)
                             </button>
+                            {% if full_replying_to_path != ""  and og_post_src != "None"%}
+                            <button class="btn btn-secondary" type="button" aria-expanded="false">
+                                <a href="/{{full_replying_to_path}}" style="color: white;">REPLYING TO  {{full_replying_to_path.split("_")[0]}}</a>
+                            </button>
+                            {% endif %}
+
+                            
                         </small>
                         <small class="text-muted" id="post_details">
                             <!--<a href="{{username}}_{{paths_list[i]}}-post_page">ID:{{file_id}} </a>-->
-                           
-
+                            {{ og_post_distro_details[0]}}
                             {% if og_post_src != ""  and og_post_src != "None"%}
-                            Source:{{og_post_src}}</a>
+                                Source:{{og_post_src}}
                             {% endif %}
                             
-                            <!--FOREIGN ID SOURCE?-->
+                            <!--FOREIGN ID SOURCE? gotta do this better
                             {% if post_foreign_id_source != "N-A" %}
                                 {% if post_foreign_id_source != "" %}
-                                    Replying_To: {{post_foreign_id_source}}
+                                    Replying To: {{post_foreign_id_source}}
                                 {% endif %}
                             {% endif %}
+                            -->
 
                             {{post_date}}
     
@@ -141,20 +148,13 @@
                         <span id="dislike"><button class="btn btn-danger"><a href="/vote/{{file_ids_list[i]}}/dislike" style="color: black;">DISLIKES: {{dislikes[i]}}</a></button></span>
                         {% endif %}
                     </div>
-
-                    
+                
                     <!-- POST TEXT -->
                     <div id="text_span">
                         {% if lengths_of_text_files[i] > 300 %}
                             {{text_list[i][:300]}}...
-                            <div>
-                                <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page">see more...</a>
-                            </div>
                         {% else %}
                             {{text_list[i]}}
-                            <div>
-                                <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page">see more...</a>
-                            </div>
                         {% endif %}            
                     </div>
                     
@@ -171,24 +171,17 @@
                     <div class=" card-footer d-flex justify-content-between align-items-center">
                         <small class="text-muted">
                             <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_ids_list[i]}})" aria-expanded="false">
-                                REPLY
+                                <span>REPLY: {{num_replies[i]}}</span>
                             </button>
                             <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
                                 REPOST (coming)
                             </button>
+                            <button class="btn btn-secondary" type="button" aria-expanded="false">
+                                <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page" style="color: white;">GO TO FULL POST</a>
+                            </button>
                         </small>
                         <small class="text-muted" id="post_details">
-                            <a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">ID:{{file_ids_list[i]}} </a>
-
-                            {% if age_18_list[i] == "older_18" %}
-                            <u>18+</u>
-                            {% endif %}
-                            Source:<a href='{{source_list[i]}}'>{{source_list[i]}}</a>
-                            {% if post_sources_list[i] != "" %}
-                            Referencing:<a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">{{post_sources_list[i]}} </a>
-                            {% endif %}
                             {{dates_list[i]}}
-
                         </small>
                     </div>
                 </div>
@@ -355,8 +348,6 @@
             </form>
 
         </div>
-
-
     </div>
 </div>
 
@@ -366,7 +357,7 @@
     <div class="modal-content">
             <form action="upload" method="POST" enctype="multipart/form-data">
                 <div>
-                    <label for="textbox">Whats on your mind? (10000 chars) [NO EMOJIS FOR NOW SORRY LOL]</label>
+                    <label for="textbox">Whats on your mind? (10000 chars)</label>
                     <br>
                     <textarea id="textbox" name="textbox" rows="7" cols="50" maxlength="10000"></textarea>
     
@@ -376,7 +367,7 @@
                     <!-- .mp4,.csv, .onnx,-->
                     <input type="file" class="custom-file-input" name="file" accept=".png, .jpeg, .jpg, .pdf" id="dataset_file">
                     <input type="text" id="hidden_file_size" name="hidden_file_size" placeholder="auto" size="1" value="">
-                    <label class="custom-file-label" for="file">PNG/JPG/CSV/ONNX/MP4/PDF</label>
+                    <label class="custom-file-label" for="file">PNG/JPG</label>
     
                     <div id="dataset_return_message">
     
@@ -413,8 +404,7 @@
                     <img id="log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_distribution.png')}}" width='400' height='200' />
                     <img id="equa_log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_equal_distribution.png')}}" width='400' height='200' />
                 </div>
-    
-    
+        
                 <br>
     
                 <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>

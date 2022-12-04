@@ -3236,6 +3236,11 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
                 FROM DISLIKES dislikes
                 WHERE dislikes.File_id = F.File_id 
                 AND '{search_user}' = dislikes.Disliker_Username
+            ),
+            (
+                SELECT COUNT(*)
+                FROM FILES 
+                WHERE Post_foreign_id_source = CAST (F.File_id AS  varchar) --bad mistake shouldnt have to cast but whatever
             )
 
         FROM FILES F
@@ -3278,6 +3283,8 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     dislikes = []
     searcher_has_liked =[]
     searcher_has_disliked =[]
+    num_replies = []
+
 
     #INDIVIDUAL USER
     daily_left = ""
@@ -3322,6 +3329,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         dislikes.append(i[19])
         searcher_has_liked.append(i[20])
         searcher_has_disliked.append(i[21])
+        num_replies.append(i[22])
         
     # THIS SEEMED TO NOT WORK FOR PARTICULAR PROFILES #TODO: WORK INFESTIGATING WHY IT DIDN'T RUN
     if daily_left != "":
@@ -3357,7 +3365,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     # search_arguments['where_full_query'] = list(dict.fromkeys(search_arguments['where_full_query']))
     '''
     # print("ORDER BY CLAUSE", search_arguments)
-    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, search_arguments
+    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, search_arguments
 
 def GET_TOP_N_SEARCH_ALGORITHMS(N=100):
     conn = conn = connection.test_connection()
@@ -3733,4 +3741,21 @@ def COUNT_TODAYS_SEATRCH_ALGOS_FOR_USER(user):
     conn.close()
 
     return count 
+
+def GET_PATH_BY_FILE_ID(file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+    SELECT File_Path
+    FROM FILES 
+    WHERE File_Id = '{file_id}'
+    """)
+    file_path = ""
+    for i in cursor.fetchall():
+        file_path = (i[0])
+    
+    cursor.close()
+    conn.close()
+
+    return file_path
 

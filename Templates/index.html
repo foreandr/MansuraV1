@@ -58,21 +58,15 @@
                         {% else %}
                         <span id="dislike"><button class="btn btn-danger"><a href="/vote/{{file_ids_list[i]}}/dislike" style="color: black;">DISLIKES: {{dislikes[i]}}</a></button></span>
                         {% endif %} 
-                    </div>
 
-                    
+                       
+                    </div>
                     <!-- POST TEXT -->
                     <div id="text_span">
                         {% if lengths_of_text_files[i] > 300 %}
                             {{text_list[i][:300]}}...
-                            <div>
-                                <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page">see more...</a>
-                            </div>
                         {% else %}
                             {{text_list[i]}}
-                            <div>
-                                <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page">see more...</a>
-                            </div>
                         {% endif %}            
                     </div>
                     
@@ -89,10 +83,13 @@
                     <div class=" card-footer d-flex justify-content-between align-items-center">
                         <small class="text-muted">
                             <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_ids_list[i]}})" aria-expanded="false">
-                                REPLY
+                                <span>REPLY: {{num_replies[i]}}</span>
                             </button>
                             <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
                                 REPOST (coming)
+                            </button>
+                            <button class="btn btn-secondary" type="button" aria-expanded="false">
+                                <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page" style="color: white;">GO TO FULL POST</a>
                             </button>
                         </small>
                         <small class="text-muted" id="post_details">

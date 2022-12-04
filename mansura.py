@@ -114,7 +114,8 @@ def home():
     #TODO: what I may have to do is do a similar query to the one below, but just returning a path list, grab all the paths that meet the criteria, then stick is back into
     # a function that returns the correct info with the search value in there as welll
 
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes, searcher_has_liked, searcher_has_disliked, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
+    # print("hello??", num_replies)
     #print(searcher_has_liked)
     #print(searcher_has_disliked)
     
@@ -173,6 +174,7 @@ def home():
 							dislikes=dislikes,
 							searcher_has_liked=searcher_has_liked, 
 							searcher_has_disliked=searcher_has_disliked,
+                            num_replies=num_replies,
                             
                             day_votes=day_votes,
                             month_votes=month_votes,
@@ -456,7 +458,7 @@ def user_profile_name(username):
             balance = 0
 
         # print("\nTHIS SHOWS ITS GETTING TO INDIVIDUAL FILE========================")
-        
+        # print(username)
         list_from_username = username.split("_")
 
         new_username = list_from_username[0]
@@ -464,7 +466,7 @@ def user_profile_name(username):
         new_filename = filename[0].split("-post")
         final_filename = new_filename[0]
         file_id = final_filename.split("-")[1]
-        num_replies = database.GET_NUM_REPLIES(file_id)
+        single_num_replies = database.GET_NUM_REPLIES(file_id)
         
         reply_array = database.GET_ALL_REPLIES(file_id)
         post_username, post_file_path, post_user_id, post_foreign_id_source, post_date, file_id_, single_day_votes, single_month_votes, single_year_votes, single_likes, single_dislikes = database.GET_SINGLE_DATASET_INFO(final_filename)
@@ -494,8 +496,11 @@ def user_profile_name(username):
                 page_no = 1
                 
         
-        file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, search_arguments = database.universal_dataset_function(search_type="post", page_no=page_no, search_user=session['user'], custom_clauses=new_json_search_clauses, file_id=file_id_)
-        username_len = len(usernames_list)
+        file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, search_arguments = database.universal_dataset_function(search_type="post", page_no=page_no, search_user=session['user'], custom_clauses=new_json_search_clauses, file_id=file_id_)
+        # print(num_replies)
+
+
+        sername_len = len(usernames_list)
         if len(file_ids_list) == 0:
             # print("THERE IS NOTHING NO FILES ON HOMEPAGE HERE", session['user'])
             user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user']) # THIS ASSUMES ALREADY IN SESSION, SHOULD BE
@@ -560,6 +565,19 @@ def user_profile_name(username):
         favourites_len = len(search_favourites)
         if favourites_len > 20:
             favourites_len = 20
+        
+        try: # MOVE THIS TO IT'S OWN FUNCTION
+            replying_to_path = database.GET_PATH_BY_FILE_ID(post_foreign_id_source)
+            name_and_id = replying_to_path.split("-")
+            name = name_and_id[0]
+            their_id =  name_and_id[1]
+            full_replying_to_path = name + "_" + name + "-" + their_id + "-post_page"
+            #print(full_replying_to_path)
+        except Exception as e:
+            #print(e)
+            full_replying_to_path =""
+        # print(full_replying_to_path)
+
         return render_template('post_details.html',
                                 # POST DETAILS
 
@@ -575,7 +593,7 @@ def user_profile_name(username):
                                 username=post_username,
                                 final_filename=final_filename,
                                 file_id=file_id,
-                                num_replies=num_replies,
+                                single_num_replies=single_num_replies,
                                 post_user_id=post_user_id,
                                 post_foreign_id_source=post_foreign_id_source,
                                 post_date=post_date,
@@ -618,11 +636,13 @@ def user_profile_name(username):
                                 age_18_list=age_18_list,
                                 source_list=source_list,
                                 image_path_list=image_path_list,
-                                distro_details_list=distro_details_list,                            
+                                distro_details_list=distro_details_list,
+                                num_replies=num_replies,                            
                                 
                                 search_arguments=search_arguments,
                                 page_no=page_no,
-                                can_scroll=can_scroll
+                                can_scroll=can_scroll,
+                                full_replying_to_path=full_replying_to_path
                             )        
     else:
         # print(username, "does not end with -post_page")
@@ -692,7 +712,8 @@ def user_profile_name(username):
             page_no = 1
             
 
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, search_arguments = database.universal_dataset_function(search_type="prof", page_no=page_no, search_user=session['user'], profile_username=username, custom_clauses=new_json_search_clauses)
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, search_arguments = database.universal_dataset_function(search_type="prof", page_no=page_no, search_user=session['user'], profile_username=username, custom_clauses=new_json_search_clauses)
+    print(num_replies)
     # print("UNIVERSAL PROFILE GOT", file_ids_list)
     username_len = len(usernames_list)
     if len(file_ids_list) == 0:
@@ -752,6 +773,8 @@ def user_profile_name(username):
                                 post_sources_list=post_sources_list,
                                 likes=likes,
                                 dislikes=dislikes,
+                                num_replies=num_replies,
+
                                 day_votes=day_votes,
                                 month_votes=month_votes,
                                 year_votes=year_votes,

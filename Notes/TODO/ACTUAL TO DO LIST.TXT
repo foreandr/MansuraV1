@@ -112,6 +112,7 @@ POST TRIBUNAL
 
 IMPORTANT BUT LATER
 ===================
+SHOW HOW MUCH PAYPAL TAKES ON WITHDRAWL
 vast swatths of the CSS and js can be simplified into single pages
 7. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
 make the history look less hsit
