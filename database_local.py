@@ -3,8 +3,16 @@ from Python.database import *
 """THIS IS BASICALLY TO ALLOW YOU TO RESET THE DATABASE OR MAKE EMEGENCY CHANGES"""
 
 #test hello world
-def UPDATE_USER_BALANCE():
-    pass
+def UPDATE_USER_BALANCE(user):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+    UPDATE USERS SET balance = 10
+    WHERE Username = '{user}'
+    """)
+    conn.commit()
+    conn.close()
+    cursor.close()
     
 def RESET_DATABASE():
     print("hello world")
@@ -20,6 +28,7 @@ def DEMO_ACCOUNTS_REGISTER():
     full_register('Ludus', hashlib.sha256("helloLudus123!".encode('utf-8')).hexdigest(), 'Ludus@gmail.com', 'Ludus@gmail.com', 5)
 
 def DEMO_ACCOUNTS_SUBSCRIBE():
+    MANSURA_SUBSCRIBE('foreandr')
     MANSURA_SUBSCRIBE('dailyinsights')
     MANSURA_SUBSCRIBE('royalkilla')
     MANSURA_SUBSCRIBE('ghost_lover2021')
@@ -27,7 +36,7 @@ def DEMO_ACCOUNTS_SUBSCRIBE():
     MANSURA_SUBSCRIBE('Twomanriot')
     MANSURA_SUBSCRIBE('xerihm')
 
-
-# DEMO_ACCOUNTS_REGISTER()
-DEMO_ACCOUNTS_SUBSCRIBE()
+UPDATE_USER_BALANCE('foreandr')
+#DEMO_ACCOUNTS_REGISTER()
+# DEMO_ACCOUNTS_SUBSCRIBE()
 # RESET_DATABASE()

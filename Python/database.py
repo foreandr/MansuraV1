@@ -2481,13 +2481,15 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
 
                         #UPDATE MAJORITY SEARCH FOR THAT USER if new high
                         #print("POS DECT:",data )
-                        new_max_algo_name = CUSTOM_GET_HIGHEST_VALUE_IN_DICT_SLOW(data)
+                        new_max_algo_path = CUSTOM_GET_HIGHEST_VALUE_IN_DICT_SLOW(data)
 
                         #print("current_max:", current_max)
                         #print("new_max    :", new_max)
                         # print("SEARCH VOTE CHECKER?")
-                        if new_max_algo_name != current_max:
-                            UPDATE_TABLE_SEARCH_VOTES(searcher, new_max_algo_name)
+                        if new_max_algo_path != current_max:
+                            print("searcher",searcher)
+                            print("new_max_algo_name",new_max_algo_path)
+                            UPDATE_TABLE_SEARCH_VOTES(searcher, new_max_algo_path)
                                           
                     # JSON OUT
                     with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'w') as f:    
@@ -2602,7 +2604,7 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
     }
     return demo_json
 
-def UPDATE_TABLE_SEARCH_VOTES(voter_username, search_algo_name):
+def UPDATE_TABLE_SEARCH_VOTES(voter_username, search_algo_path):
     conn = connection.test_connection()
     cursor = conn.cursor()
 
@@ -2615,10 +2617,10 @@ def UPDATE_TABLE_SEARCH_VOTES(voter_username, search_algo_name):
     vote_exists = cursor.fetchall()[0][0]
     print("VOTE EXISTS", vote_exists)
     
-    search_id = GET_SEARCH_ALGO_ID_BY_NAME(search_algo_name)
+    search_id = GET_SEARCH_ALGO_ID_BY_PATH(search_algo_path)
     
     print("search_id", search_id)
-    print("search_algo_name", search_algo_name)
+    print("search_algo_pathe", search_algo_path)
     if vote_exists == 0:
         print("INSERTING SEARCH VOTE")
         cursor.execute(f"""
