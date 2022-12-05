@@ -50,7 +50,7 @@ def home():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     if "email" not in session: # testasdkjhfaks
-        return redirect(url_for('register'))
+        return redirect(url_for('cover_page'))
 
 
     helpers.log_function("request", request)
@@ -1127,6 +1127,8 @@ def PayPal_IPN():
         #print("ITEM       :", item)
         # print("PAYER EMAIL:", payer_email)
         database.SUBSCRIBE_FROM_PAYAPL_BUY(payer_email)
+
+        helpers.log_function(msg_type="payment", log_string=F"{payer_email} subscribed!")
         return render_template(f"paypalsuccess.html",
             user=database.GET_USERNAME_BY_EMAIL(payer_email),
         )

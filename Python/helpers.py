@@ -495,6 +495,12 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None"):
         else:
             with open(f'{my_path}/DISTRO.txt', 'a') as f:
                 f.write(err_string + ",\n")
+    elif msg_type == 'payment':
+        my_path = f"/root/mansura/Python/logs/payment"
+        with open(f'{my_path}/{current_date}.txt', 'a') as f:
+                f.write(err_string + ",\n")
+
+
                 
 
         
