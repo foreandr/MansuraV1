@@ -107,10 +107,10 @@ MOTTO
 	- PAID TO SEARCH
 
 
-1.tribunal
-	- IF num dislikes > 10, tag post for tribunal, if num likes > dislikes, no changes, else strip the text from the post, and change the json, and remove the image,
-	- if the likes go back to above, then restore
-	- if in tribunal negative the contents of the post are hidden and just shown to be (in tribunal)
+DONE.tribunal
+	DONE IF num dislikes > 10, tag post for tribunal, if num likes > dislikes, no changes, else strip the text from the post, and change the json, and remove the image,
+	DONE if the likes go back to above, then restore
+	NXZpTGRTaFBnKWZzZXpoaGRmM2l5OTk6ZnhmaDMzNzgzM0BpM2l5OTk6ZnhmaDMzNzgzM0BTbGt2aXFEOmpoXitiK2p0OiNgX2hrcjQwbTBgLS1kLzZzYSNgX2hrcjQwbTBgLS1kLzZzcw if in tribunal negative the contents of the post are hidden and just shown to be (in tribunal)
 
 
 IMPORTANT BUT LATER
