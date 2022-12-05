@@ -2952,7 +2952,7 @@ def COMPOSE_ORDER_BY_CLAUSES(order_by_clause, custom_clauses_order_by):
     return order_by_clause
 
 
-def universal_dataset_function(search_type, page_no="1", search_user="None", file_id="None", profile_username="None", custom_clauses="None",):
+def universal_dataset_function(search_type, page_no="1", search_user="None", file_id="None", profile_username="None", custom_clauses="None", tribunal=False):
     conn = conn = connection.test_connection()
     cursor = conn.cursor()
     """
@@ -2980,22 +2980,27 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
             AND Vote_Type = 'Yearly'
         )
         
-        """
-    tribunal_query = """        
-    -- THIS IS FOR THE TRIBUNAL -- ABSOLUTE FUCKING NIGHTMARE
-        AND CASE 
-        WHEN (SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 1 
-            THEN                   
-                CASE 
-                WHEN (((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id)) > 1 ) AND (SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) > 10 -- SWITCH TO TEN
-                    THEN
-                            ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) / ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id))) > .75                                                                                           
-                    ELSE 1=1   
-                END                                                          
-            ELSE 1 = 1 
-        END
-    
     """
+    if tribunal:
+        tribunal_query = """
+        AND ((SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 1 AND ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) / ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id))) > .75)
+        """
+    else:
+        tribunal_query = """        
+        -- THIS IS FOR THE TRIBUNAL -- ABSOLUTE FUCKING NIGHTMARE
+            AND CASE 
+            WHEN (SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 1 
+                THEN                   
+                    CASE 
+                    WHEN (((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id)) > 1 ) AND (SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) > 10 -- SWITCH TO TEN
+                        THEN
+                                ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) / ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id))) > .75                                                                                           
+                        ELSE 1=1   
+                    END                                                          
+                ELSE 1 = 1 
+            END
+        
+        """
 
 
     if search_type != "post":
@@ -3122,11 +3127,6 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         {tribunal_query }                                                              
         {order_by_clause}
         
-
-                
-                
-               
-            
         OFFSET (({page_no} - 1) * 100)
         LIMIT 100; 
     """

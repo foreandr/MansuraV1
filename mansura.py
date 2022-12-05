@@ -1008,7 +1008,6 @@ def password_reset():#TODO: GET THIS WORKING, CHECK IF OEN TIME PASS IS THE SMAE
         print("one_time_pass        :",one_time_pass)
         print("current_one_time_pass:",current_one_time_pass)
         
-        
 
         if (password == repeat_pass) and (one_time_pass == current_one_time_pass):
             database.CHANGE_PASSWORD( email, password)
@@ -1404,23 +1403,153 @@ def notifications():
     )
 
 
-@app.route("/tribunal", methods=['GET'])
+@app.route("/tribunal", methods=['GET','POST'])
 def tribunal():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     if "email" not in session:
         return redirect(url_for('login'))
     helpers.log_function("request", request)
-    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
-    return render_template(f"tribunal.html",
-        daily_votes_left=daily_votes_left,
-        monthly_votes_left=monthly_votes_left,
-        yearly_votes_left=yearly_votes_left,
-        balance=balance,
-        daily_pool=daily_pool, 
-        monthly_pool=monthly_pool, 
-        yearly_pool=yearly_pool
-    )
+    search_json = {}
+    json_search_clauses = "None"
+    search = "None"
+
+    if request.method == 'POST':
+        search = request.form.get("search")   
+        reset = request.form.get("reset")
+        save_algo = request.form.get("save_algo")
+        
+        if save_algo != "None" and save_algo != None:
+            returned_search_arguments = request.form.get("search_arguments")
+            print("CURRENT ARGS TO BE SAVED", returned_search_arguments)
+            database.SAVE_CURRENT_ALGO(returned_search_arguments)
+            
+        if reset != "None" and save_algo != None:
+            print("CLICKED RESET")
+            return redirect(url_for("home"))
+        
+
+        date_check = request.form.get("date_check")  
+        order_check = request.form.get("order_check")  
+        and_or_clauses, where_clauses, hi_eq_low, num_search_text = helpers.GET_ALL_QUERY_INFO_FROM_REQUEST_FORM(request)
+        clauses_dict = [
+            and_or_clauses, 
+            where_clauses, 
+            hi_eq_low, 
+            num_search_text
+        ]
+        json_search_clauses = database.TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, session["user"])
+    
+    # GRAB THE ARGS FROM QUERY BEFORE THE CURRENT PAGE [GET OR POST]
+    returned_search_arguments = request.form.get("search_arguments")
+    # print(returned_search_arguments)
+
+    new_json_search_clauses = helpers.COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses)
+    '''
+    print("COMPOSE_SEARCHARGS_AND_JSONCLAUSE")
+    print(new_json_search_clauses)
+    print("===================================")
+    '''
+    page_no = request.form.get("page_number")
+    #print("CURRENT PAGE NUMBER:", type(page_no), page_no)
+    # print("===================================")
+
+    if page_no == None or str(page_no) == "None":
+        page_no = 1
+
+    #TODO: what I may have to do is do a similar query to the one below, but just returning a path list, grab all the paths that meet the criteria, then stick is back into
+    # a function that returns the correct info with the search value in there as welll
+
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session["user"], custom_clauses=new_json_search_clauses, tribunal=True)
+    # print("hello??", num_replies)
+    #print(searcher_has_liked)
+    #print(searcher_has_disliked)
+    
+    #FOR DIABLING OR ACTIVATING SCROLL LOGIC
+    numposts = len(file_ids_list)
+    if numposts < 90: # this 100 number needs to be better coded, hard coding is going to cause issues
+        can_scroll = False
+    else:
+        can_scroll = True
+
+
+    # GRAB STUFF IT'S IT'S EMPTY EITHE RWAY
+    if len(file_ids_list) == 0:
+        print("IS EMPTY")
+        user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session_username)
+    
+    username_len = len(usernames_list)
+    # print("USERNAMES LEN", username_len, usernames_list)
+
+    text_list = []
+    age_18_list = []
+    source_list = []
+    image_path_list = []
+    distro_details_list = []
+    for i in range(len(usernames_list)): # GETTING POST INFO FROM PATH
+        my_path = f"static/#UserData/{usernames_list[i]}/files/{paths_list[i]}"
+        post_text, post_age_18, post_sources, post_image_path, distro_details = helpers.get_postinfo_from_path(my_path)
+        age_18_list.insert(i, post_age_18)
+        source_list.insert(i, post_sources)
+        text_list.insert(i, post_text)
+        image_path_list.insert(i, post_image_path)
+        distro_details_list.insert(i,distro_details)
+
+    lengths_of_text_files = []
+    for i in text_list:
+        lengths_of_text_files.append(len(i))
+
+    # GET SEARCH FAVOURITES
+    search_favourites = database.GET_SEARCH_FAVOURITES_BY_USERNAME(session["user"])
+    favourites_len = len(search_favourites)
+    if favourites_len > 20:
+        favourites_len = 20
+
+    return render_template('tribunal.html',
+                            message="tribunal.html page",
+                           
+                            usernames_list=usernames_list,
+                            file_ids_list=file_ids_list,
+                            session_username=session["user"],
+                            username_len=username_len,
+                           
+                            paths_list=paths_list,
+                            dates_list=dates_list,
+                            post_sources_list=post_sources_list,
+                            likes=likes,
+							dislikes=dislikes,
+							searcher_has_liked=searcher_has_liked, 
+							searcher_has_disliked=searcher_has_disliked,
+                            num_replies=num_replies,
+                            
+                            day_votes=day_votes,
+                            month_votes=month_votes,
+                            year_votes=year_votes,
+                            
+                            dailypool = dailypool,
+                            monthlypool = monthlypool,
+                            yearlypool = yearlypool,
+                            
+                            daily_left = daily_left,
+                            monthly_left = monthly_left,
+                            yearly_left = yearly_left,
+                            user_balance = user_balance,
+                           
+                            text_list=text_list,
+                            lengths_of_text_files=lengths_of_text_files,
+                            age_18_list=age_18_list,
+                            source_list=source_list,
+                            image_path_list=image_path_list,
+                            distro_details_list=distro_details_list,
+                            
+                            search_arguments=search_arguments,
+                            page_no=page_no,
+                            can_scroll=can_scroll,
+                            
+                            search_favourites=search_favourites,
+                            favourites_len=favourites_len
+                           )
+
 
 
 @app.route("/patch_notes", methods=['GET'])
