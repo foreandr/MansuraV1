@@ -480,18 +480,7 @@
         </div>
     </div>
     `
-    
-    function howmanysectionsfunc(){
 
-        dist_chosen = document.getElementById("distro_algo").value 
-
-        if (dist_chosen == "LOG EQUAL DISTRIBUTION"){
-            document.getElementById("how_many_sections").innerHTML = slider
-        }
-        else{
-            document.getElementById("how_many_sections").innerHTML= ""
-        }
-    }
 
     function add_another_where_clause(){
         console.log(where_counter)
@@ -540,7 +529,18 @@
         //console.log(where_clause_string)
         
     }
-    
+        
+    function howmanysectionsfunc(){
+
+        dist_chosen = document.getElementById("distro_algo").value 
+
+        if (dist_chosen == "LOG EQUAL DISTRIBUTION"){
+            document.getElementById("how_many_sections").innerHTML = slider
+        }
+        else{
+            document.getElementById("how_many_sections").innerHTML= ""
+        }
+    }
     function remove_another_where_clause(){
         //console.log("remove_another_where_clause");
         document.getElementById("where_clause_additions").innerHTML = where_clause_string
