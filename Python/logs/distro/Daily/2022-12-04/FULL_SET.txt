@@ -1,9 +1,0 @@
-FAKE EXAMPLE!!
-MANSURA: 160.48,
-
-POSTS,
-55 [LOG DISTRIBUTION] : {'VALUE': {'VOTES': 12, 'PERCENT': '%100.0', 'AMOUNT': 433.28}, 'ORDER': ['Tyeasha', 'Shenise', 'Natlie', 'Majid', 'Maigan', 'Leoncio', 'Joelene', 'Richrd', 'Joshwa', 'Joh', 'Jawanna', 'Devion', 'Conway'], 'REPLY': {'REPLYING_TO': 'Valen', 'AMOUNT': 48.14}},
-
-SEARCH,
-[80.24]:{'AMOUNT': 2, 'SEARCHERS_LIST': ['foreandr', 'andefore'], 'SEARCH_CREATOR': 'a', 'PERCENTAGE': 0.5} ,
-[80.24]:{'AMOUNT': 2, 'SEARCHERS_LIST': ['Maire', 'a'], 'SEARCH_CREATOR': 'andrfore', 'PERCENTAGE': 0.5} ,
