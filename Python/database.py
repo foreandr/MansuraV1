@@ -12,7 +12,7 @@ import hashlib
 from psycopg2 import Error
 import Python.procedures as procedures
 # from Python.db_connection import connection
-from  Python.helpers import print_green, print_title, print_error, turn_pic_to_hex, check_and_save_dir, print_warning, log_function, TURN_WHERE_CLAUSE_TO_STRING, NLP_KEYWORD_EXTRACTOR
+from  Python.helpers import print_green, print_title, print_error, turn_pic_to_hex, check_and_save_dir, print_warning, log_function, TURN_WHERE_CLAUSE_TO_STRING, NLP_KEYWORD_EXTRACTOR, CREATING_EMBED_STRUCTURE
 import Python.db_connection as connection
 import Python.big_reset_file as big_reset_file
 import Python.my_email as my_email
@@ -2065,7 +2065,8 @@ def DEFAULT_EQUITY_INSERT():
 
 def FILE_INSERT_STORAGE(username, path_name, text, age_18, external_source, distro_details):
     # print(f"username: {username}\npath_name: {path_name}\ntext: {text}\nmy_file: {my_file}\nage_18: {age_18}\nexternal_source: {external_source}")
-
+    print("GETTING HERE")
+    external_source = CREATING_EMBED_STRUCTURE(external_source)
     my_dictionary = {
         "txt": f"{text}",
         "18+": f"{age_18}",

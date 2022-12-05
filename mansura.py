@@ -47,8 +47,8 @@ app.config["FILE UPLOADS"] = "static/#UserData"
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
     #print("RENDERING TEMPLATE")
-    if helpers.CHECK_IF_MOBILE(request):
-        return redirect(url_for('cover_page'))
+    #if helpers.CHECK_IF_MOBILE(request):
+    #    return redirect(url_for('cover_page'))
     if "email" not in session: # testasdkjhfaks
         return redirect(url_for('cover_page'))
 

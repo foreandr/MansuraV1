@@ -69,7 +69,16 @@
                             {{text_list[i]}}
                         {% endif %}            
                     </div>
-                    
+
+                    <div>
+                        {% if "PROPERLY EMBEDDED HTML TAG" in source_list[i]%}
+                        <p>
+                            {{source_list[i] | safe}}
+                        </p>    
+                        {% endif %} 
+                    </div>
+
+ 
                     <!-- POST IMAGE -->
                     {% if image_path_list[i] != "" %}
                     <img onclick="enlargeImg()" id="post_pic" src="{{url_for('static', filename=image_path_list[i])}} " width='400' height='200' />
@@ -294,7 +303,7 @@
             <div>
                 <label for="textbox">Whats on your mind? (10000 chars)</label>
                 <br>
-                <textarea id="textbox" name="textbox" rows="7" cols="50" maxlength="10000"></textarea>
+                <textarea id="textbox" name="textbox" rows="7" cols="50" maxlength="10000" required></textarea>
 
             </div>
 
@@ -311,7 +320,7 @@
 
             <div>                
                 <label class="custom-file-label" for="file">Replying to File Id</label>
-                <input type="number" id="reply_external_source" name="external_source" value="" >(this person will get 10% of what your winnings)              
+                <input type="number" id="reply_external_source" name="external_source" value="" >(this person will get 10% of what winnings)              
             </div>
             
             <!-- EXTERNAL LINK -->
@@ -358,9 +367,9 @@
         <form action="upload" method="POST" enctype="multipart/form-data">
             <div>
                 <label for="textbox">Whats on your mind? (10000 max chars)</label>
+                
                 <br>
-                <textarea id="textbox" name="textbox" rows="7" cols="50" maxlength="10000"></textarea>
-
+                <textarea id="textbox" name="textbox" rows="7" cols="50" maxlength="10000" required></textarea>
             </div>
 
             <div class="custom-file">
@@ -375,7 +384,7 @@
             <div>
                 <input type="checkbox" id="built_from_other_file" name="built_from_other_file" value="built_from_other_file" onchange="enable_built_from_other()">
                 <label class="custom-file-label" for="file">Replying to File Id</label>
-                <input type="number" id="external_source" name="external_source" value="" disabled>(this person will get 10% of what your winnings)
+                <input type="number" id="external_source" name="external_source" value="" disabled>(this person will get 10% of your winnings)
                 
             </div>
 
@@ -603,7 +612,7 @@
     document.getElementById("yearly_votes_left").innerHTML = `YEA VOTES LEFT:  ${y_votes_left}`;
     document.getElementById("user_balance").innerHTML = 'BALANCE:{{user_balance}}';
 
-    console.log(`VOTES LEFT:\n${d_votes_left}\n${m_votes_left}\n${y_votes_left}`)
+    //console.log(`VOTES LEFT:\n${d_votes_left}\n${m_votes_left}\n${y_votes_left}`)
 
 
     document.getElementById("username_location").value = '{{ session_username }}'
@@ -699,8 +708,22 @@
             modal2.style.display = "none";
             modal3.style.display = "none";
         }
+    }   
+
+
+    
+    //console.log(source_list)
+    function embed_video_into_div(full_html_tag, value){
+        console.log("TKDSJHFALKSJDHFLKAJSDHFLKASJHDFLDSKAJH")
+        console.log("TESTING 1")
+        console.log("full_html_tag",full_html_tag)
+        console.log("TESTING 2")
+        console.log("value", value)
     }
 
+
+
+        
 
 </script>
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
