@@ -1476,7 +1476,7 @@ def tribunal():
     # GRAB STUFF IT'S IT'S EMPTY EITHE RWAY
     if len(file_ids_list) == 0:
         print("IS EMPTY")
-        user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session_username)
+        user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user'])
     
     username_len = len(usernames_list)
     # print("USERNAMES LEN", username_len, usernames_list)
