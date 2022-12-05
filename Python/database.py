@@ -939,16 +939,16 @@ def USER_FULL_RESET():
 
     FUNCTION_AND_PROCEDURES()
 
-    #USER_INSERT_MULTIPLE()
-    #CONNECTION_INSERT_MULTIPLE()
-    #MANSURA_SUBSCRIBE_INSERT_MULTIPLE_DEMO()
-    #USER_INSERT_MULTPLE_FILES()
-    #FILE_VOTE_INSERT_DEMO() # VOTES ON CSVS
-    #SEARCH_ALGO_INSERT_DEMO_MULTIPLE()
-    #LIKES_DEMO_INSERT()
-    #DISLIKES_DEMO_INSERT()
-    #DEMO_SEARCH_VOTE_INSERT()
-    #DEFAULT_EQUITY_INSERT()
+    USER_INSERT_MULTIPLE()
+    CONNECTION_INSERT_MULTIPLE()
+    MANSURA_SUBSCRIBE_INSERT_MULTIPLE_DEMO()
+    USER_INSERT_MULTPLE_FILES()
+    FILE_VOTE_INSERT_DEMO() # VOTES ON CSVS
+    SEARCH_ALGO_INSERT_DEMO_MULTIPLE()
+    LIKES_DEMO_INSERT()
+    DISLIKES_DEMO_INSERT()
+    DEMO_SEARCH_VOTE_INSERT()
+    DEFAULT_EQUITY_INSERT()
     # EQUITY CAN GO LAST, DOESN'T INTERFERE WITH ANYTHING
     
     # TRANSFER_EQUITY(buyer="a", seller="foreandr", amount=2)
@@ -1252,7 +1252,6 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
         post_foreign_id_source = ""
         print(F"EMPTY SOURCE IS [{post_foreign_id_source}]")
             
-
     conn = connection.test_connection()
     cursor = conn.cursor()
 
@@ -2488,8 +2487,8 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
                         # print("SEARCH VOTE CHECKER?")
                         if new_max_algo_path != current_max:
                             print("searcher",searcher)
-                            print("new_max_algo_name",new_max_algo_path)
-                            UPDATE_TABLE_SEARCH_VOTES(searcher, new_max_algo_path)
+                            print("new_max_algo_path", new_max_algo_path)
+                            UPDATE_TABLE_SEARCH_VOTES(voter_username=searcher, search_algo_path=new_max_algo_path)
                                           
                     # JSON OUT
                     with open(f'/root/mansura/static/#UserData/{searcher}/search_counter.json', 'w') as f:    
@@ -2641,7 +2640,6 @@ def UPDATE_TABLE_SEARCH_VOTES(voter_username, search_algo_path):
     conn.close()
 
 def GET_SEARCH_ALGO_ID_BY_PATH(algo_path):
-    print("GET_SEARCH_ALGO_ID_BY_PATH")
 
     conn = connection.test_connection()
     cursor = conn.cursor()
@@ -2808,7 +2806,7 @@ def CREATE_TABLE_SEARCH_FAVOURITES():
     conn.close()
 
 def GET_SEARCH_ALGO_ID_BY_NAME(algo_name):
-    #print("GET_SEARCH_ALGO_ID_BY_PATH")
+    #print("GET_SEARCH_ALGO_ID_BY_name")
 
     conn = connection.test_connection()
     cursor = conn.cursor()
@@ -2875,11 +2873,13 @@ def CREATE_TABLE_SEARCH_VOTES():
     conn.close()
 
 def DEMO_SEARCH_VOTE_INSERT():
-    UPDATE_TABLE_SEARCH_VOTES("foreandr", "a-demo")
-    UPDATE_TABLE_SEARCH_VOTES("Maire", "andrfore-demo")
-    UPDATE_TABLE_SEARCH_VOTES("a", "andrfore-demo")
-    UPDATE_TABLE_SEARCH_VOTES("andefore", "a-demo")
+    UPDATE_TABLE_SEARCH_VOTES("foreandr", "a-1")
+    UPDATE_TABLE_SEARCH_VOTES("Maire", "foreandr-2")
+    UPDATE_TABLE_SEARCH_VOTES("a", "a-1")
+    UPDATE_TABLE_SEARCH_VOTES("andefore", "andrfore-3")
+
 def SEARCH_ALGO_INSERT(username, Algorithm_Name, order_by_clause, where_clause):
+    
     conn = connection.test_connection()
     cursor = conn.cursor() 
     todays_saved_algos = COUNT_TODAYS_SEATRCH_ALGOS_FOR_USER(username)
@@ -2983,13 +2983,13 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         )
         
     """
-    if tribunal:
+    if tribunal: # -- THIS IS FOR THE TRIBUNAL -- ABSOLUTE FUCKING NIGHTMARE
         tribunal_query = """
         AND ((SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 1 AND ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) / ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id))) > .75)
         """
     else:
         tribunal_query = """        
-        -- THIS IS FOR THE TRIBUNAL -- ABSOLUTE FUCKING NIGHTMARE
+        
             AND CASE 
             WHEN (SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 1 
                 THEN                   
@@ -3117,7 +3117,13 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
                 SELECT COUNT(*)
                 FROM FILES 
                 WHERE Post_foreign_id_source = CAST (F.File_id AS  varchar) --bad mistake shouldnt have to cast but whatever
+            ),
+            (
+                SELECT COUNT(*)
+                FROM SUBSCRIPTIONS_MENSURA sub
+                WHERE sub.username = U.username
             )
+
  
         FROM FILES F
         
@@ -3157,9 +3163,10 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     total_votes = []
     likes = []
     dislikes = []
-    searcher_has_liked =[]
-    searcher_has_disliked =[]
+    searcher_has_liked = []
+    searcher_has_disliked = []
     num_replies = []
+    uploader_is_subbed = []
 
 
     #INDIVIDUAL USER
@@ -3206,6 +3213,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         searcher_has_liked.append(i[20])
         searcher_has_disliked.append(i[21])
         num_replies.append(i[22])
+        uploader_is_subbed.append(i[23])
         
     # THIS SEEMED TO NOT WORK FOR PARTICULAR PROFILES #TODO: WORK INFESTIGATING WHY IT DIDN'T RUN
     if daily_left != "":
@@ -3241,7 +3249,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     # search_arguments['where_full_query'] = list(dict.fromkeys(search_arguments['where_full_query']))
     '''
     # print("ORDER BY CLAUSE", search_arguments)
-    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, search_arguments
+    return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, uploader_is_subbed, search_arguments
 
 def GET_TOP_N_SEARCH_ALGORITHMS(N=100):
     conn = conn = connection.test_connection()

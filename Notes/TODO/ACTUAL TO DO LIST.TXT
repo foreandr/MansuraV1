@@ -100,8 +100,7 @@ DONE.tribunal
 	NXZpTGRTaFBnKWZzZXpoaGRmM2l5OTk6ZnhmaDMzNzgzM0BpM2l5OTk6ZnhmaDMzNzgzM0BTbGt2aXFEOmpoXitiK2p0OiNgX2hrcjQwbTBgLS1kLzZzYSNgX2hrcjQwbTBgLS1kLzZzcw if in tribunal negative the contents of the post are hidden and just shown to be (in tribunal)
 
 
-
-	validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
+add d	validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
 MINIMUM VIABLE PRODUCT
 ========================
 WRITE UP THE PAPER
@@ -111,7 +110,12 @@ MOTTO
 	- PAID TO SHARE
 	- PAID TO SEARCH
 
-ONLY SHOW REQUESTS THAT ARE NOT ME
+ONLY SHOW REQUESTS THAT ARE NOT ME, add datetime
+specify profile pic must be png or something
+allow embedded videos in UPLOAD
+upload all of mazinos archive, then go on tiktok toa nnounce
+
+msg balaji
 
 IMPORTANT BUT LATER
 ===================

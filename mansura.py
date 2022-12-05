@@ -114,7 +114,7 @@ def home():
     #TODO: what I may have to do is do a similar query to the one below, but just returning a path list, grab all the paths that meet the criteria, then stick is back into
     # a function that returns the correct info with the search value in there as welll
 
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, uploader_is_subbed, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
     # print("hello??", num_replies)
     #print(searcher_has_liked)
     #print(searcher_has_disliked)
@@ -201,7 +201,8 @@ def home():
                             can_scroll=can_scroll,
                             
                             search_favourites=search_favourites,
-                            favourites_len=favourites_len
+                            favourites_len=favourites_len,
+                            uploader_is_subbed=uploader_is_subbed
                            )
 
 
@@ -342,13 +343,12 @@ def user_profile():
 def upload():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
-    helpers.log_function("request", request)
+    
     if "email" not in session:
         return redirect(url_for('login'))
-    if not database.CHECK_DATE(session["user"]):
-        return redirect(url_for("add_funds"))
+
+    helpers.log_function("request", request)
     if request.method == "POST": # UPLOADING SOMETHING
-        
         save_algo = request.form.get("save_algo")
         if save_algo != "None" and save_algo != None:
             hidden_search_arguments = request.form.get("hidden_search_arguments")
@@ -496,7 +496,7 @@ def user_profile_name(username):
                 page_no = 1
                 
         
-        file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, search_arguments = database.universal_dataset_function(search_type="post", page_no=page_no, search_user=session['user'], custom_clauses=new_json_search_clauses, file_id=file_id_)
+        file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, uploader_is_subbed, search_arguments = database.universal_dataset_function(search_type="post", page_no=page_no, search_user=session['user'], custom_clauses=new_json_search_clauses, file_id=file_id_)
         # print(num_replies)
 
 
@@ -637,7 +637,8 @@ def user_profile_name(username):
                                 source_list=source_list,
                                 image_path_list=image_path_list,
                                 distro_details_list=distro_details_list,
-                                num_replies=num_replies,                            
+                                num_replies=num_replies,          
+                                uploader_is_subbed=uploader_is_subbed,                  
                                 
                                 search_arguments=search_arguments,
                                 page_no=page_no,
@@ -712,7 +713,7 @@ def user_profile_name(username):
             page_no = 1
             
 
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, search_arguments = database.universal_dataset_function(search_type="prof", page_no=page_no, search_user=session['user'], profile_username=username, custom_clauses=new_json_search_clauses)
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, uploader_is_subbed, search_arguments = database.universal_dataset_function(search_type="prof", page_no=page_no, search_user=session['user'], profile_username=username, custom_clauses=new_json_search_clauses)
     print(num_replies)
     # print("UNIVERSAL PROFILE GOT", file_ids_list)
     username_len = len(usernames_list)
@@ -794,6 +795,7 @@ def user_profile_name(username):
                                 source_list=source_list,
                                 image_path_list=image_path_list,
                                 distro_details_list=distro_details_list,
+                                uploader_is_subbed=uploader_is_subbed,
                                 
                                 search_arguments=search_arguments,
                                 page_no=page_no,
@@ -1464,7 +1466,7 @@ def tribunal():
     #TODO: what I may have to do is do a similar query to the one below, but just returning a path list, grab all the paths that meet the criteria, then stick is back into
     # a function that returns the correct info with the search value in there as welll
 
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session["user"], custom_clauses=new_json_search_clauses, tribunal=True)
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, uploader_is_subbed, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session["user"], custom_clauses=new_json_search_clauses, tribunal=True)
     # print("hello??", num_replies)
     #print(searcher_has_liked)
     #print(searcher_has_disliked)
@@ -1525,6 +1527,7 @@ def tribunal():
 							searcher_has_liked=searcher_has_liked, 
 							searcher_has_disliked=searcher_has_disliked,
                             num_replies=num_replies,
+                            uploader_is_subbed=uploader_is_subbed,
                             
                             day_votes=day_votes,
                             month_votes=month_votes,
@@ -1551,7 +1554,8 @@ def tribunal():
                             can_scroll=can_scroll,
                             
                             search_favourites=search_favourites,
-                            favourites_len=favourites_len
+                            favourites_len=favourites_len,
+                            
                            )
 
 

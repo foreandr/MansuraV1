@@ -80,21 +80,21 @@
                         <a href="/{{usernames_list[i]}}">{{usernames_list[i]}}</a>
                                                 
                         <!--DAILY -->
-                        {% if daily_left == 0 %}
+                        {% if daily_left == 0 or uploader_is_subbed[i] != 1%}
                         <span id="daily_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Daily">D: {{day_votes[i]}}</a></button></span>
                         {% else %}
                         <span id="daily_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Daily">D: {{day_votes[i]}}</a></button></span>
                         {% endif %}
 
                         <!--MONTHLY -->
-                        {% if monthly_left == 0 %}
+                        {% if monthly_left == 0 or uploader_is_subbed[i] != 1%}
                         <span id="monthly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
                         {% else %}
                         <span id="monthly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
                         {% endif %}
 
                         <!--YEARLY -->
-                        {% if yearly_left == 0 %}
+                        {% if yearly_left == 0 or uploader_is_subbed[i] != 1%}
                         <span id="yearly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
                         {% else %}
                         <span id="yearly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
