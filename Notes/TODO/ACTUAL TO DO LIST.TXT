@@ -94,6 +94,11 @@ DONE. for the dailies, only a single person wins
 	DONE. get all posts with that num do standard distro for those
 LATER. notifications proper
 LATER. SEARCH RELATED:
+DONE.tribunal
+	DONE IF num dislikes > 10, tag post for tribunal, if num likes > dislikes, no changes, else strip the text from the post, and change the json, and remove the image,
+	DONE if the likes go back to above, then restore
+	NXZpTGRTaFBnKWZzZXpoaGRmM2l5OTk6ZnhmaDMzNzgzM0BpM2l5OTk6ZnhmaDMzNzgzM0BTbGt2aXFEOmpoXitiK2p0OiNgX2hrcjQwbTBgLS1kLzZzYSNgX2hrcjQwbTBgLS1kLzZzcw if in tribunal negative the contents of the post are hidden and just shown to be (in tribunal)
+
 
 
 	validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
@@ -106,12 +111,7 @@ MOTTO
 	- PAID TO SHARE
 	- PAID TO SEARCH
 
-
-DONE.tribunal
-	DONE IF num dislikes > 10, tag post for tribunal, if num likes > dislikes, no changes, else strip the text from the post, and change the json, and remove the image,
-	DONE if the likes go back to above, then restore
-	NXZpTGRTaFBnKWZzZXpoaGRmM2l5OTk6ZnhmaDMzNzgzM0BpM2l5OTk6ZnhmaDMzNzgzM0BTbGt2aXFEOmpoXitiK2p0OiNgX2hrcjQwbTBgLS1kLzZzYSNgX2hrcjQwbTBgLS1kLzZzcw if in tribunal negative the contents of the post are hidden and just shown to be (in tribunal)
-
+ONLY SHOW REQUESTS THAT ARE NOT ME
 
 IMPORTANT BUT LATER
 ===================
