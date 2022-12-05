@@ -1293,6 +1293,8 @@ def contact():
 def FAQ():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
+    if "email" not in session:
+        return redirect(url_for('login'))
     helpers.log_function("request", request)
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"FAQ.html",
