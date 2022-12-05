@@ -3113,10 +3113,17 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         WHERE U.username = U.username -- DO THIS SO ALL OTHERC ALUSES CAN BE AND CLAUSES
         {where_full_query}
 
+
+        -- THIS IS FOR THE TRIBUNAL -- ABSOLUTE FUCKING NIGHTMARE
         AND CASE 
-            WHEN (SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 0
-                THEN 
-                    1 = 2
+        WHEN (SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 1 
+            THEN                   
+                CASE 
+                WHEN (((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id)) > 1 ) AND (SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) > 10 -- SWITCH TO TEN
+                    THEN
+                            ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) / ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id))) > .75                                                                                           
+                    ELSE 1=1   
+                END                                                          
             ELSE 1 = 1 
         END
 
