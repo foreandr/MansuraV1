@@ -1,12 +1,51 @@
 {% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
 {%block main %}
+
 <div>
-    INSTRUCTIONS
+    <b>Introduction:</b>
+</br>
+    My team and I have built a social media site (beta) that hopes to solve some of the common issues that users often complain about. The description of the design is below, and I would love to hear your feedback on additions/pitfalls, etc. 
+</div>
+</br>
+
+<div>
+    <b>Monetization:</b>
+</br>
+    Our Raison d'être is "Get Paid to Like, Post, and Search". The basic idea is this,  every day, month, and year, there are a number of interactions of various kinds on the site (likes, posts, searches, etc), and the equivalent of a market share for each interaction type. 
+    With respect to posting, it's designed to give whoever gets n% of the likes, n% of the capital the site generates for that period of time.  
+    With respect to likes, the market share of the post that they like will have chosen from a set of distribution algorithms (equal, logarithmic, and more..) for how the capital will be distributed to both themselves, and the people who liked their post. With this, there is a monetary incentive both to post, and to like. 
+    Search is a little bit more involved, but I hope it's intuitive. You could imagine that you construct a set of parameters for how you want to engage on Reddit. You want to only see posts, from X Subreddit, with X many likes, with X users, and the precision could go on ad infinitum. Further, suppose you come up with something not only useful to you, but to others. Imagine could now save this algorithm, it could be used by others, and built on by others who want to engage with the site in a similar enough way to find what you created useful. Like the posts and the likes, there will be a market share for how many searches of each type of algorithm are used for each period of time, and an equivalent distribution system for the creator of the algorithm, and the people who use it to search.  
+    There are some other minor aspects to monetization, but that is the main thrust.  
+</div>
+</br>
+
+<div>
+    <b>Content Curation: </b>
+</br>
+    With a search system designed in this way, there is no need to hoover up all the data on users to provide them with a feed that is unique to them and how they want to engage with the site. Above I've described simple parameters for tuning the search, but it isn't beyond the pale to add more complex tools for customizing search (eigenvector centrality, low data AI models, etc…).     
+</div>
+</br>
+
+<div>
+    <b>Content Moderation:</b>
+</br> 
+    The terms of service are simple and can be found: https://mansura.ca/terms_and_conditions.
+    The Tribunal mentioned there is how I feel *MOST* moderation issues on the site should be handled.  When I post gets reported, AND has many negative interactions, it gets sent to the public can decide with their likes (a different kind of like than the monetary one) whether the post will be delisted on the public feeds or not (though they are never removed, and can always be redeemed via the Tribunal). The sentiments around what is acceptable behavior on the site will change with the culture, and I think leaving it to the users is the best way to go about this.      
+</div>
+</br>
+
+<div>
+    The UI is a little rough on the eyes, but we hope the functionality makes up for it while it's still this early in development.
+    </br>   
+</div>
+</br>
+
+<div>
+    Regards, Mansura Team 
 </div>
 
 
-
 <script>
-    console.log("INSTRUCTIONS")
+
 </script>
 {% endblock main %}
