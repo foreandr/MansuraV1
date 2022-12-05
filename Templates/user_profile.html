@@ -122,11 +122,21 @@
                             {{text_list[i]}}
                         {% endif %}            
                     </div>
-                    
-                    <!-- POST IMAGE -->
+
                     {% if image_path_list[i] != "" %}
                     <img onclick="enlargeImg()" id="post_pic" src="{{url_for('static', filename=image_path_list[i])}} " width='400' height='200' />
                     {% endif %}
+                    
+                    <div>
+                        {% if "PROPERLY EMBEDDED HTML TAG" in source_list[i]%}
+                        <p>
+                            {{source_list[i] | safe}}
+                        </p>
+                        {% endif %} 
+                    </div>
+                    
+                    <!-- POST IMAGE -->
+  
                     <!--PROFILE PICTURE-->
                     <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='70' height='70' />
 

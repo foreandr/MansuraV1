@@ -53,9 +53,20 @@
                         {{og_post_text}}
                     </div>
                     <!--POST IMAGE-->
+                    
                     {% if og_post_img != "" %}
                         <img id="og_post_pic" src="{{url_for('static', filename=og_post_img)}}" style="width:auto; height:300px" />
                     {% endif %}
+
+                    <div>
+                        {% if "PROPERLY EMBEDDED HTML TAG" in og_post_src %}
+                        <p>
+                            {{og_post_src | safe}}
+                        </p>
+                        {% endif %} 
+                    </div>
+
+
    
                     <!-- PUTTING SHIT AT THE BOTTOM -->
                     <div><br /></div>
@@ -67,6 +78,7 @@
                             <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
                                 REPOST (coming)
                             </button>
+                            
                             {% if full_replying_to_path != ""  and og_post_src != "None"%}
                             <button class="btn btn-secondary" type="button" aria-expanded="false">
                                 <a href="/{{full_replying_to_path}}" style="color: white;">REPLYING TO  {{full_replying_to_path.split("_")[0]}}</a>
@@ -78,9 +90,6 @@
                         <small class="text-muted" id="post_details">
                             <!--<a href="{{username}}_{{paths_list[i]}}-post_page">ID:{{file_id}} </a>-->
                             {{ og_post_distro_details[0]}}
-                            {% if og_post_src != ""  and og_post_src != "None"%}
-                                Source:{{og_post_src}}
-                            {% endif %}
                             
                             <!--FOREIGN ID SOURCE? gotta do this better
                             {% if post_foreign_id_source != "N-A" %}
@@ -156,6 +165,14 @@
                         {% else %}
                             {{text_list[i]}}
                         {% endif %}            
+                    </div>
+
+                    <div>
+                        {% if "PROPERLY EMBEDDED HTML TAG" in source_list[i]%}
+                        <p>
+                            {{source_list[i] | safe}}
+                        </p>
+                        {% endif %} 
                     </div>
                     
                     <!-- POST IMAGE -->
