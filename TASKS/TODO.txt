@@ -1,5 +1,8 @@
 
 FEATUREs:
+put dates on profile lst uploads
+add replying to
+X. change UI of upload to look like booitrap login
 0. ADD POOL TO COVER PAGE
 1. validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
 2. ONLY SHOW REQUESTS THAT ARE NOT ME, add datetime
@@ -31,6 +34,7 @@ FEATUREs:
 20. PAYOUT TIMER
 21. clicking on friends goes to a FRIEND stats page? 
 22. notifications proper
+
 
 
 DEVOPS
@@ -149,3 +153,6 @@ YOUTUBE:
 to get youtube videos, run a get page source,
 regex or metadata and url
 same thing with tiktoks
+
+might be able to do this with other kinds of links too?
+

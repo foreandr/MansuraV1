@@ -510,7 +510,7 @@ def user_profile_name(username):
             # print("THERE IS NOTHING NO FILES ON HOMEPAGE HERE", session['user'])
             user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user']) # THIS ASSUMES ALREADY IN SESSION, SHOULD BE
 
-        if len(file_ids_list) < 90: # this 100 number needs to be better coded, hard coding is going to cause issues
+        if len(file_ids_list) < 29: # this 100 number needs to be better coded, hard coding is going to cause issues
             can_scroll = False
         else:
             can_scroll = True
@@ -726,7 +726,7 @@ def user_profile_name(username):
         # print("THERE IS NOTHING NO FILES ON HOMEPAGE HERE", session['user'])
         user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user']) # THIS ASSUMES ALREADY IN SESSION, SHOULD BE
 
-    if len(file_ids_list) < 90: # this 100 number needs to be better coded, hard coding is going to cause issues
+    if len(file_ids_list) < 29: # this 100 number needs to be better coded, hard coding is going to cause issues
         can_scroll = False
     else:
         can_scroll = True

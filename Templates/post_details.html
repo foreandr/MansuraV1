@@ -673,6 +673,40 @@
             modal3.style.display = "none"
         }
     }
+    // DEFINING SCORLL LOGIC
+    var scroll_disabler = 0 //FOR SOME REASON YOU CAN HIT THE BOTTOM OF THE PAGE AND SCROLL 10X, DISABLES THIS
+    console.log('{{can_scroll}}')
+    window.onscroll = function (ev) {
+        js_can_scroll = '{{can_scroll}}'
+        //javascript bool is fucking stupid
+        if (js_can_scroll == "true" || js_can_scroll == "True" ){
+            console.log("WINDOW HEIGHT:", window.innerHeight + window.scrollY)
+            console.log("DOCUMENT BODY:",document.body.scrollHeight)
+            
+            if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight-10) {
+                
+                if (scroll_disabler <1) {
+                scroll_disabler += 1
+                console.log("BOTTOM OF PAGE")
+                
+                current_page_no = document.getElementById("page_number").value;
+                new_page_no = parseInt(current_page_no) + 1
+
+                console.log("current_page_no", current_page_no)
+                console.log("new_page_no", new_page_no)
+
+                document.getElementById("page_number").value = new_page_no
+                document.getElementById("search_form").submit();
+                
+                }
+            }
+            
+        } 
+        else{
+            console.log(js_can_scroll)
+        }
+
+    };
 </script>
 <!-- The Modal -->
 {% endblock main %}
