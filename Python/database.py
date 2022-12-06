@@ -2073,6 +2073,7 @@ def FILE_INSERT_STORAGE(username, path_name, text, age_18, external_source, dist
         "external_source": f"{external_source}",
         "distro_details": distro_details
     }
+    # log_function("error", str(my_dictionary))
     # print(f"DICTIONARY:\n{type(my_dictionary)}\n{my_dictionary}")
     json_object = json.dumps(my_dictionary, indent=4)
     # Writing to sample.json
@@ -3705,7 +3706,7 @@ def DEMO_FILE_INSERT_TIKTOKS():
         #print(len(files_list))
         for i in files_list:
             value = CREATING_EMBED_STRUCTURE(i)
-            print(value)
+            # print(value)
             
             FILE_INSERT("mazinosarchive", 12, size=100, post_foreign_id_source="None", 
                 file_path="N-A", post_file="", 

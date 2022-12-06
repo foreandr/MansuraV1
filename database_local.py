@@ -78,7 +78,38 @@ def GET_FILES():
 
     conn.close()
     cursor.close()
+
+
+def GET_FILES_BY_ID(file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+    SELECT * FROM FILES
+    WHERE File_Id = '{file_id}'
+    """)
     
+    for i in cursor.fetchall():
+        print(i)
+
+    conn.close()
+    cursor.close()
+
+
+def GET_FILES_BY_USER(username):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+    SELECT * FROM FILES
+    WHERE uploader = '{username}'
+    """)
+    
+    for i in cursor.fetchall():
+        print(i)
+
+    conn.close()
+    cursor.close()
+
+
 def GET_KEYWORDS():
     conn = connection.test_connection()
     cursor = conn.cursor()
@@ -91,6 +122,7 @@ def GET_KEYWORDS():
 
     conn.close()
     cursor.close()
+    
     
 def GET_FILE_KEYWORDS():
     conn = connection.test_connection()
@@ -105,6 +137,7 @@ def GET_FILE_KEYWORDS():
     conn.close()
     cursor.close()
  
+ 
 def GET_ALL_USERS():
     conn = connection.test_connection()
     cursor = conn.cursor()
@@ -117,6 +150,7 @@ def GET_ALL_USERS():
 
     conn.close()
     cursor.close()
+
 
 def DELETE_SPECIFIC_KEYWORD(KEYWORD):
     conn = connection.test_connection()
@@ -132,6 +166,7 @@ def DELETE_SPECIFIC_KEYWORD(KEYWORD):
     conn.close()
     cursor.close()
     
+    
 def DELETE_SPECIFIC_FILE_KEYWORD(KEYWORD):
     
     conn = connection.test_connection()
@@ -146,13 +181,17 @@ def DELETE_SPECIFIC_FILE_KEYWORD(KEYWORD):
     conn.commit()
     conn.close()
     cursor.close()
-
+#GET_FILES_BY_USER("Admin")
+#DELETE_FILES_BY_ID(2237)
+#GET_FILES_BY_ID(2237)
 # GET_ALL_USERS()
 # 
 #GET_FILE_KEYWORDS()
-#DELETE_SPECIFIC_FILE_KEYWORD("mazinos")
-#DELETE_SPECIFIC_FILE_KEYWORD("archive")
-#DELETE_FILES_BY_NAME('mazinosarchive')
+#DELETE_SPECIFIC_FILE_KEYWORD("working ")
+#DELETE_SPECIFIC_FILE_KEYWORD("on")
+#DELETE_SPECIFIC_FILE_KEYWORD("it")
+#DELETE_SPECIFIC_FILE_KEYWORD("****")
+#DELETE_FILES_BY_NAME('Admin')
 #GET_FILE_KEYWORDS()
 #INSERT_TIKTOKS()
 # GET_FILES()
