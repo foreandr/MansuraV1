@@ -1,0 +1,104 @@
+DONE
+==========
+DONE. TABLE WITH ACCOUNT DATE CREATION?
+DONE. ADD FUNDS
+DONE. CSV HISTORY OF EVERY INSTANCE OF CAPTIAL ALLOCATION
+DONE. CHANGE TEXT SIZE, BUT ONLY SHOW A PIECE ON THE MAIN PAGE, CREATE PROFILES FOR EACH UPLOAD
+	- DONE. WITH THEIR CONNECTIONS BELOW ETC
+DONE. PROFILE STILL HAS D/M/Y ISSUE
+DONE. PROFILE CANT SEE FOLLOWING FOLLOWERS
+DONE. MAKE CORNER OF THE PICTURES ROUND
+DONE. WHEN THEY REGISTER AN ACCOUNT, REGISTER THE PAYPAL EMAIL
+DONE. CLOSE CONNECTIONS IN ALL functions
+DONE. make sure no spaces in username, make sure username less than N chars, 
+DONE. SETTINGS?
+DONE. WITHDRAW FUNDS
+	DONE. THEN THEY CLICK WITHDRAWL AND SENDS THEM TO PAGE TO ADD TO PAYOUT CSV
+	- SHOW N BUSINESS DAYS FOR PAYPAL BECAUSE MANUALLY
+DONE. PAY PEOPLE YOU'RE CONNECTED TO X PERCENT OF YOUR WINNINGS (RATIO AND WHATNOT)
+DONE. BUY PUBLIC DOMAIN AND LAUNCH PUBLICLY	
+DONE. DOMAIN NAME
+DONE. HTTPS
+DONE. LOG EVERY REQUEST, AND ERROR TO A LOG FILE, log file for each day that has all the code and requests
+DONE. FOR TOMORROW, GET DB FUNCTIONS WORKING, GUNICORN LOGGING
+DONE. RE FORM LOG DICT IN DISTRIBUTION
+DONE. RESCRICT UPLOADS TO PEOPLE WHO ARE SUBBED
+DONE, CREATED A WHOLE FUCK TONE OF SOCIAL MEDIA ACCOUNTS
+	- NOTE======================== COULD PROBABLY CREATE MORE
+DONE. JIRA CONFLUENCE DOCUMENTATION 
+DONE. SEARCH BASIC
+DONE. CODE FOR CHECKING HOW SIMILAR TWO PIECES OF TEXT ARE
+DONE. withdrawl isn't finished
+DONE. HTTPS 
+DONE. STREAMLINE UPDATES TO THE SYSTEM (GITHUB AND SO ON)
+DONE. LIKES TABLE (WITH SIMILAR LOGIC TO VOTES)[MAY NOT NEED DATE SOME OTHER MINOR STUFF]
+DONE. TEXT CHECK AND IMAGE CHECK WORKING PROPERLY, mild frontend checks as well
+DONE. Files that have iomages or not sort
+NOT DOING. show publicly how many people have blocked this person
+NOT DOING. LIMIT NUM POSTS PER DAY, GOOD QUERIES WILL LIMIT BOTS
+DONE. IF NUM POSTS GOTTEN FROM UNIVERSAL < 100, OR WHATEVER THE COUNT IS, DISABLE SCROLL FUNCTIONALITY
+DONE. ALLOW HISTORY TO BE DOWNLOADABLE
+DONE. add search to distrobution
+DONE.notifications 
+	- I SHOULD MAKE THE QUERIES SEPARATE SO THE DATES ARE CORRECT
+NOT DOING. CHANGE VOTING TO 30 4 1
+DONE. BASIC SEARCH BY KEYWORD, (BY TEXT AND USERNAME) (FIRST N[200?] RESULTS)
+	- add tags to text inserts to help the search algo
+DONE. UPLOADS SEEM TO WORK?
+	- CHECKSOME UPLOADS HAVE RANDOM SLASHES IN THEM FOR UPLOAD NUMS
+DONE. GET UPLOADS ACTUALLY WORKING, 
+	- CHECK having modal issue	
+DONE. 
+DONE. allow for profile bio
+	- EDIT BIO
+	- a full page on it's own for editing profile including picture and bio, and presumabley other things of that nature
+
+NOT DONE. First n people to join this month get in free, (xd)
+	- person who is reffered gets yearly vote (that they keep if they sub, they have sub to claim!)-and the referer only claims his rewards on subsciption of referred acount
+	- the correct judgment is if reffered you get EXTRA
+	- person who refers gets 1 monthly vote for EACH refer
+
+DONE. maybe in settings?show publicly content moderation policy with, {here are the bad words, don't threaten national security}
+DONE. redirected to wrong page after follow
+DONE. give a new monthly vote every day
+TO DO STIL. REPOST, ability to take another post and endorse it somehow 
+TO DO. BUY ADS TO PUT ON THE MAIN PAGE, ALL GOES TO POOL, BUY ADS TO PUT ON A PERSONS PAGE, 50% GOES TO THEM, 50% GOES TO POOL
+TO DO. might be worth allowing other fieltypes in the future
+	-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=ScStHRH4NJA" frameborder="0" allowfullscreen></iframe>
+	-<iframe width="560" height="315" src="https://webapp-va.tiktok.com/ac4d3b3877416c9cf69d4f7e6666e9d9/638881e6/tos-useast2a-v-0068/39093d1ecebb4281a4bf32650f7e8409?a=1988&ch=0&cr=0&dr=0&lr=tiktok_m&cd=0%7C0%7C0%7C0&br=5210&bt=2605&cs=0&ds=3&ft=_4N7gvvfQ9wUxKZfl2HC~YzItGaeW.RUXuv4kag3-B4kS&mime_type=video_mp4&qs=13&rc=NXZpTGRTaFBnKWZzZXpoaGRmM2l5OTk6ZnhmaDMzNzgzM0BpM2l5OTk6ZnhmaDMzNzgzM0BTbGt2aXFEOmpoXitiK2p0OiNgX2hrcjQwbTBgLS1kLzZzYSNgX2hrcjQwbTBgLS1kLzZzcw%3D%3D&l=202212010428190102230821520F8F1E1E&btag=40000&policy=eyJ2bSI6MywidWlkIjoiNjkxNjYxNzI5MjIxNTMzNzk5MCJ9" frameborder="0" allowfullscreen></iframe>
+DONE. on new search textquery, remove all previous where clauses
+DONE.add users to search
+TODO. MAKE SEARCH WORK BETTER WITH SPACES
+DONE. SEARCH FAVOURITES
+DONE. GET SEARCH FAVOURITES DEMO FOR FOREANDR
+DONE. GO TO SEARCH ALGO PAGE ORDER THE SEARCH ALGOS
+DONE. HAVE A SEARCH BUTTON THAT ALLOWS TO FAVOURITE AN ALGO, 
+DONE. SHOW IT ON THE FRONT PAGE
+DONE. max length search algo name javascript
+DONE. empty search pages still need values
+
+DONE. if on own profile can post without it being a reply
+DONE. SEE SEARCH FAVORUITES IN PROFILE
+DONE.search algo voting page	search_arguments
+DONE. reset isnt workinhg
+DONE. check recovery
+TODO. FILE FAVOURITES,
+DONE . fix recov page, 1 time entry etc
+DONE. cap search algos per day
+DONE. password validation in regiuster and reocfvr
+DONE. shgow num replies on posts]
+DONE. SHOW DISTRIBUTION OF SEARCH ALGOS IN DISTRIBUTION TXT FILE
+DONE. change excel to produce proper changed shit
+DONE. for the dailies, only a single person wins
+	DONE. get max num for that day
+	DONE. get all posts with that num do standard distro for those
+LATER. notifications proper
+LATER. SEARCH RELATED:
+DONE.tribunal
+	DONE IF num dislikes > 10, tag post for tribunal, if num likes > dislikes, no changes, else strip the text from the post, and change the json, and remove the image,
+	DONE if the likes go back to above, then restore
+	DONE. if in tribunal negative the contents of the post are hidden and just shown to be (in tribunal)
+DONE. allow embedded videos in UPLOAD
+DONE. liek clauses case insensitive
+DONE. CHANGE TESTNET PAYPAL OFF LIVE
+DONE. ABLE TO UPLOAD ONCE A [TIME INTERVAL] IF NOT SUBSCRIBED

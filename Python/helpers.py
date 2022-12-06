@@ -721,7 +721,7 @@ def CREATING_EMBED_STRUCTURE(link):
         youtube_template = youtube_template.replace("YOUTUBE_FILE_ID", youtube_file_id)
         link = youtube_template
 
-    print("FINAL", link)
+    # print("FINAL", link)
     return link
 
 

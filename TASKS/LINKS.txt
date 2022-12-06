@@ -1,0 +1,44 @@
+USEFUL LINKS:
+https://packages.ubuntu.com/
+https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-18-04 -WORKED
+https://www.postgresql.org/docs/8.1/functions-datetime.html
+https://stackoverflow.com/questions/69348483/how-do-i-pass-an-image-from-javascript-to-a-python-flask-app
+https://stackoverflow.com/questions/3206344/passing-html-to-template-using-flask-jinja2
+https://stackoverflow.com/questions/16036041/can-a-html-button-perform-a-post-request
+https://www.educba.com/postgresql-compare-strings/
+https://stackoverflow.com/questions/15088037/python-script-to-do-something-at-the-same-time-every-day
+https://www.youtube.com/watch?v=CQv7wfZIcs0
+https://www.youtube.com/watch?v=6WruncSoCdI&ab_channel=JulianNash
+https://www.youtube.com/watch?v=iIhAfX4iek0&ab_channel=TechWithTim
+https://www.kaggle.com/datasets
+https://www.reddit.com/r/flask/comments/evjcc5/question_on_how_to_generate_a_rss_feed/
+https://www.youtube.com/watch?v=C-jkO6coJkk 2FA
+https://www.youtube.com/watch?v=UEJHSPM-Qiw -- PAYPAL https://developer.paypal.com/braintree/docs/guides/authorization/overview
+https://www.youtube.com/watch?v=uijgmwOdcXQ GITHUB ACTIONS DIGITAL OCEAN
+https://getbootstrap.com/docs/4.0/components/buttons/
+https://stackoverflow.com/questions/67976665/flask-url-for-doesnt-work-in-templates-external-javascript
+https://www.salecalc.com/paypal?p=0.02&l=ca&r=0&e=0&f=0&m=0&c=0
+https://stackoverflow.com/questions/26551/how-can-i-pass-arguments-to-a-batch-file BATCH FILE PARAMS
+https://www.geeksforgeeks.org/how-to-read-emails-from-gmail-using-gmail-api-in-python/ --READING GMAILS
+https://www.youtube.com/watch?v=5rj3_c-Hyu4 - QUICK DIGITAL OCEAN TUT
+https://blog.miguelgrinberg.com/post/running-your-flask-application-over-https
+https://www.techrepublic.com/article/how-to-create-lets-encrypt-ssl-certificates-with-acme-sh-on-linux/
+https://code.visualstudio.com/docs/remote/ssh
+https://pypi.org/project/profanity-check/
+https://voyerlaw.com/blog/delaware-vs-canada-startup-structure
+https://dev.to/dev_elie/connecting-a-react-frontend-to-a-flask-backend-h1o#:~:text=We%20now%20have%20a%20complete,one%20below%20on%20the%20browser.
+https://dashboard.stripe.com/settings/public CHANGE BUSINESS TO REAL SITE
+https://check-host.net/
+https://www.sslforfree.com/
+https://loader.io/ # CHECK HOW MUCH IT CAN TOLERATE
+https://santaclaraprinciples.org/
+https://stackoverflow.com/questions/2202999/why-is-textarea-filled-with-mysterious-white-spaces
+https://stackoverflow.com/questions/39539110/pyvenv-not-working-because-ensurepip-is-not-available
+https://askubuntu.com/questions/879437/ensurepip-is-disabled-in-debian-ubuntu-for-the-system-python
+https://stackoverflow.com/questions/34304833/failed-building-wheel-for-psycopg2-macosx-using-virtualenv-and-pip
+https://www.youtube.com/watch?v=HJSwA3Cv38s
+https://dev.to/thetrebelcc/how-to-run-a-flask-app-over-https-using-waitress-and-nginx-2020-235c
+https://math.stackexchange.com/questions/1694311/is-sigma-sigma-a-mathematical-way-of-doing-a-for-loop
+https://www.golinuxcloud.com/flask-gunicorn-nginx/
+https://www.geeksforgeeks.org/how-to-catch-all-javascript-errors-and-send-them-to-server/
+https://stackoverflow.com/questions/35215842/render-html-strings-in-flask-templates

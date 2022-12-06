@@ -1,0 +1,136 @@
+
+FEATUREs:
+0. ADD POOL TO COVER PAGE
+1. validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
+2. ONLY SHOW REQUESTS THAT ARE NOT ME, add datetime
+3. specify profile pic must be png or something
+4. upload all of mazinos archive, then go on tiktok toa nnounce
+5. msg balaji
+6. SHOW HOW MUCH PAYPAL TAKES ON WITHDRAWL
+7. vast swatths of the CSS and js can be simplified into single pages
+8. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
+9. UNIT TESTS
+10 CHALLENGES OF THE DAY WITH MONETARY INCENTIVE, vote on next questions of the day?
+11. WORD TRIBUNAL  public tribunal for banned words and shit like that
+12. whichever searcch has the most votes at the time becomes the default search algo
+13. CHAT ROOMS
+	13B). ANYONE IS ABLE TO CREATE, ADD OR DELETE ANYONE FROM A CHAT ROOM
+	13C). CHAT ROOMS CAN BE NAMED ANYTHING
+	13D). CHAT ROOMS NO TEXT RESTRICTION EXCEPT MAYBE EMOJIS  (MUST TEST)
+	13E)allow sending posts in the private chats
+14. RETWEET LOGIC
+15. ALLOW OTHER PEOPLE TO TAG POSTS?
+    - NEED ECONOMIC LOGIC FOR TAGIGN
+16. LEADERBOARDS how many wins?
+17. BE ABLE TO BLOCK PEOPLE
+18. ACHIEVMENTS
+
+
+TENTATIVE:
+1. make the history look less hsit
+
+CHECK:
+#ALSO SOME WEIRD SESSION ISSUES, if it thinks youre logged in, you cant go to the log in screen, maybe redirect to profile or something instead, and if there is no profile, , redirect o login
+
+SEARCH
+=======
+FULL SAME DISTRIBUTION FOR THE SEARCH ALGOS, YOU ARE REWARDED FOR YOUR VOTE THERE TOO
+x3. elo system in search might be a good idea
+3. MORE COMPLEX SEARCH
+	WITH DISTRIBUTION METHOD AS WELL
+
+DEVOPS
+===============
+1. DATABASE BACKUPS
+2. REMOTE FILESYTEM?
+4. HIDE SENSATIVE INFO
+7.create a backup of the DB on every daily reset
+8. CREATE  DEV NET ALONGSIDE TEST NET, CREATE UNIT TESTS
+
+COMING SOON
+===========
+HAVE TO BE ABLE TO DISPROVE OF OR APPROVE ADS, FOR X TIME PERIOD AS WELL
+6. LEADERBOARDS / HISTORY
+	22. create leaderboard table to put extra things
+5. BANNED KEYWORD LIST[FOR NAMES AND INSIDE OF TEXT]
+	5B). ML ALGO LOOKING FOR SAME KEYWORDS IN PICTURES
+	5C). LOOK FOR PLACES PEOPLE MIGHT MAKE SQL INJECTIONS AND VALIDATE THE TEXT
+	5D). FRONTEND: DISABLED SUBMIT BUTTON IF THEY HAVE THOSE WORDS
+	5E). BACKEND: DO A CHECK IF THIS WORD IS IN THE FORM
+11. PUBLICLY SELL 1% EQUITY
+	- you have to win the capital that would be used to buy equity, it cannot come from outside the system
+10. SIGN IN BY PAYPAL? OR MAKE SIGN IN MORE SECURE, MAKE RECOVERY WITH 1 TIME GENERATED PASS
+
+2. NOTIFICATION BELL? 
+	PAGE, BASICALLY QUERY ALL NEW INFO IN LAST X TIMEFRAME, CAN BE CUSTOM
+
+QUALITY OF LIFE
+===============
+email noam chomsky about the consequneces of substrate independant information processing
+20x12. change user on structure to be able to show users name when signedinto session
+X. NOT SURE UGNNA DO. POST TO LIKE RATIO NEXT TO LIST ON PROFILE OF WHO BLOCKS? RATING OF ACCOUNTS?
+0. Might be a good idea to have each user have a config file JSON object for all kinds of parameters
+1. NATIVE BOLD/ ITALICS/ UNDERLINE/STRIKETHROUGH FONTS
+
+2. IN THE CSV PRODUCED IN THE HISTORY, ADD SITE COSTS
+
+5. Tell when user has registered successfully or not and why
+6. PUBLIC POLLS (coming soon, with similar distribution, think "https://secure.runescape.com/m=poll/oldschool/#_ga=2.149377974.1498537872.1665427969-62632821.1665427968")
+7. EXTRA VOTES for a refferal
+8. OPTION TO DO THE TRANSACTION IN A CRYPTO CURRENCY
+9. ACCOUNT IDENTITY VERIFICATION PROCESS
+
+11. INVERSE EIGENVECTOR CENTRALITY REPUTATION SYSTEM
+	11b). Vote on the quality of each other like uber, EXCEPT the value of someones appraisal is based on their approval rating
+	11c). their vote erased when not subbed?
+12. MULTIPLE WAYS TO PAY IN, 1 WAY OUT
+	12A). IN: BITCOIN, STRIPE, PAYPAL, ETC
+	12B). OUT: STRIPE
+3. PAYOUT TIMER
+X1. FOR NOW, COMPLETELY DISABLING ACTIVITY IF UNSUBBED BUT, MAYBE JUST LIMIT THEM TO WEAK FUNCTIONALITY
+X2. clicking on friends goes to a stats page? 
+	-	28. add friends in demo, and limit friends or go with scroll or something
+4. 1 RANDOM WINNER GETS X PERCENT
+4C. PUT IN EASILY VERIFIABLE CSV FILE FORMAT
+
+30.6 should be some way to migrate follower graph
+31. ability to opt in and out of seeing ads or not, if you say no you get none of the ad capital?
+	-	26. can buy more post opportunities? grows exponentially
+	- advertisers get to choose which curation and search tools they want to fund?
+		- and if you voted for that search, you a proportion of the ad revenue
+20. ADVERTISING PAGE
+BE ABLE TO DELIBERATELY CONSUME AD CONTENT FOR FREE DAILYS / MONTHLYS VOTES
+	- NEED SOME WAY TO PROVE TIME SPENT, QUIZES?
+PEOPLE CAN PAY FOR AN API INTO THE DB FOR SELECT STATEMENTS THAT DOES N SEARCHES A MONTH
+TURN OTHER ASPECTS OF ##USERDATA INTO JSON FILES
+
+create sim
+
+be able to tag people
+	- 
+They pay for an api that has read/update access maybe?
+    - pa will rise with usage and other things
+best services get share of the API'S revenue
+    - how to judge?
+would also like a way to clean and label data and integrate that with payment
+differentiating people who contribute suggestions with code I can implement
+fix string interpolation?
+    -    data validation function with an assert to check for SQL keywords
+
+RPELY AND COPY LOGICbe able to say explicitly that you fork a dataset, and then be able to show publicly how different the new data is from the old data
+
+
+
+SOLUTION FOR COST OF CLOUD STORAGE GETTING TOO height
+	- I CAN MOVE THE FILES MANUALLY BY THEIR CREATION DATE OR ID OR SOMETHING
+	- DRAG THEM INTO PHYSICAL STORAGE
+	- WHEN SOMEBODY WANTS ONE OF THOSE OLD FILES, SERVER MAKES A CALL TO PHYSICAL STORAGE FILE SERVER RUNNING ON A LOCAL MACHINE
+	- AND SENDS THEM THE FILE
+
+
+
+UNUSED LIBRARIES:
+beautifulsoup4==4.11.1
+google-api-python-client==2.64.0
+google-auth-oauthlib==0.5.3
+lxml==4.9.1
