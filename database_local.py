@@ -38,8 +38,50 @@ def DEMO_ACCOUNTS_SUBSCRIBE():
 
 def INSERT_TIKTOKS():
     DEMO_FILE_INSERT_TIKTOKS()
+  
+def DELETE_FILES_BY_ID(file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+    DELETE FROM FILES
+    WHERE File_Id = '{file_id}'
+    """)
+    
+    conn.commit()
+    conn.close()
+    cursor.close()
+    
+def GET_FILES():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+    SELECT * FROM FILES
+    """)
+    
+    for i in cursor.fetchall():
+        print(i)
+
+    conn.close()
+    cursor.close()
+    
+    
+def GET_ALL_USERS():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+    SELECT * FROM USERS
+    """)
+    
+    for i in cursor.fetchall():
+        print(i)
+
+    conn.close()
+    cursor.close()
+    
+#INSERT_TIKTOKS()
+# GET_FILES()
 # UPDATE_USER_BALANCE('foreandr')
 #DEMO_ACCOUNTS_REGISTER()
 # DEMO_ACCOUNTS_SUBSCRIBE()
-RESET_DATABASE()
-INSERT_TIKTOKS()
+# RESET_DATABASE()
+# INSERT_TIKTOKS()

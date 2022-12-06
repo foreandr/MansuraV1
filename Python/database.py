@@ -3706,7 +3706,7 @@ def DEMO_FILE_INSERT_TIKTOKS():
         for i in files_list:
             value = CREATING_EMBED_STRUCTURE(i)
             #print(value)
-            FILE_INSERT("foreandr", 2, size=100, post_foreign_id_source="None", 
+            FILE_INSERT("mazinosarchive", 2, size=100, post_foreign_id_source="None", 
                 file_path="N-A", post_file="", 
                 post_text="Mazinos Archive", age_18="", 
                 external_link=value,
