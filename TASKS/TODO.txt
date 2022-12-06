@@ -30,6 +30,8 @@ FEATUREs:
     - SYSTEM TRIBUNAL
 20. PAYOUT TIMER
 21. clicking on friends goes to a FRIEND stats page? 
+22. notifications proper
+
 
 DEVOPS
 ===============

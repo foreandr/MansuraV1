@@ -3706,16 +3706,17 @@ def DEMO_FILE_INSERT_TIKTOKS(num):
         files = f.read()
         files_list = files.split("\n")
         #print(len(files_list))
-        count = 0 
+        count = 0
         for i in files_list:
             value = CREATING_EMBED_STRUCTURE(i)
-            # print(value)
-            if count < num:
-                FILE_INSERT("mazinosarchive", 12, size=100, post_foreign_id_source="None", 
-                    file_path="N-A", post_file="", 
-                    post_text="Mazinos Archive", age_18="", 
-                    external_link=value,
-                    distro_details=["EQUAL DISTRIBUTION", "None"])
+            if count > num:
+                break
+            # print("EXECUTING")
+            FILE_INSERT("a", 1, size=100, post_foreign_id_source="None", 
+                file_path="N-A", post_file="", 
+                post_text="Mazinos Archive", age_18="", 
+                external_link=value,
+                distro_details=["EQUAL DISTRIBUTION", "None"])
             count += 1 
             
        

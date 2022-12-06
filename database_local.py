@@ -17,7 +17,7 @@ def UPDATE_USER_BALANCE(user):
     
 def RESET_DATABASE():
     print("hello world")
-    USER_FULL_RESET("small")
+    USER_FULL_RESET()
 
 
 def DEMO_ACCOUNTS_REGISTER():
@@ -188,4 +188,5 @@ def DELETE_SPECIFIC_FILE_KEYWORD(KEYWORD):
     conn.close()
     cursor.close()
 
-# RESET_DATABASE()
+RESET_DATABASE()
+#(1)

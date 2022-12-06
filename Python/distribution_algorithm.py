@@ -149,7 +149,7 @@ def FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT(vote_type, testing=False):
     #print("\nCHECKPOINT 1")
     #PROBABLY THE BEST THING TO PRINT TO KNOW WHAT'S GOING ON
     #NOTE, RATIO HAS ALREADY BEEN TAKEN OUT OF AMOUNT, IT ISN'T INCORRECT, CAN BE CHECKED WITH ALGOS
-    print(non_equity_dict)
+    # print(non_equity_dict)
     log_function(msg_type="distro", log_string=F"MANSURA: {non_equity_dict['EQUITY']}", vote_type=vote_type, distro_type="initial")
 
 
@@ -1315,4 +1315,4 @@ def GET_NUM_SEARCH_VOTES():
 # SECTIONED_EQUAL_DISTRIBUTION(19.91, test_ordered_array, sections=2)RUN_WITH_TIME_TEST()
 #print(EQUAL_DISTRIBUTION(2.59, ['Valen', 'Rayne', 'Philippa', 'Lindsee', 'Tel', 'Phuoc', 'Kameka']))
 
-# RUN_WITH_TIME_TEST()
+RUN_WITH_TIME_TEST()

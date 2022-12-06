@@ -92,7 +92,7 @@ DONE. change excel to produce proper changed shit
 DONE. for the dailies, only a single person wins
 	DONE. get max num for that day
 	DONE. get all posts with that num do standard distro for those
-LATER. notifications proper
+
 LATER. SEARCH RELATED:
 DONE.tribunal
 	DONE IF num dislikes > 10, tag post for tribunal, if num likes > dislikes, no changes, else strip the text from the post, and change the json, and remove the image,

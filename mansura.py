@@ -406,7 +406,11 @@ def upload():
             #print("filename:", post_file.filename, type(post_file.filename), len(post_file.filename))
             return redirect(url_for("home"))
             
-        file_id = database.FILE_INSERT( uploader=session["user"], uploaderId=database.GET_USER_ID(session["user"]), size="10", post_foreign_id_source=forign_id_source, 
+        file_id = database.FILE_INSERT( 
+                uploader=session["user"], 
+                uploaderId=database.GET_USER_ID(session["user"]), 
+                size="10", 
+                post_foreign_id_source=forign_id_source, 
                 file_path="N-A", post_file=post_file, 
                 post_text=post_text, age_18=plus_18, 
                 external_link=external_link,
