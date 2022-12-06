@@ -1,52 +1,62 @@
 {% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
 {%block main %}
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
-    </head>
-    <body class="text-center">
-        <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
-            <main role="main" class="inner cover">
-                <h1 class="cover-heading">MANSURA</h1>
-                <p class="lead">Raison D'être:</p>
-                <p class="lead">Get Paid to <b>Post</b></p>
-                <p class="lead">Get Paid to <b>Like</b></p>
-                <p class="lead">Get Paid to <b>Search</b></p>
 
-                </br>
-                </br>
-                </br>
+<div class="container">
+    <div class="row">
+      <div class="col-lg" id="cover_page_pool" style="position:relative;">
+        <div>
+            <u><h1>Distribution Pool</h1></u>
+        </div>    
+        <div>
+            <h2>Daily: ${{daily_pool}}</h2>
+            </div>
+            <div>
+                <h2>Monthly: ${{monthly_pool}}</h2>
+            </div>
+            <div>
+                <h2>Yearly: ${{yearly_pool}}</h2>
+            </div>
+      </div>
+      <div class="col-sm">
+        <h1 class="cover-heading"><u>MANSURA</u></h1>
+        <p class="lead">Raison D'être:</p>
+        <p class="lead">Get Paid to <b>Post</b></p>
+        <p class="lead">Get Paid to <b>Like</b></p>
+        <p class="lead">Get Paid to <b>Search</b></p>
 
-                <p class="lead">Every $5 subscription is added to a pool that is distributed every month to the users.</p>
+        </br>
+        </br>
+        </br>
 
-                <p class="lead">The distribution history is public and can be found.<a href="/history">here</a></p>
-                
-                <p>(not available on mobile during beta)</p>
+        <p class="lead">Every $5 subscription is added to a pool that is distributed every month to the users.</p>
 
-                <p class="lead">
-                    <a href="/login" class="btn btn-lg btn-secondary">Login Here</a>
-                </p>
-                <p class="lead">
-                    <a href="/register" class="btn btn-lg btn-secondary">Register Here</a>
-                </p>
+        <p class="lead">The distribution history is public and can be found.<a href="/history">here</a></p>
+            
+        <p>(not available on mobile during beta)</p>
 
-                <p class="lead">
-                    <a href="https://github.com/foreandr/PublicMansura" class="btn btn-lg btn-secondary">For Programmers</a>
-                </p>
-            </main>
-        </div>
-        <!-- Bootstrap core JavaScript
+        <p class="lead">
+            <a href="/login" class="btn btn-lg btn-secondary">Login Here</a>
+        </p>
+        <p class="lead">
+            <a href="/register" class="btn btn-lg btn-secondary">Register Here</a>
+        </p>
+
+        <p class="lead">
+            <a href="https://github.com/foreandr/PublicMansura" class="btn btn-lg btn-secondary">For Programmers</a>
+        </p>
+
+      </div>
+      <div class="col-sm">
+      </div>
+    </div>
+</div>
+
+    <!-- Bootstrap core JavaScript
             ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+    <!-- Placed at the end of the document so the pages load faster -->
 
-    </body>
-</html>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
 <script>
     console.log("testings")
 </script>

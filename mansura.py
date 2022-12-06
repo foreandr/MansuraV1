@@ -1594,7 +1594,11 @@ def newsletter():
 @app.route("/cover_page", methods=['GET'])
 def cover_page():
     helpers.log_function("request", request)
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS("")
     return render_template(f"cover_page.html",
+        daily_pool=daily_pool, 
+        monthly_pool=monthly_pool, 
+        yearly_pool=yearly_pool
     )
 
 @app.route("/edit_bio", methods=['GET', "POST"])
@@ -1622,7 +1626,7 @@ if __name__ == '__main__':
     thread = Thread(target = distribution_algorithm.TESTING_TIMING, args = ())
     thread.start()
 
-    app.run(host=host, port="8095", debug=False, use_reloader=False)  # host is to get off localhost
+    app.run(host=host, port="8096", debug=False, use_reloader=False)  # host is to get off localhost
     #serve(app, host=host,port="8091")    
 
     # If the debugger is on, I can change my files in real time after saving
