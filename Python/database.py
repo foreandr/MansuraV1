@@ -3137,7 +3137,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         {order_by_clause}
         
         OFFSET (({page_no} - 1) * 100)
-        LIMIT 100; 
+        LIMIT 30; 
     """
     #print("MY QUERY ================================")
     #print(query)
@@ -3705,10 +3705,13 @@ def DEMO_FILE_INSERT_TIKTOKS():
         #print(len(files_list))
         for i in files_list:
             value = CREATING_EMBED_STRUCTURE(i)
-            #print(value)
-            FILE_INSERT("mazinosarchive", 2, size=100, post_foreign_id_source="None", 
+            print(value)
+            
+            FILE_INSERT("mazinosarchive", 12, size=100, post_foreign_id_source="None", 
                 file_path="N-A", post_file="", 
                 post_text="Mazinos Archive", age_18="", 
                 external_link=value,
-                distro_details="")
+                distro_details=["EQUAL DISTRIBUTION", "None"])
+            
+       
             

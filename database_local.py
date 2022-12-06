@@ -50,7 +50,22 @@ def DELETE_FILES_BY_ID(file_id):
     conn.commit()
     conn.close()
     cursor.close()
+
+def DELETE_FILES_BY_NAME(user):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
     
+    
+    cursor.execute(f"""
+    DELETE FROM FILES
+    WHERE uploader = '{user}'
+    """)
+    
+    conn.commit()
+    conn.close()
+    cursor.close()
+
+
 def GET_FILES():
     conn = connection.test_connection()
     cursor = conn.cursor()
@@ -64,7 +79,32 @@ def GET_FILES():
     conn.close()
     cursor.close()
     
+def GET_KEYWORDS():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+    SELECT * FROM KEYWORDS
+    """)
     
+    for i in cursor.fetchall():
+        print(i)
+
+    conn.close()
+    cursor.close()
+    
+def GET_FILE_KEYWORDS():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+    SELECT * FROM FILE_KEYWORDS
+    """)
+    
+    for i in cursor.fetchall():
+        print(i)
+
+    conn.close()
+    cursor.close()
+ 
 def GET_ALL_USERS():
     conn = connection.test_connection()
     cursor = conn.cursor()
@@ -77,8 +117,44 @@ def GET_ALL_USERS():
 
     conn.close()
     cursor.close()
+
+def DELETE_SPECIFIC_KEYWORD(KEYWORD):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
     
-#INSERT_TIKTOKS()
+    
+    cursor.execute(f"""
+    DELETE FROM KEYWORDS
+    WHERE uploader = '{KEYWORD}'
+    """)
+    
+    conn.commit()
+    conn.close()
+    cursor.close()
+    
+def DELETE_SPECIFIC_FILE_KEYWORD(KEYWORD):
+    
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    
+    
+    cursor.execute(f"""
+    DELETE FROM FILE_KEYWORDS
+    WHERE key_name = '{KEYWORD}'
+    """)
+    
+    conn.commit()
+    conn.close()
+    cursor.close()
+
+# GET_ALL_USERS()
+# 
+#GET_FILE_KEYWORDS()
+#DELETE_SPECIFIC_FILE_KEYWORD("mazinos")
+#DELETE_SPECIFIC_FILE_KEYWORD("archive")
+#DELETE_FILES_BY_NAME('mazinosarchive')
+#GET_FILE_KEYWORDS()
+INSERT_TIKTOKS()
 # GET_FILES()
 # UPDATE_USER_BALANCE('foreandr')
 #DEMO_ACCOUNTS_REGISTER()

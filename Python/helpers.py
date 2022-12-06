@@ -662,7 +662,7 @@ def CHANGE_BIO(my_string, user):
         json.dump(data, jsonFile)
 
 def CREATING_EMBED_STRUCTURE(link):
-    print("ORIGIN", link)
+    #print("ORIGIN", link)
     
     tiktok_template = '''                
         <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME/video/LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID" data-video-id="LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID" style="max-width: 605px;min-width: 325px;"> 

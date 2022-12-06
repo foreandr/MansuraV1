@@ -149,6 +149,8 @@ def home():
         image_path_list.insert(i, post_image_path)
         distro_details_list.insert(i,distro_details)
 
+    helpers.log_function("error", str(source_list))
+    
     lengths_of_text_files = []
     for i in text_list:
         lengths_of_text_files.append(len(i))
