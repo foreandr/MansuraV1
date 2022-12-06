@@ -275,6 +275,7 @@ https://dev.to/thetrebelcc/how-to-run-a-flask-app-over-https-using-waitress-and-
 https://math.stackexchange.com/questions/1694311/is-sigma-sigma-a-mathematical-way-of-doing-a-for-loop
 https://www.golinuxcloud.com/flask-gunicorn-nginx/
 https://www.geeksforgeeks.org/how-to-catch-all-javascript-errors-and-send-them-to-server/
+https://stackoverflow.com/questions/35215842/render-html-strings-in-flask-templates
 
 SOLUTION FOR COST OF CLOUD STORAGE GETTING TOO height
 	- I CAN MOVE THE FILES MANUALLY BY THEIR CREATION DATE OR ID OR SOMETHING

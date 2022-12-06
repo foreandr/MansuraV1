@@ -1248,9 +1248,9 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
     """
     #1. CHECK THAT THE POST FOREIGN ID ACTUALLY EXISTS
     if post_foreign_id_source == "None" or post_foreign_id_source == "" or post_foreign_id_source == None:
-        print(F"EMPTY SOURCE IS [{post_foreign_id_source}]")
+        # print(F"EMPTY SOURCE IS [{post_foreign_id_source}]")
         post_foreign_id_source = ""
-        print(F"EMPTY SOURCE IS [{post_foreign_id_source}]")
+        # print(F"EMPTY SOURCE IS [{post_foreign_id_source}]")
             
     conn = connection.test_connection()
     cursor = conn.cursor()
@@ -2065,7 +2065,7 @@ def DEFAULT_EQUITY_INSERT():
 
 def FILE_INSERT_STORAGE(username, path_name, text, age_18, external_source, distro_details):
     # print(f"username: {username}\npath_name: {path_name}\ntext: {text}\nmy_file: {my_file}\nage_18: {age_18}\nexternal_source: {external_source}")
-    print("GETTING HERE")
+    # print("GETTING HERE")
     external_source = CREATING_EMBED_STRUCTURE(external_source)
     my_dictionary = {
         "txt": f"{text}",
@@ -3696,3 +3696,19 @@ def CHECK_IF_FILE_IS_IN_TRIBUNAL(file_id):
     else:
         print(False)
         return False
+
+def DEMO_FILE_INSERT_TIKTOKS():
+    path = "/root/mansura/Notes/TODO/PAGE LINKS/tiktok_links.txt"
+    with open(path, 'r') as f:
+        files = f.read()
+        files_list = files.split("\n")
+        #print(len(files_list))
+        for i in files_list:
+            value = CREATING_EMBED_STRUCTURE(i)
+            #print(value)
+            FILE_INSERT("foreandr", 2, size=100, post_foreign_id_source="None", 
+                file_path="N-A", post_file="", 
+                post_text="Mazinos Archive", age_18="", 
+                external_link=value,
+                distro_details="")
+            

@@ -18,3 +18,4 @@ NudeNet==2.0.9
 tensorflow
 yake==0.4.8
 bcrypt==4.0.1
+bs4==0.0.1
