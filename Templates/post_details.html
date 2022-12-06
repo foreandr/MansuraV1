@@ -363,66 +363,69 @@
 
 <!-- reply_modal  -->
 <div id="reply_modal" class="modal">
+
     <!-- Modal content -->
     <div class="modal-content">
-            <form action="upload" method="POST" enctype="multipart/form-data">
-                <div>
-                    <label for="textbox">What's on your mind? (10000 chars)</label>
-                    <br>
-                    <textarea id="textbox" name="textbox" rows="7" cols="50" maxlength="10000" required></textarea>
-    
-                </div>
-    
-                <div class="custom-file">
-                    <!-- .mp4,.csv, .onnx,-->
-                    <input type="file" class="custom-file-input" name="file" accept=".png, .jpeg, .jpg, .pdf" id="dataset_file">
-                    <input type="text" id="hidden_file_size" name="hidden_file_size" placeholder="auto" size="1" value="">
-                    <label class="custom-file-label" for="file">PNG/JPG</label>
-    
-                    <div id="dataset_return_message">
-    
-                    </div>
-                </div>
-    
-                <div>                
-                    <label class="custom-file-label" for="file">Replying to File Id</label>
-                    <input onkeyup="this.value = this.value.replace(/[^0-9]/, '')" type="text" id="reply_external_source" name="external_source" value="" maxlength="18">(this person will get 10% of your winnings)              
-                </div>
-                
-                <!-- EXTERNAL LINK -->
-                <div>
-                    <input type="checkbox" name="button_reply_external_source_link" value="button_reply_external_source_link" onchange="reply_enable_external_link()">
-                    <label><b>Source:</b></label>
-                    <input id="reply_external_source_link" name="external_source_link" type="url" placeholder="link to site/video(youtube/tiktok)">
-                </div>
-    
-                <div class="dropdown" name="distro_algo">
-                    <select id="distro_algo" class="dropdown-content" name="distro_algo" onchange="howmanysectionsfunc()">
-                        <option id="equal">EQUAL DISTRIBUTION</option>           
-                        <option id="log">LOG DISTRIBUTION</option>
-                        <option id="log_equal">LOG EQUAL DISTRIBUTION</option>
-                    </select>
-                    more coming soon...
-                </div>
-                
-                <div id="how_many_sections" name="">
-                    
-                </div>
-    
-                <div>    <!-- IMAGES -->
-                    <img id="equal_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/equal_distribution.png')}}" width='400' height='200' />
-                    <img id="log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_distribution.png')}}" width='400' height='200' />
-                    <img id="equa_log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_equal_distribution.png')}}" width='400' height='200' />
-                </div>
-        
+        <form action="upload" method="POST" enctype="multipart/form-data">
+            <div>
+                <label for="textbox">Whats on your mind? (10000 chars)</label>
                 <br>
-    
-                <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>
-    
-            </form>
+                <textarea class="form-control" id="textbox" name="textbox" rows="7" cols="50" maxlength="10000" required></textarea>
+
+            </div>
+
+            <div class="custom-file">
+                <!-- .mp4,.csv, .onnx,-->
+                <input class="form-control" type="file" class="custom-file-input" name="file" accept=".png, .jpeg, .jpg" id="dataset_file" placeholder="IMAGE">
+                <div id="dataset_return_message">
+                </div>
+            </div>
+            </br>
+
+            <div> 
+                <b>Replying To</b>(this id will get 10% of what winnings)                
+                <input class="form-control" onkeyup="this.value = this.value.replace(/[^0-9]/, '')" type="text" id="reply_external_source" name="external_source" value="" maxlength="18" value="replying to which file?" readonly="readonly">             
+            </div>
+            </br>
+            <!--
+            <div class="mb-1 row">
+                <input class="form-check-input" type="checkbox" name="button_reply_external_source_link" value="button_reply_external_source_link" onchange="reply_enable_external_link()"></input>
+                <div class="col-sm-10">
+                    <input class="form-control"id="reply_external_source_link" name="external_source_link" type="url" placeholder="link to site/video(youtube/tiktok)" disabled>
+                </div>
+            </div>
+            -->
+            <!-- EXTERNAL LINK -->
+            <div>
+                <input class="form-check-input" type="checkbox" name="button_reply_external_source_link" value="button_reply_external_source_link" onchange="reply_enable_external_link()">
+                <label><b>Source Link:</b></label>
+                <input class="form-control"id="reply_external_source_link" name="external_source_link" type="url" placeholder="link to site/video(youtube/tiktok)" disabled>
+            </div>
+            </br>
+            
+            <select class="form-select form-select-lg mb-3" aria-label="Default select example" id="distro_algo" name="distro_algo" onchange="howmanysectionsfunc()" >
+                <option id="equal"selected>EQUAL DISTRIBUTION</option>           
+                <option id="log">LOG DISTRIBUTION</option>
+                <option id="log_equal">LOG EQUAL DISTRIBUTION</option>
+                <option id="reverse_log" disabled>REVERSE LOG DISTRIBUTION</option>
+                <option id="reverse_log_equal" disabled>REVERSE LOG EQUAL DISTRIBUTION</option>
+            </select>
+
+            <div id="how_many_sections" name="">
+                
+            </div>
+            <div>    <!-- IMAGES -->
+                <img class="img-fluid" id="equal_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/equal_distribution.png')}}" width='400' height='200' />
+                <img class="img-fluid" id="log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_distribution.png')}}" width='400' height='200' />
+                <img class="img-fluid" id="equa_log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_equal_distribution.png')}}" width='400' height='200' />
+            </div>
+            <br>
+            <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>
+
+        </form>
     </div>
 </div>
-<!-- reply_modal  -->
+<!-- reply Modal -->
 
 <!-- save_modal  -->
 <div id="save_modal" class="modal">
@@ -493,12 +496,13 @@
     document.getElementById("user_balance").innerHTML = 'BALANCE:{{user_balance}}';
 
     function enable_built_from_other() {
-        if (document.getElementById("external_source").disabled == true) {
-            document.getElementById('external_source').removeAttribute("disabled");
+        if (document.getElementById("external_source").readonly == true) {
+            document.getElementById('external_source').removeAttribute("readonly");
+            //get.setAttribute('readonly', true);
 
         }
         else {
-            document.getElementById("external_source").setAttribute("disabled", "enabled")
+            document.getElementById("external_source").setAttribute("readonly", "false")
         }
 
     }

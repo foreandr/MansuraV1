@@ -319,7 +319,7 @@
 
             <div> 
                 <b>Replying To</b>(this id will get 10% of what winnings)                
-                <input class="form-control" onkeyup="this.value = this.value.replace(/[^0-9]/, '')" type="text" id="reply_external_source" name="external_source" value="" maxlength="18" value="replying to which file?" disabled>             
+                <input class="form-control" onkeyup="this.value = this.value.replace(/[^0-9]/, '')" type="text" id="reply_external_source" name="external_source"  maxlength="18" value="replying to which file?" readonly="readonly">             
             </div>
             </br>
             <!--
@@ -558,6 +558,7 @@
     function enable_built_from_other() {
         if (document.getElementById("external_source").disabled == true) {
             document.getElementById('external_source').removeAttribute("disabled");
+            get.setAttribute('readonly', true);
 
         }
         else {
