@@ -4,8 +4,8 @@
 #GIT PULL ETC
 
 #0.
-mkdir tmp/mansura
-touch tmp/mansura/ipc.sock
+mkdir /tmp/mansura
+touch /tmp/mansura/ipc.sock
 
 #1. 
 source venv/bin/activate
