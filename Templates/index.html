@@ -322,7 +322,7 @@
 
             <div>                
                 <label class="custom-file-label" for="file">Replying to File Id</label>
-                <input type="number" id="reply_external_source" name="external_source" value="" >(this person will get 10% of what winnings)              
+                <input onkeyup="this.value = this.value.replace(/[^0-9]/, '')" type="text" id="reply_external_source" name="external_source" value="" maxlength="18">(this person will get 10% of what winnings)              
             </div>
             
             <!-- EXTERNAL LINK -->
@@ -386,7 +386,7 @@
             <div>
                 <input type="checkbox" id="built_from_other_file" name="built_from_other_file" value="built_from_other_file" onchange="enable_built_from_other()">
                 <label class="custom-file-label" for="file">Replying to File Id</label>
-                <input type="number" id="external_source" name="external_source" value="" disabled>(this person will get 10% of your winnings)
+                <input onkeyup="this.value = this.value.replace(/[^0-9]/, '')" type="text" id="external_source" name="external_source" value="" maxlength="18" disabled >(this person will get 10% of your winnings)
                 
             </div>
 

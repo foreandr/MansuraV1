@@ -386,7 +386,7 @@
     
                 <div>                
                     <label class="custom-file-label" for="file">Replying to File Id</label>
-                    <input type="number" id="reply_external_source" name="external_source" value="" >(this person will get 10% of your winnings)              
+                    <input onkeyup="this.value = this.value.replace(/[^0-9]/, '')" type="text" id="reply_external_source" name="external_source" value="" maxlength="18">(this person will get 10% of your winnings)              
                 </div>
                 
                 <!-- EXTERNAL LINK -->

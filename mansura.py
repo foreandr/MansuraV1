@@ -406,7 +406,7 @@ def upload():
             #print("filename:", post_file.filename, type(post_file.filename), len(post_file.filename))
             return redirect(url_for("home"))
             
-        file_id = database.FILE_INSERT( 
+        file_id, forign_id_source = database.FILE_INSERT( 
                 uploader=session["user"], 
                 uploaderId=database.GET_USER_ID(session["user"]), 
                 size="10", 
@@ -417,15 +417,18 @@ def upload():
                 distro_details=distro_details
                 )
 
-        if forign_id_source != "None":
+        if forign_id_source != "None" and forign_id_source != "":
             name, path = database.GET_POST_URL_BY_ID(forign_id_source)
             return_path = name + "_" + path + "-post_page"
             # return redirect(url_for("user_profile_name")) 
             return redirect(url_for('user_profile_name', username=return_path))
         else:
-            name, path = database.GET_POST_URL_BY_ID(file_id)
-            return_path = name + "_" + path + "-post_page"        
-            return redirect(url_for('user_profile_name', username=return_path))
+            try:
+                name, path = database.GET_POST_URL_BY_ID(file_id)
+                return_path = name + "_" + path + "-post_page"        
+                return redirect(url_for('user_profile_name', username=return_path))
+            except Exception as e:
+                helpers.log_function("error", e + "[MY GUESS IS IT'S TOO BIG FOREIGN]")
     else:
         return redirect(url_for("home"))
 

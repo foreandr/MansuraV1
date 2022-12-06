@@ -1237,6 +1237,47 @@ def FILE_CREATE_TABLE():
     
     print("FILES CREATE COMPLETED\n")
 
+def ALTER_PRIMARY_KEY_IN_FILES():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+    ALTER TABLE FILES ALTER COLUMN File_Id TYPE BIGINT;              
+    """)
+    conn.commit()
+
+
+def CHECK_FOREIGN_FILE_ID_EXISTS(file_id):
+    print("CHCKING EXISTENCE OF", file_id)
+    if not (file_id.isdigit()):
+        return False
+    
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+    SELECT * FROM FILES
+    WHERE File_Id = '{file_id}'               
+    """)
+    count = 0
+    for i in cursor.fetchall():
+        count +=1 
+    
+    if count > 0:
+        return True
+    else:
+        return False
+def COUNT_FILES():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+    SELECT COUNT(*) FROM FILES
+           
+    """)
+    count = 0
+    for i in cursor.fetchall():
+        count = i[0]
+    return count   
+
+
 #TODO: i really need to simplify this lmao
 def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None", 
                 file_path="N-A", post_file="", 
@@ -1247,15 +1288,14 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
     REALLY COMPLICATED NIGHTMARE BUT IT WORKS
     
     """
-    #1. CHECK THAT THE POST FOREIGN ID ACTUALLY EXISTS
-    if post_foreign_id_source == "None" or post_foreign_id_source == "" or post_foreign_id_source == None:
-        # print(F"EMPTY SOURCE IS [{post_foreign_id_source}]")
-        post_foreign_id_source = ""
-        # print(F"EMPTY SOURCE IS [{post_foreign_id_source}]")
-            
     conn = connection.test_connection()
     cursor = conn.cursor()
-
+    CURRENT_FILE_ID = ""
+    
+    #1. CHECK THAT THE POST FOREIGN ID ACTUALLY EXISTS
+    if post_foreign_id_source == "None" or post_foreign_id_source == "" or post_foreign_id_source == None:
+        post_foreign_id_source = ""
+        
     #CHECK EMPTY   
     if post_file == "":
         filename = ""
@@ -1264,7 +1304,13 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
 
     # BEGINNING EXOCUTION
     try:
-    # 1. INSERTING INTO DATABASE
+        if CHECK_FOREIGN_FILE_ID_EXISTS(post_foreign_id_source):
+            pass
+        else:
+            post_foreign_id_source = ""
+        
+        
+        # 1. INSERTING INTO DATABASE
         cursor.execute(
             f"""
             INSERT INTO FILES
@@ -1284,7 +1330,7 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
             LIMIT 1
         """)
         results = cursor.fetchall()
-        CURRENT_FILE_ID = ""
+        
         for i in results: 
             CURRENT_FILE_ID = i[0]
             # print("FILE ID", i)
@@ -1337,7 +1383,7 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
         # CLOSE CURSOR AND CONNECTION [MANDATORY]        
         cursor.close()
         conn.close()
-        return CURRENT_FILE_ID
+        return CURRENT_FILE_ID, post_foreign_id_source
 
          # return new_path #TODO: not sure if this needs to return anything
     except Exception as e:
@@ -1348,7 +1394,8 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
             
             # CLOSE CURSOR AND CONNECTION [MANDATORY]        
             cursor.close()
-            conn.close()            
+            conn.close()    
+            return CURRENT_FILE_ID, post_foreign_id_source        
 
 
 def register_user_files(username):
