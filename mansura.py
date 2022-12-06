@@ -3,12 +3,13 @@
 #  NEED A TESTNET/PBE VERSION
 
 # LIBRARIES 
+
 from waitress import serve
 import flask
 import os
 from os import path
 
-from flask import Flask, render_template, request, session, redirect, url_for, g, send_from_directory, Response, send_file
+from flask import Flask, render_template, request, session, redirect, url_for, g, send_from_directory, Response, send_file, make_response
 from psycopg2 import connect
 import requests
 import Python.database as database
@@ -42,8 +43,6 @@ app.secret_key = 'demokey'
 
 app.config["FILE UPLOADS"] = "static/#UserData"
 
-
-
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
     #print("RENDERING TEMPLATE")
@@ -51,8 +50,7 @@ def home():
     #    return redirect(url_for('cover_page'))
     if "email" not in session: # testasdkjhfaks
         return redirect(url_for('cover_page'))
-
-
+    
     helpers.log_function("request", request)
     if "user" in session.keys():
         session_username = session["user"]
@@ -121,7 +119,7 @@ def home():
     
     #FOR DIABLING OR ACTIVATING SCROLL LOGIC
     numposts = len(file_ids_list)
-    if numposts < 90: # this 100 number needs to be better coded, hard coding is going to cause issues
+    if numposts < 29: # this 100 number needs to be better coded, hard coding is going to cause issues
         can_scroll = False
     else:
         can_scroll = True
@@ -148,8 +146,6 @@ def home():
         text_list.insert(i, post_text)
         image_path_list.insert(i, post_image_path)
         distro_details_list.insert(i,distro_details)
-
-    helpers.log_function("error", str(source_list))
     
     lengths_of_text_files = []
     for i in text_list:
@@ -716,7 +712,7 @@ def user_profile_name(username):
             
 
     file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, uploader_is_subbed, search_arguments = database.universal_dataset_function(search_type="prof", page_no=page_no, search_user=session['user'], profile_username=username, custom_clauses=new_json_search_clauses)
-    print(num_replies)
+    # print(num_replies)
     # print("UNIVERSAL PROFILE GOT", file_ids_list)
     username_len = len(usernames_list)
     if len(file_ids_list) == 0:
@@ -1475,7 +1471,7 @@ def tribunal():
     
     #FOR DIABLING OR ACTIVATING SCROLL LOGIC
     numposts = len(file_ids_list)
-    if numposts < 90: # this 100 number needs to be better coded, hard coding is going to cause issues
+    if numposts < 29: # this 100 number needs to be better coded, hard coding is going to cause issues
         can_scroll = False
     else:
         can_scroll = True

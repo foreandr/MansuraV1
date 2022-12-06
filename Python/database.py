@@ -161,7 +161,7 @@ def USER_INSERT(username, password, email, paypal_email, balance=0):
     conn.close()
 
 
-def USER_INSERT_MULTIPLE():
+def USER_INSERT_MULTIPLE(size="small"):
     conn = connection.test_connection()
 
     # Change the current working directory
@@ -180,15 +180,15 @@ def USER_INSERT_MULTIPLE():
     
     # ====
 
-    big_reset_file.GIANT_USER_REGISTER()
+    big_reset_file.GIANT_USER_REGISTER(size)
  
     # --
 
     print_green("USER MULTI INSERT COMPLETED\n")
 
 
-def USER_INSERT_MULTPLE_FILES():
-    big_reset_file.GIANT_FILE_INSERT()
+def USER_INSERT_MULTPLE_FILES(size="small"):
+    big_reset_file.GIANT_FILE_INSERT(size)
     print_green("USER INSERT MULTPLE FILES COMPLETED\n")
 
 
@@ -329,7 +329,7 @@ def CONNECTION_INSERT(user_id1, user_id2):
     except Exception as e:
         cursor.execute("ROLLBACK")
         print("ERROR:  [INSERT INTO CONNECTIONS] " + str(e))
-        log_function(e) 
+        log_function("error", e) 
     
     cursor.close()
     conn.close()
@@ -351,10 +351,10 @@ def CONNECTION_REMOVE(user_id_first, user_id_second):
     print_green('CONNECTION DELETION COMPLETED')
 
 
-def CONNECTION_INSERT_MULTIPLE():
+def CONNECTION_INSERT_MULTIPLE(size="small"):
     CONNECTION_INSERT( user_id1=1, user_id2=2)
     CONNECTION_INSERT( user_id1=1, user_id2=3)
-    big_reset_file.GIANT_CONNECTION_INSERT()
+    big_reset_file.GIANT_CONNECTION_INSERT(size)
     
     print_green("USER MULTI INSERT CONNECTIONS COMPLETED\n")
 
@@ -533,14 +533,14 @@ def GET_COUNT_LIKES_BY_ID(file_id):
     return likes
 
 
-def LIKES_DEMO_INSERT():
+def LIKES_DEMO_INSERT(size="small"):
     LIKES_INSERT("foreandr", 1)
     LIKES_INSERT("foreandr", 2)
     LIKES_INSERT("foreandr", 3)
     LIKES_INSERT("foreandr", 4)
     #LIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
 
-def DISLIKES_DEMO_INSERT():
+def DISLIKES_DEMO_INSERT(size="small"):
     DISLIKES_INSERT("foreandr", 1)
     DISLIKES_INSERT("foreandr", 2)
     DISLIKES_INSERT("foreandr", 3)
@@ -700,13 +700,13 @@ def FILE_VOTE_INSERT(username, File_Id, vote_type):
     conn.close()
 
     
-def FILE_VOTE_INSERT_DEMO():
+def FILE_VOTE_INSERT_DEMO(size="small"):
     #FILE_VOTE_INSERT( 'foreandr', 1,  'Daily')
     FILE_VOTE_INSERT( 'foreandr', 1,  'Monthly')
     FILE_VOTE_INSERT( 'foreandr', 1,  'Monthly')
     FILE_VOTE_INSERT( 'foreandr', 2,  'Yearly')
 
-    big_reset_file.GIANT_FILE_VOTE_INSERT()
+    big_reset_file.GIANT_FILE_VOTE_INSERT(size)
 
     print_green("VOTE_INSERT_DEMO COMPLETED\n")
 
@@ -878,7 +878,7 @@ def SET_TIME_ZONE():
     conn.close()
 
 
-def MANSURA_SUBSCRIBE_INSERT_MULTIPLE_DEMO():
+def MANSURA_SUBSCRIBE_INSERT_MULTIPLE_DEMO(size="small"):
     conn = connection.test_connection()
 
     #TODO:THINK ABOUT DATA VALIDATNG THE USERNAME, PRBABLY WONT NEED
@@ -887,7 +887,7 @@ def MANSURA_SUBSCRIBE_INSERT_MULTIPLE_DEMO():
     # MANSURA_SUBSCRIBE( 'bigfrog')
     MANSURA_SUBSCRIBE( 'cheatsie')
     
-    big_reset_file.GIANT_SUBSCRIBE()
+    big_reset_file.GIANT_SUBSCRIBE(size)
 
 
 
@@ -907,7 +907,7 @@ def REMOVE_ALL_USER_DIRECTORIES():
             # print(OSError)
 
 
-def USER_FULL_RESET():
+def USER_FULL_RESET(size="small"):
     print_title("\nEXECUTING FULL RESET\n")
     
     # SET TIMEZONE
@@ -939,16 +939,17 @@ def USER_FULL_RESET():
 
     FUNCTION_AND_PROCEDURES()
 
-    USER_INSERT_MULTIPLE()
-    CONNECTION_INSERT_MULTIPLE()
-    MANSURA_SUBSCRIBE_INSERT_MULTIPLE_DEMO()
-    USER_INSERT_MULTPLE_FILES()
-    FILE_VOTE_INSERT_DEMO() # VOTES ON CSVS
-    SEARCH_ALGO_INSERT_DEMO_MULTIPLE()
-    LIKES_DEMO_INSERT()
-    DISLIKES_DEMO_INSERT()
-    DEMO_SEARCH_VOTE_INSERT()
-    DEFAULT_EQUITY_INSERT()
+    USER_INSERT_MULTIPLE(size)
+    CONNECTION_INSERT_MULTIPLE(size)
+    MANSURA_SUBSCRIBE_INSERT_MULTIPLE_DEMO(size)
+    USER_INSERT_MULTPLE_FILES(size)
+    FILE_VOTE_INSERT_DEMO(size) # VOTES ON CSVS
+    SEARCH_ALGO_INSERT_DEMO_MULTIPLE(size)
+    LIKES_DEMO_INSERT(size)
+    DISLIKES_DEMO_INSERT(size)
+    DEMO_SEARCH_VOTE_INSERT(size)
+    DEFAULT_EQUITY_INSERT(size)
+    DEMO_FILE_INSERT_TIKTOKS(10)
     # EQUITY CAN GO LAST, DOESN'T INTERFERE WITH ANYTHING
     
     # TRANSFER_EQUITY(buyer="a", seller="foreandr", amount=2)
@@ -2043,7 +2044,7 @@ def EQUITY_CREATE_TABLE():
     CLOSE_CURSOR_AND_CONN(cursor, conn)
 
 
-def DEFAULT_EQUITY_INSERT():
+def DEFAULT_EQUITY_INSERT(size='small'):
     conn = connection.test_connection()
     cursor = conn.cursor()
     try:
@@ -2065,8 +2066,9 @@ def DEFAULT_EQUITY_INSERT():
 
 def FILE_INSERT_STORAGE(username, path_name, text, age_18, external_source, distro_details):
     # print(f"username: {username}\npath_name: {path_name}\ntext: {text}\nmy_file: {my_file}\nage_18: {age_18}\nexternal_source: {external_source}")
-    # print("GETTING HERE")
+    print("GETTING TO FILE STORAGE")
     external_source = CREATING_EMBED_STRUCTURE(external_source)
+    
     my_dictionary = {
         "txt": f"{text}",
         "18+": f"{age_18}",
@@ -2111,7 +2113,7 @@ def CHECK_FILES_NOT_OVER_LIMIT(page_no):
     cursor.execute(f"""
         SELECT * 
         FROM FILES 
-        OFFSET (({page_no} - 1) * 100)
+        OFFSET (({page_no} - 1) * 30)
 
         """)
     results = cursor.fetchall()
@@ -2874,7 +2876,7 @@ def CREATE_TABLE_SEARCH_VOTES():
     cursor.close()
     conn.close()
 
-def DEMO_SEARCH_VOTE_INSERT():
+def DEMO_SEARCH_VOTE_INSERT(size="small"):
     UPDATE_TABLE_SEARCH_VOTES("foreandr", "a-1")
     UPDATE_TABLE_SEARCH_VOTES("Maire", "foreandr-2")
     UPDATE_TABLE_SEARCH_VOTES("a", "a-1")
@@ -2929,7 +2931,7 @@ def SEARCH_ALGO_INSERT(username, Algorithm_Name, order_by_clause, where_clause):
         return False
 
 
-def SEARCH_ALGO_INSERT_DEMO_MULTIPLE():
+def SEARCH_ALGO_INSERT_DEMO_MULTIPLE(size="small"):
     # username, Algorithm_Name, order_by_clause, where_clause
     SEARCH_ALGO_INSERT(username='a', Algorithm_Name='a-demo', order_by_clause="", where_clause="")
     SEARCH_ALGO_INSERT('foreandr', 'foreandr-demo', "", "")
@@ -3137,7 +3139,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         {tribunal_query }                                                              
         {order_by_clause}
         
-        OFFSET (({page_no} - 1) * 100)
+        OFFSET (({page_no} - 1) * 30)
         LIMIT 30; 
     """
     #print("MY QUERY ================================")
@@ -3698,21 +3700,23 @@ def CHECK_IF_FILE_IS_IN_TRIBUNAL(file_id):
         print(False)
         return False
 
-def DEMO_FILE_INSERT_TIKTOKS():
+def DEMO_FILE_INSERT_TIKTOKS(num):
     path = "/root/mansura/Notes/TODO/PAGE LINKS/tiktok_links.txt"
     with open(path, 'r') as f:
         files = f.read()
         files_list = files.split("\n")
         #print(len(files_list))
+        count = 0 
         for i in files_list:
             value = CREATING_EMBED_STRUCTURE(i)
             # print(value)
-            
-            FILE_INSERT("mazinosarchive", 12, size=100, post_foreign_id_source="None", 
-                file_path="N-A", post_file="", 
-                post_text="Mazinos Archive", age_18="", 
-                external_link=value,
-                distro_details=["EQUAL DISTRIBUTION", "None"])
+            if count < num:
+                FILE_INSERT("mazinosarchive", 12, size=100, post_foreign_id_source="None", 
+                    file_path="N-A", post_file="", 
+                    post_text="Mazinos Archive", age_18="", 
+                    external_link=value,
+                    distro_details=["EQUAL DISTRIBUTION", "None"])
+            count += 1 
             
        
             

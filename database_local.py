@@ -13,10 +13,12 @@ def UPDATE_USER_BALANCE(user):
     conn.commit()
     conn.close()
     cursor.close()
+
     
 def RESET_DATABASE():
     print("hello world")
-    USER_FULL_RESET()
+    USER_FULL_RESET("small")
+
 
 def DEMO_ACCOUNTS_REGISTER():
     full_register('dailyinsights', hashlib.sha256("hellodailyinsights123!".encode('utf-8')).hexdigest(), 'dailyinsights@gmail.com', 'dailyinsights@gmail.com', 5)
@@ -27,6 +29,7 @@ def DEMO_ACCOUNTS_REGISTER():
     full_register('xerihm', hashlib.sha256("helloxerihm123!".encode('utf-8')).hexdigest(), 'xerihm@gmail.com', 'xerihm@gmail.com', 5)
     full_register('Ludus', hashlib.sha256("helloLudus123!".encode('utf-8')).hexdigest(), 'Ludus@gmail.com', 'Ludus@gmail.com', 5)
 
+
 def DEMO_ACCOUNTS_SUBSCRIBE():
     MANSURA_SUBSCRIBE('foreandr')
     MANSURA_SUBSCRIBE('dailyinsights')
@@ -36,8 +39,10 @@ def DEMO_ACCOUNTS_SUBSCRIBE():
     MANSURA_SUBSCRIBE('Twomanriot')
     MANSURA_SUBSCRIBE('xerihm')
 
+
 def INSERT_TIKTOKS():
     DEMO_FILE_INSERT_TIKTOKS()
+
   
 def DELETE_FILES_BY_ID(file_id):
     conn = connection.test_connection()
@@ -50,6 +55,7 @@ def DELETE_FILES_BY_ID(file_id):
     conn.commit()
     conn.close()
     cursor.close()
+
 
 def DELETE_FILES_BY_NAME(user):
     conn = connection.test_connection()
@@ -181,22 +187,5 @@ def DELETE_SPECIFIC_FILE_KEYWORD(KEYWORD):
     conn.commit()
     conn.close()
     cursor.close()
-#GET_FILES_BY_USER("Admin")
-#DELETE_FILES_BY_ID(2237)
-#GET_FILES_BY_ID(2237)
-# GET_ALL_USERS()
-# 
-#GET_FILE_KEYWORDS()
-#DELETE_SPECIFIC_FILE_KEYWORD("working ")
-#DELETE_SPECIFIC_FILE_KEYWORD("on")
-#DELETE_SPECIFIC_FILE_KEYWORD("it")
-#DELETE_SPECIFIC_FILE_KEYWORD("****")
-#DELETE_FILES_BY_NAME('Admin')
-#GET_FILE_KEYWORDS()
-#INSERT_TIKTOKS()
-# GET_FILES()
-# UPDATE_USER_BALANCE('foreandr')
-#DEMO_ACCOUNTS_REGISTER()
-# DEMO_ACCOUNTS_SUBSCRIBE()
-# RESET_DATABASE()
-# INSERT_TIKTOKS()
+
+RESET_DATABASE()

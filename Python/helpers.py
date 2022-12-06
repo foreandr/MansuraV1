@@ -662,7 +662,7 @@ def CHANGE_BIO(my_string, user):
         json.dump(data, jsonFile)
 
 def CREATING_EMBED_STRUCTURE(link):
-    #print("ORIGIN", link)
+    print("ORIGIN", link)
     
     tiktok_template = '''                
         <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME/video/LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID" data-video-id="LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID" style="max-width: 605px;min-width: 325px;"> 
@@ -672,7 +672,8 @@ def CREATING_EMBED_STRUCTURE(link):
         </blockquote>
         <!--PROPERLY EMBEDDED HTML TAG-->
         '''
-    
+    if link == None:
+        return link
     if "tiktok" in link:
         #print("THIS IS A TIKTOK VIDEO")
         
@@ -697,8 +698,7 @@ def CREATING_EMBED_STRUCTURE(link):
         link = tiktok_template
         
         #print(F"FINAL LINK", link)
-        return link
-        # CREATING URL FOR PLACEMENT OF TIKTOK
+
     
     elif "youtube" in link:
         #print("THIS IS A YOUTUBE VIDEO")
@@ -716,11 +716,9 @@ def CREATING_EMBED_STRUCTURE(link):
         
         youtube_template = youtube_template.replace("YOUTUBE_FILE_ID", youtube_file_id)
         link = youtube_template
-        #print("FINAL LINK", youtube_template)
-        return link   
-        
-    else:    
-        return link
+
+    print("FINAL", link)
+    return link
 
 
 
