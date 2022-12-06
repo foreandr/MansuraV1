@@ -674,6 +674,7 @@ def CREATING_EMBED_STRUCTURE(link):
         '''
     if link == None:
         return link
+    
     if "tiktok" in link:
         #print("THIS IS A TIKTOK VIDEO")
         
@@ -701,6 +702,9 @@ def CREATING_EMBED_STRUCTURE(link):
 
     
     elif "youtube" in link:
+        if "list" in link: # check if if it's a playlist or any other ways youtube can be fucked about with
+            return link
+        
         #print("THIS IS A YOUTUBE VIDEO")
         youtube_template = '''
         <iframe width="560" height="315" src="https://www.youtube.com/embed/YOUTUBE_FILE_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>

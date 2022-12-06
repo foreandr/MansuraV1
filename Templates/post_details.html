@@ -65,8 +65,6 @@
                         </p>
                         {% endif %} 
                     </div>
-
-
    
                     <!-- PUTTING SHIT AT THE BOTTOM -->
                     <div><br /></div>
@@ -448,7 +446,7 @@
 <!-- save_modal  -->
 
 <script>
-    console.log("{{username}}")
+    //console.log("{{username}}")
     var slider = `Sections: 1-10
         <div class="slidecontainer" >
             <input type="range" min="1" max="10" value="5" class="slider" id="myRange" name="how_many_sections_">
@@ -482,8 +480,8 @@
 
 
 
-    console.log(daily_pool)
-    console.log("HELLO WORLD")
+    // console.log(daily_pool)
+    //console.log("HELLO WORLD")
 
     document.getElementById("index_daily").innerHTML = 'DAILY POOL: {{dailypool}}';
     document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: {{monthlypool }}';
@@ -526,7 +524,7 @@
     }
 
     function post_details_func() {
-        console.log(document.getElementById("insert_post").innerHTML);
+        //console.log(document.getElementById("insert_post").innerHTML);
         if (document.getElementById("insert_post").innerHTML == "") {
             document.getElementById("insert_post").innerHTML = ``
         } else {
@@ -576,7 +574,7 @@
 
 
     function add_another_where_clause(){
-        console.log(where_counter)
+        //console.log(where_counter)
         var where_clause_string = `
         <div>
             <div>
@@ -667,13 +665,11 @@
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
         var modal = document.getElementById("reply_modal");
-        var modal2 = document.getElementById("post_modal");
         var modal3 = document.getElementById("save_modal");
         
-        if ((event.target == modal) || (event.target == modal2) || (event.target == modal3)) {
+        if ((event.target == modal) || (event.target == modal3)) {
 
             modal.style.display = "none";
-            modal2.style.display = "none";
             modal3.style.display = "none"
         }
     }
