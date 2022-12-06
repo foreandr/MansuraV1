@@ -188,4 +188,4 @@ def DELETE_SPECIFIC_FILE_KEYWORD(KEYWORD):
     conn.close()
     cursor.close()
 
-RESET_DATABASE()
+# RESET_DATABASE()
