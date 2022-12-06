@@ -1,13 +1,7 @@
 # THERE ARE SOME FILES YOU SHOULD GRAB WHEN YOU CLONE
 # Notes/TODO/STEPS FOR NEW DROPLETS
 
-
-
-
 __pychache__
-#.idea/
-#.vs/
-#\#DemoData/
 Notes/TODO/MVP.docx
 Notes/TODO/unused code.txt
 Notes/TODO/STEPS FOR NEW DROPLETS
@@ -26,6 +20,9 @@ Python/my_email.py
 Python/paypal_gmail.py
 Python/testing_database.py
 Python/token.pickle
+Python/AI/code/local_nsfw_detector.py
+Python/AI/code/local_nudenet.py
+Python/AI/code/local_tensorflow.py
 
 static/#UserData
 venv/
@@ -40,12 +37,6 @@ __pycache__/mansura.cpython-38.pyc
 __pycache__/mansura.cpython-310.pyc
 __pycache__/wsgi.cpython-38.pyc
 __pycache__/wsgi.cpython-310.pyc
-
-
-
-Python/AI/code/local_nsfw_detector.py
-Python/AI/code/local_nudenet.py
-Python/AI/code/local_tensorflow.py
 
 Python/logs/distro/Daily/2022-12-04/FULL_SET.txt
 ystemctl daemon-reload
