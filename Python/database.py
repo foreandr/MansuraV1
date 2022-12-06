@@ -3712,7 +3712,7 @@ def DEMO_FILE_INSERT_TIKTOKS(num):
             if count > num:
                 break
             # print("EXECUTING")
-            FILE_INSERT("a", 1, size=100, post_foreign_id_source="None", 
+            FILE_INSERT("mazinosarchive", 12, size=100, post_foreign_id_source="None", 
                 file_path="N-A", post_file="", 
                 post_text="Mazinos Archive", age_18="", 
                 external_link=value,
