@@ -42,3 +42,4 @@ https://math.stackexchange.com/questions/1694311/is-sigma-sigma-a-mathematical-w
 https://www.golinuxcloud.com/flask-gunicorn-nginx/
 https://www.geeksforgeeks.org/how-to-catch-all-javascript-errors-and-send-them-to-server/
 https://stackoverflow.com/questions/35215842/render-html-strings-in-flask-templates
+https://stackoverflow.com/questions/24308239/postgresql-integer-out-of-range

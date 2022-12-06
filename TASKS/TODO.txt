@@ -144,3 +144,8 @@ beautifulsoup4==4.11.1
 google-api-python-client==2.64.0
 google-auth-oauthlib==0.5.3
 lxml==4.9.1
+
+YOUTUBE:
+to get youtube videos, run a get page source,
+regex or metadata and url
+same thing with tiktoks
