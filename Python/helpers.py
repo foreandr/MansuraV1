@@ -468,7 +468,7 @@ def STRING_SIMILARITY_CHECK(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 
-def log_function(msg_type, log_string, vote_type="None", distro_type="None"):
+def log_function(msg_type, log_string, vote_type="None", distro_type="None", session_user=""):
     #if log_string == "write() argument must be str, not None":
     #    print("got here")
     #    return "" # THIS ERROR CAN BE IGNORED
@@ -476,19 +476,28 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None"):
     import csv
     from datetime import datetime
     import pytz
+    
+    my_accounts = ['', 'mazinosarchive','youtubebot']
 
+    
     my_time = pytz.timezone('US/Eastern') 
     current_datetime = datetime.now(my_time).replace(microsecond=0).replace(tzinfo=None)
     current_date = current_datetime.strftime('%Y-%m-%d')
-    err_string = f"{current_datetime} [{msg_type}]- {log_string}\n" 
+    err_string = f"{current_datetime} [{msg_type}][{session_user}]- {log_string}\n" 
 
     if msg_type == "error":        
         print("==========LOGGING AN ERROR PLS NOTICE!=========")
         with open(f'/root/mansura/Python/logs/errors/{current_date}.txt', 'a') as f:
             f.write(err_string)
     elif msg_type == "request":
-        with open(f'/root/mansura/Python/logs/access/{current_date}.txt', 'a') as f:
-            f.write(err_string)
+        if session_user in my_accounts:
+            with open(f'/root/mansura/Python/logs/access/general_access/{current_date}.txt', 'a') as f:
+                f.write(err_string)
+        else:
+            with open(f'/root/mansura/Python/logs/access/user_access/{current_date}.txt', 'a') as f:
+                f.write(err_string)
+    
+    
     elif msg_type == "distro":
         err_string = f"{log_string}"
         my_path = f"/root/mansura/Python/logs/distro/{vote_type}/{current_date}"
@@ -504,10 +513,6 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None"):
         with open(f'{my_path}/{current_date}.txt', 'a') as f:
                 f.write(err_string + ",\n")
 
-
-                
-
-        
 
 def remove_values_from_list(the_list):
    return [value for value in the_list if value != "None" or value != None ]
@@ -578,7 +583,7 @@ def TURN_WHERE_CLAUSE_TO_STRING(query_list):
     #print("amount      :", amount)
 
     recomposed_string = ""
-    print("QUESTION:", question)
+    #print("QUESTION:", question)
     # THIS IS WHERE THE WHERE CLAUSES GET TRANSLATED INTO QUURIES, WILL EVENTUALLY BE TURNED INTO IT'S OWN FUNCTION
     if question == "POST DAY VOTES":
         question_string = "(SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily')"
@@ -594,7 +599,7 @@ def TURN_WHERE_CLAUSE_TO_STRING(query_list):
     recomposed_string += comparison + " "
     recomposed_string += amount + " "
     #print("ENTIRE RECOMPOSED STRING:")
-    print("ANSWER:", recomposed_string)
+    #print("ANSWER:", recomposed_string)
     return recomposed_string
 
 

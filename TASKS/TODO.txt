@@ -1,7 +1,7 @@
 
 FEATUREs:
-put dates on profile lst uploads
-add replying to
+
+add replying to profiles
 X. change UI of upload to look like booitrap login
 0. ADD POOL TO COVER PAGE
 1. validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
@@ -34,7 +34,7 @@ X. change UI of upload to look like booitrap login
 20. PAYOUT TIMER
 21. clicking on friends goes to a FRIEND stats page? 
 22. notifications proper
-
+23. REPLY CHAIN
 
 
 DEVOPS

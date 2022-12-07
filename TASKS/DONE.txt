@@ -102,3 +102,4 @@ DONE. allow embedded videos in UPLOAD
 DONE. liek clauses case insensitive
 DONE. CHANGE TESTNET PAYPAL OFF LIVE
 DONE. ABLE TO UPLOAD ONCE A [TIME INTERVAL] IF NOT SUBSCRIBED
+DONE. put dates on profile lst uploads

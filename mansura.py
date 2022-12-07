@@ -51,12 +51,12 @@ def home():
     if "email" not in session: # testasdkjhfaks
         return redirect(url_for('cover_page'))
     
-    helpers.log_function("request", request)
+    
     if "user" in session.keys():
         session_username = session["user"]
     else:
         session_username = ""
-    
+    helpers.log_function("request", request, session_user=session['user'])
     '''
     print("REQUEST TYP:",request.method)
     print("REQUEST URL:",request.url)
@@ -311,10 +311,11 @@ def user_profile():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
     #print('USING USER PROFILE')
-    helpers.log_function("request", request)
+
     # print(request)
     if "email" not in session:
         return redirect(url_for('login'))
+    helpers.log_function("request", request, session_user=session['user'])
 
     if request.method == "GET":
         return redirect(url_for('user_profile_name', username=session['user']))
@@ -345,7 +346,7 @@ def upload():
     if "email" not in session:
         return redirect(url_for('login'))
 
-    helpers.log_function("request", request)
+    helpers.log_function("request", request, session_user=session['user'])
     if request.method == "POST": # UPLOADING SOMETHING
         save_algo = request.form.get("save_algo")
         if save_algo != "None" and save_algo != None:
@@ -817,11 +818,11 @@ def user_profile_name(username):
 def add_funds():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
-    helpers.log_function("request", request)
+    
     if "email" not in session:
         return redirect(url_for('login'))
-    #print("GOT TO ADD FUNDS HERE")
     
+    helpers.log_function("request", request, session_user=session['user'])
     if request.method == 'POST':
         #print("DOING POST METHOD")
         if request.form['subscribe_button'] == 'SUBSCRIBE':
@@ -868,11 +869,11 @@ def add_funds():
 def withdraw_funds():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
-    helpers.log_function("request", request)
+    
     if "email" not in session:
         return redirect(url_for('login'))
     session_username = session["user"]
-
+    helpers.log_function("request", request, session_user=session['user'])
     #print("GOT TO WITHDRAWFUNDS HERE")
     
     if request.method == "POST":
@@ -939,9 +940,10 @@ def get_csv(account_name, folder, filename):
 def add_user(username):
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
-    helpers.log_function("request", request)
+   
     if "email" not in session:
         return redirect(url_for('login'))
+    helpers.log_function("request", request, session_user=session['user'])
     # print('do something')
     user_id_first = database.GET_USER_ID( username=session['user'])
     user_id_second = database.GET_USER_ID( username=username)
@@ -960,9 +962,11 @@ def add_user(username):
 def remove_user(username):
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
-    helpers.log_function("request", request)
+    
     if "email" not in session:
         return redirect(url_for('login'))
+    helpers.log_function("request", request, session_user=session['user'])
+    
     user_id_first = database.GET_USER_ID( username=session['user'])
     user_id_second = database.GET_USER_ID( username=username)
     if user_id_first == user_id_second:
@@ -974,6 +978,13 @@ def remove_user(username):
 
 @app.route("/report/<file_id>", methods=['GET','POST'])
 def report(file_id):
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
+    
+    if "email" not in session:
+        return redirect(url_for('login'))
+    
+    helpers.log_function("request", request, session_user=session['user'])
     # INSERT INTO TRIBUNAL
     print("REPORTING", file_id)
     database.INSERT_INTO_TRIBUNAL(file_id)
@@ -1042,15 +1053,15 @@ def user_download_excel(vote_timeframe, vote_date):
 def file_vote(file_id, vote_type):
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
-    helpers.log_function("request", request)
+    
     if "email" not in session:
         return redirect(url_for('login'))
     
+    helpers.log_function("request", request, session_user=session['user'])
     # print("voting", file_id, vote_type)
     name, path = database.GET_POST_URL_BY_ID(file_id)
     return_path = name + "_" + path + "-post_page"
 
-            
     if vote_type == "like":
         #print("DOING LIKE LOGIC")
         database.LIKE_LOGIC(session["user"], file_id)
@@ -1153,10 +1164,12 @@ def PayPal_IPN():
 def history():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
-    helpers.log_function("request", request)
+    
     if "email" not in session:
         return redirect(url_for('login'))
-
+    
+    helpers.log_function("request", request, session_user=session['user'])
+    
     session_username = session["user"]
     #print("HISTORY IS BEING SELECTED")
     print(os.getcwd())
@@ -1218,9 +1231,10 @@ def terms_and_conditions():
 def search_algorithms_page():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
-    helpers.log_function("request", request)
+    
     if "email" not in session:
         return redirect(url_for('login'))
+    helpers.log_function("request", request, session_user=session['user'])
     
     algos = ""
     if request.method == "POST":
@@ -1283,7 +1297,7 @@ def contact():
         return redirect(url_for('cover_page'))
     if "email" not in session:
         return redirect(url_for('login'))
-    helpers.log_function("request", request)
+    helpers.log_function("request", request, session_user=session['user'])
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"contact.html",
         daily_votes_left=daily_votes_left,
@@ -1302,7 +1316,7 @@ def FAQ():
         return redirect(url_for('cover_page'))
     if "email" not in session:
         return redirect(url_for('login'))
-    helpers.log_function("request", request)
+    helpers.log_function("request", request, session_user=session['user'])
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"FAQ.html",
         daily_votes_left=daily_votes_left,
@@ -1371,10 +1385,11 @@ def messages():
 def notifications():
     if helpers.CHECK_IF_MOBILE(request):
         return redirect(url_for('cover_page'))
-    helpers.log_function("request", request)
+    
     if "email" not in session:
         return redirect(url_for('login'))
-
+    helpers.log_function("request", request, session_user=session['user'])
+    
     user_id = database.GET_USER_ID(session["user"])
     notifications = database.GET_NOTIFICATIONS_BY_USER_ID(user_id)
 
@@ -1420,7 +1435,8 @@ def tribunal():
         return redirect(url_for('cover_page'))
     if "email" not in session:
         return redirect(url_for('login'))
-    helpers.log_function("request", request)
+    helpers.log_function("request", request, session_user=session['user'])
+    
     search_json = {}
     json_search_clauses = "None"
     search = "None"
@@ -1572,7 +1588,7 @@ def patch_notes():
     if "email" not in session:
         return redirect(url_for('login'))
         
-    helpers.log_function("request", request)
+    helpers.log_function("request", request, session_user=session['user'])
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
 
     return render_template(f"patch_notes.html",
@@ -1592,7 +1608,7 @@ def newsletter():
         return redirect(url_for('cover_page'))
     if "email" not in session:
         return redirect(url_for('login'))
-    helpers.log_function("request", request)
+    helpers.log_function("request", request, session_user=session['user'])
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"newsletter.html",
 
@@ -1610,6 +1626,13 @@ def cover_page():
 
 @app.route("/edit_bio", methods=['GET', "POST"])
 def edit_bio():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
+    
+    if "email" not in session:
+        return redirect(url_for('login'))
+    
+    helpers.log_function("request", request, session_user=session['user'])
     new_bio = request.form.get("edit_bio")  
     new_bio = helpers.POST_TEXT_CHECK(new_bio)
     helpers.CHANGE_BIO(new_bio, session['user'])
