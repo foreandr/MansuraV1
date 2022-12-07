@@ -2,66 +2,8 @@
 {%block main %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/user_profile.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-<!-- SESSION VARIABLES-->
-<div id="profile_details" class="d-flex justify-content-center">
-    <div id="profile picture">
-        <h1>{{host_user}}</h1>
-        <img id="profile_picture"
-            src="{{url_for('static', filename='#UserData/' + host_user + '/profile/profile_pic.jpg')}} " width='200' height='200' 
-        />  
-        <div id="add_new_profile_picture"></div>     
-        <br>
-    </div>
-</div>
-
-<!-- SESSION VARIABLES--> 
-<form action="/edit_bio" method="POST" >
-    {% if is_host == "true" %}
-    <div class="d-flex justify-content-center">
-        <textarea id="edit_bio" maxlength="150" name="edit_bio" rows="4" cols="40">{{profile_bio}}</textarea>
-        <button type="submit" class="btn btn-primary"  name="edit_bio" type="submit">Save Bio</button>
-    </div>
-    {% else %}
-    <div class="d-flex justify-content-center">
-        <textarea id="edit_bio" maxlength="40" name="edit_bio" rows="4" cols="40" disabled>{{profile_bio}}</textarea>
-    </div>
-    {% endif %}
-</form>
 
 
-<!-- SESSION VARIABLES-->
-<div class="d-flex justify-content-center">
-    <div class="dropdown">
-        <br>
-        <button class="dropbtn">Following  {{friend_count}}</button> <!-- TODO GO TO A PERSONS FOLLOWER PAGE-->
-        <div id="my_following_dropdown" class="dropdown-content">
-        </div>
-    </div>
-    <div class="dropdown">
-        <br>
-        <button class="dropbtn">Followers {{follow_count}}</button>
-        <div id="my_followers_dropdown" class="dropdown-content">
-        </div>
-    </div>
-
-</div>
-
-<!-- SESSION VARIABLES-->
-<div  class="d-flex justify-content-center">
-    <div id="non_host_add_remove">
-    </div>
-</div>
-
-<!-- SESSION VARIABLES-->
-{% if is_host == "true" %}
-<div class="justify-content-between align-items-center" id="post_div">
-    <button class="btn btn-secondary" type="button" onclick="post_modal_toggle()" aria-expanded="false">
-        POST
-    </button>
-</div>
-{% endif %}
-
-<!-- SESSION VARIABLES-->
 <div class="container-fluid">
     <div class="row justify-content-md-center">
         <div class="col-2">
@@ -71,99 +13,61 @@
         </div>
 
         <div class="col-7">
-            {%for i in range(0, username_len )%}
-            <div class="col">
-            <div class="card mb-4 shadow-sm border-dark mb-3">
-                <div class="card-body">
-                    <!-- TODO: CHANGE TO AN HREF TO GO TO THEIR PROFILE -->
-                    <div > <!--CARD TITLE-->                  
-                        <a href="/{{usernames_list[i]}}">{{usernames_list[i]}}</a>
-                                                
-                        <!--DAILY -->
-                        {% if daily_left == 0 or uploader_is_subbed[i] != 1%}
-                        <span id="daily_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Daily">D: {{day_votes[i]}}</a></button></span>
-                        {% else %}
-                        <span id="daily_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Daily">D: {{day_votes[i]}}</a></button></span>
-                        {% endif %}
+            <!-- SESSION VARIABLES-->
+            <div id="profile_details" class="d-flex justify-content-center">
+                <div id="profile picture">
+                    <h1>{{host_user}}</h1>
+                    <img id="profile_picture"
+                        src="{{url_for('static', filename='#UserData/' + host_user + '/profile/profile_pic.jpg')}} " width='200' height='200' 
+                    />  
+                    <div id="add_new_profile_picture"></div>     
+                    <br>
+                </div>
+            </div>
 
-                        <!--MONTHLY -->
-                        {% if monthly_left == 0 or uploader_is_subbed[i] != 1%}
-                        <span id="monthly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
-                        {% else %}
-                        <span id="monthly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
-                        {% endif %}
-
-                        <!--YEARLY -->
-                        {% if yearly_left == 0 or uploader_is_subbed[i] != 1%}
-                        <span id="yearly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
-                        {% else %}
-                        <span id="yearly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
-                        {% endif %}
-
-                        {% if searcher_has_liked[i] == 0 %}
-                        <span id="like"><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/like">LIKES: {{likes[i]}}</a></button></span>
-                        {% else %}
-                        <span id="like"><button class="btn btn-success"><a href="/vote/{{file_ids_list[i]}}/like" style="color: black;">LIKES: {{likes[i]}}</a></button></span>
-                        {% endif %} 
-                    
-                        {% if searcher_has_disliked[i] == 0 %}
-                        <span id="dislike"><button class="btn btn-outline-danger"><a href="/vote/{{file_ids_list[i]}}/dislike">DISLIKES: {{dislikes[i]}}</a></button></span>
-                        {% else %}
-                        <span id="dislike"><button class="btn btn-danger"><a href="/vote/{{file_ids_list[i]}}/dislike" style="color: black;">DISLIKES: {{dislikes[i]}}</a></button></span>
-                        {% endif %}
+            <!-- SESSION VARIABLES--> 
+            <form action="/edit_bio" method="POST" >
+                {% if is_host == "true" %}
+                <div class="d-flex justify-content-center">
+                    <textarea id="edit_bio" maxlength="150" name="edit_bio" rows="4" cols="40">{{profile_bio}}</textarea>
+                    <button type="submit" class="btn btn-primary"  name="edit_bio" type="submit">Save Bio</button>
+                </div>
+                {% else %}
+                <div class="d-flex justify-content-center">
+                    <textarea id="edit_bio" maxlength="40" name="edit_bio" rows="4" cols="40" disabled>{{profile_bio}}</textarea>
+                </div>
+                {% endif %}
+            </form>
+                        <!-- SESSION VARIABLES-->
+            <div class="d-flex justify-content-center">
+                <div class="dropdown">
+                    <br>
+                    <button class="dropbtn">Following  {{friend_count}}</button> <!-- TODO GO TO A PERSONS FOLLOWER PAGE-->
+                    <div id="my_following_dropdown" class="dropdown-content">
                     </div>
-
-                    
-                    <!-- POST TEXT -->
-                    <div id="text_span">
-                        {% if lengths_of_text_files[i] > 300 %}
-                            {{text_list[i][:300]}}...
-                        {% else %}
-                            {{text_list[i]}}
-                        {% endif %}            
-                    </div>
-
-                    {% if image_path_list[i] != "" %}
-                    <img onclick="enlargeImg()" id="post_pic" src="{{url_for('static', filename=image_path_list[i])}} " width='400' height='200' />
-                    {% endif %}
-                    
-                    <div>
-                        {% if "PROPERLY EMBEDDED HTML TAG" in source_list[i]%}
-                        <p>
-                            {{source_list[i] | safe}}
-                        </p>
-                        {% endif %} 
-                    </div>
-                    
-                    <!-- POST IMAGE -->
-  
-                    <!--PROFILE PICTURE-->
-                    <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='70' height='70' />
-
-
-                    <!-- PUTTING SHIT AT THE BOTTOM -->
-                    <div><br /></div>
-                    <div class=" card-footer d-flex justify-content-between align-items-center">
-                        <small class="text-muted">
-                            <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_ids_list[i]}})" aria-expanded="false">
-                                <span>REPLY: {{num_replies[i]}}</span>
-                            </button>
-                            <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
-                                REPOST (coming)
-                            </button>
-                            <button class="btn btn-secondary" type="button" aria-expanded="false">
-                                <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page" style="color: white;">GO TO FULL POST</a>
-                            </button>
-                        </small>
-                        <small class="text-muted" id="">
-                            <!-- <a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">ID:{{file_ids_list[i]}} </a> -->
-                           {{dates_list[i]}}
-                       </small>
+                </div>
+                <div class="dropdown">
+                    <br>
+                    <button class="dropbtn">Followers {{follow_count}}</button>
+                    <div id="my_followers_dropdown" class="dropdown-content">
                     </div>
                 </div>
             </div>
+            </br>
+                        <!-- SESSION VARIABLES-->
+            {% if is_host == "true" %}
+            <div class="" id="post_div">
+                <button class="btn btn-secondary" type="button" onclick="post_modal_toggle()" aria-expanded="false">
+                    POST
+                </button>
             </div>
-            {%endfor%}
+            {% endif %}
+
+            <!-- SESSION VARIABLES-->
+            <div  class="d-flex justify-content-center">
+                <div id="non_host_add_remove">
+                </div>
+            </div>
         </div>
 
         <!--DOING THE SEARCH-->
@@ -311,6 +215,115 @@
                     <input type="hidden" id="page_number" name="page_number" value={{page_no}} /><!--Page Test:{{page_no}}--> 
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- SESSION VARIABLES-->
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col-2">
+          <div>
+            <!--(ads here in the future..)-->
+          </div>
+        </div>
+
+        <div class="col-7">
+            {%for i in range(0, username_len )%}
+            <div class="col">
+            <div class="card mb-4 shadow-sm border-dark mb-3">
+                <div class="card-body">
+                    <!-- TODO: CHANGE TO AN HREF TO GO TO THEIR PROFILE -->
+                    <div > <!--CARD TITLE-->                  
+                        <a href="/{{usernames_list[i]}}">{{usernames_list[i]}}</a>
+                                                
+                        <!--DAILY -->
+                        {% if daily_left == 0 or uploader_is_subbed[i] != 1%}
+                        <span id="daily_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Daily">D: {{day_votes[i]}}</a></button></span>
+                        {% else %}
+                        <span id="daily_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Daily">D: {{day_votes[i]}}</a></button></span>
+                        {% endif %}
+
+                        <!--MONTHLY -->
+                        {% if monthly_left == 0 or uploader_is_subbed[i] != 1%}
+                        <span id="monthly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
+                        {% else %}
+                        <span id="monthly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Monthly">M: {{month_votes[i]}}</a></button></span>
+                        {% endif %}
+
+                        <!--YEARLY -->
+                        {% if yearly_left == 0 or uploader_is_subbed[i] != 1%}
+                        <span id="yearly_vote  "><button class="btn btn-outline-secondary disabled"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
+                        {% else %}
+                        <span id="yearly_vote  "><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/Yearly">Y: {{year_votes[i]}}</a></button></span>
+                        {% endif %}
+
+                        {% if searcher_has_liked[i] == 0 %}
+                        <span id="like"><button class="btn btn-outline-success"><a href="/vote/{{file_ids_list[i]}}/like">LIKES: {{likes[i]}}</a></button></span>
+                        {% else %}
+                        <span id="like"><button class="btn btn-success"><a href="/vote/{{file_ids_list[i]}}/like" style="color: black;">LIKES: {{likes[i]}}</a></button></span>
+                        {% endif %} 
+                    
+                        {% if searcher_has_disliked[i] == 0 %}
+                        <span id="dislike"><button class="btn btn-outline-danger"><a href="/vote/{{file_ids_list[i]}}/dislike">DISLIKES: {{dislikes[i]}}</a></button></span>
+                        {% else %}
+                        <span id="dislike"><button class="btn btn-danger"><a href="/vote/{{file_ids_list[i]}}/dislike" style="color: black;">DISLIKES: {{dislikes[i]}}</a></button></span>
+                        {% endif %}
+                    </div>
+
+                    
+                    <!-- POST TEXT -->
+                    <div id="text_span">
+                        {% if lengths_of_text_files[i] > 300 %}
+                            {{text_list[i][:300]}}...
+                        {% else %}
+                            {{text_list[i]}}
+                        {% endif %}            
+                    </div>
+
+                    {% if image_path_list[i] != "" %}
+                    <img onclick="enlargeImg()" id="post_pic" src="{{url_for('static', filename=image_path_list[i])}} " width='400' height='200' />
+                    {% endif %}
+                    
+                    <div>
+                        {% if "PROPERLY EMBEDDED HTML TAG" in source_list[i]%}
+                        <p>
+                            {{source_list[i] | safe}}
+                        </p>
+                        {% endif %} 
+                    </div>
+                    
+                    <!-- POST IMAGE -->
+  
+                    <!--PROFILE PICTURE-->
+                    <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='70' height='70' />
+
+
+                    <!-- PUTTING SHIT AT THE BOTTOM -->
+                    <div><br /></div>
+                    <div class=" card-footer d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_ids_list[i]}})" aria-expanded="false">
+                                <span>REPLY: {{num_replies[i]}}</span>
+                            </button>
+                            <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
+                                REPOST (coming)
+                            </button>
+                            <button class="btn btn-secondary" type="button" aria-expanded="false">
+                                <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page" style="color: white;">GO TO FULL POST</a>
+                            </button>
+                        </small>
+                        <small class="text-muted" id="">
+                            <!-- <a href="{{usernames_list[i]}}_{{paths_list[i]}}-post_page">ID:{{file_ids_list[i]}} </a> -->
+                           {{dates_list[i]}}
+                       </small>
+                    </div>
+                </div>
+            </div>
+            </div>
+            {%endfor%}
         </div>
     </div>
 </div>
