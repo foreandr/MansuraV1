@@ -103,3 +103,6 @@ DONE. liek clauses case insensitive
 DONE. CHANGE TESTNET PAYPAL OFF LIVE
 DONE. ABLE TO UPLOAD ONCE A [TIME INTERVAL] IF NOT SUBSCRIBED
 DONE. put dates on profile lst uploads
+DONE. change UI of upload to look like booitrap login
+DONE. ADD POOL TO COVER PAGE
+DONE. ONLY SHOW REQUESTS THAT ARE NOT ME, add datetime

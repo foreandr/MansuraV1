@@ -477,7 +477,7 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None", ses
     from datetime import datetime
     import pytz
     
-    my_accounts = ['', 'mazinosarchive','youtubebot']
+    my_accounts = ['', 'mazinosarchive','youtubebot', 'Admin']
 
     
     my_time = pytz.timezone('US/Eastern') 
