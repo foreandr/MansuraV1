@@ -320,6 +320,7 @@ def user_profile():
     if request.method == "GET":
         return redirect(url_for('user_profile_name', username=session['user']))
     
+    #THIS IS WHERE PROFILE PICTRUE IS CHANGED
     elif request.method == "POST":
         user = session["user"]
         id = session["id"]
@@ -848,10 +849,11 @@ def add_funds():
                                balance = balance,
                                daily_pool=daily_pool, 
                                monthly_pool=monthly_pool, 
-                               yearly_pool=yearly_pool
+                               yearly_pool=yearly_pool,
+                               is_already_subbed_this_month=is_already_subbed_this_month
                                )
     session_username = session["user"]
-
+    is_already_subbed_this_month = database.CHECK_DATE( session["user"])   
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session_username)
     return render_template('add_funds.html', 
                             session_username=session_username,
@@ -861,7 +863,8 @@ def add_funds():
                             balance = balance,
                             daily_pool=daily_pool, 
                             monthly_pool=monthly_pool, 
-                            yearly_pool=yearly_pool
+                            yearly_pool=yearly_pool,
+                            is_already_subbed_this_month=is_already_subbed_this_month
                            )
 
 

@@ -1,20 +1,14 @@
-
-FEATUREs:
-DONE. CHANGE CONTACT AND  INTSTRUCTIONS TO BE SIMPLER
-DONE. CHECK WORDINESS IN INSTRUCTIONS?
-DONEB. COLOR NAV BAR DARKER
-DONE. ADD HOME BUTTON TO NAVBAR
-0D. MOVE USER PROFILE SEARCH HIGHER
-0E. SPACE BETWEEN FOLLOWERS AND PSOT
-0F. ADD FUND DETAILS TO SUBSCRIBE PAGE
-0e. PUT CURRENT BALANCE IN THE SUBSCRIBE HTML UI, DISABLE BUTTONS IF UNAVAIL
-
+FEATUREs
+==============
+#HOTFIX
+#FIX TRIBAL QUERY
 add replying to profiles
+0x. change search color buttons
 1. validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
-3. specify profile pic must be png or something
+DONE. specify profile pic must be png or something
 4. upload all of mazinos archive, then go on tiktok toa nnounce
 5. msg balaji
-6. SHOW HOW MUCH PAYPAL TAKES ON WITHDRAWL
+DONE. SHOW HOW MUCH PAYPAL TAKES ON WITHDRAWL
 7. vast swatths of the CSS and js can be simplified into single pages
 8. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
 9. UNIT TESTS
@@ -40,7 +34,10 @@ add replying to profiles
 21. clicking on friends goes to a FRIEND stats page? 
 22. notifications proper
 23. REPLY CHAIN
+24. add payment folder to main mansura (doesnt exist)
 
+MOBILE
+==============
 
 DEVOPS
 ===============

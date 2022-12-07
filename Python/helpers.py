@@ -496,8 +496,6 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None", ses
         else:
             with open(f'/root/mansura/Python/logs/access/user_access/{current_date}.txt', 'a') as f:
                 f.write(err_string)
-    
-    
     elif msg_type == "distro":
         err_string = f"{log_string}"
         my_path = f"/root/mansura/Python/logs/distro/{vote_type}/{current_date}"
@@ -510,8 +508,15 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None", ses
                 f.write(err_string + ",\n")
     elif msg_type == 'payment':
         my_path = f"/root/mansura/Python/logs/payment"
+        check_and_save_dir(my_path)
         with open(f'{my_path}/{current_date}.txt', 'a') as f:
                 f.write(err_string + ",\n")
+    elif msg_type == 'test':
+        my_path = f"/root/mansura/Python/logs/test"
+        check_and_save_dir(my_path)
+        with open(f'{my_path}/{current_date}.txt', 'a') as f:
+                f.write(err_string + ",\n")
+        
 
 
 def remove_values_from_list(the_list):

@@ -11,14 +11,20 @@
         
         <h2 class="form-signup-heading">How much would you like sent to your paypal account? <h6>(should be 1 business day max)</h6></h2>
         <h2 class="form-signup-heading">Your balance: {{balance}}</h2>
+        <h2 class="form-signup-heading" id="paypal_fee">Paypal Transaction Fee: 0</h2>
       
       
-      <input class="form-control" id="withdrawl_amount" type="text" name="withdraw_amount"  onkeyup="disableButton()" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
+      <input class="form-control" id="withdrawl_amount" type="text" name="withdraw_amount" onkeyup="disableButton();show_paypals_cut()"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
       <input class="form-control" id="myBtn" type="submit" name="withdraw_button" value="Withdraw" disabled/>Min 0.50 (else paypal will take everything and you get nothing)
 
     </form>
 </div>
 <script>
+    function show_paypals_cut(){
+        num_in_field = document.getElementById("withdrawl_amount").value
+        console.log("show_paypals_cut()", num_in_field)
+        document.getElementById("paypal_fee").innerHTML = ""
+    }
     d_votes_left = '{{ daily_left }}';
     m_votes_left = '{{ monthly_left }}';
     y_votes_left = '{{ yearly_left }}';
@@ -27,8 +33,6 @@
     document.getElementById("index_daily").innerHTML = 'DAILY POOL: ${{dailypool}}';
     document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: ${{monthlypool }}';
     document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: ${{yearlypool }}';
-
-
 
     document.getElementById("daily_votes_left").innerHTML = `DAILY VOTES: ${d_votes_left}`;
     document.getElementById("monthly_votes_left").innerHTML = `MONTHLY VOTES: ${m_votes_left}`;

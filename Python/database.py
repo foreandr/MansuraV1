@@ -3004,7 +3004,42 @@ def COMPOSE_ORDER_BY_CLAUSES(order_by_clause, custom_clauses_order_by):
     print("===========================")
     return order_by_clause
 
+def TRIUBNAL_CLAUSE(tribunal):
+    #print("IM IN TRIBUNAL")
+    DISLIKE_COUNT = "(SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id)" # NUM
+    LIKE_COUNT = "(SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id)"
+    IN_TRIBUNAL = "((SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 1)"# BOOLEAN
+    
+    
+    if tribunal: # -- THIS IS FOR THE TRIBUNAL -- ABSOLUTE FUCKING NIGHTMARE
+   
+        tribunal_query = F"""AND 
+            ( {IN_TRIBUNAL} 
+                AND 
+                (
+                    {DISLIKE_COUNT} / ({DISLIKE_COUNT}) + {LIKE_COUNT})
+                ) > .75
+            )
+        """
+    else:
 
+        tribunal_query = F"""        
+        
+            AND CASE 
+            WHEN (SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 1 
+                THEN                   
+                    CASE 
+                    WHEN (((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id)) > 1 ) AND (SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) > 10 -- SWITCH TO TEN
+                        THEN
+                                ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) / ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id))) > .75                                                                                           
+                        ELSE 1=1   
+                    END                                                          
+                ELSE 1 = 1 
+            END
+        
+        """
+    return tribunal_query
+        
 def universal_dataset_function(search_type, page_no="1", search_user="None", file_id="None", profile_username="None", custom_clauses="None", tribunal=False):
     conn = conn = connection.test_connection()
     cursor = conn.cursor()
@@ -3034,27 +3069,9 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         )
         
     """
-    if tribunal: # -- THIS IS FOR THE TRIBUNAL -- ABSOLUTE FUCKING NIGHTMARE
-        tribunal_query = """
-        AND ((SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 1 AND ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) / ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id))) > .75)
-        """
-    else:
-        tribunal_query = """        
-        
-            AND CASE 
-            WHEN (SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 1 
-                THEN                   
-                    CASE 
-                    WHEN (((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id)) > 1 ) AND (SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) > 10 -- SWITCH TO TEN
-                        THEN
-                                ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) / ((SELECT COUNT(*) FROM DISLIKES dislikes WHERE dislikes.File_id = F.File_id) + (SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id))) > .75                                                                                           
-                        ELSE 1=1   
-                    END                                                          
-                ELSE 1 = 1 
-            END
-        
-        """
-
+    
+    tribunal_query = TRIUBNAL_CLAUSE(tribunal)
+    # print(tribunal_query)
 
     if search_type != "post":
         # payouts because small table, wasnt sure if size would effect query time
@@ -3189,8 +3206,9 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
         OFFSET (({page_no} - 1) * 30)
         LIMIT 30; 
     """
+    
     #print("MY QUERY ================================")
-    #print(query)
+    # log_function("test", log_string=query)
     cursor.execute(query)
     # -- ORDER BY GET_FILE_VOTE_COUNT_TYPED(F.File_Id, '{sort_time_frame}') DESC
     search_arguments = {
