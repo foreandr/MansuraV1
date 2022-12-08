@@ -3,7 +3,7 @@
 
 <div class="container">
     <div class="jumbotron" style="  padding-top: 10px !important;padding-bottom: 10px !important;">
-        <h1><ul>WORD TRIBUNAL</ul></h1>
+        <h1><ul>PHRASE TRIBUNAL</ul></h1>
         <p class="lead">Scraped commonly offensive terms off the internet, blocked by default (just changed into ****).</p>
         <p class="lead">If enough people want these terms on the site, they are removed from the block list.</p>
     </div>
@@ -32,18 +32,14 @@
                 <td>{{blocked_words[i][1]}}</td>
                 <td>
                     <form action="/word_tribunal" method="post">      
-                        <input class="btn btn-secondary" type="submit" value="{{blocked_words[i][2]}}" name="keep_phrase"/>
-                    </form>
+                        <input class="btn btn-secondary" type="submit" type="hidden" value="{{blocked_words[i][1]}}:  {{blocked_words[i][2]}}" name="keep_phrase"/>
                 </td>
                 <td>
-                    <form action="/word_tribunal" method="post">      
-                        <input class="btn btn-secondary" type="submit" value="{{blocked_words[i][3]}}" name="block_phrase"/>
+                        <input class="btn btn-secondary" type="submit" value="{{blocked_words[i][1]}}:  {{blocked_words[i][3]}}" name="block_phrase"/>
                     </form>
                 </td>
             </tr>
-
             {%endfor%}
-
         </tbody>      
     </table>
 </div>

@@ -3811,21 +3811,43 @@ def CREATE_TABLE_PROFANITY_LIST_VOTES():
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
+    
+def CHECK_IF_WORD_VOTE_EXISTS(word_id, user_id, vote_type):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    
+    cursor.execute(f"""
+        SELECT COUNT(*)
+        FROM PROFANITY_LIST_VOTES
+        WHERE Voter_Id = '{user_id}'
+        AND word_id = '{word_id}'
+        AND Vote_Type = '{vote_type}'
+    """)
+    count = 0
+    for i in cursor.fetchall():
+        count = i[0]
+    return count
+        
 
 def INSERT_INTO_PROFANITY_LIST_VOTES(word_id, voter_id, Vote_Type):
     conn = connection.test_connection()
     cursor = conn.cursor()
-    cursor.execute(f"""
-        INSERT INTO PROFANITY_LIST_VOTES(Word_Id, Voter_Id, Vote_Type)
-        VALUES('{word_id}', '{voter_id}', '{Vote_Type}')
-        ON CONFLICT DO NOTHING          
-    """)
-    conn.commit()
+    if CHECK_IF_WORD_VOTE_EXISTS(word_id, voter_id, Vote_Type) > 1: # there already is a vote
+        # MEANS I'VE AREADY DONT VOTE OF TYPE X, REMOVE IT
+        print(F"USERID:{word_id} HAS ALREADY VOTED FOR {voter_id} OF TYPE {Vote_Type}") 
+    else:
+        print("INSERTNG")
+        cursor.execute(f"""
+            INSERT INTO PROFANITY_LIST_VOTES(Word_Id, Voter_Id, Vote_Type)
+            VALUES('{word_id}', '{voter_id}', '{Vote_Type}')
+            ON CONFLICT DO NOTHING          
+        """)
+        conn.commit()
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
-    # print("scessfully inserted", word, "insto profanity table")
+    print("scessfully inserted", word_id, "insto profanity table")
     
     
 def INSERT_SINGLE_WORD_INTO_PROFANITY_TABLE(word):
@@ -3898,11 +3920,13 @@ def GET_WORD_TRIBUNAL_DETAILS():
             SELECT COUNT(*)
             FROM PROFANITY_LIST_VOTES p_list
             WHERE Vote_Type = 'UP'
+            AND p_list.Word_Id = profanity.Word_id
         ),
         (
             SELECT COUNT(*)
             FROM PROFANITY_LIST_VOTES p_list
             WHERE Vote_Type = 'DOWN'
+            AND p_list.Word_Id = profanity.Word_id
         )
         FROM PROFANITY_LIST profanity     
         

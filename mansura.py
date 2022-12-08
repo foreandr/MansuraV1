@@ -1650,8 +1650,10 @@ def word_tribunal():
     
         word_id = database.GET_WORD_PHRASE_ID_BY_NAME(phrase)
         voter_id = database.GET_USER_ID(session['user'])
+        print("word id", word_id)
+        print("phrase   :", phrase)
+        print("voter_id :",voter_id)
         database.INSERT_INTO_PROFANITY_LIST_VOTES(word_id, voter_id, vote_type)
-    
     blocked_words = database.GET_WORD_TRIBUNAL_DETAILS()
     blocked_words_len = len(blocked_words) 
     #print(blocked_words_len)
