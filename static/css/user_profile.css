@@ -54,6 +54,9 @@
   cursor: pointer;
 }
 
+#profile_posts_div{
+  margin-top:700px;
+}
 /* Dropdown button on hover & focus */
 .dropbtn:hover, .dropbtn:focus {
   background-color: #2980B9;

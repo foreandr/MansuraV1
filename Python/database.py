@@ -3042,15 +3042,9 @@ def TRIUBNAL_CLAUSE(tribunal):
         
         """
     return tribunal_query
-        
-def universal_dataset_function(search_type, page_no="1", search_user="None", file_id="None", profile_username="None", custom_clauses="None", tribunal=False):
-    conn = conn = connection.test_connection()
-    cursor = conn.cursor()
-    """
-    search type options rn ["home", "prof", "post"]
-    return PARAMETER back to the browser in a list so the frontend has all the options when conducting another search(changing pages and whatnot)
-    Todo: it might be worth explicitly setting the other things to their requisite values universally even though it's less elegant
-    """
+
+
+def GET_PROFILE_SEARCH_CLAUSE_AND_FOREIGN_ID_TEXT_ENTRY(search_type, profile_username, file_id):
     POST_SEARCH_QUERIES = f"""
         (   
             SELECT COUNT(*) -- TOTAL VOTES FOR DATASET
@@ -3070,12 +3064,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
             WHERE file.File_id = {file_id}
             AND Vote_Type = 'Yearly'
         )
-        
     """
-    
-    tribunal_query = TRIUBNAL_CLAUSE(tribunal)
-    # print(tribunal_query)
-
     if search_type != "post":
         # payouts because small table, wasnt sure if size would effect query time
         POST_SEARCH_QUERIES = """ 
@@ -3091,19 +3080,27 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     else:
         foreign_id_text_entry = F"AND F.Post_foreign_id_source = '{file_id}'"
         profile_search_clause = F""
-
+    
+    return profile_search_clause, foreign_id_text_entry, POST_SEARCH_QUERIES
+   
+def universal_dataset_function(search_type, page_no="1", search_user="None", file_id="None", profile_username="None", custom_clauses="None", tribunal=False):
+    conn = conn = connection.test_connection()
+    cursor = conn.cursor()
+    """
+    search type options rn ["home", "prof", "post"]
+    return PARAMETER back to the browser in a list so the frontend has all the options when conducting another search(changing pages and whatnot)
+    Todo: it might be worth explicitly setting the other things to their requisite values universally even though it's less elegant
+    """
+    
+    tribunal_query = TRIUBNAL_CLAUSE(tribunal)
+    profile_search_clause, foreign_id_text_entry, POST_SEARCH_QUERIES = GET_PROFILE_SEARCH_CLAUSE_AND_FOREIGN_ID_TEXT_ENTRY(search_type, profile_username, file_id)
     where_clause = custom_clauses["WHERE_CLAUSE"] 
     order_by_clause = custom_clauses["ORDER_BY_CLAUSE"]
     
-
     if len(order_by_clause) == 0:
         order_by_clause = "ORDER BY (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Yearly') DESC"
 
     where_full_query = f"{foreign_id_text_entry} {profile_search_clause} {where_clause}" # THIS EXTRA PAREN SEEMS TO NEED TO BE HERE???
-    #print("SEARCH CLAUSE", profile_search_clause)
-    #print("ORDER  CLAUSE", order_by_clause)
-    #print("WHERE  CLAUSE", where_clause)
-    #print("FOREI  CLAUSE", foreign_id_text_entry)
 
     query = f"""
         SELECT
@@ -3213,6 +3210,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     #print("MY QUERY ================================")
     log_function("test", log_string=query)
     cursor.execute(query)
+    
     # -- ORDER BY GET_FILE_VOTE_COUNT_TYPED(F.File_Id, '{sort_time_frame}') DESC
     search_arguments = {
         "search_type":search_type, 
@@ -3239,7 +3237,6 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     searcher_has_disliked = []
     num_replies = []
     uploader_is_subbed = []
-
 
     #INDIVIDUAL USER
     daily_left = ""
@@ -3299,27 +3296,6 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
-    ''' GETTING RID OF DUPES CAUSIGN WAY TOO MANY TROUBLWES RIGHT NOW
-    #print("THESE ARE MY SERVER SIDE SEARCH ARGUMENTS")
-    #print(search_arguments)
-    print("TESTING!!!!", search_arguments["where_full_query"])
-    where_clause_list_ = search_arguments['where_full_query'].split("AND")
-    #print(where_clause_list_)
-    search_arguments['where_full_query'] = list(dict.fromkeys(where_clause_list_))# getting rid of dupes
-    search_arguments_with_and = ""
-    for i in search_arguments['where_full_query']:
-        if i != "":    
-            j = "AND " + i
-            search_arguments_with_and += j
-    search_arguments['where_full_query'] = search_arguments_with_and
-
-    print("SEARCH ARGS WITH DUPES", where_clause_list_)
-    print("SEARCH ARGS WITH DUPES", search_arguments_with_and)
-
-    #print(f"-----\n{search_arguments}\n-----")
-
-    # search_arguments['where_full_query'] = list(dict.fromkeys(search_arguments['where_full_query']))
-    '''
     # print("ORDER BY CLAUSE", search_arguments)
     return file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, uploader_is_subbed, search_arguments
 

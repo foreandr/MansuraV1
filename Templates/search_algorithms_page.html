@@ -4,10 +4,10 @@
 
 <div>
 	<form action="search_algorithms_page" method="post">      
-		<h1><input class="btn btn-primary" type="submit" value="SHOW ALL" name="show_all"/></h1>
-		<h1><input class="btn btn-primary" type="submit" value="SHOW MY FAVOURITES" name="show_favourites"/></h1>
-		<h1><input class="btn btn-primary" type="submit" value="CREATED BY ME" name="show_mine" disabled/></h1>
-		<h1><input class="btn btn-primary" type="submit" value="NEXT PAGE" name="next_page" disabled/></h1>
+		<h1><input class="btn btn-secondary" type="submit" value="SHOW ALL" name="show_all"/></h1>
+		<h1><input class="btn btn-secondary" type="submit" value="SHOW MY FAVOURITES" name="show_favourites"/></h1>
+		<h1><input class="btn btn-secondary" type="submit" value="CREATED BY ME" name="show_mine" disabled/></h1>
+		<h1><input class="btn btn-secondary" type="submit" value="NEXT PAGE" name="next_page" disabled/></h1>
 	</form>
 	
 
@@ -33,16 +33,16 @@
                 <td>{{algos[i][0]}}</td>
                 <td>{{algos[i][3]}}</td>
 				<td>
-					<button class="btn btn-primary" id="show_algo_button" onclick="search_show_modal_toggle(this.value)" value="{{search_query_details[i]}}">SHOW</button>
+					<button class="btn btn-secondary" id="show_algo_button" onclick="search_show_modal_toggle(this.value)" value="{{search_query_details[i]}}">SHOW</button>
 				</td>
 				<td>
 					<form action="search_algorithms_page" method="post">      
-						<input class="btn btn-primary" type="submit" value="{{algos[i][2]}}" name="save_algo"/>
+						<input class="btn btn-secondary" type="submit" value="{{algos[i][2]}}" name="save_algo"/>
 					</form>
 				</td>
 				<td>
 					<form action="search_algorithms_page" method="post">      
-						<input class="btn btn-primary" type="submit" value="{{algos[i][2]}}" name="del_algo"/>
+						<input class="btn btn-secondary" type="submit" value="{{algos[i][2]}}" name="del_algo"/>
 					</form>
 				</td>
             </tr>
@@ -74,17 +74,7 @@
     d_votes_left = '{{ daily_left }}';
     m_votes_left = '{{ monthly_left }}';
     y_votes_left = '{{ yearly_left }}';
-    // console.log(d_votes_left)
-    /*
-    document.getElementById("index_daily").innerHTML = 'DAILY POOL: {{daily_pool}}';
-    document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: {{monthly_pool }}';
-    document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: {{yearly_pool }}';
-    document.getElementById("daily_votes_left").innerHTML = `DAILY VOTES: ${d_votes_left}`;
-    document.getElementById("monthly_votes_left").innerHTML = `MONTHLY VOTES: ${m_votes_left}`;
-    document.getElementById("yearly_votes_left").innerHTML = `YEARLY VOTES: ${y_votes_left}`;
-    document.getElementById("user_balance").innerHTML = 'BALANCE:{{user_balance}}';
-    console.log("TERMS AND CONDITIONS")
-    */
+
 	search_query_details = "{{search_query_details}}".slice(1,-1);
 	search_query_details = search_query_details.split(",")
 	console.log(search_query_details.length)

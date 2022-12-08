@@ -63,7 +63,7 @@
                         <p>
                             {{og_post_src | safe}}
                         </p>
-                        {% elif og_post_src != ""%}
+                        {% elif og_post_src != "" and og_post_src != "None" %}
                         <small>
                             <div style="font-size: 10px;">
                                 Source:<a  href="{{og_post_src}}">{{og_post_src}}</a>
@@ -82,7 +82,7 @@
                                 <span>REPLY: {{single_num_replies}}</span>
                             </button>
                             <button class="btn btn-secondary" type="button" aria-expanded="false">
-                                <a href="/report/{{file_ids_list[i]}}"  style="color: white; ">REPORT</a>
+                                <a href="/report/{{file_id}}"  style="color: white; ">REPORT</a>
                             </button>
                             <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
                                 REPOST (coming)
@@ -198,6 +198,9 @@
                         <small class="text-muted">
                             <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_ids_list[i]}})" aria-expanded="false">
                                 <span>REPLY: {{num_replies[i]}}</span>
+                            </button>
+                            <button class="btn btn-secondary" type="button" aria-expanded="false">
+                                <a href="/report/{{file_ids_list[i]}}"  style="color: white; ">REPORT</a>
                             </button>
                             <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
                                 REPOST (coming)
@@ -460,258 +463,7 @@
 <!-- save_modal  -->
 
 <script>
-    //console.log("{{username}}")
-    var slider = `Sections: 1-10
-        <div class="slidecontainer" >
-            <input type="range" min="1" max="10" value="5" class="slider" id="myRange" name="how_many_sections_">
-        </div>
-        `
-
-    function howmanysectionsfunc(){
-
-        dist_chosen = document.getElementById("distro_algo").value 
-
-        if (dist_chosen == "LOG EQUAL DISTRIBUTION"){
-            document.getElementById("how_many_sections").innerHTML = slider
-        }
-        else{
-            document.getElementById("how_many_sections").innerHTML= ""
-        }
-    }
-
-    
     document.getElementById("reply_external_source_link").disabled = true; // setting default to disabled
-
-
-    d_votes_left = '{{ daily_left }}';
-    m_votes_left = '{{ monthly_left }}';
-    y_votes_left = '{{ yearly_left }}';
-    daily_pool = '{{dailypool}}'
-    len_text = '{{  len_text }}';
-    og_post_text = '{{ og_post_text }}';
-    og_post_img = '{{ og_post_img }}';
-    og_post_src = `{{og_post_src}}`
-
-
-
-    // console.log(daily_pool)
-    //console.log("HELLO WORLD")
-
-    function enable_built_from_other() {
-        if (document.getElementById("external_source").readonly == true) {
-            document.getElementById('external_source').removeAttribute("readonly");
-            //get.setAttribute('readonly', true);
-
-        }
-        else {
-            document.getElementById("external_source").setAttribute("readonly", "false")
-        }
-
-    }
-
-    function enable_exteral_link() {
-        // console.log("hello world")
-        if (document.getElementById("external_source_link").disabled == true) { // if disabled
-            document.getElementById('external_source_link').removeAttribute("disabled");
-
-        }
-        else {
-            document.getElementById("external_source_link").setAttribute("disabled", "enabled")
-        }
-    }
-
-    function reply_enable_external_link(){
-        if (document.getElementById("reply_external_source_link").disabled == true) { // if disabled
-            document.getElementById('reply_external_source_link').removeAttribute("disabled");
-        }
-        else {
-            document.getElementById("reply_external_source_link").setAttribute("disabled", "enabled")
-        }
-    }
-
-    function post_details_func() {
-        //console.log(document.getElementById("insert_post").innerHTML);
-        if (document.getElementById("insert_post").innerHTML == "") {
-            document.getElementById("insert_post").innerHTML = ``
-        } else {
-            document.getElementById("insert_post").innerHTML = ""
-        }
-
-    }
-
-
-    var where_counter = 1
-    var where_clause_string = `
-    <div>
-        <div> 
-            <select name="and_or_clause${where_counter}" id="and_or_clause${where_counter}" class="dropdown-content">
-                            <option id="AND">AND</option>           
-                            <option id="OR">OR</option>
-            </select>  
-            <select name="where_clauses${where_counter}" id="where_clauses${where_counter}" class="dropdown-content">
-                            <option id="DAY VOTES">POST DAY VOTES</option>
-                            <option id="MONTH VOTES">POST MONTH VOTES</option>
-                            <option id="YEAR VOTES">POST YEAR VOTES</option>            
-                            <option id="LIKES"disabled>POST LIKES</option>           
-                            <option id="REPLIES"disabled>POST REPLIES</option>
-                            <option id="POST SENTIMENT ANALYSIS"disabled>POST SENTIMENT</option>
-                            <option id="POST HAS IMAGE" disabled>POST HAS IMAGE T/F</option>
-                            <option id="HAS SOURCE"disabled>HAS SOURCE</option>
-                            <option id="USER FOLLOWING"disabled>USER FOLLOWING</option>
-                            <option id="USER FOLLOWERS"disabled>USER FOLLOWERS</option>
-                            <option id="USER USER BLOCKED THEM" disabled>USER NUM BLOCKED</option>
-                            <option id="FRIENDS WITH" disabled>USER FRIENDS WITH</option>
-                            <option id="Post/Like Ratio" disabled>USER POST/LIKE RATIO</option>
-                            <option id="USER POLARIZATION" disabled>USER POLARIZATION</option>
-                            <option id="USER FOLLOWING (x)" disabled>USER FOLLOWING (x)</option>
-                            <option id="USER FOLLOWED BY (x)" disabled>USER FOLLOWED BY (x)</option>
-                            <option id="USER 18+" disabled>USER 18+</option>
-                            <option id="USER FROM COUNTRY (x)" disabled>USER FROM COUNTRY (x)</option> 
-            </select> 
-            <select name="higher_equal_lower${where_counter}" id="higher_equal_lower" class="dropdown-content">
-                <option id="equal">>=</option>           
-                <option id="log">==</option>
-                <option id="log_equal"><=</option>
-            </select> 
-            <input name="num_search_text${where_counter}" id="num_search_text${where_counter}" size="4" type="text"maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"><br><br>
-        </div>
-    </div>
-    `
-
-
-    function add_another_where_clause(){
-        //console.log(where_counter)
-        var where_clause_string = `
-        <div>
-            <div>
-                <select name="and_or_clause${where_counter}" id="and_or_clause${where_counter}" class="dropdown-content">
-                            <option id="AND">AND</option>           
-                            <option id="OR">OR</option>
-                </select>  
-                <select name="where_clauses${where_counter}" id="where_clauses${where_counter}" class="dropdown-content">
-                            <option id="DAY VOTES">POST DAY VOTES</option>
-                            <option id="MONTH VOTES">POST MONTH VOTES</option>
-                            <option id="YEAR VOTES">POST YEAR VOTES</option>            
-                            <option id="LIKES"disabled>POST LIKES</option>           
-                            <option id="REPLIES"disabled>POST REPLIES</option>
-                            <option id="POST SENTIMENT ANALYSIS"disabled>POST SENTIMENT</option>
-                            <option id="POST HAS IMAGE" disabled>POST HAS IMAGE T/F</option>
-                            <option id="HAS SOURCE"disabled>HAS SOURCE</option>
-                            <option id="USER FOLLOWING"disabled>USER FOLLOWING</option>
-                            <option id="USER FOLLOWERS"disabled>USER FOLLOWERS</option>
-                            <option id="USER USER BLOCKED THEM" disabled>USER NUM BLOCKED</option>
-                            <option id="FRIENDS WITH" disabled>USER FRIENDS WITH</option>
-                            <option id="Post/Like Ratio" disabled>USER POST/LIKE RATIO</option>
-                            <option id="USER POLARIZATION" disabled>USER POLARIZATION</option>
-                            <option id="USER FOLLOWING (x)" disabled>USER FOLLOWING (x)</option>
-                            <option id="USER FOLLOWED BY (x)" disabled>USER FOLLOWED BY (x)</option>
-                            <option id="USER 18+" disabled>USER 18+</option>
-                            <option id="USER FROM COUNTRY (x)" disabled>USER FROM COUNTRY (x)</option> 
-                </select> 
-                <select name="higher_equal_lower${where_counter}" id="higher_equal_lower" class="dropdown-content">
-                    <option id="equal">>=</option>           
-                    <option id="log">==</option>
-                    <option id="log_equal"><=</option>
-                </select> 
-                <input name="num_search_text${where_counter}" id="num_search_text${where_counter}" size="4" type="text"maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"><br><br>
-            </div>
-        </div>
-        `
-        //console.log("add_another_where_clause");
-        if (where_counter < 8){
-            document.getElementById("where_clause_additions").innerHTML += where_clause_string
-            where_counter +=1
-        }
-
-        //console.log(where_clause_string)
-        
-    }
-
-    
-    /* DEFINING SCORLL LOGIC
-    window.onscroll = function (ev) {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            console.log("BOTTOM")
-            document.getElementById("page_no").submit();
-
-        }
-    };
-    */
-
-    function show_current_algo(div_called_from){
-        console.log(div_called_from)
-        if (div_called_from == 'modal'){
-            if (document.getElementById("algo_show_location_modal").innerHTML == ""){
-            document.getElementById("algo_show_location_modal").innerHTML= "{{search_arguments}}"
-            }else{
-                document.getElementById("algo_show_location_modal").innerHTML= ""
-            }
-        }else{
-            if (document.getElementById("algo_show_location").innerHTML == ""){
-            document.getElementById("algo_show_location").innerHTML= "{{search_arguments}}"
-            }else{
-                document.getElementById("algo_show_location").innerHTML= ""
-            }
-        }
-        /*algo_show_location_modal*/      
-    }
-    function save_modal_toggle(file_id) {
-        // console.log(file_id)
-        var modal = document.getElementById("save_modal");
-        modal.style.display = "block";
-    }
-
-    function reply_modal_toggle(file_id) {
-        // console.log(file_id)
-        document.getElementById("reply_external_source").value = file_id;
-        var modal = document.getElementById("reply_modal");
-        modal.style.display = "block";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
-        var modal = document.getElementById("reply_modal");
-        var modal3 = document.getElementById("save_modal");
-        
-        if ((event.target == modal) || (event.target == modal3)) {
-
-            modal.style.display = "none";
-            modal3.style.display = "none"
-        }
-    }
-    // DEFINING SCORLL LOGIC
-    var scroll_disabler = 0 //FOR SOME REASON YOU CAN HIT THE BOTTOM OF THE PAGE AND SCROLL 10X, DISABLES THIS
-    console.log('{{can_scroll}}')
-    window.onscroll = function (ev) {
-        js_can_scroll = '{{can_scroll}}'
-        //javascript bool is fucking stupid
-        if (js_can_scroll == "true" || js_can_scroll == "True" ){
-            console.log("WINDOW HEIGHT:", window.innerHeight + window.scrollY)
-            console.log("DOCUMENT BODY:",document.body.scrollHeight)
-            
-            if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight-20) {
-                
-                if (scroll_disabler <1) {
-                scroll_disabler += 1
-                console.log("BOTTOM OF PAGE")
-                
-                current_page_no = document.getElementById("page_number").value;
-                new_page_no = parseInt(current_page_no) + 1
-
-                console.log("current_page_no", current_page_no)
-                console.log("new_page_no", new_page_no)
-
-                document.getElementById("page_number").value = new_page_no
-                document.getElementById("search_form").submit();
-                
-                }
-            }
-        } 
-        else{
-            console.log(js_can_scroll)
-        }
-
-    };
 </script>
 <!-- The Modal -->
 {% endblock main %}

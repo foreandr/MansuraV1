@@ -1,10 +1,10 @@
 FEATUREs
 ==============
 #HOTFIX
-TRY THIS WITH IMAGES: https://getbootstrap.com/docs/5.2/components/card/
+TRIBUNAL IS NOT WORKING PROPERLY
+TRY THIS WITH IMAGES AND TEXT: https://getbootstrap.com/docs/5.2/components/card/
 
 1. validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
-2. ADD FUNCTION NAMES TO LOG FUNCTION
 4. upload all of mazinos archive, then go on tiktok toa nnounce
 5. msg balajI
 7. vast swatths of the CSS and js can be simplified into single pages
@@ -32,7 +32,8 @@ TRY THIS WITH IMAGES: https://getbootstrap.com/docs/5.2/components/card/
 21. clicking on friends goes to a FRIEND stats page? 
 22. notifications proper
 23. REPLY CHAIN
-24. add payment folder to main mansura (doesnt exist)
+DONE. add payment folder to main mansura (doesnt exist)
+25.x grant the ability to add a keyword to a post
 
 MOBILE
 ==============

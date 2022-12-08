@@ -41,14 +41,14 @@
             <li>
                 <div>
                     <form action="/">
-                        <input class="btn btn-secondary" type="submit" value="HOME" />
+                        <input class="btn btn-link" type="submit" value="HOME" style="text-decoration: none; color: white; border-right: 1px solid gray">
                     </form>
                 </div>
             </li>  
             
             <li>
                <div class="dropdown" id="nav_dropdown">
-                   <button class="btn btn-secondary dropdown-toggle" type="button" id="user_balance" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   <button class="btn btn-link dropdown-toggle" type="button" id="user_balance" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">
                        BALANCE:
                    </button>
                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -60,7 +60,7 @@
    
              <li>
                <div class="dropdown" id="nav_dropdown">
-                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">
                        VOTES:
                    </button>
                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -73,7 +73,7 @@
    
              <li>
                <div class="dropdown" id="nav_dropdown">
-                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">METRICS</button>
+                   <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">METRICS</button>
                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                        <a href="./leaderboards"           class="nav-link disabled">Leaderboards</a>
                        <a href="./history"                class="nav-link">Distribution History</a>
@@ -85,7 +85,7 @@
    
              <li>
                  <div class="dropdown" id="nav_dropdown">
-                     <button class="btn btn-secondary dropdown-toggle" type="button" id="user_name_location" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <button class="btn btn-link dropdown-toggle" type="button" id="user_name_location" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">
                          USER:
                      </button>
                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
@@ -101,7 +101,7 @@
                 
              <li>
                 <div class="dropdown" id="nav_dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">
                         HELP
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
@@ -154,9 +154,53 @@
 </html>
 <script>
     /* CONSTANTS */
-    // DEFINING SCORLL LOGIC
     var scroll_disabler = 0 //FOR SOME REASON YOU CAN HIT THE BOTTOM OF THE PAGE AND SCROLL 10X, DISABLES THIS
+    var where_counter = 1
+    var where_clause_string = `
+        <div>
+            <div> 
+                <select name="and_or_clause${where_counter}" id="and_or_clause${where_counter}" class="dropdown-content">
+                                <option id="AND">AND</option>           
+                                <option id="OR">OR</option>
+                </select>  
+                <select name="where_clauses${where_counter}" id="where_clauses${where_counter}" class="dropdown-content">
+                                <option id="DAY VOTES">POST DAY VOTES</option>
+                                <option id="MONTH VOTES">POST MONTH VOTES</option>
+                                <option id="YEAR VOTES">POST YEAR VOTES</option>            
+                                <option id="LIKES"disabled>POST LIKES</option>           
+                                <option id="REPLIES"disabled>POST REPLIES</option>
+                                <option id="POST SENTIMENT ANALYSIS"disabled>POST SENTIMENT</option>
+                                <option id="POST HAS IMAGE" disabled>POST HAS IMAGE T/F</option>
+                                <option id="HAS SOURCE"disabled>HAS SOURCE</option>
+                                <option id="USER FOLLOWING"disabled>USER FOLLOWING</option>
+                                <option id="USER FOLLOWERS"disabled>USER FOLLOWERS</option>
+                                <option id="USER USER BLOCKED THEM" disabled>USER NUM BLOCKED</option>
+                                <option id="FRIENDS WITH" disabled>USER FRIENDS WITH</option>
+                                <option id="Post/Like Ratio" disabled>USER POST/LIKE RATIO</option>
+                                <option id="USER POLARIZATION" disabled>USER POLARIZATION</option>
+                                <option id="USER FOLLOWING (x)" disabled>USER FOLLOWING (x)</option>
+                                <option id="USER FOLLOWED BY (x)" disabled>USER FOLLOWED BY (x)</option>
+                                <option id="USER 18+" disabled>USER 18+</option>
+                                <option id="USER FROM COUNTRY (x)" disabled>USER FROM COUNTRY (x)</option> 
+                </select> 
+                <select name="higher_equal_lower${where_counter}" id="higher_equal_lower" class="dropdown-content">
+                    <option id="equal">>=</option>           
+                    <option id="log">==</option>
+                    <option id="log_equal"><=</option>
+                </select> 
+                <input name="num_search_text${where_counter}" id="num_search_text${where_counter}" size="4" type="text"maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"><br><br>
+            </div>
+        </div>
+        `
+    var slider = `Sections: 1-10
+        <div class="slidecontainer" >
+            <input type="range" min="1" max="10" value="5" class="slider" id="myRange" name="how_many_sections_">
+        </div>
+        `
 
+    
+    
+    
     document.getElementById("index_daily").innerHTML = 'DAILY POOL: {{dailypool}}';
     document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: {{monthlypool }}';
     document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: {{yearlypool }}';
@@ -165,6 +209,7 @@
     document.getElementById("monthly_votes_left").innerHTML = `MON VOTES LEFT: {{monthly_left}}`;
     document.getElementById("yearly_votes_left").innerHTML = `YEA VOTES LEFT:  {{yearly_left}}`;
     document.getElementById("user_balance").innerHTML = 'BALANCE:{{user_balance}}';
+
     /*FUNCTIONS*/
     function howmanysectionsfunc(){
 
@@ -176,14 +221,14 @@
         else{
             document.getElementById("how_many_sections").innerHTML= ""
         }
-    }
+        }
     function remove_another_where_clause(){
         //console.log("remove_another_where_clause");
         document.getElementById("where_clause_additions").innerHTML = where_clause_string
         where_counter = 1 
         //console.log(where_clause_string)
         //console.log(where_counter)
-    }
+        }
 
     function enable_built_from_other() {
         if (document.getElementById("external_source").disabled == true) {
@@ -195,7 +240,7 @@
             document.getElementById("external_source").setAttribute("disabled", "enabled")
         }
 
-    }
+        }
 
     function enable_exteral_link() {
         // console.log("hello world")
@@ -206,7 +251,7 @@
         else {
             document.getElementById("external_source_link").setAttribute("disabled", "enabled")
         }
-    }
+        }
 
     function reply_enable_external_link(){
         if (document.getElementById("reply_external_source_link").disabled == true) { // if disabled
@@ -215,7 +260,7 @@
         else {
             document.getElementById("reply_external_source_link").setAttribute("disabled", "enabled")
         }
-    }
+        }
 
     function post_details_func() {
         console.log(document.getElementById("insert_post").innerHTML);
@@ -225,27 +270,28 @@
             document.getElementById("insert_post").innerHTML = ""
         }
 
-    }
+        }
 
     function post_modal_toggle() {
         var modal = document.getElementById("post_modal");
         modal.style.display = "block";
-    }
+     }
 
     function reply_modal_toggle(file_id) {
         // console.log(file_id)
         document.getElementById("reply_external_source").value = file_id;
         var modal = document.getElementById("reply_modal");
         modal.style.display = "block";
-    }
+        }
 
     function save_modal_toggle(file_id) {
         // console.log(file_id)
         var modal = document.getElementById("save_modal");
         modal.style.display = "block";
-    }
+        }
 
-    // CHANGING SIZE OF IMAGE
+    
+        // CHANGING SIZE OF IMAGE
     function enlargeImg() {
         img = document.getElementById("post_pic");
         console.log("EXECUTION")
@@ -260,8 +306,81 @@
             img.style.transform = "scale(1)";
             img.style.transition = "transform 0.25s ease";
         }
+        } 
+
+
+    function show_current_algo(div_called_from){
+        console.log(div_called_from)
+        if (div_called_from == 'modal'){
+            if (document.getElementById("algo_show_location_modal").innerHTML == ""){
+            document.getElementById("algo_show_location_modal").innerHTML= "{{search_arguments}}"
+            }else{
+                document.getElementById("algo_show_location_modal").innerHTML= ""
+            }
+        }else{
+            if (document.getElementById("algo_show_location").innerHTML == ""){
+            document.getElementById("algo_show_location").innerHTML= "{{search_arguments}}"
+            }else{
+                document.getElementById("algo_show_location").innerHTML= ""
+            }
+        }
+        /*algo_show_location_modal*/      
+        }
+
+
+
+    function add_another_where_clause(){
+        console.log(where_counter)
+        var where_clause_string = `
+        <div>
+            <div>
+                <select name="and_or_clause${where_counter}" id="and_or_clause${where_counter}" class="dropdown-content">
+                            <option id="AND">AND</option>           
+                            <option id="OR">OR</option>
+                </select>  
+                <select name="where_clauses${where_counter}" id="where_clauses${where_counter}" class="dropdown-content">
+                            <option id="DAY VOTES">POST DAY VOTES</option>
+                            <option id="MONTH VOTES">POST MONTH VOTES</option>
+                            <option id="YEAR VOTES">POST YEAR VOTES</option>            
+                            <option id="LIKES"disabled>POST LIKES</option>           
+                            <option id="REPLIES"disabled>POST REPLIES</option>
+                            <option id="POST SENTIMENT ANALYSIS"disabled>POST SENTIMENT</option>
+                            <option id="POST HAS IMAGE" disabled>POST HAS IMAGE T/F</option>
+                            <option id="HAS SOURCE"disabled>HAS SOURCE</option>
+                            <option id="USER FOLLOWING"disabled>USER FOLLOWING</option>
+                            <option id="USER FOLLOWERS"disabled>USER FOLLOWERS</option>
+                            <option id="USER USER BLOCKED THEM" disabled>USER NUM BLOCKED</option>
+                            <option id="FRIENDS WITH" disabled>USER FRIENDS WITH</option>
+                            <option id="Post/Like Ratio" disabled>USER POST/LIKE RATIO</option>
+                            <option id="USER POLARIZATION" disabled>USER POLARIZATION</option>
+                            <option id="USER FOLLOWING (x)" disabled>USER FOLLOWING (x)</option>
+                            <option id="USER FOLLOWED BY (x)" disabled>USER FOLLOWED BY (x)</option>
+                            <option id="USER 18+" disabled>USER 18+</option>
+                            <option id="USER FROM COUNTRY (x)" disabled>USER FROM COUNTRY (x)</option> 
+                </select> 
+                <select name="higher_equal_lower${where_counter}" id="higher_equal_lower" class="dropdown-content">
+                    <option id="equal">>=</option>           
+                    <option id="log">==</option>
+                    <option id="log_equal"><=</option>
+                </select> 
+                <input name="num_search_text${where_counter}" id="num_search_text${where_counter}" size="4" type="text"maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"><br><br>
+            </div>
+        </div>
+        `
+        if (where_counter < 8){
+            document.getElementById("where_clause_additions").innerHTML += where_clause_string
+            where_counter +=1
+        }    
     }
+    
+    
+    
+    
+    
     /* WINDOW FUNCTIONS */
+    
+    
+    
     window.onscroll = function (ev) {
         js_can_scroll = '{{can_scroll}}'
         //javascript bool is fucking stupid
@@ -292,20 +411,37 @@
             console.log(js_can_scroll)
         }
 
-    };
-    // When the user clicks anywhere outside of the modal, close it
+        };
+    
+    
+    
+        // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
         var modal = document.getElementById("reply_modal");
         var modal2 = document.getElementById("post_modal");
         var modal3 = document.getElementById("save_modal");
+        var modal4 = document.getElementById("search_show_modal");
         
-        if ((event.target == modal) || (event.target == modal2) || (event.target == modal3)) {
-
-            modal.style.display = "none";
-            modal2.style.display = "none";
-            modal3.style.display = "none";
+        console.log("modal", modal)
+        if ((event.target == modal) || (event.target == modal2) || (event.target == modal3) || (event.target == modal4)) {
+            if (modal != null){
+                modal.style.display = "none";
+            }
+            if (modal2 != null){
+                modal2.style.display = "none";
+            }
+            if (modal3 != null){
+                modal3.style.display = "none";
+            }
+            if (modal4 != null){
+                modal4.style.display = "none";
+            }
+            
+            
+            
+            
         }
-    }  
+        }  
 
 
 </script>
