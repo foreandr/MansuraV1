@@ -1635,9 +1635,22 @@ def word_tribunal():
     
     if request.method == "POST":
         keep_phrase = request.form.get("keep_phrase")
-        block_phrase = request.form.get("block_phrase")  
+        block_phrase = request.form.get("block_phrase")
         
+        vote_type = None
+        print("keep_phrase", keep_phrase)
+        print("block_phrase", block_phrase)
+        
+        if keep_phrase != None:
+            phrase = keep_phrase
+            vote_type = "UP"
+        else:
+            phrase = block_phrase
+            vote_type = "DOWN"
     
+        word_id = database.GET_WORD_PHRASE_ID_BY_NAME(phrase)
+        voter_id = database.GET_USER_ID(session['user'])
+        database.INSERT_INTO_PROFANITY_LIST_VOTES(word_id, voter_id, vote_type)
     
     blocked_words = database.GET_WORD_TRIBUNAL_DETAILS()
     blocked_words_len = len(blocked_words) 

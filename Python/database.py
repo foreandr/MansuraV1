@@ -3817,7 +3817,7 @@ def INSERT_INTO_PROFANITY_LIST_VOTES(word_id, voter_id, Vote_Type):
     cursor = conn.cursor()
     cursor.execute(f"""
         INSERT INTO PROFANITY_LIST_VOTES(Word_Id, Voter_Id, Vote_Type)
-        VALUES('{word_id}', '{voter_id}' '{Vote_Type}')
+        VALUES('{word_id}', '{voter_id}', '{Vote_Type}')
         ON CONFLICT DO NOTHING          
     """)
     conn.commit()
@@ -3916,3 +3916,6 @@ def GET_WORD_TRIBUNAL_DETAILS():
     conn.close()        
     
     return word_list
+
+def GET_WORD_PHRASE_ID_BY_NAME(phrase):
+    return 1
