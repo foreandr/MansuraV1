@@ -27,9 +27,6 @@
   color: cyan;
 }
 
-#profile_picture {
-
-}
 #post_pic{
   border-radius: 25px;
   border: 2px black;
@@ -54,9 +51,19 @@
   cursor: pointer;
 }
 
+/* NEED TO DO SOMETHING FOR THIS BUT THIS DOESNT SEEM TO WORK
 #profile_posts_div{
-  margin-top:700px;
+  position: absolute;
 }
+*/
+/* DOESNT SEEM TO WORK EITHER
+#search_div{
+  margin-left: 600px;
+  position:static;
+}
+*/
+
+
 /* Dropdown button on hover & focus */
 .dropbtn:hover, .dropbtn:focus {
   background-color: #2980B9;

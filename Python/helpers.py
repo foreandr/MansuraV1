@@ -740,7 +740,6 @@ def CREATING_EMBED_STRUCTURE(link):
 
 
 
-
 #demo_list = ['AND', 'POST DAY VOTES', '==', '9']
 #demo_list2 = ['OR', 'POST MONTH VOTES', '<=', '10']
 #demo_list3 = ['AND', 'POST YEAR VOTES', '==', '1']

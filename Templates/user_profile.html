@@ -71,7 +71,7 @@
         </div>
 
         <!--DOING THE SEARCH-->
-        <div class="col-3"> 
+        <div class="col-3" id="search_div"> 
             <form action="/{{host_user}}" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
                 <input class="input-medium form-control" id="search" name="search" type="search" placeholder="empty / single word (beta)" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')">
                     <div>
@@ -222,7 +222,7 @@
 
 
 <!-- SESSION VARIABLES-->
-<div class="container-fluid fixed-top" id="profile_posts_div">
+<div class="container-fluid" id="profile_posts_div">
     <div class="row ">
         <div class="col-2">
           <div>

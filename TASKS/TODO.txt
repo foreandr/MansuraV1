@@ -1,13 +1,13 @@
 FEATUREs
 ==============
 #HOTFIX
-TRIBUNAL IS NOT WORKING PROPERLY
+DONE. TRIBUNAL IS NOT WORKING PROPERLY MORNING TASK
 TRY THIS WITH IMAGES AND TEXT: https://getbootstrap.com/docs/5.2/components/card/
 
 1. validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
 4. upload all of mazinos archive, then go on tiktok toa nnounce
 5. msg balajI
-7. vast swatths of the CSS and js can be simplified into single pages
+
 8. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
 9. UNIT TESTS
 10 CHALLENGES OF THE DAY WITH MONETARY INCENTIVE, vote on next questions of the day?
@@ -34,6 +34,15 @@ TRY THIS WITH IMAGES AND TEXT: https://getbootstrap.com/docs/5.2/components/card
 23. REPLY CHAIN
 DONE. add payment folder to main mansura (doesnt exist)
 25.x grant the ability to add a keyword to a post
+
+NEW SUGGESTIONS======
+ALGO RANDOMIZER
+"I DONT WANT THIS TO AFFECT THE ALGO"
+THEMES
+	- STRESS FREE
+	- ADS ONLY
+	- OTHER SIDE OF THE ISLE
+
 
 MOBILE
 ==============

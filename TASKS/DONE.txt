@@ -119,3 +119,4 @@ DONE. change search color buttons
 DONE. specify profile pic must be png or something
 DONE. SHOW HOW MUCH PAYPAL TAKES ON WITHDRAWL- SEEMS TO BE NOTHING
 DONE. ADD FUNCTION NAMES TO LOG FUNCTION
+DONE. vast swatths of the CSS and js can be simplified into single pages

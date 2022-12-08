@@ -572,8 +572,7 @@ def FILE_VOTE_CREATE_TABLE():
         )
         """)
     conn.commit()
-    print_green("VOTE CREATE TABLE COMPLETED")
-
+    
     cursor.execute("""
     ALTER TABLE FILE_VOTES
     ADD CHECK( 
@@ -583,6 +582,9 @@ def FILE_VOTE_CREATE_TABLE():
     )
     """)
     conn.commit()
+    print_green("VOTE CREATE TABLE COMPLETED")
+
+
 
 
     cursor.close()
@@ -890,16 +892,10 @@ def SET_TIME_ZONE():
 def MANSURA_SUBSCRIBE_INSERT_MULTIPLE_DEMO(size="small"):
     conn = connection.test_connection()
 
-    #TODO:THINK ABOUT DATA VALIDATNG THE USERNAME, PRBABLY WONT NEED
     # MANSURA_SUBSCRIBE( 'foreandr')
     MANSURA_SUBSCRIBE( 'andrfore')
-    # MANSURA_SUBSCRIBE( 'bigfrog')
     MANSURA_SUBSCRIBE( 'cheatsie')
-    
     big_reset_file.GIANT_SUBSCRIBE(size)
-
-
-
     print_green("SUBSCRIBED USERS\n")
 
 
@@ -945,7 +941,9 @@ def USER_FULL_RESET(size="small"):
     EQUITY_CREATE_TABLE()
     CREATE_TABLE_1_TIME_PASSWORDS()
     CREATE_TABLE_TRIBUNAL()
-
+    CREATE_TABLE_PROFANITY_LIST()
+    CREATE_TABLE_PROFANITY_LIST_VOTES()
+    
     FUNCTION_AND_PROCEDURES()
 
     USER_INSERT_MULTIPLE(size)
@@ -2478,7 +2476,7 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
     personal_order_by_clause=""
     if len(search) > 0:
         # print("search is a string with len", search)
-        tag_query = f"""OR (0 < (SELECT COUNT(*) FROM FILE_KEYWORDS fkey WHERE fkey.File_Id = F.File_Id AND key_name = LOWER('{search}')))"""
+        tag_query = f"""OR (0 < (SELECT COUNT(*) FROM FILE_KEYWORDS fkey WHERE fkey.File_Id = F.File_Id AND LOWER(key_name) = LOWER('{search}')))"""
         # print("tag_query:", tag_query)
         LIKE_QUERY = F"AND (LOWER(U.username) LIKE LOWER('%{search}%') {tag_query})"
         # print(LIKE_QUERY)
@@ -3020,14 +3018,13 @@ def TRIUBNAL_CLAUSE(tribunal):
     LIKE_COUNT = "(SELECT COUNT(*) FROM LIKES likes WHERE likes.File_id = F.File_id)"
     IN_TRIBUNAL = "((SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 1)"# BOOLEAN
     
-    
+    # AND ( (({DISLIKE_COUNT}) / (({DISLIKE_COUNT}) + ({LIKE_COUNT})))  >  0.1)
+    # AND ( (({DISLIKE_COUNT}) / (({DISLIKE_COUNT}) + ({LIKE_COUNT})))  >  0.1)   
     if tribunal: # -- THIS IS FOR THE TRIBUNAL -- ABSOLUTE FUCKING NIGHTMARE
-   
-        tribunal_query = F"""AND (({DISLIKE_COUNT} + {LIKE_COUNT}) > 1) AND ( ({IN_TRIBUNAL})  AND ( ({DISLIKE_COUNT}) / ({DISLIKE_COUNT} + {LIKE_COUNT}) ) > .75 )       
-        """
+        print("IN TRIBUNAL")
+        tribunal_query = F"""AND {IN_TRIBUNAL}""" # SHOWING ALL FILESIN TRIBUNAL CUZ THE OTHER SHIT AINT WORKIN
     else:
         tribunal_query = F"""        
-        
             AND CASE 
             WHEN (SELECT COUNT(*) FROM TRIBUNAL WHERE TRIBUNAL.File_Id = F.File_id) = 1 
                 THEN                   
@@ -3763,5 +3760,159 @@ def DEMO_FILE_INSERT_TIKTOKS(num):
                 distro_details=["EQUAL DISTRIBUTION", "None"])
             count += 1 
             
-       
-            
+def CREATE_TABLE_PROFANITY_LIST():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute("""DROP TABLE IF EXISTS PROFANITY_LIST CASCADE""")
+    cursor.execute(
+        f"""
+        CREATE TABLE PROFANITY_LIST
+        (
+        Word_Id SERIAL PRIMARY KEY,   
+        word varchar UNIQUE
+        );
+        """)
+    conn.commit()
+    
+    INITIAL_INSERT_BLOCKFILE_INTO_PROFANITY_TABLE() # MUST DO
+    # CLOSE CURSOR AND CONNECTION [MANDATORY]        
+    cursor.close()
+    conn.close()
+
+def CREATE_TABLE_PROFANITY_LIST_VOTES():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute("""DROP TABLE IF EXISTS PROFANITY_LIST_VOTES CASCADE""")
+    cursor.execute(
+        f"""
+        CREATE TABLE PROFANITY_LIST_VOTES
+        (
+        Word_Vote_Id SERIAL PRIMARY KEY,   
+        Word_Id BIGINT UNIQUE,
+        Voter_Id BIGINT,
+        Vote_Type varchar,
+        
+        FOREIGN KEY (Word_Id) REFERENCES PROFANITY_LIST(Word_Id),
+        FOREIGN KEY (Voter_Id) REFERENCES USERS(User_Id),
+        UNIQUE (Word_Id, Voter_Id)
+        );
+        """)
+    conn.commit()
+    
+    # UP OR DOWNVOTE-PROBABLY SHOULD HAVE DONE THIS FOR POSTS AS WELL BUT OH WELL
+    cursor.execute("""
+    ALTER TABLE PROFANITY_LIST_VOTES
+    ADD CHECK( 
+        Vote_Type = 'UP'
+        OR Vote_Type = 'DOWN' 
+    )
+    """)
+    conn.commit()
+    # CLOSE CURSOR AND CONNECTION [MANDATORY]        
+    cursor.close()
+    conn.close()
+
+def INSERT_INTO_PROFANITY_LIST_VOTES(word_id, voter_id, Vote_Type):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+        INSERT INTO PROFANITY_LIST_VOTES(Word_Id, Voter_Id, Vote_Type)
+        VALUES('{word_id}', '{voter_id}' '{Vote_Type}')
+        ON CONFLICT DO NOTHING          
+    """)
+    conn.commit()
+    
+    # CLOSE CURSOR AND CONNECTION [MANDATORY]        
+    cursor.close()
+    conn.close()
+    # print("scessfully inserted", word, "insto profanity table")
+    
+    
+def INSERT_SINGLE_WORD_INTO_PROFANITY_TABLE(word):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+        INSERT INTO PROFANITY_LIST(word)
+        VALUES('{word}')
+        ON CONFLICT DO NOTHING          
+    """)
+    conn.commit()
+    
+    # CLOSE CURSOR AND CONNECTION [MANDATORY]        
+    cursor.close()
+    conn.close()
+    # print("scessfully inserted", word, "insto profanity table")
+    
+    
+def INSERT_NEW_PROFANE_WORD(word):
+    # CHECK IF IN DATABASE ALREADY
+    '''
+    IF NOT IN DATABASE
+        ENTER INTO TXT FILE
+       INSERT_SINGLE_WORD_INTO_PROFANITY_TABLE(word)
+    ELSE
+        CANT
+    
+    '''
+    pass
+
+
+def INITIAL_INSERT_BLOCKFILE_INTO_PROFANITY_TABLE():
+    file_path = "/root/mansura/venv/lib/python3.10/site-packages/better_profanity/profanity_wordlist.txt"
+    f = open(file_path, "r")
+    word_array = []
+    
+    word_array = (f.read().split("\n"))[:-2]
+    for i in word_array:
+        INSERT_SINGLE_WORD_INTO_PROFANITY_TABLE(i)
+    print("COMPLETED INSERT ALL PROFANE INITIAL")
+    
+    
+def GET_ALL_PROFANE_WORDS():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"""
+        SELECT * 
+        FROM PROFANITY_LIST       
+    """)
+    for i in cursor.fetchall():
+        print(i)
+    
+    # CLOSE CURSOR AND CONNECTION [MANDATORY]        
+    cursor.close()
+    conn.close()        
+    
+    
+def GET_WORDS_FROM_WORD_BLOCKER():
+    blocked_list = []
+    file_path = "/root/mansura/venv/lib/python3.10/site-packages/better_profanity/profanity_wordlist.txt"
+    word_holder_path = "/root/mansura/venv/lib/python3.10/site-packages/better_profanity/profanity_temp_list.txt"
+    return blocked_list    
+
+def GET_WORD_TRIBUNAL_DETAILS():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT Word_Id, word,
+        (
+            SELECT COUNT(*)
+            FROM PROFANITY_LIST_VOTES p_list
+            WHERE Vote_Type = 'UP'
+        ),
+        (
+            SELECT COUNT(*)
+            FROM PROFANITY_LIST_VOTES p_list
+            WHERE Vote_Type = 'DOWN'
+        )
+        FROM PROFANITY_LIST profanity     
+        
+    """)
+    word_list =[]
+    for i in cursor.fetchall():
+        word_list.append([i[0], i[1], i[2], i[3] ])
+    
+    # CLOSE CURSOR AND CONNECTION [MANDATORY]        
+    cursor.close()
+    conn.close()        
+    
+    return word_list

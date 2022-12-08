@@ -989,7 +989,7 @@ def report(file_id):
     # INSERT INTO TRIBUNAL
     print("REPORTING", file_id)
     database.INSERT_INTO_TRIBUNAL(file_id)
-    return redirect(url_for('home'))
+    return redirect(url_for('tribunal'))
 
 
 @app.route("/password_recovery", methods=['GET', 'POST'])
@@ -1468,46 +1468,29 @@ def tribunal():
         ]
         json_search_clauses = database.TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, session["user"])
     
-    # GRAB THE ARGS FROM QUERY BEFORE THE CURRENT PAGE [GET OR POST]
     returned_search_arguments = request.form.get("search_arguments")
-    # print(returned_search_arguments)
-
     new_json_search_clauses = helpers.COMPOSE_SEARCHARGS_AND_JSONCLAUSE(returned_search_arguments, json_search_clauses)
-    '''
-    print("COMPOSE_SEARCHARGS_AND_JSONCLAUSE")
-    print(new_json_search_clauses)
-    print("===================================")
-    '''
+
     page_no = request.form.get("page_number")
-    #print("CURRENT PAGE NUMBER:", type(page_no), page_no)
-    # print("===================================")
+
 
     if page_no == None or str(page_no) == "None":
         page_no = 1
 
-    #TODO: what I may have to do is do a similar query to the one below, but just returning a path list, grab all the paths that meet the criteria, then stick is back into
-    # a function that returns the correct info with the search value in there as welll
-
     file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, uploader_is_subbed, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session["user"], custom_clauses=new_json_search_clauses, tribunal=True)
-    # print("hello??", num_replies)
-    #print(searcher_has_liked)
-    #print(searcher_has_disliked)
     
-    #FOR DIABLING OR ACTIVATING SCROLL LOGIC
+
     numposts = len(file_ids_list)
     if numposts < 29: # this 100 number needs to be better coded, hard coding is going to cause issues
         can_scroll = False
     else:
         can_scroll = True
 
-
-    # GRAB STUFF IT'S IT'S EMPTY EITHE RWAY
     if len(file_ids_list) == 0:
-        print("IS EMPTY")
+        # print("IS EMPTY")
         user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user'])
     
     username_len = len(usernames_list)
-    # print("USERNAMES LEN", username_len, usernames_list)
 
     text_list = []
     age_18_list = []
@@ -1623,9 +1606,9 @@ def cover_page():
         daily_left=daily_votes_left, 
         monthly_left=monthly_votes_left, 
         yearly_left=yearly_votes_left,
-        daily_pool=daily_pool, 
-        monthly_pool=monthly_pool, 
-        yearly_pool=yearly_pool
+        dailypool=daily_pool, 
+        monthlypool=monthly_pool, 
+        yearlypool=yearly_pool
     )
 
 @app.route("/edit_bio", methods=['GET', "POST"])
@@ -1641,6 +1624,38 @@ def edit_bio():
     new_bio = helpers.POST_TEXT_CHECK(new_bio)
     helpers.CHANGE_BIO(new_bio, session['user'])
     return redirect(url_for("user_profile"))
+
+@app.route("/word_tribunal", methods=['GET', "POST"])
+def word_tribunal():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
+    if "email" not in session:
+        return redirect(url_for('login'))
+    helpers.log_function("request", request, session_user=session['user'])
+    
+    if request.method == "POST":
+        keep_phrase = request.form.get("keep_phrase")
+        block_phrase = request.form.get("block_phrase")  
+        
+    
+    
+    blocked_words = database.GET_WORD_TRIBUNAL_DETAILS()
+    blocked_words_len = len(blocked_words) 
+    #print(blocked_words_len)
+    #print("GOT TO WORD TRBUNAL")
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user'])
+    return render_template(f"word_tribunal.html",
+        blocked_words=blocked_words,
+        blocked_words_len=blocked_words_len,
+        
+        user_balance=balance, 
+        daily_left=daily_votes_left, 
+        monthly_left=monthly_votes_left, 
+        yearly_left=yearly_votes_left,
+        dailypool=daily_pool, 
+        monthlypool=monthly_pool, 
+        yearlypool=yearly_pool
+    )
 
 
 if __name__ == '__main__':
