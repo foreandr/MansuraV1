@@ -468,7 +468,7 @@ def STRING_SIMILARITY_CHECK(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 
-def log_function(msg_type, log_string, vote_type="None", distro_type="None", session_user=""):
+def log_function(msg_type, log_string, vote_type="None", distro_type="None", session_user="", function_name=""):
     #if log_string == "write() argument must be str, not None":
     #    print("got here")
     #    return "" # THIS ERROR CAN BE IGNORED
@@ -483,7 +483,7 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None", ses
     my_time = pytz.timezone('US/Eastern') 
     current_datetime = datetime.now(my_time).replace(microsecond=0).replace(tzinfo=None)
     current_date = current_datetime.strftime('%Y-%m-%d')
-    err_string = f"{current_datetime} [{msg_type}][{session_user}]- {log_string}\n" 
+    err_string = f"[{current_datetime}][{msg_type}][{function_name}][{session_user}]-{log_string}\n" 
 
     if msg_type == "error":        
         print("==========LOGGING AN ERROR PLS NOTICE!=========")
@@ -684,55 +684,59 @@ def CREATING_EMBED_STRUCTURE(link):
         '''
     if link == None:
         return link
-    
-    if "tiktok" in link:
-        #print("THIS IS A TIKTOK VIDEO")
-        
-        #A TYPICAL LINK LOOKS LIKE THIS https://www.tiktok.com/@lucciamv1/video/7173015261623225642?is_copy_url=1&is_from_webapp=v1
-        tiktok_list = link.split("https://www.tiktok.com/@")
-        #print("tiktok_list", tiktok_list)
-        
-        tiktok_base_url = tiktok_list[1]
-        #print("tiktok_base_url", tiktok_base_url)
-        
-        username_video_split = tiktok_list[1].split("/video/")
-        username = username_video_split[0]
-        #print("username", username)
-        
-        tiktok_video_file_id = username_video_split[1].split("?")[0] # this seems to be in the videos, i could imagine it leading to problems   
-        #print("tiktok_video_file_id", tiktok_video_file_id)
-        
-        # REPLACE THE TEMPLATE
-        tiktok_template = tiktok_template.replace("LOCATION_FOR_TIKTOK_UPLOADER_USERNAME", username)
-        tiktok_template = tiktok_template.replace("LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID", tiktok_video_file_id)
-        
-        link = tiktok_template
-        
-        #print(F"FINAL LINK", link)
+    try:
+        if "tiktok" in link:
+            #print("THIS IS A TIKTOK VIDEO")
+            
+            #A TYPICAL LINK LOOKS LIKE THIS https://www.tiktok.com/@lucciamv1/video/7173015261623225642?is_copy_url=1&is_from_webapp=v1
+            tiktok_list = link.split("https://www.tiktok.com/@")
+            #print("tiktok_list", tiktok_list)
+            
+            tiktok_base_url = tiktok_list[1]
+            #print("tiktok_base_url", tiktok_base_url)
+            
+            username_video_split = tiktok_list[1].split("/video/")
+            username = username_video_split[0]
+            #print("username", username)
+            
+            tiktok_video_file_id = username_video_split[1].split("?")[0] # this seems to be in the videos, i could imagine it leading to problems   
+            #print("tiktok_video_file_id", tiktok_video_file_id)
+            
+            # REPLACE THE TEMPLATE
+            tiktok_template = tiktok_template.replace("LOCATION_FOR_TIKTOK_UPLOADER_USERNAME", username)
+            tiktok_template = tiktok_template.replace("LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID", tiktok_video_file_id)
+            
+            link = tiktok_template
+            
+            # print(F"FINAL LINK", link) 
+            #exit()
 
-    
-    elif "youtube" in link:
-        if "list" in link: # check if if it's a playlist or any other ways youtube can be fucked about with
-            return link
         
-        #print("THIS IS A YOUTUBE VIDEO")
-        youtube_template = '''
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/YOUTUBE_FILE_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-        </iframe>
-        <!--PROPERLY EMBEDDED HTML TAG-->
-        '''
-        
-        link_without_watch = link.split("watch?v=")
-        #print("link_without_watch", link_without_watch)
-        
-        youtube_file_id = link_without_watch[1]
-        #print("youtube_file_id", youtube_file_id)
-        
-        youtube_template = youtube_template.replace("YOUTUBE_FILE_ID", youtube_file_id)
-        link = youtube_template
+        elif "youtube" in link:
+            if "list" in link: # check if if it's a playlist or any other ways youtube can be fucked about with
+                return link
+            
+            #print("THIS IS A YOUTUBE VIDEO")
+            youtube_template = '''
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/YOUTUBE_FILE_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            </iframe>
+            <!--PROPERLY EMBEDDED HTML TAG-->
+            '''
+            
+            link_without_watch = link.split("watch?v=")
+            #print("link_without_watch", link_without_watch)
+            
+            youtube_file_id = link_without_watch[1]
+            #print("youtube_file_id", youtube_file_id)
+            
+            youtube_template = youtube_template.replace("YOUTUBE_FILE_ID", youtube_file_id)
+            link = youtube_template
 
-    # print("FINAL", link)
-    return link
+        # print("FINAL", link)
+        return link
+    except Exception as e:
+        log_function("error", str(e), function_name="CREATING_EMBED_STRUCTURE")
+        return link
 
 
 

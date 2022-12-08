@@ -1,14 +1,12 @@
 FEATUREs
 ==============
 #HOTFIX
-#FIX TRIBAL QUERY
-add replying to profiles
-0x. change search color buttons
+TRY THIS WITH IMAGES: https://getbootstrap.com/docs/5.2/components/card/
+
 1. validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
-DONE. specify profile pic must be png or something
+2. ADD FUNCTION NAMES TO LOG FUNCTION
 4. upload all of mazinos archive, then go on tiktok toa nnounce
-5. msg balaji
-DONE. SHOW HOW MUCH PAYPAL TAKES ON WITHDRAWL
+5. msg balajI
 7. vast swatths of the CSS and js can be simplified into single pages
 8. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
 9. UNIT TESTS
@@ -50,7 +48,7 @@ DEVOPS
 
 TENTATIVE:
 1. make the history look less hsit
-
+add replying to profiles
 CHECK:
 #ALSO SOME WEIRD SESSION ISSUES, if it thinks youre logged in, you cant go to the log in screen, maybe redirect to profile or something instead, and if there is no profile, , redirect o login
 

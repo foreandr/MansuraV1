@@ -251,15 +251,13 @@ def register():
                     return render_template('register.html', 
                     return_message="Name already exists"
                 )
-                
-
             else:
                 return render_template('register.html', 
                     return_message="Mansura thinks you either have a bad word, or something that could be used for an SQL attack of some kind."
                 )
 
         except Exception as e:
-            helpers.log_function("error", e)
+            helpers.log_function("error", e, function_name="register")
         return redirect(url_for("login"))
 
 
@@ -430,7 +428,7 @@ def upload():
                 return_path = name + "_" + path + "-post_page"        
                 return redirect(url_for('user_profile_name', username=return_path))
             except Exception as e:
-                helpers.log_function("error", e + "[MY GUESS IS IT'S TOO BIG FOREIGN]")
+                helpers.log_function("error", e + "[MY GUESS IS IT'S TOO BIG FOREIGN]", function_name="upload")
     else:
         return redirect(url_for("home"))
 
@@ -843,13 +841,13 @@ def add_funds():
                 return render_template(f"add_funds.html", 
                                session_user = session["user"],
                                sub_status = "YOU ARE ALREADY SUBSCRIBED OR DON'T HAVE A BALANCE OF OVER $5",
-                               daily_votes_left=daily_votes_left,
-                               monthly_votes_left=monthly_votes_left,
-                               yearly_votes_left=yearly_votes_left,
+                               daily_left=daily_votes_left,
+                               monthly_left=monthly_votes_left,
+                               yearly_left=yearly_votes_left,
                                balance = balance,
-                               daily_pool=daily_pool, 
-                               monthly_pool=monthly_pool, 
-                               yearly_pool=yearly_pool,
+                               dailypool=daily_pool, 
+                               monthlypool=monthly_pool, 
+                               yearlypool=yearly_pool,
                                is_already_subbed_this_month=is_already_subbed_this_month
                                )
     session_username = session["user"]
@@ -857,13 +855,13 @@ def add_funds():
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session_username)
     return render_template('add_funds.html', 
                             session_username=session_username,
-                            daily_votes_left=daily_votes_left,
-                            monthly_votes_left=monthly_votes_left,
-                            yearly_votes_left=yearly_votes_left,
-                            balance = balance,
-                            daily_pool=daily_pool, 
-                            monthly_pool=monthly_pool, 
-                            yearly_pool=yearly_pool,
+                            daily_left=daily_votes_left,
+                            monthly_left=monthly_votes_left,
+                            yearly_left=yearly_votes_left,
+                            user_balance = balance,
+                            dailypool=daily_pool, 
+                            monthlypool=monthly_pool, 
+                            yearlypool=yearly_pool,
                             is_already_subbed_this_month=is_already_subbed_this_month
                            )
 
@@ -915,9 +913,9 @@ def withdraw_funds():
                             monthly_votes_left=monthly_votes_left,
                             yearly_votes_left=yearly_votes_left,
                             balance = balance,
-                            daily_pool=daily_pool, 
-                            monthly_pool=monthly_pool, 
-                            yearly_pool=yearly_pool
+                            dailypool=daily_pool, 
+                            monthlypool=monthly_pool, 
+                            yearlypool=yearly_pool
                            )
                            
 
@@ -1049,7 +1047,7 @@ def user_download_excel(vote_timeframe, vote_date):
 		filename = "Mansura-"+ vote_date + ".txt"
 		return send_file(custom_path, download_name=filename)
 	except Exception as e:
-		helpers.log_function("error", e)
+		helpers.log_function("error", e, function_name="user_download_excel")
 
 
 @app.route("/vote/<file_id>/<vote_type>", methods=['GET', 'POST'])
@@ -1192,13 +1190,13 @@ def history():
         all_yearly=list_of_history_year,
         yearly_len=len(list_of_history_month),
 
-        daily_votes_left=daily_votes_left,
-        monthly_votes_left=monthly_votes_left,
-        yearly_votes_left=yearly_votes_left,
-        balance=balance,
-        daily_pool=daily_pool, 
-        monthly_pool=monthly_pool, 
-        yearly_pool=yearly_pool
+        daily_left=daily_votes_left,
+        monthly_left=monthly_votes_left,
+        yearly_left=yearly_votes_left,
+        user_balance=balance,
+        dailypool=daily_pool, 
+        monthlypool=monthly_pool, 
+        yearlypool=yearly_pool
     )
 
 
@@ -1214,10 +1212,10 @@ def settings():
         daily_votes_left=daily_votes_left,
         monthly_votes_left=monthly_votes_left,
         yearly_votes_left=yearly_votes_left,
-        balance=balance,
-        daily_pool=daily_pool, 
-        monthly_pool=monthly_pool, 
-        yearly_pool=yearly_pool
+        user_balance=balance,
+        dailypool=daily_pool, 
+        monthlypool=monthly_pool, 
+        yearlypool=yearly_pool
     )
 
 
@@ -1284,13 +1282,13 @@ def search_algorithms_page():
         len_algos=len_algos,
         search_query_details=search_query_details,
         
-        daily_votes_left=daily_votes_left,
-        monthly_votes_left=monthly_votes_left,
-        yearly_votes_left=yearly_votes_left,
-        balance=balance,
-        daily_pool=daily_pool, 
-        monthly_pool=monthly_pool, 
-        yearly_pool=yearly_pool
+        daily_left=daily_votes_left,
+        monthly_left=monthly_votes_left,
+        yearly_left=yearly_votes_left,
+        user_balance=balance,
+        dailypool=daily_pool, 
+        monthlypool=monthly_pool, 
+        yearlypool=yearly_pool
     )
 
 
@@ -1303,13 +1301,13 @@ def contact():
     helpers.log_function("request", request, session_user=session['user'])
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"contact.html",
-        daily_votes_left=daily_votes_left,
-        monthly_votes_left=monthly_votes_left,
-        yearly_votes_left=yearly_votes_left,
-        balance=balance,
-        daily_pool=daily_pool, 
-        monthly_pool=monthly_pool, 
-        yearly_pool=yearly_pool
+        daily_left=daily_votes_left,
+        monthly_left=monthly_votes_left,
+        yearly_left=yearly_votes_left,
+        user_balance=balance,
+        dailypool=daily_pool, 
+        monthlypool=monthly_pool, 
+        yearlypool=yearly_pool
     )
 
 
@@ -1322,13 +1320,13 @@ def FAQ():
     helpers.log_function("request", request, session_user=session['user'])
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"FAQ.html",
-        daily_votes_left=daily_votes_left,
-        monthly_votes_left=monthly_votes_left,
-        yearly_votes_left=yearly_votes_left,
-        balance=balance,
-        daily_pool=daily_pool, 
-        monthly_pool=monthly_pool, 
-        yearly_pool=yearly_pool
+        daily_left=daily_votes_left,
+        monthly_left=monthly_votes_left,
+        yearly_left=yearly_votes_left,
+        user_balance=balance,
+        dailypool=daily_pool, 
+        monthlypool=monthly_pool, 
+        yearlypool=yearly_pool
     )
 
 
@@ -1339,13 +1337,13 @@ def instructions():
     helpers.log_function("request", request)
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"instructions.html",
-        daily_votes_left=daily_votes_left,
-        monthly_votes_left=monthly_votes_left,
-        yearly_votes_left=yearly_votes_left,
-        balance=balance,
-        daily_pool=daily_pool, 
-        monthly_pool=monthly_pool, 
-        yearly_pool=yearly_pool
+        daily_left=daily_votes_left,
+        monthly_left=monthly_votes_left,
+        yearly_left=yearly_votes_left,
+        user_balance=balance,
+        dailypool=daily_pool, 
+        monthlypool=monthly_pool, 
+        yearlypool=yearly_pool
 
     )
 
@@ -1357,13 +1355,13 @@ def leaderboards():
     helpers.log_function("request", request)
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"leaderboards.html",
-        daily_votes_left=daily_votes_left,
-        monthly_votes_left=monthly_votes_left,
-        yearly_votes_left=yearly_votes_left,
-        balance=balance,
-        daily_pool=daily_pool, 
-        monthly_pool=monthly_pool, 
-        yearly_pool=yearly_pool
+        daily_left=daily_votes_left,
+        monthly_left=monthly_votes_left,
+        yearly_left=yearly_votes_left,
+        user_balance=balance,
+        dailypool=daily_pool, 
+        monthlypool=monthly_pool, 
+        yearlypool=yearly_pool
     )
 
 
@@ -1374,13 +1372,13 @@ def messages():
     helpers.log_function("request", request)
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
     return render_template(f"messages.html",
-        daily_votes_left=daily_votes_left,
-        monthly_votes_left=monthly_votes_left,
-        yearly_votes_left=yearly_votes_left,
-        balance=balance,
-        daily_pool=daily_pool, 
-        monthly_pool=monthly_pool, 
-        yearly_pool=yearly_pool
+        daily_left=daily_votes_left,
+        monthly_left=monthly_votes_left,
+        yearly_left=yearly_votes_left,
+        user_balance=balance,
+        dailypool=daily_pool, 
+        monthlypool=monthly_pool, 
+        yearlypool=yearly_pool
     )
 
 
@@ -1422,13 +1420,13 @@ def notifications():
         VOTES=VOTES,
         NEW_FOLLOWER=NEW_FOLLOWER,
         
-        daily_votes_left=daily_votes_left,
-        monthly_votes_left=monthly_votes_left,
-        yearly_votes_left=yearly_votes_left,
-        balance=balance,
-        daily_pool=daily_pool, 
-        monthly_pool=monthly_pool, 
-        yearly_pool=yearly_pool
+        daily_left=daily_votes_left,
+        monthly_left=monthly_votes_left,
+        yearly_left=yearly_votes_left,
+        user_balance=balance,
+        dailypool=daily_pool, 
+        monthlypool=monthly_pool, 
+        yearlypool=yearly_pool
     )
 
 
@@ -1583,7 +1581,6 @@ def tribunal():
                            )
 
 
-
 @app.route("/patch_notes", methods=['GET'])
 def patch_notes():
     if helpers.CHECK_IF_MOBILE(request):
@@ -1595,13 +1592,13 @@ def patch_notes():
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
 
     return render_template(f"patch_notes.html",
-        daily_votes_left=daily_votes_left,
-        monthly_votes_left=monthly_votes_left,
-        yearly_votes_left=yearly_votes_left,
-        balance=balance,
-        daily_pool=daily_pool, 
-        monthly_pool=monthly_pool, 
-        yearly_pool=yearly_pool
+        daily_left=daily_votes_left,
+        monthly_left=monthly_votes_left,
+        yearly_left=yearly_votes_left,
+        user_balance=balance,
+        dailypool=daily_pool, 
+        monthlypool=monthly_pool, 
+        yearlypool=yearly_pool
     )
 
 
@@ -1622,6 +1619,10 @@ def cover_page():
     helpers.log_function("request", request)
     balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS("")
     return render_template(f"cover_page.html",
+        user_balance=balance, 
+        daily_left=daily_votes_left, 
+        monthly_left=monthly_votes_left, 
+        yearly_left=yearly_votes_left,
         daily_pool=daily_pool, 
         monthly_pool=monthly_pool, 
         yearly_pool=yearly_pool

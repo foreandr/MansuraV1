@@ -599,14 +599,14 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
                     try:
                         FINAL_DICT[key_] = BROKEN_ROUNDING(float(value_))
                     except Exception as e:
-                        print(e)
-                        log_function("error", (str(e) + " " + str(key_) + " " + str(value_) + " " + str(temp_dict) + " " + str(ALGO[0]) + "insert"))
+                        #print(e)
+                        log_function("error", (str(e) + " " + str(key_) + " " + str(value_) + " " + str(temp_dict) + " " + str(ALGO[0]) + "insert"), function_name="UPDATE_BALANCES_TYPED")
                 else:
                     try:
                         FINAL_DICT[key_] += BROKEN_ROUNDING(float(value_))
                     except Exception as e:
-                        print(e)
-                        log_function("error", (str(e) + " " + str(key_) + " " + str(value_) + " " + str(temp_dict) + " " + str(ALGO[0])+ "added"))
+                        #print(e)
+                        log_function("error", (str(e) + " " + str(key_) + " " + str(value_) + " " + str(temp_dict) + " " + str(ALGO[0])+ "added"), function_name="UPDATE_BALANCES_TYPED")
 
                     #print(f"DUPE KEY={key} | ORIG={org} + {value} = NEW={FINAL_DICT[key]}")
                 #print("NORMAL POST", FINAL_DICT[key_],value)

@@ -63,6 +63,14 @@
                         <p>
                             {{og_post_src | safe}}
                         </p>
+                        {% elif og_post_src != ""%}
+                        <small>
+                            <div style="font-size: 10px;">
+                                Source:<a  href="{{og_post_src}}">{{og_post_src}}</a>
+                            </div>
+                            
+                        </small>
+                        
                         {% endif %} 
                     </div>
    
@@ -72,6 +80,9 @@
                         <small class="text-muted">
                             <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_id}})" aria-expanded="false">
                                 <span>REPLY: {{single_num_replies}}</span>
+                            </button>
+                            <button class="btn btn-secondary" type="button" aria-expanded="false">
+                                <a href="/report/{{file_ids_list[i]}}"  style="color: white; ">REPORT</a>
                             </button>
                             <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
                                 REPOST (coming)
@@ -210,10 +221,10 @@
             <form action="/{{username}}_{{username}}-{{file_id}}-post_page" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
                 <input class="input-medium form-control" id="search" name="search" type="search" placeholder="empty / single word (beta)" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')">
                     <div>
-                        <button class="btn btn-primary">Search</button>
-                        <a class="btn btn-primary" href="/home" role="button">Reset</a>
-                        <button class="btn btn-primary" type="button" onclick="save_modal_toggle()">Save Algo</button>
-                        <button class="btn btn-primary" type="button" onclick="show_current_algo('not_modal')">Show Algo</button>  
+                        <button class="btn btn-secondary">Search</button>
+                        <a class="btn btn-secondary" href="/home" role="button">Reset</a>
+                        <button class="btn btn-secondary" type="button" onclick="save_modal_toggle()">Save Algo</button>
+                        <button class="btn btn-secondary" type="button" onclick="show_current_algo('not_modal')">Show Algo</button>  
                         <div id="algo_show_location"></div>
                     </div> 
                        
@@ -420,7 +431,7 @@
                 <img class="img-fluid" id="equa_log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_equal_distribution.png')}}" width='400' height='200' />
             </div>
             <br>
-            <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>
+            <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
 
         </form>
     </div>
@@ -433,8 +444,8 @@
         <form action="upload" method="POST" enctype="multipart/form-data">
             <input class="input-medium form-control" id="Algorithm Name" name="Algorithm Name" type="Algorithm Name" placeholder="Algorithm Name" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')" maxlength="20" required>
                 <div>
-                    <button class="btn btn-primary" value="save_algo" name="save_algo">Save Algo (1 a day)</button>
-                    <button class="btn btn-primary" type="button" onclick="show_current_algo('modal')">Show Algo</button>  
+                    <button class="btn btn-secondary" value="save_algo" name="save_algo">Save Algo (1 a day)</button>
+                    <button class="btn btn-secondary" type="button" onclick="show_current_algo('modal')">Show Algo</button>  
                     <input type="hidden" id="hidden_search_arguments" name="hidden_search_arguments" value="{{search_arguments}}" /> 
                     
                     <div name="div_with_algo" value="div_with_algo"></div>
@@ -485,15 +496,6 @@
 
     // console.log(daily_pool)
     //console.log("HELLO WORLD")
-
-    document.getElementById("index_daily").innerHTML = 'DAILY POOL: {{dailypool}}';
-    document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: {{monthlypool }}';
-    document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: {{yearlypool }}';
-
-    document.getElementById("daily_votes_left").innerHTML = `DAY VOTES LEFT:  ${d_votes_left}`;
-    document.getElementById("monthly_votes_left").innerHTML = `MON VOTES LEFT: ${m_votes_left}`;
-    document.getElementById("yearly_votes_left").innerHTML = `YEA VOTES LEFT:  ${y_votes_left}`;
-    document.getElementById("user_balance").innerHTML = 'BALANCE:{{user_balance}}';
 
     function enable_built_from_other() {
         if (document.getElementById("external_source").readonly == true) {
@@ -704,7 +706,6 @@
                 
                 }
             }
-            
         } 
         else{
             console.log(js_can_scroll)

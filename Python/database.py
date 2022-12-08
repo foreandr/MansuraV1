@@ -67,7 +67,7 @@ def GET_USER_ID(username):
         return user_id
     except Exception as e:
         print(f"FAILED TO INSERT {username}")
-        log_function("error", e)
+        log_function("error", e, function_name="GET_USER_ID")
 
 
 def EXISTS_EMAIL(email="foreandr@gmail.com"):
@@ -155,7 +155,7 @@ def USER_INSERT(username, password, email, paypal_email, balance=0):
         print_green(F"{username} REGISTER COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e)
+        log_function("error", e, function_name="USER_INSERT")
     
     cursor.close()
     conn.close()
@@ -329,7 +329,7 @@ def CONNECTION_INSERT(user_id1, user_id2):
     except Exception as e:
         cursor.execute("ROLLBACK")
         print("ERROR:  [INSERT INTO CONNECTIONS] " + str(e))
-        log_function("error", e) 
+        log_function("error", e, function_name="CONNECTION_INSERT") 
     
     cursor.close()
     conn.close()
@@ -402,15 +402,19 @@ def LIKES_INSERT(liker_username, file_id):
             VALUES
             ({file_id}, '{liker_username}', CURRENT_TIMESTAMP);
             """)
+        
         conn.commit()
+        cursor.close()
+        conn.close()
+        print_green(F"{liker_username} liked: {file_id}")
         return True
     except Exception as e:
             # print(e)
-            log_function("error", e)
-            cursor.execute("ROLLBACK")
-            # log_function(F"USER:{uploader} FILE INSEERT FAILED")      
+            log_function("error", e, function_name="LIKES_INSERT")
+            cursor.execute("ROLLBACK")     
             cursor.close()
-            conn.close() 
+            conn.close()
+            print_warning(F"{liker_username} FAILED TO LIKE: {file_id}") 
             return False
             
              
@@ -426,9 +430,8 @@ def LIKES_REMOVE(liker_username, file_id):
         conn.commit()
     except Exception as e:
             # print(e)
-            log_function("error", e)
-            cursor.execute("ROLLBACK")
-            # log_function(F"USER:{uploader} FILE INSEERT FAILED")      
+            log_function("error", e, function_name="LIKES_REMOVE")
+            cursor.execute("ROLLBACK")    
             cursor.close()
             conn.close() 
 
@@ -485,12 +488,13 @@ def DISLIKES_INSERT(disliker_username, file_id):
             ({file_id}, '{disliker_username}', CURRENT_TIMESTAMP);
             """)
         conn.commit()
+        cursor.close()
+        conn.close() 
         return True
     except Exception as e:
             # print(e)
-            log_function("error", e)
-            cursor.execute("ROLLBACK")
-            # log_function(F"USER:{uploader} FILE INSEERT FAILED")      
+            log_function("error", e, function_name="DISLIKES_INSERT")
+            cursor.execute("ROLLBACK")    
             cursor.close()
             conn.close() 
             return False
@@ -506,12 +510,12 @@ def DISLIKES_REMOVE(disliker_username, file_id):
             """)
         conn.commit()
     except Exception as e:
-            # print(e)
-            log_function("error", e)
-            cursor.execute("ROLLBACK")
-            # log_function(F"USER:{uploader} FILE INSEERT FAILED")      
-            cursor.close()
-            conn.close() 
+        # print(e)
+        log_function("error", e, function_name="DISLIKES_REMOVE")
+        cursor.execute("ROLLBACK")    
+         
+    cursor.close()
+    conn.close() 
 
 def DISLIKE_LOGIC(disliker_username, file_id):
     if DISLIKES_INSERT(disliker_username, file_id): # RETURNS TRUE IF SMOOTH
@@ -522,6 +526,8 @@ def DISLIKE_LOGIC(disliker_username, file_id):
         DISLIKES_REMOVE(disliker_username, file_id)
 
 def GET_COUNT_LIKES_BY_ID(file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
     cursor.execute(f"""
         SELECT COUNT(*)
         FROM LIKES
@@ -538,6 +544,8 @@ def LIKES_DEMO_INSERT(size="small"):
     LIKES_INSERT("foreandr", 2)
     LIKES_INSERT("foreandr", 3)
     LIKES_INSERT("foreandr", 4)
+    
+    big_reset_file.BIG_LIKES_INSERT(size)
     #LIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
 
 def DISLIKES_DEMO_INSERT(size="small"):
@@ -545,6 +553,7 @@ def DISLIKES_DEMO_INSERT(size="small"):
     DISLIKES_INSERT("foreandr", 2)
     DISLIKES_INSERT("foreandr", 3)
     DISLIKES_INSERT("foreandr", 4)
+    big_reset_file.BIG_DISLIKES_INSERT(size)
     #DISLIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
 
 
@@ -812,7 +821,7 @@ def MANSURA_SUBSCRIBE(username):
             
             return False
     except Exception as e:
-        log_function("error", e)
+        log_function("error", e, function_name="MANSURA_SUBSCRIBE")
     
         
         
@@ -834,7 +843,7 @@ def GET_USER_BALANCE(username):
 
             return float(result[2])
     except Exception as e:
-        log_function("error", e)
+        log_function("error", e, function_name="GET_USER_BALANCE")
         # CLOSE CURSOR AND CONNECTION [MANDATORY]        
         cursor.close()
         conn.close()
@@ -903,7 +912,7 @@ def REMOVE_ALL_USER_DIRECTORIES():
             shutil.rmtree(filepath)
         except OSError as e:
             # os.remove(filepath)
-            log_function("error", e)
+            log_function("error", e, function_name="REMOVE_ALL_USER_DIRECTORIES")
             # print(OSError)
 
 
@@ -1097,7 +1106,7 @@ def DROP_ALL_TABLES():
             print_green("DROPPED TABLE IF EXISTS POST_FAVOURITES;")
         except Exception as e:
             cursor.execute("ROLLBACK")
-            log_function("error", e)
+            log_function("error", e, function_name="DROP_ALL_TABLES")
         
         try:
             cursor.execute(f"DROP TABLE IF EXISTS SEARCH_FAVOURITES CASCADE;")
@@ -1105,7 +1114,7 @@ def DROP_ALL_TABLES():
             print_green("DROPPED TABLE IF EXISTS SEARCH_FAVOURITES;")
         except Exception as e:
             cursor.execute("ROLLBACK")
-            log_function("error", e)
+            log_function("error", e, function_name="DROP_ALL_TABLES")
 
         try:
             cursor.execute(f"DROP TABLE IF EXISTS SEARCH_VOTES CASCADE;")
@@ -1113,7 +1122,7 @@ def DROP_ALL_TABLES():
             print_green("DROPPED TABLE IF EXISTS SEARCH_VOTES ;")
         except Exception as e:
             cursor.execute("ROLLBACK")
-            log_function("error", e)
+            log_function("error", e, function_name="DROP_ALL_TABLES")
 
         try:
             cursor.execute(f"DROP TABLE IF EXISTS DISLIKES CASCADE;")
@@ -1121,7 +1130,7 @@ def DROP_ALL_TABLES():
             print_green("DROPPED TABLE IF EXISTS DISLIKES;")
         except Exception as e:
             cursor.execute("ROLLBACK")
-            log_function("error", e)
+            log_function("error", e, function_name="DROP_ALL_TABLES")
 
         try:
             cursor.execute(f"DROP TABLE IF EXISTS LIKES CASCADE;")
@@ -1129,7 +1138,7 @@ def DROP_ALL_TABLES():
             print_green("DROPPED TABLE IF EXISTS LIKES;")
         except Exception as e:
             cursor.execute("ROLLBACK")
-            log_function("error", e)
+            log_function("error", e, function_name="DROP_ALL_TABLES")
         
         try:
             cursor.execute(f"DROP TABLE IF EXISTS SEARCH_ALGORITHMS CASCADE;")
@@ -1137,7 +1146,7 @@ def DROP_ALL_TABLES():
             print_green("DROPPED TABLE IF EXISTS SEARCH_ALGORITHMS;")
         except Exception as e:
             cursor.execute("ROLLBACK")
-            log_function("error", e)
+            log_function("error", e, function_name="DROP_ALL_TABLES")
 
         try:
             cursor.execute(f"DROP TABLE IF EXISTS EQUITY CASCADE;")
@@ -1247,7 +1256,7 @@ def ALTER_PRIMARY_KEY_IN_FILES():
 
 
 def CHECK_FOREIGN_FILE_ID_EXISTS(file_id):
-    print("CHCKING EXISTENCE OF", file_id)
+    # print("CHCKING EXISTENCE OF", file_id)
     if not (file_id.isdigit()):
         return False
     
@@ -1354,14 +1363,14 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
         # 4. save the picture if there is one
         if filename != "":
             try:
-                print("ENTERING POSTIFLE:", post_file)
+                # print("ENTERING POSTIFLE:", post_file)
                 target = rf'/root/mansura/static/#UserData/{uploader}/files/{new_path}/pic.jpg'#TODO: DIFFERENTIATE DIFFERENT EXTENSIONS
                 post_file.stream.seek(0)
                 post_file.save(target)
                 
                 # print("ENTERED INTO TARGET", target)
             except Exception as e:
-                log_function(str(e) + "FILE ERROR ENTRY OF SOME KIND!!!!!")    
+                log_function("error", str(e) + "FILE ERROR ENTRY OF SOME KIND!!!!!", function_name="ENTERING POSTIFLE")    
 
         # 5. INSERT INTO FILE SYSTEM           
         FILE_INSERT_STORAGE(
@@ -1388,7 +1397,7 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
          # return new_path #TODO: not sure if this needs to return anything
     except Exception as e:
             print(e)
-            log_function("error", e)
+            log_function("error", e, function_name="FILE_INSERT")
             cursor.execute("ROLLBACK")
             print_error(F"USER:{uploader} FILE INSEERT FAILED")
             
@@ -1446,7 +1455,7 @@ def full_register(username, password, email, paypal_email, balance):
         register_user_files(username)
         return True
     except Exception as e:
-        log_function(e)
+        log_function("error", e, function_name="full_register")
         return False
     # FILE_INSERT(connection
     
@@ -1464,7 +1473,7 @@ def DELETE_USER_FILES(user):
         try:
             shutil.rmtree(i)
         except OSError as e:
-            log_function("error", e)
+            log_function("error", e, function_name="DELETE_USER_FILES")
 
 
 def CHANGE_PASSWORD(email, password):
@@ -1800,7 +1809,7 @@ def USER_SUBSCRIBE_FEE(username):
         return True
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e)  
+        log_function("error", e, function_name="DELETE_USER_FILES")  
         
         # CLOSE CURSOR AND CONNECTION [MANDATORY]        
         cursor.close()
@@ -1908,7 +1917,7 @@ def CREATE_PAYOUTS_TABLE():
         cursor.close()
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e)
+        log_function("error", e, function_name="CREATE_PAYOUTS_TABLE")
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
@@ -1946,7 +1955,7 @@ def GET_TOTAL_DATASET_MARKET_SHARE_BY_TIME(type):
         return num_votes
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e)
+        log_function("error", e, function_name="GET_TOTAL_DATASET_MARKET_SHARE_BY_TIME")
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
@@ -2029,7 +2038,7 @@ def GET_USER_BALANCE_SIMPLE(username):
             return float(value[0])
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e)
+        log_function("error", e, function_name="GET_USER_BALANCE_SIMPLE")
     CLOSE_CURSOR_AND_CONN(cursor, conn)
 
 
@@ -2067,7 +2076,7 @@ def EQUITY_INSERT():
         """)
         conn.commit()
     except Exception as e:
-        log_function(e)
+        log_function("error", e, function_name="EQUITY_INSERT")
 
 
 def EQUITY_CREATE_TABLE():
@@ -2086,7 +2095,7 @@ def EQUITY_CREATE_TABLE():
         conn.commit()
         print_green("EQUITY_CREATE_TABLE SUCCESSFUL")
     except Exception as e:
-        log_function(e)
+        log_function("error", e, function_name="EQUITY_CREATE_TABLE")
     
     CLOSE_CURSOR_AND_CONN(cursor, conn)
 
@@ -2104,7 +2113,7 @@ def DEFAULT_EQUITY_INSERT(size='small'):
         conn.commit()
 
     except Exception as e:
-        log_function(e)
+        log_function("error",e, function_name="DEFAULT_EQUITY_INSERT")
     
     CLOSE_CURSOR_AND_CONN(cursor, conn)
 
@@ -2113,7 +2122,7 @@ def DEFAULT_EQUITY_INSERT(size='small'):
 
 def FILE_INSERT_STORAGE(username, path_name, text, age_18, external_source, distro_details):
     # print(f"username: {username}\npath_name: {path_name}\ntext: {text}\nmy_file: {my_file}\nage_18: {age_18}\nexternal_source: {external_source}")
-    print("GETTING TO FILE STORAGE")
+    # print("GETTING TO FILE STORAGE")
     external_source = CREATING_EMBED_STRUCTURE(external_source)
     
     my_dictionary = {
@@ -2366,7 +2375,7 @@ def GET_USERNAME_BY_EMAIL(paypal_email):
             conn.close()
         # return list_of_names
     except Exception as e:
-        log_function("error", e)
+        log_function("error", e, function_name="GET_USERNAME_BY_EMAIL")
 
         cursor.close()
         conn.close()
@@ -2665,18 +2674,19 @@ def UPDATE_TABLE_SEARCH_VOTES(voter_username, search_algo_path):
     """)
 
     vote_exists = cursor.fetchall()[0][0]
-    print("VOTE EXISTS", vote_exists)
+    # print("VOTE EXISTS", vote_exists)
     
     search_id = GET_SEARCH_ALGO_ID_BY_PATH(search_algo_path)
     
-    print("search_id", search_id)
-    print("search_algo_pathe", search_algo_path)
+    #print("search_id", search_id)
+    #print("search_algo_pathe", search_algo_path)
     if vote_exists == 0:
-        print("INSERTING SEARCH VOTE")
+        
         cursor.execute(f"""
             INSERT INTO SEARCH_VOTES(Search_id, Voter_Username)
             VALUES ({search_id}, '{voter_username}');
         """)
+        print_green(f"INSERTING SEARCH VOTE {voter_username}, {search_algo_path}")
         conn.commit()
     else:
         print("UPDATING SEARCH VOTE")
@@ -2704,8 +2714,8 @@ def GET_SEARCH_ALGO_ID_BY_PATH(algo_path):
     search_id = ""
     for i in cursor.fetchall():
         search_id = i[0] 
-    print("ENTERED ALGO NAME  :",algo_path, len(algo_path))
-    print("RETURNED SEARCH ID:",search_id )
+    #print("ENTERED ALGO NAME  :",algo_path, len(algo_path))
+    #print("RETURNED SEARCH ID:",search_id )
     return search_id
 
 
@@ -2851,7 +2861,7 @@ def CREATE_TABLE_SEARCH_FAVOURITES():
     except Exception as e:       
         cursor.execute("ROLLBACK")
         print_error("HAD TO ROLLBACK  CREATE_TABLE_SEARCH_FAVOURITES TABLE CREATION" + str(e))   
-        log_function(e)      
+        log_function("error",e, function_name="CREATE_TABLE_SEARCH_FAVOURITES")      
 
     cursor.close()
     conn.close()
@@ -2974,7 +2984,7 @@ def SEARCH_ALGO_INSERT(username, Algorithm_Name, order_by_clause, where_clause):
         conn.close()
         return True
     except Exception as e:
-        log_function("error", e)
+        log_function("error", e, function_name="SEARCH_ALGO_INSERT")
         return False
 
 
@@ -3013,16 +3023,9 @@ def TRIUBNAL_CLAUSE(tribunal):
     
     if tribunal: # -- THIS IS FOR THE TRIBUNAL -- ABSOLUTE FUCKING NIGHTMARE
    
-        tribunal_query = F"""AND 
-            ( {IN_TRIBUNAL} 
-                AND 
-                (
-                    {DISLIKE_COUNT} / ({DISLIKE_COUNT}) + {LIKE_COUNT})
-                ) > .75
-            )
+        tribunal_query = F"""AND (({DISLIKE_COUNT} + {LIKE_COUNT}) > 1) AND ( ({IN_TRIBUNAL})  AND ( ({DISLIKE_COUNT}) / ({DISLIKE_COUNT} + {LIKE_COUNT}) ) > .75 )       
         """
     else:
-
         tribunal_query = F"""        
         
             AND CASE 
@@ -3208,7 +3211,7 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     """
     
     #print("MY QUERY ================================")
-    # log_function("test", log_string=query)
+    log_function("test", log_string=query)
     cursor.execute(query)
     # -- ORDER BY GET_FILE_VOTE_COUNT_TYPED(F.File_Id, '{sort_time_frame}') DESC
     search_arguments = {

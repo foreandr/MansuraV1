@@ -7,7 +7,7 @@
         <div class="container-fluid py-5">
           <h1 class="display-5 fw-bold">SUBSCRIBE</h1>
           <p>Enters you into the pool for posts, votes, searches, and algorithms.</p>
-          <p>Balance: {{balance}}</p>
+          <p>Balance: {{user_balance}}</p>
           <p>Subscribed: {{is_already_subbed_this_month}}</p>
 
         </div>
@@ -18,7 +18,7 @@
           <div class="h-100 p-5 text-white bg-dark rounded-3">
             <h2>BALANCE MORE THAN 5</h2>
             <p>Subscribe to Mansura with standing balance.</p>
-            {% if balance >= 5 %}
+            {% if user_balance >= 5 %}
             <form name="my_form" method="POST">
               <input  class="btn btn-success" type="submit" name="subscribe_button" value="SUBSCRIBE"/>
             </form>
@@ -38,7 +38,7 @@
             <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
               <input type="hidden" name="cmd" value="_s-xclick">
               <input type="hidden" name="hosted_button_id" value="CW987LAUE9XHN">
-              {% if balance <= 5 %}
+              {% if user_balance <= 5 %}
               <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynow_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
               {% else %}
               <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_paynow_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" disabled>
@@ -60,7 +60,9 @@
     day_vote_list = '{{day_votes}}'
     month_vote_list = '{{month_votes}}'
     year_vote_list = '{{year_votes}}'
-    balance = '{{balance}}'
+    balance = '{{user_balance}}'
+    
+    /*
     console.log("getting here", '{{daily_votes_left}}')
     console.log([d_votes_left,m_votes_left,y_votes_left,"\n",day_vote_list,month_vote_list,year_vote_list,"\n",balance ])
     
@@ -71,7 +73,8 @@
     document.getElementById("daily_votes_left").innerHTML = `DAILY VOTES: ${d_votes_left}`;
     document.getElementById("index_daily").innerHTML = 'DAILY POOL:{{daily_pool}}';
     document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL:{{monthly_pool }}';
-    document.getElementById("index_yearly").innerHTML = 'YEARLY POOL:{{yearly_pool }}';  
+    document.getElementById("index_yearly").innerHTML = 'YEARLY POOL:{{yearly_pool }}';
+    */  
 </script>
 
 

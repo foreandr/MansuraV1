@@ -30,7 +30,7 @@
                 {% if is_host == "true" %}
                 <div class="d-flex justify-content-center">
                     <textarea id="edit_bio" maxlength="150" name="edit_bio" rows="4" cols="40">{{profile_bio}}</textarea>
-                    <button type="submit" class="btn btn-primary"  name="edit_bio" type="submit">Save Bio</button>
+                    <button type="submit" class="btn btn-secondary"  name="edit_bio" type="submit">Save Bio</button>
                 </div>
                 {% else %}
                 <div class="d-flex justify-content-center">
@@ -42,13 +42,13 @@
             <div class="d-flex justify-content-center">
                 <div class="dropdown">
                     <br>
-                    <button class="dropbtn">Following  {{friend_count}}</button> <!-- TODO GO TO A PERSONS FOLLOWER PAGE-->
+                    <button class="dropbtn">Following: {{friend_count}}</button> <!-- TODO GO TO A PERSONS FOLLOWER PAGE-->
                     <div id="my_following_dropdown" class="dropdown-content">
                     </div>
                 </div>
                 <div class="dropdown">
                     <br>
-                    <button class="dropbtn">Followers {{follow_count}}</button>
+                    <button class="dropbtn">Followers: {{follow_count}}</button>
                     <div id="my_followers_dropdown" class="dropdown-content">
                     </div>
                 </div>
@@ -75,10 +75,10 @@
             <form action="/{{host_user}}" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
                 <input class="input-medium form-control" id="search" name="search" type="search" placeholder="empty / single word (beta)" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')">
                     <div>
-                        <button class="btn btn-primary">Search</button>
-                        <a class="btn btn-primary" href="/home" role="button">Reset</a>
-                        <button class="btn btn-primary" type="button" onclick="save_modal_toggle()">Save Algo</button>
-                        <button class="btn btn-primary" type="button" onclick="show_current_algo('not_modal')">Show Algo</button>  
+                        <button class="btn btn-secondary">Search</button>
+                        <a class="btn btn-secondary" href="/home" role="button">Reset</a>
+                        <button class="btn btn-secondary" type="button" onclick="save_modal_toggle()">Save Algo</button>
+                        <button class="btn btn-secondary" type="button" onclick="show_current_algo('not_modal')">Show Algo</button>  
                         <div id="algo_show_location"></div>
                     </div> 
                        
@@ -308,6 +308,9 @@
                             <button class="btn btn-secondary" type="button" onclick="reply_modal_toggle({{file_ids_list[i]}})" aria-expanded="false">
                                 <span>REPLY: {{num_replies[i]}}</span>
                             </button>
+                            <button class="btn btn-secondary" type="button" aria-expanded="false">
+                                <a href="/report/{{file_ids_list[i]}}"  style="color: white; ">REPORT</a>
+                            </button>
                             <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
                                 REPOST (coming)
                             </button>
@@ -334,8 +337,8 @@
         <form action="upload" method="POST" enctype="multipart/form-data">
             <input class="input-medium form-control" id="Algorithm Name" name="Algorithm Name" type="Algorithm Name" placeholder="Algorithm Name" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')" maxlength="20" required>
                 <div>
-                    <button class="btn btn-primary" value="save_algo" name="save_algo">Save Algo (1 a day)</button>
-                    <button class="btn btn-primary" type="button" onclick="show_current_algo('modal')">Show Algo</button>  
+                    <button class="btn btn-secondary" value="save_algo" name="save_algo">Save Algo (1 a day)</button>
+                    <button class="btn btn-secondary" type="button" onclick="show_current_algo('modal')">Show Algo</button>  
                     <input type="hidden" id="hidden_search_arguments" name="hidden_search_arguments" value="{{search_arguments}}" /> 
                     
                     <div name="div_with_algo" value="div_with_algo"></div>
@@ -408,7 +411,7 @@
                 <img class="img-fluid" id="equa_log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_equal_distribution.png')}}" width='400' height='200' />
             </div>
             <br>
-            <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>
+            <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
 
         </form>
     </div>
@@ -470,7 +473,7 @@
 
             <br>
 
-            <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>
+            <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
         </form>
 
     </div>
@@ -506,7 +509,6 @@
         }
         /*algo_show_location_modal*/      
     }
-
 
     var where_counter = 1
     var where_clause_string = `
@@ -545,8 +547,6 @@
         </div>
     </div>
     `
-
-
     function add_another_where_clause(){
         console.log(where_counter)
         var where_clause_string = `
@@ -607,10 +607,9 @@
         }
     }
 
-
-
     document.getElementById("reply_external_source_link").disabled = true; // setting default to disabled
-    d_votes_left = '{{ daily_left }}';
+    
+    /*d_votes_left = '{{ daily_left }}';
     m_votes_left = '{{ monthly_left }}';
     y_votes_left = '{{ yearly_left }}';
     day_vote_list = '{{day_votes}}'
@@ -628,9 +627,8 @@
     document.getElementById("index_daily").innerHTML = 'DAILY POOL: {{dailypool}}';
     document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: {{monthlypool }}';
     document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: {{yearlypool }}';
+    */
     
-
-
     function get_wanted_string_following(string) {
         // console.log(string, string.length);
         if (string.length == 0 || string.length == 2){
@@ -672,21 +670,21 @@
             document.getElementById("non_host_add_remove").innerHTML = `
 
                 <form action="/add_user/{{host_user}}" method="POST">
-                    <button class="btn btn-primary"  name="add_user_button" type="submit" disabled>Follow {{host_user}}</button>
+                    <button class="btn btn-secondary"  name="add_user_button" type="submit" disabled>Follow {{host_user}}</button>
                 </form>
 
                 <form action="/remove_user/{{host_user}}" method="POST">
-                    <button class="btn btn-primary" name="remove_user_button" type="submit">Unfollow {{host_user}}</button>
+                    <button class="btn btn-secondary" name="remove_user_button" type="submit">Unfollow {{host_user}}</button>
                 </form>`
         } else {
             document.getElementById("non_host_add_remove").innerHTML = `
 
                 <form action="/add_user/{{host_user}}" method="POST">
-                    <button class="btn btn-primary" name="add_user_button" type="submit">Follow {{host_user}}</button>
+                    <button class="btn btn-secondary" name="add_user_button" type="submit">Follow {{host_user}}</button>
                 </form>
 
                 <form action="/remove_user/{{host_user}}" method="POST">
-                    <button class="btn btn-primary" name="remove_user_button" type="submit" disabled>Unfollow {{host_user}}</button>
+                    <button class="btn btn-secondary" name="remove_user_button" type="submit" disabled>Unfollow {{host_user}}</button>
                 </form>`
         }
 
@@ -699,7 +697,7 @@
                     <input type="file" class="custom-file-input" name="file" id="file" accept=".png, .jpeg, .jpg">
                     <label class="custom-file-label" for="file">PROFILE PICTURE</label>
                 </div>
-                <button type="submit" class="btn btn-primary">Add New Picture</button>
+                <button type="submit" class="btn btn-secondary">Add New Picture</button>
             </form>
         `;
     }

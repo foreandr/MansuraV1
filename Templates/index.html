@@ -123,10 +123,10 @@
             <form action="/" class="form-inline my-2 my-lg-0"  method="POST" id="search_form">
                 <input class="input-medium form-control" id="search" name="search" type="search" placeholder="empty / single word (beta)" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')">
                     <div>
-                        <button class="btn btn-primary">Search</button>
-                        <a class="btn btn-primary" href="/home" role="button">Reset</a>
-                        <button class="btn btn-primary" type="button" onclick="save_modal_toggle()">Save Algo</button>
-                        <button class="btn btn-primary" type="button" onclick="show_current_algo('not_modal')">Show Algo</button>  
+                        <button class="btn btn-secondary">Search</button>
+                        <a class="btn btn-secondary" href="/home" role="button">Reset</a>
+                        <button class="btn btn-secondary" type="button" onclick="save_modal_toggle()">Save Algo</button>
+                        <button class="btn btn-secondary" type="button" onclick="show_current_algo('not_modal')">Show Algo</button>  
                         <div id="algo_show_location"></div>
                     </div> 
                        
@@ -282,8 +282,8 @@
         <form action="upload" method="POST" enctype="multipart/form-data">
             <input class="input-medium form-control" id="Algorithm Name" name="Algorithm Name" type="Algorithm Name" placeholder="Algorithm Name" aria-label="search" onkeyup="this.value = this.value.replace(/[^a-z,A-Z,0-9]/, '')" maxlength="20" required>
                 <div>
-                    <button class="btn btn-primary" value="save_algo" name="save_algo">Save Algo (1 a day)</button>
-                    <button class="btn btn-primary" type="button" onclick="show_current_algo('modal')">Show Algo</button>  
+                    <button class="btn btn-secondary" value="save_algo" name="save_algo">Save Algo (1 a day)</button>
+                    <button class="btn btn-secondary" type="button" onclick="show_current_algo('modal')">Show Algo</button>  
                     <input type="hidden" id="hidden_search_arguments" name="hidden_search_arguments" value="{{search_arguments}}" /> 
                     <div name="div_with_algo" value="div_with_algo"></div>
                     
@@ -356,7 +356,7 @@
                 <img class="img-fluid" id="equa_log_dist" src="{{url_for('static', filename='matplotlib_pics/chart_locations/log_equal_distribution.png')}}" width='400' height='200' />
             </div>
             <br>
-            <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>
+            <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
 
         </form>
     </div>
@@ -417,7 +417,7 @@
 
             <br>
 
-            <button class="btn btn-primary" name="upload" value="upload">UPLOAD</button>
+            <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
         </form>
 
     </div>
@@ -537,71 +537,12 @@
         
     }
         
-    function howmanysectionsfunc(){
 
-        dist_chosen = document.getElementById("distro_algo").value 
-
-        if (dist_chosen == "LOG EQUAL DISTRIBUTION"){
-            document.getElementById("how_many_sections").innerHTML = slider
-        }
-        else{
-            document.getElementById("how_many_sections").innerHTML= ""
-        }
-    }
-    function remove_another_where_clause(){
-        //console.log("remove_another_where_clause");
-        document.getElementById("where_clause_additions").innerHTML = where_clause_string
-        where_counter = 1 
-        //console.log(where_clause_string)
-        //console.log(where_counter)
-    }
-
-    function enable_built_from_other() {
-        if (document.getElementById("external_source").disabled == true) {
-            document.getElementById('external_source').removeAttribute("disabled");
-            get.setAttribute('readonly', true);
-
-        }
-        else {
-            document.getElementById("external_source").setAttribute("disabled", "enabled")
-        }
-
-    }
-
-    function enable_exteral_link() {
-        // console.log("hello world")
-        if (document.getElementById("external_source_link").disabled == true) { // if disabled
-            document.getElementById('external_source_link').removeAttribute("disabled");
-
-        }
-        else {
-            document.getElementById("external_source_link").setAttribute("disabled", "enabled")
-        }
-    }
-
-    function reply_enable_external_link(){
-        if (document.getElementById("reply_external_source_link").disabled == true) { // if disabled
-            document.getElementById('reply_external_source_link').removeAttribute("disabled");
-        }
-        else {
-            document.getElementById("reply_external_source_link").setAttribute("disabled", "enabled")
-        }
-    }
-
-    function post_details_func() {
-        console.log(document.getElementById("insert_post").innerHTML);
-        if (document.getElementById("insert_post").innerHTML == "") {
-            document.getElementById("insert_post").innerHTML = ``
-        } else {
-            document.getElementById("insert_post").innerHTML = ""
-        }
-
-    }
 
     d_votes_left = '{{ daily_left }}';
     m_votes_left = '{{ monthly_left }}';
     y_votes_left = '{{ yearly_left }}';
-
+    /*
     document.getElementById("index_daily").innerHTML = 'DAILY POOL: {{dailypool}}';
     document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: {{monthlypool }}';
     document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: {{yearlypool }}';
@@ -610,7 +551,7 @@
     document.getElementById("monthly_votes_left").innerHTML = `MON VOTES LEFT: ${m_votes_left}`;
     document.getElementById("yearly_votes_left").innerHTML = `YEA VOTES LEFT:  ${y_votes_left}`;
     document.getElementById("user_balance").innerHTML = 'BALANCE:{{user_balance}}';
-
+    */
     //console.log(`VOTES LEFT:\n${d_votes_left}\n${m_votes_left}\n${y_votes_left}`)
 
 
@@ -622,92 +563,16 @@
 
     }
 
-    // DEFINING SCORLL LOGIC
-    var scroll_disabler = 0 //FOR SOME REASON YOU CAN HIT THE BOTTOM OF THE PAGE AND SCROLL 10X, DISABLES THIS
+
     
-    window.onscroll = function (ev) {
-        js_can_scroll = '{{can_scroll}}'
-        //javascript bool is fucking stupid
-        if (js_can_scroll == "true" || js_can_scroll == "True" ){
-            console.log("WINDOW HEIGHT:", window.innerHeight + window.scrollY)
-            console.log("DOCUMENT BODY:",document.body.scrollHeight)
-            
-            if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight-20) {
-                
-                if (scroll_disabler <1) {
-                scroll_disabler += 1
-                console.log("BOTTOM OF PAGE")
-                
-                current_page_no = document.getElementById("page_number").value;
-                new_page_no = parseInt(current_page_no) + 1
-
-                console.log("current_page_no", current_page_no)
-                console.log("new_page_no", new_page_no)
-
-                document.getElementById("page_number").value = new_page_no
-                document.getElementById("search_form").submit();
-                
-                }
-            }
-            
-        } 
-        else{
-            console.log(js_can_scroll)
-        }
-
-    };
 
 
 
-    // CHANGING SIZE OF IMAGE
 
-    function enlargeImg() {
-        img = document.getElementById("post_pic");
-        console.log("EXECUTION")
-        if (img.style.transform == "scale(1)") {
-            console.log("GROW")
-            img.style.transform = "scale(2)";
-            img.style.transition = "transform 0.25s ease";
-        }
 
-        else {
-            console.log("SHRINK")
-            img.style.transform = "scale(1)";
-            img.style.transition = "transform 0.25s ease";
-        }
-    }
 
-    function post_modal_toggle() {
-        var modal = document.getElementById("post_modal");
-        modal.style.display = "block";
-    }
 
-    function reply_modal_toggle(file_id) {
-        // console.log(file_id)
-        document.getElementById("reply_external_source").value = file_id;
-        var modal = document.getElementById("reply_modal");
-        modal.style.display = "block";
-    }
-
-    function save_modal_toggle(file_id) {
-        // console.log(file_id)
-        var modal = document.getElementById("save_modal");
-        modal.style.display = "block";
-    }
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
-        var modal = document.getElementById("reply_modal");
-        var modal2 = document.getElementById("post_modal");
-        var modal3 = document.getElementById("save_modal");
-        
-        if ((event.target == modal) || (event.target == modal2) || (event.target == modal3)) {
-
-            modal.style.display = "none";
-            modal2.style.display = "none";
-            modal3.style.display = "none";
-        }
-    }   
+ 
 
 </script>
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
