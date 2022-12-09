@@ -679,7 +679,7 @@ def GET_NUM_FILE_VOTES_FOR_TYPE(username, file_id, my_vote_type):
     return num
 
 
-def FILE_VOTE_INSERT(username, File_Id, vote_type):
+def FILE_VOTE_INSERT(username, File_Id, vote_type="Monthly"):
     conn = connection.test_connection()
     cursor = conn.cursor()
     # CHECK IF SUBSCRIBED THIS MONTH
@@ -1825,16 +1825,16 @@ def TEST_SELECT_ALL_PAYOUTS():
         SELECT * FROM PAYOUTS
     """)
     results = cursor.fetchall()
-    print()
+    # print()
     for value in results:
         daily = value[1]
         monthly = value[2]
         yearly = value[3]
 
-        print("DAILY POOL  :",daily)
+        #print("DAILY POOL  :",daily)
         print("MONTHLY POOL:",monthly)
-        print("YEARLY POOL :",yearly)
-        print()
+        #print("YEARLY POOL :",yearly)
+        #print()
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
@@ -1846,9 +1846,10 @@ def USER_SUBSCRIBE_UPDATE_PAYOUTS():
     cursor = conn.cursor()
     try: # decimal cast is so there is a round function available 
         # https://stackoverflow.com/questions/58731907/error-function-rounddouble-precision-integer-does-not-exist
+        # Daily = ROUND((Daily + 0.8)::Decimal, 2), , Yearly = ROUND((Yearly + 0.2)::Decimal, 2) 
         cursor.execute(f"""
         UPDATE PAYOUTS
-        SET Daily = ROUND((Daily + 0.8)::Decimal, 2), Monthly=ROUND((Monthly+ 4.0)::Decimal, 2), Yearly = ROUND((Yearly + 0.2)::Decimal, 2) 
+        SET Monthly=ROUND((Monthly+ 5.0)::Decimal, 2)
         
         """)
         conn.commit()

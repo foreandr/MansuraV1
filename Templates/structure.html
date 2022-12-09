@@ -32,9 +32,9 @@
       <span><a id="navbar_name" class="navbar-brand mx-3" style="color:white;"href="./">Mansura</a></span>
       <span style="font-size:11px;color:white;">open beta v0.1</span>
       <span style=color:#333333>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
-      <span><a class="nav-link" id="index_daily" style="color:green;"></a></span>
+      <!--<span><a class="nav-link" id="index_daily" style="color:green;"></a></span>-->
       <span><a class="nav-link" id="index_monthly" style="color:green;"></a></span>
-      <span><a class="nav-link" id="index_yearly" style="color:green;"></a></span>
+      <!--<span><a class="nav-link" id="index_yearly" style="color:green;"></a></span>-->
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent15">
         <ul class="navbar-nav ms-auto" id="ULBUTTONS">
@@ -54,24 +54,26 @@
                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                        <a class="nav-link" href="./add_funds" disabled>Subscribe</a>
                        <a class="nav-link" href="./withdraw_funds" disabled>Withdraw</a>
+                       <a class="nav-link" id="monthly_votes_left">Votes:</a>
                    </div>
                </div>
             </li>  
-   
-             <li>
+            <!--
+            <li>
                <div class="dropdown" id="nav_dropdown">
                    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">
                        VOTES:
                    </button>
                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                       <span> <a class="nav-link" id="daily_votes_left">DAILY VOTES:</a></span>                  
-                       <span><a class="nav-link" id="monthly_votes_left">MONTHLY VOTES:</a></span>
-                       <span><a class="nav-link" id="yearly_votes_left">YEARLY VOTES:</a></span>                  
+                       <span> <a class="nav-link" id="daily_votes_left">DAILY VOTES:</a></span>                
+
+                       <span><a class="nav-link" id="yearly_votes_left">YEARLY VOTES:</a></span>            
                    </div>
                </div>
-             </li>
+            </li>
+            -->        
    
-             <li>
+            <li>
                <div class="dropdown" id="nav_dropdown">
                    <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">METRICS</button>
                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -88,6 +90,7 @@
                         <a href="./tribunal" class="nav-link">Post Tribunal</a>
                         <a href="./word_tribunal" class="nav-link">Phrase Tribunal</a>
                         <a href="./account_tribunal" class="nav-link disabled">Account Tribunal</a>
+                        <a href="./system_tribunal" class="nav-link disabled">Mansura Tribunal</a>
                     </div>
                 </div>
               </li>
@@ -210,13 +213,12 @@
     
     
     
-    document.getElementById("index_daily").innerHTML = 'DAILY POOL: {{dailypool}}';
+    //document.getElementById("index_daily").innerHTML = 'DAILY POOL: {{dailypool}}';
     document.getElementById("index_monthly").innerHTML = 'MONTHLY POOL: {{monthlypool }}';
-    document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: {{yearlypool }}';
-    console.log('{{daily_left}}')
-    document.getElementById("daily_votes_left").innerHTML = `DAY VOTES LEFT:  {{daily_left}} (per day)`;
-    document.getElementById("monthly_votes_left").innerHTML = `MON VOTES LEFT: {{monthly_left}}`;
-    document.getElementById("yearly_votes_left").innerHTML = `YEA VOTES LEFT:  {{yearly_left}}`;
+    //document.getElementById("index_yearly").innerHTML = 'YEARLY POOL: {{yearlypool }}';
+    //document.getElementById("daily_votes_left").innerHTML = `DAY VOTES LEFT:  {{daily_left}} (per day)`;
+    document.getElementById("monthly_votes_left").innerHTML = `Votes: {{monthly_left}}`;
+    //document.getElementById("yearly_votes_left").innerHTML = `YEA VOTES LEFT:  {{yearly_left}}`;
     document.getElementById("user_balance").innerHTML = 'BALANCE:{{user_balance}}';
 
     /*FUNCTIONS*/

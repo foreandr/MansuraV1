@@ -672,7 +672,7 @@ def UPDATE_BALANCES_TYPED(vote_type, update_dict, testing=False):
                 
                 # dict_of_search_details[key__] = BROKEN_ROUNDING(dollar_amount / len(value__['SEARCHERS_LIST']))
                 # print("TEST",value__)
-                log_string = f"[{total_search_equity * value__['PERCENTAGE']}]:{str(value__)} "
+                log_string = f"[{BROKEN_ROUNDING(total_search_equity * value__['PERCENTAGE'])}]:{str(value__)} "
                 log_function(msg_type="distro", log_string=log_string, vote_type=vote_type, distro_type="initial")
                 creator = value__["SEARCH_CREATOR"]
                 for i in value__["SEARCHERS_LIST"]:
@@ -795,18 +795,21 @@ def CHECK_TIME_EQUIVALENCE_AND_EXECUTE():
         #print("CURRENT :",current_datetime)
         #print("PREVIOUS:",previous_datetime)
         # CHECK DAY
+        '''
         if current_datetime.strftime("%d") != previous_datetime.strftime("%d"):
             append_log_to_csv(["DAY CHANGED"])
             FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Daily")
         # CHECK MONTH
+        '''
         if current_datetime.strftime("%m") != previous_datetime.strftime("%m"):
             append_log_to_csv(["MONTH CHANGED"])
             FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly")
         # CHECK YEAR
+        '''
         if current_datetime.strftime("%Y") != previous_datetime.strftime("%Y"):
             append_log_to_csv(["YEAR CHANGED"])
             FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Yearly")
-        
+        '''
 
         # TESTS
         #if current_datetime.strftime("%M") != previous_datetime.strftime("%M"):
@@ -930,9 +933,7 @@ def RUN_WITH_TIME_TEST():
     # get the start time
     st = time.time()
 
-    # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Daily", testing=True)
     FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Monthly", testing=True)
-    # FUNCTION_LOG_VOTER_DICT_WITH_FILE_ID_DICT("Yearly", testing=True)
         
     # get the end time
     et = time.time()

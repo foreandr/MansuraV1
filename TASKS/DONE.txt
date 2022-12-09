@@ -1,5 +1,6 @@
 DONE
 ==========
+DONE. upload all of mazinos archive
 DONE. TABLE WITH ACCOUNT DATE CREATION?
 DONE. ADD FUNDS
 DONE. CSV HISTORY OF EVERY INSTANCE OF CAPTIAL ALLOCATION
@@ -119,4 +120,12 @@ DONE. change search color buttons
 DONE. specify profile pic must be png or something
 DONE. SHOW HOW MUCH PAYPAL TAKES ON WITHDRAWL- SEEMS TO BE NOTHING
 DONE. ADD FUNCTION NAMES TO LOG FUNCTION
-DONE. vast swatths of the CSS and js can be simplified into single pages
+DONE. vast swatths of the CSS and js can be simplified into single pages19. 
+DONE. TRIBUNAL
+	DONE. POST TRIBUNAL
+    DONE. WORD TRIBUNAL
+    DONE. SYSTEM TRIBUNAL
+DONE. TRIBUNAL IS NOT WORKING PROPERLY MORNING TASK
+
+DONE  round search to two decimal places in distribution
+DONE. validate the search data (CHECK QUERY OR INJECTIONS TEMRS)

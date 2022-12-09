@@ -156,7 +156,7 @@ def home():
     favourites_len = len(search_favourites)
     if favourites_len > 20:
         favourites_len = 20
-
+    print("uploader_is_subbed", uploader_is_subbed)
     return render_template('index.html',
                             message="index.html page",
                            
@@ -467,6 +467,7 @@ def user_profile_name(username):
         list_from_username = username.split("_")
 
         new_username = list_from_username[0]
+        og_user_is_subbed = database.CHECK_DATE(new_username)
         filename = list_from_username[1].split("_page") # something going on weird here that is making me do the split twice
         new_filename = filename[0].split("-post")
         final_filename = new_filename[0]
@@ -505,7 +506,7 @@ def user_profile_name(username):
         # print(num_replies)
 
 
-        sername_len = len(usernames_list)
+        username_len = len(usernames_list)
         if len(file_ids_list) == 0:
             # print("THERE IS NOTHING NO FILES ON HOMEPAGE HERE", session['user'])
             user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session['user']) # THIS ASSUMES ALREADY IN SESSION, SHOULD BE
@@ -582,7 +583,7 @@ def user_profile_name(username):
             #print(e)
             full_replying_to_path =""
         # print(full_replying_to_path)
-
+        # print("uploader_is_subbed POST_DETAILS", uploader_is_subbed)
         return render_template('post_details.html',
                                 # POST DETAILS
 
@@ -592,6 +593,7 @@ def user_profile_name(username):
                                 og_post_src=og_post_src,
                                 og_post_18=og_post_18,
                                 og_post_distro_details=og_post_distro_details,
+                                og_user_is_subbed=og_user_is_subbed,
                                 test_message="post_details.html page",
                                 lengths_of_text_files=lengths_of_text_files,
                                 username_len=len(usernames_list),

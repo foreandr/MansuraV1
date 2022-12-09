@@ -355,13 +355,13 @@ def GIANT_FILE_VOTE_INSERT():
         f.write(F'\n\ndef GIANT_FILE_VOTE_INSERT():\n')
 
     for line in Lines:
-        count += 1
         # print("Line{}: {}".format(count, line.strip()))
         name = line.strip()
-        my_string = (f"""\tDB.FILE_VOTE_INSERT( '{name}', {random.randint(1,300)},  'Daily')\n\tDB.FILE_VOTE_INSERT( '{name}', {random.randint(1,300)},  'Monthly')\n\tDB.FILE_VOTE_INSERT( '{name}', {random.randint(1,300)},  'Yearly')""")
+        for i in range(9):
+            my_string = (f"""\tDB.FILE_VOTE_INSERT( '{name}', {random.randint(1, 50)})""")
         
-        with open('TEST_STRING_DEMO.txt', 'a') as f:
-            f.write(F'{my_string}\n')
+            with open('TEST_STRING_DEMO.txt', 'a') as f:
+                f.write(F'{my_string}\n')
 
 
 def GIANT_USER_SUBSCRIBE():
@@ -758,3 +758,4 @@ def CREATING_EMBED_STRUCTURE(link):
 # POST_IMG_CHECK("test",testing=True)
 # POST_IMG_CHECK("", True)
 # POST_TEXT_CHECK("")
+# GIANT_FILE_VOTE_INSERT()

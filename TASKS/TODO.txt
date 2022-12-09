@@ -1,20 +1,24 @@
-FEATUREs
-==============
 #HOTFIX
-DONE. TRIBUNAL IS NOT WORKING PROPERLY MORNING TASK
+# SEARCH GETS IT'S OWN NAV
+	-CREATE SEARCH ALGO
+	-SEARCH ALGOS
+	-SEARCH BIASES
+
+# VOTES GOES INTO BALANCE
+CHANGE DISTRO
+
+
+
+
 TRY THIS WITH IMAGES AND TEXT: https://getbootstrap.com/docs/5.2/components/card/
 HOMEPAGE, YOUTUBE BIAS? REDDIT BIAS? TIKTOK BIAS?
-
-
-# round search to two decimal places in distribution
+custom search should be a modal
+#can only advertise on the pages or posts of people that are subbed?
 # search allgo settings page, weights of nodes, weights of likes, weights of votes, weights of reports, and so on
-1. validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
-4. upload all of mazinos archive, then go on tiktok toa nnounce
-5. msg balajI
-
+4. order by in search algo
 8. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
 9. UNIT TESTS
-10 CHALLENGES OF THE DAY WITH MONETARY INCENTIVE, vote on next questions of the day?
+DONE. CHALLENGES OF THE DAY WITH MONETARY INCENTIVE, vote on next questions of the day?
 11. WORD TRIBUNAL  public tribunal for banned words and shit like that
 12. whichever searcch has the most votes at the time becomes the default search algo
 13. CHAT ROOMS
@@ -22,22 +26,26 @@ HOMEPAGE, YOUTUBE BIAS? REDDIT BIAS? TIKTOK BIAS?
 	13C). CHAT ROOMS CAN BE NAMED ANYTHING
 	13D). CHAT ROOMS NO TEXT RESTRICTION EXCEPT MAYBE EMOJIS  (MUST TEST)
 	13E)allow sending posts in the private chats
-14. RETWEET LOGIC
+14. REPOST LOGIC
+	6. NEED TO HAVE DUPE DETECTION LOGIC, THAT TURNS DUPES INTO A REPOST OF EALIEREST VERSION OF X
 15. ALLOW OTHER PEOPLE TO TAG POSTS?
     - NEED ECONOMIC LOGIC FOR TAGIGN
 16. LEADERBOARDS how many wins?
 17. BE ABLE TO BLOCK PEOPLE
 18. ACHIEVMENTS
-19. TRIBUNAL
-    - POST TRIBUNAL
-    - WORD TRIBUNAL
-    - SYSTEM TRIBUNAL
 20. PAYOUT TIMER
 21. clicking on friends goes to a FRIEND stats page? 
 22. notifications proper
 23. REPLY CHAIN
 DONE. add payment folder to main mansura (doesnt exist)
 25.x grant the ability to add a keyword to a post
+
+
+MARKETING
+============
+1. msg balajI
+2. then go on tiktok toa nnounce
+3. pitch venture capital
 
 INTEGRATING ALL REDDIT RSS FEEDS
 https://danielmiessler.com/blog/rss-feed-youtube-channel/
@@ -175,3 +183,36 @@ same thing with tiktoks
 
 might be able to do this with other kinds of links too?
 
+VERSION 2.0
+FEATUREs
+==============
+
+
+# THERE SHOULD BE AN OPTION WHERE PEOPLE CAN JUST POST A LINK TO A CHANEL AND THE WHOLE THING GETS Scraped
+# I THINK FOR REDDIT, SCRAPE THE FIRST 10000 POSTS, THEN HAVE AN RSS FEED FOR HOT that generates new posts? always check if there is one with existing title?
+NEW GOAL, GET FEEDS FROM ALL WEBSITE, INTEGRATE INTO SYSTEM, 
+YOUTUBE IS MANAGABLE, 
+TIKTOK IS MANAGABLE, 
+REDDIT NOT SURE
+TWITTER NOT SURE
+PINTREST? 
+QUORA 
+RUMBLE
+TWITCH CLIPS?
+INTERNET ARCHIVES
+DTUBE
+VIMEO
+ODYSEE
+VIMEO
+ACADEMIA
+SPOTIFY?
+soundcloud
+applemusic?
+tumblr
+DeviantArt
+Wattpad
+Yelp
+Funny or Die
+Vero
+Myspace
+PORNHUB
