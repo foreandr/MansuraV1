@@ -3816,12 +3816,17 @@ def CHECK_IF_WORD_VOTE_EXISTS(word_id, user_id, vote_type):
     conn = connection.test_connection()
     cursor = conn.cursor()
     
+    if vote_type != "":
+        vote_type_query = f"AND Vote_Type = '{vote_type}'"
+    else:
+        vote_type_query = ""
+    
     cursor.execute(f"""
         SELECT COUNT(*)
         FROM PROFANITY_LIST_VOTES
         WHERE Voter_Id = '{user_id}'
         AND word_id = '{word_id}'
-        AND Vote_Type = '{vote_type}'
+        {vote_type_query}
     """)
     count = 0
     for i in cursor.fetchall():
@@ -3830,24 +3835,41 @@ def CHECK_IF_WORD_VOTE_EXISTS(word_id, user_id, vote_type):
         
 
 def INSERT_INTO_PROFANITY_LIST_VOTES(word_id, voter_id, Vote_Type):
+    #THIS COULD BE SIMPLIFIED BUT I DONT WANT TO
     conn = connection.test_connection()
     cursor = conn.cursor()
-    if CHECK_IF_WORD_VOTE_EXISTS(word_id, voter_id, Vote_Type) > 1: # there already is a vote
+    if CHECK_IF_WORD_VOTE_EXISTS(word_id, voter_id, Vote_Type) > 0: # there already is a vote
         # MEANS I'VE AREADY DONT VOTE OF TYPE X, REMOVE IT
-        print(F"USERID:{word_id} HAS ALREADY VOTED FOR {voter_id} OF TYPE {Vote_Type}") 
-    else:
-        print("INSERTNG")
+        print("DELETE IS RUNNING")
         cursor.execute(f"""
-            INSERT INTO PROFANITY_LIST_VOTES(Word_Id, Voter_Id, Vote_Type)
-            VALUES('{word_id}', '{voter_id}', '{Vote_Type}')
-            ON CONFLICT DO NOTHING          
+            DELETE FROM PROFANITY_LIST_VOTES
+            WHERE Voter_Id = '{voter_id}'
+            AND Word_Id = '{word_id}'
         """)
         conn.commit()
+    else:
+        print("CHECKING FOR ANY VOTES")
+        if CHECK_IF_WORD_VOTE_EXISTS(word_id, voter_id, vote_type=""): # there is a vote of some kind
+            print("UPDATE IS RUNNING")
+            cursor.execute(f"""
+                UPDATE PROFANITY_LIST_VOTES
+                SET Vote_Type = '{Vote_Type}'
+                WHERE Voter_Id = '{voter_id}'
+                AND Word_Id = '{word_id}'
+            """)
+            conn.commit()
+        else:
+            print("INSERT IS RUNNING")
+            cursor.execute(f"""
+                INSERT INTO PROFANITY_LIST_VOTES(Word_Id, Voter_Id, Vote_Type)
+                VALUES('{word_id}', '{voter_id}', '{Vote_Type}')
+                ON CONFLICT DO NOTHING          
+            """)
+            conn.commit()
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
-    print("scessfully inserted", word_id, "insto profanity table")
     
     
 def INSERT_SINGLE_WORD_INTO_PROFANITY_TABLE(word):
@@ -3942,4 +3964,18 @@ def GET_WORD_TRIBUNAL_DETAILS():
     return word_list
 
 def GET_WORD_PHRASE_ID_BY_NAME(phrase):
-    return 1
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    
+    #print("CHECKING FOR PHRASE :", phrase)
+    #print("len phrase          :", len(phrase))
+    cursor.execute(F"""
+    SELECT Word_Id
+    FROM PROFANITY_LIST 
+    WHERE word = '{phrase}'       
+    """)
+    count_id = 0
+    for i in cursor.fetchall():
+        # print("EXISTENCE CHECK", i)
+        count_id = i[0]
+    return count_id

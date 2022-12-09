@@ -3,6 +3,9 @@ FEATUREs
 #HOTFIX
 DONE. TRIBUNAL IS NOT WORKING PROPERLY MORNING TASK
 TRY THIS WITH IMAGES AND TEXT: https://getbootstrap.com/docs/5.2/components/card/
+HOMEPAGE, YOUTUBE BIAS? REDDIT BIAS? TIKTOK BIAS?
+
+
 # round search to two decimal places in distribution
 # search allgo settings page, weights of nodes, weights of likes, weights of votes, weights of reports, and so on
 1. validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
@@ -35,6 +38,11 @@ TRY THIS WITH IMAGES AND TEXT: https://getbootstrap.com/docs/5.2/components/card
 23. REPLY CHAIN
 DONE. add payment folder to main mansura (doesnt exist)
 25.x grant the ability to add a keyword to a post
+
+INTEGRATING ALL REDDIT RSS FEEDS
+https://danielmiessler.com/blog/rss-feed-youtube-channel/
+https://www.tutorialspoint.com/python_text_processing/python_reading_rss_feed.htm
+
 
 NEW SUGGESTIONS======
 ALGO RANDOMIZER

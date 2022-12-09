@@ -1638,14 +1638,14 @@ def word_tribunal():
         block_phrase = request.form.get("block_phrase")
         
         vote_type = None
-        print("keep_phrase", keep_phrase)
-        print("block_phrase", block_phrase)
+        #print("keep_phrase", keep_phrase)
+        #print("block_phrase", block_phrase)
         
         if keep_phrase != None:
-            phrase = keep_phrase
+            phrase = keep_phrase.split(":")[0]
             vote_type = "UP"
         else:
-            phrase = block_phrase
+            phrase = block_phrase.split(":")[0]
             vote_type = "DOWN"
     
         word_id = database.GET_WORD_PHRASE_ID_BY_NAME(phrase)
