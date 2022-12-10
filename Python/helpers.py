@@ -485,7 +485,8 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None", ses
     current_date = current_datetime.strftime('%Y-%m-%d')
     err_string = f"[{current_datetime}][{msg_type}][{function_name}][{session_user}]-{log_string}\n" 
 
-    if msg_type == "error":        
+    if msg_type == "error":
+        # CHECK IF RESET QUERY        
         print("==========LOGGING AN ERROR PLS NOTICE!=========")
         with open(f'/root/mansura/Python/logs/errors/{current_date}.txt', 'a') as f:
             f.write(err_string)

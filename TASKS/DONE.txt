@@ -129,3 +129,7 @@ DONE. TRIBUNAL IS NOT WORKING PROPERLY MORNING TASK
 
 DONE  round search to two decimal places in distribution
 DONE. validate the search data (CHECK QUERY OR INJECTIONS TEMRS)
+DONE. CHANGE DISTRO
+DONE. VOTES GOES INTO BALANCE
+DONE. add payment folder to main mansura (doesnt exist)
+DONE. WORD TRIBUNAL  public tribunal for banned words and shit like that

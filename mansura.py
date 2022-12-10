@@ -156,7 +156,7 @@ def home():
     favourites_len = len(search_favourites)
     if favourites_len > 20:
         favourites_len = 20
-    print("uploader_is_subbed", uploader_is_subbed)
+    # print("uploader_is_subbed", uploader_is_subbed)
     return render_template('index.html',
                             message="index.html page",
                            
@@ -1656,6 +1656,9 @@ def word_tribunal():
         print("phrase   :", phrase)
         print("voter_id :",voter_id)
         database.INSERT_INTO_PROFANITY_LIST_VOTES(word_id, voter_id, vote_type)
+        database.CHECK_WORD_RATIO_UPDATE_TEXT_FILE(word_id)
+        
+        
     blocked_words = database.GET_WORD_TRIBUNAL_DETAILS()
     blocked_words_len = len(blocked_words) 
     #print(blocked_words_len)

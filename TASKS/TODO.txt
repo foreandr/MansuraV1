@@ -1,43 +1,25 @@
 #HOTFIX
-# SEARCH GETS IT'S OWN NAV
-	-CREATE SEARCH ALGO
-	-SEARCH ALGOS
-	-SEARCH BIASES
 
-# VOTES GOES INTO BALANCE
-CHANGE DISTRO
-
-
-
-
-TRY THIS WITH IMAGES AND TEXT: https://getbootstrap.com/docs/5.2/components/card/
-HOMEPAGE, YOUTUBE BIAS? REDDIT BIAS? TIKTOK BIAS?
-custom search should be a modal
-#can only advertise on the pages or posts of people that are subbed?
-# search allgo settings page, weights of nodes, weights of likes, weights of votes, weights of reports, and so on
-4. order by in search algo
-8. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
-9. UNIT TESTS
-DONE. CHALLENGES OF THE DAY WITH MONETARY INCENTIVE, vote on next questions of the day?
-11. WORD TRIBUNAL  public tribunal for banned words and shit like that
-12. whichever searcch has the most votes at the time becomes the default search algo
-13. CHAT ROOMS
+N.
+PLAYLISTSP
+7. WORD TRIBUNAL  public tribunal for banned words and shit like that
+9. CHAT ROOMS
 	13B). ANYONE IS ABLE TO CREATE, ADD OR DELETE ANYONE FROM A CHAT ROOM
 	13C). CHAT ROOMS CAN BE NAMED ANYTHING
 	13D). CHAT ROOMS NO TEXT RESTRICTION EXCEPT MAYBE EMOJIS  (MUST TEST)
 	13E)allow sending posts in the private chats
-14. REPOST LOGIC
+10. REPOST LOGIC
 	6. NEED TO HAVE DUPE DETECTION LOGIC, THAT TURNS DUPES INTO A REPOST OF EALIEREST VERSION OF X
-15. ALLOW OTHER PEOPLE TO TAG POSTS?
+11. ALLOW OTHER PEOPLE TO TAG POSTS?
     - NEED ECONOMIC LOGIC FOR TAGIGN
-16. LEADERBOARDS how many wins?
-17. BE ABLE TO BLOCK PEOPLE
-18. ACHIEVMENTS
-20. PAYOUT TIMER
-21. clicking on friends goes to a FRIEND stats page? 
-22. notifications proper
-23. REPLY CHAIN
-DONE. add payment folder to main mansura (doesnt exist)
+12. LEADERBOARDS how many wins?
+13. BE ABLE TO BLOCK PEOPLE
+14. ACHIEVMENTS
+15. PAYOUT TIMER
+16. clicking on friends goes to a FRIEND stats page? 
+17. notifications proper
+
+
 25.x grant the ability to add a keyword to a post
 
 
@@ -47,12 +29,25 @@ MARKETING
 2. then go on tiktok toa nnounce
 3. pitch venture capital
 
-INTEGRATING ALL REDDIT RSS FEEDS
-https://danielmiessler.com/blog/rss-feed-youtube-channel/
-https://www.tutorialspoint.com/python_text_processing/python_reading_rss_feed.htm
+ADS
+=============
+1. can only advertise on the pages or posts of people that are subbed?
+
+SEARCH
+=====================
+SEARCH GETS IT'S OWN NAV
+	- custom search should be a modal
+	- CREATE SEARCH ALGO
+	- SEARCH ALGOS
+	- SEARCH BIASES
+	- HOMEPAGE, YOUTUBE BIAS? REDDIT BIAS? TIKTOK BIAS?
+	- order by in search algo
+	- search allgo settings page, weights of nodes, weights of likes, weights of votes, weights of reports, and so on
+	- whichever searcch has the most votes at the time becomes the default search algo
 
 
-NEW SUGGESTIONS======
+NEW SUGGESTIONS
+=====================
 ALGO RANDOMIZER
 "I DONT WANT THIS TO AFFECT THE ALGO"
 THEMES
@@ -71,25 +66,28 @@ DEVOPS
 4. HIDE SENSATIVE INFO
 7.create a backup of the DB on every daily reset
 8. CREATE  DEV NET ALONGSIDE TEST NET, CREATE UNIT TESTS
-
+4. PUT THE MNT FOLDER INISDE OF THE STATIC FOLDER!!
 
 TENTATIVE:
 1. make the history look less hsit
 add replying to profiles
 CHECK:
 #ALSO SOME WEIRD SESSION ISSUES, if it thinks youre logged in, you cant go to the log in screen, maybe redirect to profile or something instead, and if there is no profile, , redirect o login
+18. REPLY CHAIN
+6. CHALLENGES OF THE DAY WITH MONETARY INCENTIVE, vote on next questions of the day?
 
-SEARCH
-=======
+SEARCH2 
+=====================
 FULL SAME DISTRIBUTION FOR THE SEARCH ALGOS, YOU ARE REWARDED FOR YOUR VOTE THERE TOO
 x3. elo system in search might be a good idea
 3. MORE COMPLEX SEARCH
 	WITH DISTRIBUTION METHOD AS WELL
+5. UNIT TESTS
 
 
 
 COMING SOON
-===========
+=====================
 HAVE TO BE ABLE TO DISPROVE OF OR APPROVE ADS, FOR X TIME PERIOD AS WELL
 6. LEADERBOARDS / HISTORY
 	22. create leaderboard table to put extra things
@@ -106,7 +104,7 @@ HAVE TO BE ABLE TO DISPROVE OF OR APPROVE ADS, FOR X TIME PERIOD AS WELL
 	PAGE, BASICALLY QUERY ALL NEW INFO IN LAST X TIMEFRAME, CAN BE CUSTOM
 
 QUALITY OF LIFE
-===============
+=====================
 email noam chomsky about the consequneces of substrate independant information processing
 20x12. change user on structure to be able to show users name when signedinto session
 X. NOT SURE UGNNA DO. POST TO LIKE RATIO NEXT TO LIST ON PROFILE OF WHO BLOCKS? RATING OF ACCOUNTS?

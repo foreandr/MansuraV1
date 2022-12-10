@@ -17,7 +17,8 @@ def UPDATE_USER_BALANCE(user):
     
 def RESET_DATABASE():
     print("hello world")
-    USER_FULL_RESET("small")
+    size = input('What size demo reset do you want?(small, large)\n')
+    USER_FULL_RESET(server="false", size=size)
 
 
 def DEMO_ACCOUNTS_REGISTER():
@@ -187,5 +188,3 @@ def DELETE_SPECIFIC_FILE_KEYWORD(KEYWORD):
     conn.commit()
     conn.close()
     cursor.close()
-
-RESET_DATABASE()

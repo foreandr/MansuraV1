@@ -43,9 +43,16 @@ https://www.golinuxcloud.com/flask-gunicorn-nginx/
 https://www.geeksforgeeks.org/how-to-catch-all-javascript-errors-and-send-them-to-server/
 https://stackoverflow.com/questions/35215842/render-html-strings-in-flask-templates
 https://stackoverflow.com/questions/24308239/postgresql-integer-out-of-range
+https://serpapi.com/blog/scrape-youtube-video-page-with-python/
+https://getbootstrap.com/docs/5.2/components/card/ TRY THIS WITH IMAGES AND TEXT:  DIDNT WORK
+
+
 
 NEW STUFF
 https://feedparser.readthedocs.io/en/latest/common-rss-elements.html
 https://www.tutorialspoint.com/python_text_processing/python_reading_rss_feed.htm
 https://stackoverflow.com/questions/20986631/how-can-i-scroll-a-web-page-using-selenium-webdriver-in-python
-https://serpapi.com/blog/scrape-youtube-video-page-with-python/
+
+INTEGRATING ALL REDDIT RSS FEEDS
+https://danielmiessler.com/blog/rss-feed-youtube-channel/
+https://www.tutorialspoint.com/python_text_processing/python_reading_rss_feed.htm

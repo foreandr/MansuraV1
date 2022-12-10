@@ -110,10 +110,11 @@ def CHECK_IF_NAME_EXISTS(username):
         return False
 
 
-def USER_CREATE_TABLE():
+def USER_CREATE_TABLE(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
-
+    if server == "false":
+        cursor.execute("""DROP TABLE IF EXISTS USERS CASCADE""")
     try:
         cursor.execute(
                 f"""
@@ -133,8 +134,7 @@ def USER_CREATE_TABLE():
         print_green("USER CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        print_error("\nHAD TO ROLLBACK USER CREATION" + str(e) )
-    
+        log_function("error", e, function_name="USER_CREATE_TABLE")
     cursor.close()
     conn.close()
 
@@ -192,43 +192,56 @@ def USER_INSERT_MULTPLE_FILES(size="small"):
     print_green("USER INSERT MULTPLE FILES COMPLETED\n")
 
 
-def CONNECTION_CREATE_TABLE():
+def CONNECTION_CREATE_TABLE(server):
     conn = connection.test_connection()
-
     cursor = conn.cursor()
-    cursor.execute(
-        f"""
-            CREATE TABLE CONNECTIONS
-            (
-                Friendship_Id SERIAL PRIMARY KEY,
-                User_Id1 INT,
-                User_Id2 INT,
-                creation_date timestamp,
-                
-                FOREIGN KEY (User_Id1) REFERENCES USERS(User_Id),
-                FOREIGN KEY (User_Id2) REFERENCES USERS(User_Id)
-            );
-        """)
-    conn.commit()
+    
+    try:
+        if server == "false":
+            cursor.execute("""DROP TABLE IF EXISTS CONNECTIONS CASCADE;""")
+            
+        cursor.execute(
+            f"""
+                CREATE TABLE CONNECTIONS
+                (
+                    Friendship_Id SERIAL PRIMARY KEY,
+                    User_Id1 INT,
+                    User_Id2 INT,
+                    creation_date timestamp,
+                    
+                    FOREIGN KEY (User_Id1) REFERENCES USERS(User_Id),
+                    FOREIGN KEY (User_Id2) REFERENCES USERS(User_Id)
+                );
+            """)
+        conn.commit()
+        print_green("CONNECTION TABLE CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="CONNECTION_CREATE_TABLE")
+        
     cursor.close()
     conn.close()
-    print_green("CONNECTION TABLE CREATE COMPLETED\n")
+    
 
-def CREATE_TABLE_1_TIME_PASSWORDS():
+def CREATE_TABLE_1_TIME_PASSWORDS(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
-
-    cursor.execute("""DROP TABLE IF EXISTS ONE_TIME_PASSWORDS;""")
-    cursor.execute("""
-        CREATE TABLE ONE_TIME_PASSWORDS
-        (
-            One_Time_Id SERIAL PRIMARY KEY,
-            Email varchar UNIQUE,
-            Generated_Pass_Code varchar,
-            FOREIGN KEY (Email) REFERENCES USERS(Email)
-        );
-    """)
-    conn.commit()
+    if server == "false":
+        cursor.execute("""DROP TABLE IF EXISTS ONE_TIME_PASSWORDS;""")
+    try:
+        cursor.execute("""
+            CREATE TABLE ONE_TIME_PASSWORDS
+            (
+                One_Time_Id SERIAL PRIMARY KEY,
+                Email varchar UNIQUE,
+                Generated_Pass_Code varchar,
+                FOREIGN KEY (Email) REFERENCES USERS(Email)
+            );
+        """)
+        conn.commit()
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="CREATE_TABLE_1_TIME_PASSWORDS")
     conn.close()
     cursor.close()
 
@@ -359,12 +372,13 @@ def CONNECTION_INSERT_MULTIPLE(size="small"):
     print_green("USER MULTI INSERT CONNECTIONS COMPLETED\n")
 
 
-def LIKES_CREATE_TABLE():
+def LIKES_CREATE_TABLE(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
 
     try:
-        cursor.execute(f"DROP TABLE IF EXISTS LIKES ;")
+        if server == "false":
+            cursor.execute(f"DROP TABLE IF EXISTS LIKES ;")
         cursor.execute(
                 f"""
                 CREATE TABLE LIKES(
@@ -382,9 +396,8 @@ def LIKES_CREATE_TABLE():
 
         print_green("LIKES CREATE COMPLETED\n")
     except Exception as e:
-        
         cursor.execute("ROLLBACK")
-        print_error("\nHAD TO ROLLBACK LIKES TABLE CREATION" + str(e) )
+        log_function("error", e, function_name="HAD TO ROLLBACK LIKES TABLE CREATION")
         # exit()
 
     cursor.close()
@@ -444,12 +457,13 @@ def LIKE_LOGIC(liker_username, file_id):
         print("FAILED LIKE INSERT")
         LIKES_REMOVE(liker_username, file_id)
 
-def DILIKES_CREATE_TABLE():
+def DILIKES_CREATE_TABLE(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
 
     try:
-        cursor.execute(f"DROP TABLE IF EXISTS DISLIKES;")
+        if server == "false":
+            cursor.execute(f"DROP TABLE IF EXISTS DISLIKES;")
         cursor.execute(
                 f"""
                 CREATE TABLE DISLIKES(
@@ -464,12 +478,10 @@ def DILIKES_CREATE_TABLE():
                 );
                 """)
         conn.commit()
-
         print_green("DISLIKES CREATE COMPLETED\n")
     except Exception as e:
-        
         cursor.execute("ROLLBACK")
-        print_error("\nHAD TO ROLLBACK DISLIKES TABLE CREATION" + str(e) )
+        log_function("error", e, function_name="DILIKES_CREATE_TABLE")
         # exit()
 
     cursor.close()
@@ -557,39 +569,42 @@ def DISLIKES_DEMO_INSERT(size="small"):
     #DISLIKES_INSERT("foreandr", 1) # TEST SHOULD FAIL
 
 
-def FILE_VOTE_CREATE_TABLE():
+def FILE_VOTE_CREATE_TABLE(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
-    cursor.execute(
-        f"""
-            CREATE TABLE FILE_VOTES(
-            File_Vote_Id SERIAL PRIMARY KEY,
-            File_id INT,
-            Vote_Type varchar,
-            Voter_Username varchar(50),
-            Date_Time timestamp, 
-            FOREIGN KEY (File_id) REFERENCES FILES(File_id)
+    
+    try:
+        if server == "false":
+            cursor.execute("""DROP TABLE IF EXISTS FILE_VOTES CASCADE;""")
+        cursor.execute(
+            f"""
+                CREATE TABLE FILE_VOTES(
+                File_Vote_Id SERIAL PRIMARY KEY,
+                File_id INT,
+                Vote_Type varchar,
+                Voter_Username varchar(50),
+                Date_Time timestamp, 
+                FOREIGN KEY (File_id) REFERENCES FILES(File_id)
+            )
+            """)
+        conn.commit()
+        
+        cursor.execute("""
+        ALTER TABLE FILE_VOTES
+        ADD CHECK( 
+            Vote_Type = 'Daily'
+            OR Vote_Type = 'Monthly' 
+            OR Vote_Type = 'Yearly'
         )
         """)
-    conn.commit()
-    
-    cursor.execute("""
-    ALTER TABLE FILE_VOTES
-    ADD CHECK( 
-        Vote_Type = 'Daily'
-        OR Vote_Type = 'Monthly' 
-        OR Vote_Type = 'Yearly'
-    )
-    """)
-    conn.commit()
-    print_green("VOTE CREATE TABLE COMPLETED")
-
-
-
-
+        conn.commit()
+        print_green("VOTE CREATE TABLE COMPLETED")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="FILE_VOTE_CREATE_TABLE")
     cursor.close()
     conn.close()
-    print_green("VOTE CREATE TABLE CONSTRAINT COMPLETED")
+    
 
 
 def GET_NUM_FILE_VOTES_LEFT(username, my_vote_type):
@@ -912,51 +927,51 @@ def REMOVE_ALL_USER_DIRECTORIES():
             # print(OSError)
 
 
-def USER_FULL_RESET(size="small"):
+def USER_FULL_RESET(server="false", size="small"):
     print_title("\nEXECUTING FULL RESET\n")
-    
+    print("SERVER", server)
     # SET TIMEZONE
     # SET_TIME_ZONE(conn)
     
     # DROPPING ALL TABLES
-    DROP_ALL_TABLES()
-    REMOVE_ALL_USER_DIRECTORIES()
+    if server == "false":
+        DROP_ALL_TABLES()
+        REMOVE_ALL_USER_DIRECTORIES()
 
     # CREATE TABLES
+    USER_CREATE_TABLE(server)
+    CREATE_PAYOUTS_TABLE(server)
+    FILE_CREATE_TABLE(server)  
+    LIKES_CREATE_TABLE(server)
+    DILIKES_CREATE_TABLE(server)
+    CREATE_TABLE_KEYWORDS(server)
+    CREATE_TABLE_FILE_KEYWORDS(server)
+    FILE_VOTE_CREATE_TABLE(server) 
+    CONNECTION_CREATE_TABLE(server)
+    CREATE_MANSURA_TABLE(server) # SUBSCRIPTIONS
+    SEARCH_ALGO_CREATE_TABLE(server)
+    CREATE_TABLE_SEARCH_VOTES(server)
+    CREATE_TABLE_SEARCH_FAVOURITES(server)
+    CREATE_TABLE_POST_FAVOURITES(server)
+    EQUITY_CREATE_TABLE(server)
+    CREATE_TABLE_1_TIME_PASSWORDS(server)
+    CREATE_TABLE_TRIBUNAL(server)
+    CREATE_TABLE_PROFANITY_LIST(server)
+    CREATE_TABLE_PROFANITY_LIST_VOTES(server)
     
-    USER_CREATE_TABLE()
-    CREATE_PAYOUTS_TABLE()
-    FILE_CREATE_TABLE()  
-    LIKES_CREATE_TABLE()
-    DILIKES_CREATE_TABLE()
-    CREATE_TABLE_KEYWORDS()
-    CREATE_TABLE_FILE_KEYWORDS()
-    FILE_VOTE_CREATE_TABLE() 
-    CONNECTION_CREATE_TABLE()
-    CREATE_MANSURA_TABLE() # SUBSCRIPTIONS
-    SEARCH_ALGO_CREATE_TABLE()
-    CREATE_TABLE_SEARCH_VOTES()
-    CREATE_TABLE_SEARCH_FAVOURITES()
-    CREATE_TABLE_POST_FAVOURITES()
-    EQUITY_CREATE_TABLE()
-    CREATE_TABLE_1_TIME_PASSWORDS()
-    CREATE_TABLE_TRIBUNAL()
-    CREATE_TABLE_PROFANITY_LIST()
-    CREATE_TABLE_PROFANITY_LIST_VOTES()
-    
-    FUNCTION_AND_PROCEDURES()
-
-    USER_INSERT_MULTIPLE(size)
-    CONNECTION_INSERT_MULTIPLE(size)
-    MANSURA_SUBSCRIBE_INSERT_MULTIPLE_DEMO(size)
-    USER_INSERT_MULTPLE_FILES(size)
-    FILE_VOTE_INSERT_DEMO(size) # VOTES ON CSVS
-    SEARCH_ALGO_INSERT_DEMO_MULTIPLE(size)
-    LIKES_DEMO_INSERT(size)
-    DISLIKES_DEMO_INSERT(size)
-    DEMO_SEARCH_VOTE_INSERT(size)
-    DEFAULT_EQUITY_INSERT(size)
-    DEMO_FILE_INSERT_TIKTOKS(1)
+    if server == "false":
+        FUNCTION_AND_PROCEDURES()
+        USER_INSERT_MULTIPLE(size)
+        CONNECTION_INSERT_MULTIPLE(size)
+        MANSURA_SUBSCRIBE_INSERT_MULTIPLE_DEMO(size)
+        USER_INSERT_MULTPLE_FILES(size)
+        FILE_VOTE_INSERT_DEMO(size) # VOTES ON CSVS
+        SEARCH_ALGO_INSERT_DEMO_MULTIPLE(size)
+        LIKES_DEMO_INSERT(size)
+        DISLIKES_DEMO_INSERT(size)
+        DEMO_SEARCH_VOTE_INSERT(size)
+        DEFAULT_EQUITY_INSERT(size)
+        DEMO_FILE_INSERT_TIKTOKS(1)
     # EQUITY CAN GO LAST, DOESN'T INTERFERE WITH ANYTHING
     
     # TRANSFER_EQUITY(buyer="a", seller="foreandr", amount=2)
@@ -1047,11 +1062,12 @@ def GET_ALL_FILE_KEY_words():
         print(i)
 
 
-def CREATE_TABLE_KEYWORDS():
+def CREATE_TABLE_KEYWORDS(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute("""DROP TABLE IF EXISTS KEYWORDS CASCADE""")
+        if server == "false":
+            cursor.execute("""DROP TABLE IF EXISTS KEYWORDS CASCADE""")
         cursor.execute(
             f"""
                 CREATE TABLE KEYWORDS
@@ -1064,17 +1080,18 @@ def CREATE_TABLE_KEYWORDS():
         print_green("KEYWORDS CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        print_error("\nHAD TO ROLLBACK USER CREATION" + str(e) )
+        log_function("error", e, function_name="CREATE_TABLE_KEYWORDS")
     
     cursor.close()
     conn.close()
 
 
-def CREATE_TABLE_FILE_KEYWORDS():
+def CREATE_TABLE_FILE_KEYWORDS(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute("""DROP TABLE IF EXISTS FILE_KEYWORDS CASCADE""")
+        if server == "false":
+            cursor.execute("""DROP TABLE IF EXISTS FILE_KEYWORDS CASCADE""")
         cursor.execute(
             f"""
                 CREATE TABLE FILE_KEYWORDS
@@ -1090,7 +1107,7 @@ def CREATE_TABLE_FILE_KEYWORDS():
         print_green("FILE_KEYWORDS CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        print_error("\nHAD TO ROLLBACK USER CREATION" + str(e) )
+        log_function("error", e, function_name="CREATE_TABLE_FILE_KEYWORDS")
 
 
 def DROP_ALL_TABLES():
@@ -1218,31 +1235,40 @@ def DROP_ALL_TABLES():
     conn.close()
 
 
-def FILE_CREATE_TABLE():
+def FILE_CREATE_TABLE(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
-    cursor.execute("""DROP TABLE IF EXISTS FILES""")
-    cursor.execute(
-        f"""
-        CREATE TABLE FILES
-        (
-        File_id SERIAL PRIMARY KEY,   
-        File_PATH varchar UNIQUE,
-        Uploader varchar,
-        UserId BIGINT,
-        Post_foreign_id_source varchar,
-        Post_total_size INT,
-        Date_Time timestamp,      
-        FOREIGN KEY (UserId) REFERENCES USERS(User_Id)
-        );
-        """)
-    conn.commit()
+    
+    
+    try:
+        if server == "false":
+            cursor.execute("""DROP TABLE IF EXISTS FILES""")
+        
+        cursor.execute(
+            f"""
+            CREATE TABLE FILES
+            (
+            File_id SERIAL PRIMARY KEY,   
+            File_PATH varchar UNIQUE,
+            Uploader varchar,
+            UserId BIGINT,
+            Post_foreign_id_source varchar,
+            Post_total_size INT,
+            Date_Time timestamp,      
+            FOREIGN KEY (UserId) REFERENCES USERS(User_Id)
+            );
+            """)
+        conn.commit()
+        print_green("FILES CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="FILE_CREATE_TABLE")
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
     
-    print("FILES CREATE COMPLETED\n")
+
 
 def ALTER_PRIMARY_KEY_IN_FILES():
     conn = connection.test_connection()
@@ -1745,22 +1771,28 @@ def CHECK_IF_ALREADY_FOLLOWING(asker, target):
         return False
 
 
-def CREATE_MANSURA_TABLE():
+def CREATE_MANSURA_TABLE(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
-    # cursor.execute("""DROP TABLE IF EXISTS SUBSCRIPTIONS_MENSURA;""")
-    cursor.execute(
-        f"""
-        CREATE TABLE SUBSCRIPTIONS_MENSURA
-        (
-        mansura_Subscription_Id SERIAL PRIMARY KEY,   
-        Username varchar,        
-        Subscribed boolean,
-        Date_Time timestamp,-- NOT NULL DEFAULT CURRENT_DATE      
-        FOREIGN KEY (Username) REFERENCES USERS(Username)
-        );
-        """)
-    conn.commit()
+
+    try:
+        if server == "false":
+            cursor.execute("""DROP TABLE IF EXISTS SUBSCRIPTIONS_MENSURA;""")
+        cursor.execute(
+            f"""
+            CREATE TABLE SUBSCRIPTIONS_MENSURA
+            (
+            mansura_Subscription_Id SERIAL PRIMARY KEY,   
+            Username varchar,        
+            Subscribed boolean,
+            Date_Time timestamp,-- NOT NULL DEFAULT CURRENT_DATE      
+            FOREIGN KEY (Username) REFERENCES USERS(Username)
+            );
+            """)
+        conn.commit()
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="CREATE_MANSURA_TABLE")
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
@@ -1886,12 +1918,13 @@ def USER_SUBSCRIBE_FULL(username):
         return False
 
 
-def CREATE_PAYOUTS_TABLE():
+def CREATE_PAYOUTS_TABLE(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
 
     try:
-        cursor.execute("""DROP TABLE IF EXISTS PAYOUTS;""")
+        if server == "false":
+            cursor.execute("""DROP TABLE IF EXISTS PAYOUTS;""")
         cursor.execute(
                 f"""
                 CREATE TABLE PAYOUTS
@@ -2078,11 +2111,12 @@ def EQUITY_INSERT():
         log_function("error", e, function_name="EQUITY_INSERT")
 
 
-def EQUITY_CREATE_TABLE():
+def EQUITY_CREATE_TABLE(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute(f"DROP TABLE IF EXISTS EQUITY;")
+        if server == "false":
+            cursor.execute(f"DROP TABLE IF EXISTS EQUITY;")
         cursor.execute(f"""
         CREATE TABLE EQUITY 
         (
@@ -2094,6 +2128,7 @@ def EQUITY_CREATE_TABLE():
         conn.commit()
         print_green("EQUITY_CREATE_TABLE SUCCESSFUL")
     except Exception as e:
+        cursor.execute("ROLLBACK")
         log_function("error", e, function_name="EQUITY_CREATE_TABLE")
     
     CLOSE_CURSOR_AND_CONN(cursor, conn)
@@ -2740,35 +2775,41 @@ def GET_UPLOADER_AND_FILE_ID_FROM_ALGO_NAME(order_check):
     return name, search_id, search_path
 
 
-def SEARCH_ALGO_CREATE_TABLE():
+def SEARCH_ALGO_CREATE_TABLE(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
-    cursor.execute("""DROP TABLE IF EXISTS SEARCH_ALGORITHMS""")
-    cursor.execute(
-        f"""
-        CREATE TABLE SEARCH_ALGORITHMS
-        (
-        Search_id SERIAL PRIMARY KEY,   
-        Username varchar,
-        Search_Path varchar UNIQUE,
-        Algorithm_Name varchar UNIQUE,
-        Search_TOTAL BIGINT,
-        Date_Time timestamp,      
-        FOREIGN KEY (Username) REFERENCES USERS(Username)
-        );
-        """)
-    conn.commit()
+    try:
+        if server == "false":
+            cursor.execute("""DROP TABLE IF EXISTS SEARCH_ALGORITHMS""")
+        cursor.execute(
+            f"""
+            CREATE TABLE SEARCH_ALGORITHMS
+            (
+            Search_id SERIAL PRIMARY KEY,   
+            Username varchar,
+            Search_Path varchar UNIQUE,
+            Algorithm_Name varchar UNIQUE,
+            Search_TOTAL BIGINT,
+            Date_Time timestamp,      
+            FOREIGN KEY (Username) REFERENCES USERS(Username)
+            );
+            """)
+        conn.commit()
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="CREATE_MANSURA_TABLE")
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
 
 
-def CREATE_TABLE_POST_FAVOURITES():
+def CREATE_TABLE_POST_FAVOURITES(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute(f"DROP TABLE IF EXISTS POST_FAVOURITES;")
+        if server == "false":
+            cursor.execute(f"DROP TABLE IF EXISTS POST_FAVOURITES;")
         cursor.execute(
                 f"""
                 CREATE TABLE POST_FAVOURITES(
@@ -2786,9 +2827,8 @@ def CREATE_TABLE_POST_FAVOURITES():
 
         print_green("POST_FAVOURITES CREATE COMPLETED\n")
     except Exception as e:
-        
         cursor.execute("ROLLBACK")
-        print_error("\nHAD TO ROLLBACK POST_FAVOURITES TABLE CREATION" + str(e) )
+        log_function("error",e, function_name="CREATE_TABLE_POST_FAVOURITES")   
         # exit()
 
     cursor.close()
@@ -2834,12 +2874,13 @@ def GET_SEARCH_FAVOURITES_BY_USERNAME(username):
         # print(i)
     return favourited_algos
 
-def CREATE_TABLE_SEARCH_FAVOURITES():
+def CREATE_TABLE_SEARCH_FAVOURITES(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
 
     try:
-        cursor.execute(f"DROP TABLE IF EXISTS SEARCH_FAVOURITES;")
+        if server == "false":
+            cursor.execute(f"DROP TABLE IF EXISTS SEARCH_FAVOURITES;")
         cursor.execute(
                 f"""
                 CREATE TABLE SEARCH_FAVOURITES(
@@ -2859,7 +2900,7 @@ def CREATE_TABLE_SEARCH_FAVOURITES():
 
     except Exception as e:       
         cursor.execute("ROLLBACK")
-        print_error("HAD TO ROLLBACK  CREATE_TABLE_SEARCH_FAVOURITES TABLE CREATION" + str(e))   
+        # print_error("HAD TO ROLLBACK  CREATE_TABLE_SEARCH_FAVOURITES TABLE CREATION" + str(e))   
         log_function("error",e, function_name="CREATE_TABLE_SEARCH_FAVOURITES")      
 
     cursor.close()
@@ -2913,20 +2954,26 @@ def DEL_SEARCH_FAVOURITE(user, search_id):
     conn.close()
     cursor.close()
 
-def CREATE_TABLE_SEARCH_VOTES():
+def CREATE_TABLE_SEARCH_VOTES(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
-    cursor.execute("""DROP TABLE IF EXISTS SEARCH_VOTES""")
-    cursor.execute(
-        f"""
-            CREATE TABLE SEARCH_VOTES(
-            Search_Vote_Id SERIAL PRIMARY KEY,
-            Search_id INT,
-            Voter_Username varchar,
-            FOREIGN KEY (Search_id) REFERENCES SEARCH_ALGORITHMS(Search_id)
-        )
-        """)
-    conn.commit()
+    try:
+        if server == "false":
+            cursor.execute("""DROP TABLE IF EXISTS SEARCH_VOTES""")
+        cursor.execute(
+            f"""
+                CREATE TABLE SEARCH_VOTES(
+                Search_Vote_Id SERIAL PRIMARY KEY,
+                Search_id INT,
+                Voter_Username varchar,
+                FOREIGN KEY (Search_id) REFERENCES SEARCH_ALGORITHMS(Search_id)
+            )
+            """)
+        conn.commit()
+        
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="CREATE_TABLE_SEARCH_VOTES")
     
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
@@ -3689,11 +3736,12 @@ def GET_PATH_BY_FILE_ID(file_id):
 
     return file_path
 
-def CREATE_TABLE_TRIBUNAL():
+def CREATE_TABLE_TRIBUNAL(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
     try:
-        cursor.execute("""DROP TABLE IF EXISTS TRIBUNAL CASCADE""")
+        if server == "false":
+            cursor.execute("""DROP TABLE IF EXISTS TRIBUNAL CASCADE""")
         cursor.execute(
             f"""
                 CREATE TABLE TRIBUNAL
@@ -3706,7 +3754,7 @@ def CREATE_TABLE_TRIBUNAL():
         print("TRIBUNAL CREATE COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        print("\nHAD TO ROLLBACK TRIBUNAL CREATION" + str(e) )
+        log_function("error", e, function_name="CREATE_TABLE_TRIBUNAL")
     
     cursor.close()
     conn.close()
@@ -3761,45 +3809,56 @@ def DEMO_FILE_INSERT_TIKTOKS(num):
                 distro_details=["EQUAL DISTRIBUTION", "None"])
             count += 1 
             
-def CREATE_TABLE_PROFANITY_LIST():
+def CREATE_TABLE_PROFANITY_LIST(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
-    cursor.execute("""DROP TABLE IF EXISTS PROFANITY_LIST CASCADE""")
-    cursor.execute(
-        f"""
-        CREATE TABLE PROFANITY_LIST
-        (
-        Word_Id SERIAL PRIMARY KEY,   
-        word varchar UNIQUE
-        );
-        """)
-    conn.commit()
+    try:
+        if server == "false":
+            cursor.execute("""DROP TABLE IF EXISTS PROFANITY_LIST CASCADE""")
+        cursor.execute(
+            f"""
+            CREATE TABLE PROFANITY_LIST
+            (
+            Word_Id SERIAL PRIMARY KEY,   
+            word varchar UNIQUE
+            );
+            """)
+        conn.commit()
+        INITIAL_INSERT_BLOCKFILE_INTO_PROFANITY_TABLE() # MUST DO
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="CREATE_TABLE_PROFANITY_LIST")
     
-    INITIAL_INSERT_BLOCKFILE_INTO_PROFANITY_TABLE() # MUST DO
+
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
 
-def CREATE_TABLE_PROFANITY_LIST_VOTES():
+def CREATE_TABLE_PROFANITY_LIST_VOTES(server):
     conn = connection.test_connection()
     cursor = conn.cursor()
-    cursor.execute("""DROP TABLE IF EXISTS PROFANITY_LIST_VOTES CASCADE""")
-    cursor.execute(
-        f"""
-        CREATE TABLE PROFANITY_LIST_VOTES
-        (
-        Word_Vote_Id SERIAL PRIMARY KEY,   
-        Word_Id BIGINT UNIQUE,
-        Voter_Id BIGINT,
-        Vote_Type varchar,
+    try:
+        if server == "false":
+            cursor.execute("""DROP TABLE IF EXISTS PROFANITY_LIST_VOTES CASCADE""")
+        cursor.execute(
+            f"""
+            CREATE TABLE PROFANITY_LIST_VOTES
+            (
+            Word_Vote_Id SERIAL PRIMARY KEY,   
+            Word_Id BIGINT UNIQUE,
+            Voter_Id BIGINT,
+            Vote_Type varchar,
+            
+            FOREIGN KEY (Word_Id) REFERENCES PROFANITY_LIST(Word_Id),
+            FOREIGN KEY (Voter_Id) REFERENCES USERS(User_Id),
+            UNIQUE (Word_Id, Voter_Id)
+            );
+            """)
+        conn.commit()
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="CREATE_TABLE_PROFANITY_LIST_VOTES")
         
-        FOREIGN KEY (Word_Id) REFERENCES PROFANITY_LIST(Word_Id),
-        FOREIGN KEY (Voter_Id) REFERENCES USERS(User_Id),
-        UNIQUE (Word_Id, Voter_Id)
-        );
-        """)
-    conn.commit()
-    
     # UP OR DOWNVOTE-PROBABLY SHOULD HAVE DONE THIS FOR POSTS AS WELL BUT OH WELL
     cursor.execute("""
     ALTER TABLE PROFANITY_LIST_VOTES
@@ -3868,9 +3927,15 @@ def INSERT_INTO_PROFANITY_LIST_VOTES(word_id, voter_id, Vote_Type):
             """)
             conn.commit()
     
+    
+    
+    
+    
     # CLOSE CURSOR AND CONNECTION [MANDATORY]        
     cursor.close()
     conn.close()
+    
+    
     
     
 def INSERT_SINGLE_WORD_INTO_PROFANITY_TABLE(word):
@@ -3910,7 +3975,7 @@ def INITIAL_INSERT_BLOCKFILE_INTO_PROFANITY_TABLE():
     word_array = (f.read().split("\n"))[:-2]
     for i in word_array:
         INSERT_SINGLE_WORD_INTO_PROFANITY_TABLE(i)
-    print("COMPLETED INSERT ALL PROFANE INITIAL")
+    print_green("COMPLETED INSERT ALL PROFANE INITIAL")
     
     
 def GET_ALL_PROFANE_WORDS():
@@ -3980,3 +4045,6 @@ def GET_WORD_PHRASE_ID_BY_NAME(phrase):
         # print("EXISTENCE CHECK", i)
         count_id = i[0]
     return count_id
+
+def CHECK_WORD_RATIO_UPDATE_TEXT_FILE(word_id):
+    print(F"CHECKING {word_id}")

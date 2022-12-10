@@ -11,6 +11,12 @@ touch /tmp/mansura/ipc.sock
 source venv/bin/activate
 pip install -r requirments.txt
 
+
+# GIT CHANGES
+
+#. 
+python reset.py
+
 # 2.
 sudo nginx -s reload 
 
