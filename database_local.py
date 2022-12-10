@@ -188,3 +188,5 @@ def DELETE_SPECIFIC_FILE_KEYWORD(KEYWORD):
     conn.commit()
     conn.close()
     cursor.close()
+    
+RESET_DATABASE()

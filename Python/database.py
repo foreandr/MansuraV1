@@ -12,7 +12,7 @@ import hashlib
 from psycopg2 import Error
 import Python.procedures as procedures
 # from Python.db_connection import connection
-from  Python.helpers import print_green, print_title, print_error, turn_pic_to_hex, check_and_save_dir, print_warning, log_function, TURN_WHERE_CLAUSE_TO_STRING, NLP_KEYWORD_EXTRACTOR, CREATING_EMBED_STRUCTURE
+from  Python.helpers import *
 import Python.db_connection as connection
 import Python.big_reset_file as big_reset_file
 import Python.my_email as my_email
@@ -1249,7 +1249,7 @@ def FILE_CREATE_TABLE(server):
             CREATE TABLE FILES
             (
             File_id SERIAL PRIMARY KEY,   
-            File_PATH varchar UNIQUE,
+            File_PATH varchar,
             Uploader varchar,
             UserId BIGINT,
             Post_foreign_id_source varchar,
@@ -1321,6 +1321,7 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
     REALLY COMPLICATED NIGHTMARE BUT IT WORKS
     
     """
+    print("GOT INTO FILE INSERT")
     conn = connection.test_connection()
     cursor = conn.cursor()
     CURRENT_FILE_ID = ""
@@ -1332,6 +1333,8 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
     #CHECK EMPTY   
     if post_file == "":
         filename = ""
+    elif post_file =="COPY":
+        filename = "COPY"
     else: 
         filename = post_file.filename
 
@@ -1379,14 +1382,36 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
         conn.commit()
             
         # 3. MAKE NEW DIRECTORY FOR USER POST BY FILE_ID
-        new_dir = f'static/#UserData/{uploader}/files/{new_path}'
-        #path = os.path.join(os.getcwd(), new_dir)
-        path = new_dir
-        os.mkdir(path)  
-            
+        new_dir = f'/root/mansura/static/#UserData/{uploader}/files/{new_path}'
+        my_path = new_dir
+        print(my_path)
+        os.makedirs(my_path)  
+
+        
         # 4. save the picture if there is one
-        if filename != "":
+        if filename == "COPY":
+            path = GET_PATH_BY_FILE_ID(post_foreign_id_source)
+            og_poster_username = path.split("-")[0]
+            full_path = f"/root/mansura/static/#UserData/{og_poster_username}/files/{path}"
+            
+            full_path_with_image = full_path + "/pic.jpg"
+            print("COPYING FROM:", full_path_with_image)
+            print("COPYING TO  :", my_path)
+            import shutil
             try:
+                print("successfully copied img")
+                shutil.copyfile(full_path_with_image, my_path+"/pic.jpg")
+            except Exception as e:
+                #print(e)
+                print("no img")
+                pass
+            
+            shutil.copyfile(full_path + "/post_config.json", my_path+"/post_config.json")
+            print("successfully copied post")
+            
+        elif filename != "":
+            try:
+                print("GOING TO SOLO INSERT")
                 # print("ENTERING POSTIFLE:", post_file)
                 target = rf'/root/mansura/static/#UserData/{uploader}/files/{new_path}/pic.jpg'#TODO: DIFFERENTIATE DIFFERENT EXTENSIONS
                 post_file.stream.seek(0)
@@ -1395,17 +1420,20 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
                 # print("ENTERED INTO TARGET", target)
             except Exception as e:
                 log_function("error", str(e) + "FILE ERROR ENTRY OF SOME KIND!!!!!", function_name="ENTERING POSTIFLE")    
+                #print("bad thing happened")
+        # 5. INSERT INTO FILE SYSTEM    
+        if filename == "COPY":
+            pass 
+        else:
+            FILE_INSERT_STORAGE(
+                username = uploader, 
+                path_name=new_path, 
+                text=post_text, 
+                age_18=age_18,
+                external_source=external_link,
+                distro_details=distro_details
 
-        # 5. INSERT INTO FILE SYSTEM           
-        FILE_INSERT_STORAGE(
-            username = uploader, 
-            path_name=new_path, 
-            text=post_text, 
-            age_18=age_18,
-            external_source=external_link,
-            distro_details=distro_details
-
-        )
+            )
 
         # INSERT INTO POSTKEYS
         # 6. 
@@ -1421,14 +1449,36 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
          # return new_path #TODO: not sure if this needs to return anything
     except Exception as e:
             print(e)
-            log_function("error", e, function_name="FILE_INSERT")
+            #log_function("error", e, function_name="FILE_INSERT")
             cursor.execute("ROLLBACK")
-            print_error(F"USER:{uploader} FILE INSEERT FAILED")
+            #print_error(F"USER:{uploader} FILE INSEERT FAILED")
             
             # CLOSE CURSOR AND CONNECTION [MANDATORY]        
             cursor.close()
             conn.close()    
-            return CURRENT_FILE_ID, post_foreign_id_source        
+            return CURRENT_FILE_ID, post_foreign_id_source    
+
+def REPOST_FILE(reposter, file_id):
+
+    path = GET_PATH_BY_FILE_ID(file_id)
+    og_poster_username = path.split("-")[0]
+    full_path = f"/root/mansura/static/#UserData/{og_poster_username}/files/{path}"
+    
+    # print("FULL PATH", full_path)
+    og_post_text, og_post_18, og_post_src, og_post_img, og_post_distro_details = get_postinfo_from_path(full_path)
+    reposter_id = GET_USER_ID(reposter)
+    FILE_INSERT(uploader=reposter, 
+                uploaderId=reposter_id, 
+                size=0, 
+                post_foreign_id_source=file_id, 
+                file_path="N/A", 
+                post_file="COPY", 
+                post_text=og_post_text,
+                age_18=og_post_18,
+                external_link=og_post_src,
+                distro_details=og_post_distro_details
+                )
+
 
 
 def register_user_files(username):

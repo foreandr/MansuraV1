@@ -63,7 +63,7 @@ class bcolors:
 
 
 def get_postinfo_from_path(my_path):
-
+    # print("FULL PATH", my_path)
     post_text = ""
     post_age_18 = ""
     post_source = ""
@@ -76,6 +76,7 @@ def get_postinfo_from_path(my_path):
         post_image_path = ""
     else:
         post_image_path = pic_path[7:]
+        # print("post_image_path", post_image_path)
     
 
     f = open(f'{my_path}/post_config.json')
@@ -486,8 +487,9 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None", ses
     err_string = f"[{current_datetime}][{msg_type}][{function_name}][{session_user}]-{log_string}\n" 
 
     if msg_type == "error":
-        # CHECK IF RESET QUERY        
-        print("==========LOGGING AN ERROR PLS NOTICE!=========")
+        # CHECK IF RESET QUERY
+        if "CREATE_TABLE" not in err_string or "relation" not in err_string:        
+            print("==========LOGGING AN ERROR PLS NOTICE!=========")
         with open(f'/root/mansura/Python/logs/errors/{current_date}.txt', 'a') as f:
             f.write(err_string)
     elif msg_type == "request":

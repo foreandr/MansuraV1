@@ -1,26 +1,23 @@
 #HOTFIX
 
-N.
-PLAYLISTSP
-7. WORD TRIBUNAL  public tribunal for banned words and shit like that
-9. CHAT ROOMS
+2.PLAYLISTSP
+3. WORD TRIBUNAL  public tribunal for banned words and shit like that
+4. CHAT ROOMS
 	13B). ANYONE IS ABLE TO CREATE, ADD OR DELETE ANYONE FROM A CHAT ROOM
 	13C). CHAT ROOMS CAN BE NAMED ANYTHING
 	13D). CHAT ROOMS NO TEXT RESTRICTION EXCEPT MAYBE EMOJIS  (MUST TEST)
 	13E)allow sending posts in the private chats
-10. REPOST LOGIC
+5. REPOST LOGIC
 	6. NEED TO HAVE DUPE DETECTION LOGIC, THAT TURNS DUPES INTO A REPOST OF EALIEREST VERSION OF X
-11. ALLOW OTHER PEOPLE TO TAG POSTS?
+6. ALLOW OTHER PEOPLE TO TAG POSTS?
     - NEED ECONOMIC LOGIC FOR TAGIGN
-12. LEADERBOARDS how many wins?
-13. BE ABLE TO BLOCK PEOPLE
-14. ACHIEVMENTS
-15. PAYOUT TIMER
-16. clicking on friends goes to a FRIEND stats page? 
-17. notifications proper
-
-
-25.x grant the ability to add a keyword to a post
+7. LEADERBOARDS how many wins?
+8. BE ABLE TO BLOCK PEOPLE
+9. ACHIEVMENTS
+10. PAYOUT TIMER
+11. clicking on friends goes to a FRIEND stats page? 
+12. notifications proper
+23.x grant the ability to add a keyword to a post
 
 
 MARKETING

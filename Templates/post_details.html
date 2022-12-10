@@ -85,10 +85,10 @@
                             <button class="btn btn-secondary" type="button" aria-expanded="false">
                                 <a href="/report/{{file_id}}"  style="color: white; ">REPORT</a>
                             </button>
-                            <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
-                                REPOST (coming)
+                            <button class="btn btn-secondary" type="button" aria-expanded="false">
+                                <a href="/repost/{{file_id}}" style="color: white;">REPOST</a>
                             </button>
-                            {% if full_replying_to_path != ""  and og_post_src != "None"%}
+                            {% if full_replying_to_path != ""  and post_foreign_id_source != "None"%}
                             <button class="btn btn-secondary" type="button" aria-expanded="false">
                                 <a href="/{{full_replying_to_path}}" style="color: white;">REPLYING TO  {{full_replying_to_path.split("_")[0]}}</a>
                             </button>
@@ -191,8 +191,8 @@
                             <button class="btn btn-secondary" type="button" aria-expanded="false">
                                 <a href="/report/{{file_ids_list[i]}}"  style="color: white; ">REPORT</a>
                             </button>
-                            <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
-                                REPOST (coming)
+                            <button class="btn btn-secondary" type="button" aria-expanded="false">
+                                <a href="/repost/{{file_ids_list[i]}}" style="color: white;">REPOST</a>
                             </button>
                             <button class="btn btn-secondary" type="button" aria-expanded="false">
                                 <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page" style="color: white;">GO TO FULL POST</a>

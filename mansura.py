@@ -336,7 +336,21 @@ def user_profile():
 
         return redirect(url_for("user_profile"))
     
-
+@app.route('/repost/<file_id>', methods=['GET', 'POST'])
+def repost(file_id):
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
+    
+    if "email" not in session:
+        return redirect(url_for('login'))
+    
+    database.REPOST_FILE(session["user"], file_id)
+    name, path = database.GET_POST_URL_BY_ID(file_id)
+    return_path = name + "_" + path + "-post_page"        
+    return redirect(url_for('user_profile_name', username=return_path))
+    
+    
+    
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if helpers.CHECK_IF_MOBILE(request):
@@ -516,7 +530,6 @@ def user_profile_name(username):
         else:
             can_scroll = True
 
-
         text_list = []
         age_18_list = []
         source_list = []
@@ -556,6 +569,7 @@ def user_profile_name(username):
             lengths_of_text_files.append(len(i))
         
         og_post_text, og_post_18, og_post_src, og_post_img, og_post_distro_details = helpers.get_postinfo_from_path(my_og_path)
+        #print(og_post_img)
         lengths_of_text_files = []
         for i in text_list:
             lengths_of_text_files.append(len(i))
