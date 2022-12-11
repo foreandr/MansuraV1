@@ -1,20 +1,23 @@
 #HOTFIX
+YOUTUBE VIDEOS ALLOWED
+CERTAIN SUBREDDITS ALLOWS, DO A CHECKIF ITS NSFW
+reccommnded posts on the right? with a search modal at the very top??? somethinglike that
 
-2.PLAYLISTSP
+
+1. there has to be some kind of incentive for people reporting content
+2. PLAYLISTS
 3. WORD TRIBUNAL  public tribunal for banned words and shit like that
 4. CHAT ROOMS
 	13B). ANYONE IS ABLE TO CREATE, ADD OR DELETE ANYONE FROM A CHAT ROOM
 	13C). CHAT ROOMS CAN BE NAMED ANYTHING
 	13D). CHAT ROOMS NO TEXT RESTRICTION EXCEPT MAYBE EMOJIS  (MUST TEST)
 	13E)allow sending posts in the private chats
-5. REPOST LOGIC
-	6. NEED TO HAVE DUPE DETECTION LOGIC, THAT TURNS DUPES INTO A REPOST OF EALIEREST VERSION OF X
+6. NEED TO HAVE DUPE DETECTION LOGIC, THAT TURNS DUPES INTO A REPOST OF EALIEREST VERSION OF X
 6. ALLOW OTHER PEOPLE TO TAG POSTS?
     - NEED ECONOMIC LOGIC FOR TAGIGN
 7. LEADERBOARDS how many wins?
 8. BE ABLE TO BLOCK PEOPLE
 9. ACHIEVMENTS
-10. PAYOUT TIMER
 11. clicking on friends goes to a FRIEND stats page? 
 12. notifications proper
 23.x grant the ability to add a keyword to a post
@@ -41,6 +44,7 @@ SEARCH GETS IT'S OWN NAV
 	- order by in search algo
 	- search allgo settings page, weights of nodes, weights of likes, weights of votes, weights of reports, and so on
 	- whichever searcch has the most votes at the time becomes the default search algo
+	- gotta have the custom order by
 
 
 NEW SUGGESTIONS
@@ -80,6 +84,7 @@ x3. elo system in search might be a good idea
 3. MORE COMPLEX SEARCH
 	WITH DISTRIBUTION METHOD AS WELL
 5. UNIT TESTS
+10. PAYOUT TIMER
 
 
 

@@ -422,13 +422,13 @@ def LIKES_INSERT(liker_username, file_id):
         print_green(F"{liker_username} liked: {file_id}")
         return True
     except Exception as e:
-            # print(e)
-            log_function("error", e, function_name="LIKES_INSERT")
-            cursor.execute("ROLLBACK")     
-            cursor.close()
-            conn.close()
-            print_warning(F"{liker_username} FAILED TO LIKE: {file_id}") 
-            return False
+         # print(e)
+        log_function("error", e, function_name="LIKES_INSERT")
+        cursor.execute("ROLLBACK")     
+        cursor.close()
+        conn.close()
+        print_warning(F"{liker_username} FAILED TO LIKE: {file_id}") 
+        return False
             
              
 def LIKES_REMOVE(liker_username, file_id):
@@ -442,11 +442,11 @@ def LIKES_REMOVE(liker_username, file_id):
             """)
         conn.commit()
     except Exception as e:
-            # print(e)
-            log_function("error", e, function_name="LIKES_REMOVE")
-            cursor.execute("ROLLBACK")    
-            cursor.close()
-            conn.close() 
+        # print(e)
+        log_function("error", e, function_name="LIKES_REMOVE")
+        cursor.execute("ROLLBACK")    
+        cursor.close()
+        conn.close() 
 
 
 def LIKE_LOGIC(liker_username, file_id):
@@ -531,8 +531,7 @@ def DISLIKES_REMOVE(disliker_username, file_id):
 
 def DISLIKE_LOGIC(disliker_username, file_id):
     if DISLIKES_INSERT(disliker_username, file_id): # RETURNS TRUE IF SMOOTH
-        print("SUCCESSFUL DISLIKE INSERT")
-        
+        print("SUCCESSFUL DISLIKE INSERT") 
     else:
         print("FAILED DISLIKE INSERT")
         DISLIKES_REMOVE(disliker_username, file_id)
@@ -958,6 +957,7 @@ def USER_FULL_RESET(server="false", size="small"):
     CREATE_TABLE_TRIBUNAL(server)
     CREATE_TABLE_PROFANITY_LIST(server)
     CREATE_TABLE_PROFANITY_LIST_VOTES(server)
+    CREATE_TABLE_FILE_FAVOURITE(server)
     
     if server == "false":
         FUNCTION_AND_PROCEDURES()
@@ -1321,7 +1321,7 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
     REALLY COMPLICATED NIGHTMARE BUT IT WORKS
     
     """
-    print("GOT INTO FILE INSERT")
+    # print("GOT INTO FILE INSERT")
     conn = connection.test_connection()
     cursor = conn.cursor()
     CURRENT_FILE_ID = ""
@@ -1384,7 +1384,7 @@ def FILE_INSERT(uploader, uploaderId, size, post_foreign_id_source="None",
         # 3. MAKE NEW DIRECTORY FOR USER POST BY FILE_ID
         new_dir = f'/root/mansura/static/#UserData/{uploader}/files/{new_path}'
         my_path = new_dir
-        print(my_path)
+        #print(my_path)
         os.makedirs(my_path)  
 
         
@@ -2580,7 +2580,11 @@ def TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, search
 
     # ORDER CHECK
     if order_check == "TOP":
-        order_clause = "ORDER BY (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Yearly') DESC"
+        # print("getting to here")
+        VOTES = "(SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly')"
+        LIKES = "(SELECT COUNT(*) FROM LIKES file WHERE file.File_id = F.File_id )"
+        FAVOURITES = "(SELECT COUNT(*) FROM FILE_FAVOURITE file WHERE file.File_id = F.File_id)"
+        order_clause = F"ORDER BY ({VOTES} + {FAVOURITES} + {LIKES}) DESC"
     elif order_check == "HOT":
         order_clause = "AND F.Date_Time >= date_trunc('month', now())::date" #TODO: CHANGE TO REFLECT ORDER BY FUNCTION
     elif order_check == "NEW":
@@ -3193,7 +3197,10 @@ def universal_dataset_function(search_type, page_no="1", search_user="None", fil
     order_by_clause = custom_clauses["ORDER_BY_CLAUSE"]
     
     if len(order_by_clause) == 0:
-        order_by_clause = "ORDER BY (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Daily') + (SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Yearly') DESC"
+        VOTES = "(SELECT COUNT(*) FROM FILE_VOTES file WHERE file.File_id = F.File_id AND Vote_Type = 'Monthly')"
+        LIKES = "(SELECT COUNT(*) FROM LIKES file WHERE file.File_id = F.File_id )"
+        FAVOURITES = "(SELECT COUNT(*) FROM FILE_FAVOURITE file WHERE file.File_id = F.File_id)"
+        order_by_clause = f"ORDER BY ({VOTES} + {LIKES} + {FAVOURITES}) DESC"
 
     where_full_query = f"{foreign_id_text_entry} {profile_search_clause} {where_clause}" # THIS EXTRA PAREN SEEMS TO NEED TO BE HERE???
 
@@ -3796,8 +3803,13 @@ def CREATE_TABLE_TRIBUNAL(server):
             f"""
                 CREATE TABLE TRIBUNAL
                 (
-                Tribunal_id SERIAL PRIMARY KEY,   
-                File_Id INT UNIQUE
+                Tribunal_id SERIAL PRIMARY KEY,
+                File_Id INT UNIQUE,
+                Reporter varchar(50),
+                Date_Time timestamp,
+                
+                FOREIGN KEY (Reporter) REFERENCES USERS(Username)    
+                
                 );
             """)
         conn.commit()
@@ -3809,13 +3821,19 @@ def CREATE_TABLE_TRIBUNAL(server):
     cursor.close()
     conn.close()
 
-def INSERT_INTO_TRIBUNAL(file_id):
+def DEMO_INSERT_INTO_TRIBUNAL():
+    INSERT_INTO_TRIBUNAL(1, 'foreandr')
+    INSERT_INTO_TRIBUNAL(1, 'andrfore')
+    INSERT_INTO_TRIBUNAL(1, 'a')
+    big_reset_file.GIANT_TRIBUNAL_INSERT("small")
+  
+def INSERT_INTO_TRIBUNAL(file_id, user_name):
     conn = connection.test_connection()
     cursor = conn.cursor()
     cursor.execute(f"""
         INSERT INTO TRIBUNAL
-        (File_Id)
-        VALUES('{file_id}')
+        (File_Id, Reporter, Date_time)
+        VALUES('{file_id}', '{user_name}', CURRENT_TIMESTAMP)
         ON CONFLICT DO NOTHING
     """)
     conn.commit()
@@ -4098,3 +4116,114 @@ def GET_WORD_PHRASE_ID_BY_NAME(phrase):
 
 def CHECK_WORD_RATIO_UPDATE_TEXT_FILE(word_id):
     print(F"CHECKING {word_id}")
+    
+    
+def CREATE_TABLE_FILE_FAVOURITE(server):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    try:
+        if server == "false":
+            cursor.execute(f"DROP TABLE IF EXISTS FILE_FAVOURITE;")
+        cursor.execute(
+                f"""
+                CREATE TABLE FILE_FAVOURITE(
+                    Favorite_Id SERIAL PRIMARY KEY,
+                    File_id INT,
+                    Favouriter_Username varchar(50),
+                    Date_Time timestamp, 
+
+                    FOREIGN KEY (File_id) REFERENCES FILES(File_id),
+                    UNIQUE (File_id, Favouriter_Username) 
+                );
+                """)
+        conn.commit()
+
+        print_green("FAVOURITES CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="HAD TO ROLLBACK FAVOURITES TABLE CREATION")
+        # exit()
+
+    cursor.close()
+    conn.close()
+
+def FILE_FAVOURITE_INSERT(favouriter_username, file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            f"""
+            INSERT INTO FILE_FAVOURITE
+            (File_id, Favouriter_Username, Date_Time)
+            VALUES
+            ({file_id}, '{favouriter_username}', CURRENT_TIMESTAMP);
+            """)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        print_green(F"{favouriter_username} FAVOURITED: {file_id}")
+        return True
+    except Exception as e:
+         # print(e)
+        # log_function("error", e, function_name="FAVOURITE_INSERT")
+        cursor.execute("ROLLBACK")     
+        cursor.close()
+        conn.close()
+        #print_warning(F"{favouriter_username} FAILED TO FAVOURITE: {file_id}") 
+        return False
+            
+             
+def FILE_FAVOURITE_REMOVE(favouriter_username, file_id):
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    try:
+        #print(COUNT_FAVOURITES())
+        cursor.execute(
+            f"""
+            DELETE FROM FILE_FAVOURITE
+            WHERE Favouriter_Username = '{favouriter_username}' AND File_id = {file_id}
+            """)
+        conn.commit()
+        print_green("REMOVED FROM FAVORUITES "+ favouriter_username + " "+ file_id)
+        #print(COUNT_FAVOURITES())
+    except Exception as e:
+        # print(e)
+        log_function("error", e, function_name="FAVOURITE_REMOVE")
+        cursor.execute("ROLLBACK")    
+        cursor.close()
+        conn.close() 
+
+
+def FILE_FAVOURITE_LOGIC(favouriter_username, file_id):
+    if FILE_FAVOURITE_INSERT(favouriter_username, file_id): # RETURNS TRUE IF SMOOTH
+        #print("SUCCESSFUL FAVOURITE INSERT")
+        pass
+    else:
+        FILE_FAVOURITE_REMOVE(favouriter_username, file_id)
+        #print("FAILED FAVOURITE INSERT")
+        
+def COUNT_FAVOURITES():
+    conn = connection.test_connection()
+    cursor = conn.cursor()
+    cursor.execute("""
+    SELECT COUNT(*)
+    FROM FILE_FAVOURITE               
+            
+    """)
+    count = 0
+    for i in cursor.fetchall():
+        count = i[0]
+       
+    cursor.execute("""
+    SELECT *
+    FROM FILE_FAVOURITE               
+            
+    """)
+    for i in cursor.fetchall():
+        print(i)
+        
+    cursor.close()
+    conn.close() 
+    return count

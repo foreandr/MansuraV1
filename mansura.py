@@ -1004,7 +1004,7 @@ def report(file_id):
     helpers.log_function("request", request, session_user=session['user'])
     # INSERT INTO TRIBUNAL
     print("REPORTING", file_id)
-    database.INSERT_INTO_TRIBUNAL(file_id)
+    database.INSERT_INTO_TRIBUNAL(file_id, session['user'])
     return redirect(url_for('tribunal'))
 
 
@@ -1691,6 +1691,39 @@ def word_tribunal():
         yearlypool=yearly_pool
     )
 
+
+@app.route("/favourites", methods=['GET', "POST"])
+def favourites():
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
+    
+    if "email" not in session:
+        return redirect(url_for('login'))
+    
+    balance, daily_votes_left, monthly_votes_left, yearly_votes_left, daily_pool, monthly_pool, yearly_pool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session["user"])
+    return render_template('favourites.html',
+                            message="favourites.html page",
+                            user_balance=balance, 
+                            monthly_left=monthly_votes_left, 
+                            dailypool=daily_pool, 
+                            monthlypool=monthly_pool, 
+                            yearlypool=yearly_pool
+                            )
+
+@app.route("/save_post/<file_id>", methods=['GET','POST'])
+def save_post(file_id):
+    if helpers.CHECK_IF_MOBILE(request):
+        return redirect(url_for('cover_page'))
+    
+    if "email" not in session:
+        return redirect(url_for('login'))
+    
+    helpers.log_function("request", request, session_user=session['user'])
+    
+    # INSERT INTO TRIBUNAL
+    print("SAVING", file_id)
+    database.FILE_FAVOURITE_LOGIC(session['user'], file_id)
+    return redirect(url_for("favourites"))
 
 if __name__ == '__main__':
     #SUBTITLE Network Societey and it's Future

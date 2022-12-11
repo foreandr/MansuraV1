@@ -92,9 +92,7 @@
 
                     <!--PROFILE PICTURE-->
                     <img class="text-right position-absolute top-0 end-0" id="profile_picture" src="{{url_for('static', filename='#UserData/' + usernames_list[i] + '/profile/profile_pic.jpg')}} " width='70' height='70' />
-
-
-                   
+                                      
                     <div><br /></div>
                     <div class=" card-footer d-flex justify-content-between align-items-center">
                         <small class="text-muted">
@@ -110,8 +108,8 @@
                             <button class="btn btn-secondary" type="button" aria-expanded="false">
                                 <a href="/{{usernames_list[i]}}_{{paths_list[i]}}-post_page" style="color: white;">DETAILS</a>
                             </button>
-                            <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
-                                <a href="/favourite/{{file_ids_list[i]}}"  style="color: white;">SAVE</a>
+                            <button class="btn btn-secondary" type="button" aria-expanded="false">
+                                <a href="/save_post/{{file_ids_list[i]}}"  style="color: white;">SAVE</a>
                             </button>
                             <button class="btn btn-secondary" type="button" aria-expanded="false" disabled>
                                 <a href="/send_post_as_message/{{file_ids_list[i]}}"  style="color: white;">SEND</a>

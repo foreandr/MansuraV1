@@ -133,3 +133,4 @@ DONE. CHANGE DISTRO
 DONE. VOTES GOES INTO BALANCE
 DONE. add payment folder to main mansura (doesnt exist)
 DONE. WORD TRIBUNAL  public tribunal for banned words and shit like that
+DONE. REPOST LOGIC
