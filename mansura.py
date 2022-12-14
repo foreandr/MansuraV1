@@ -10,6 +10,9 @@ import os
 from os import path
 
 from flask import Flask, render_template, request, session, redirect, url_for, g, send_from_directory, Response, send_file, make_response
+from flask_cors import CORS # add to requirments
+
+
 from psycopg2 import connect
 import requests
 import Python.database as database
@@ -48,8 +51,8 @@ def home():
     #print("RENDERING TEMPLATE")
     #if helpers.CHECK_IF_MOBILE(request):
     #    return redirect(url_for('cover_page'))
-    if "email" not in session: # testasdkjhfaks
-        return redirect(url_for('cover_page'))
+    #if "email" not in session: # testasdkjhfaks
+    #    return redirect(url_for('cover_page'))
     
     
     if "user" in session.keys():
@@ -157,6 +160,45 @@ def home():
     if favourites_len > 20:
         favourites_len = 20
     # print("uploader_is_subbed", uploader_is_subbed)
+    data = {        
+        "message":"index.html page",
+        "usernames_list":usernames_list,
+        "file_ids_list":file_ids_list,
+        "session_username":session_username,
+        "username_len":username_len,
+        "paths_list":paths_list,
+        "dates_list":dates_list,
+        "post_sources_list":post_sources_list,
+        "likes":likes,
+		"dislikes":dislikes,
+		"searcher_has_liked":searcher_has_liked, 
+		"searcher_has_disliked":searcher_has_disliked,
+        "num_replies":num_replies,
+        "day_votes":day_votes,
+        "month_votes":month_votes,
+        "year_votes":year_votes,
+        "dailypool":dailypool,
+        "monthlypool":monthlypool,
+        "yearlypool":yearlypool,
+        "daily_left":daily_left,
+        "monthly_left":monthly_left,
+        "yearly_left":yearly_left,
+        "user_balance":user_balance,
+        "text_list":text_list,
+        "lengths_of_text_files":lengths_of_text_files,
+        "age_18_list":age_18_list,
+        "source_list":source_list,
+        "image_path_list":image_path_list,
+        "distro_details_list":distro_details_list,
+        "search_arguments":search_arguments,
+        "page_no":page_no,
+        "can_scroll":can_scroll,
+        "search_favourites":search_favourites,
+        "favourites_len":favourites_len,
+        "uploader_is_subbed":uploader_is_subbed
+        }
+    print("i am getting here")
+    return data
     return render_template('index.html',
                             message="index.html page",
                            
@@ -1741,7 +1783,8 @@ if __name__ == '__main__':
     
     thread = Thread(target = distribution_algorithm.TESTING_TIMING, args = ())
     thread.start()
-
+    
+    cors = CORS(app)
     app.run(host=host, port="8096", debug=False, use_reloader=False)  # host is to get off localhost
     #serve(app, host=host,port="8091")    
 

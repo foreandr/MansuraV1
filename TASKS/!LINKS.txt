@@ -45,8 +45,10 @@ https://stackoverflow.com/questions/35215842/render-html-strings-in-flask-templa
 https://stackoverflow.com/questions/24308239/postgresql-integer-out-of-range
 https://serpapi.com/blog/scrape-youtube-video-page-with-python/
 https://getbootstrap.com/docs/5.2/components/card/ TRY THIS WITH IMAGES AND TEXT:  DIDNT WORK
-
-
+https://github.com/nodesource/distributions/issues/1157
+https://askubuntu.com/questions/176121/dpkg-error-trying-to-overwrite-file-which-is-also-in?noredirect=1&lq=1
+https://www.digitalocean.com/community/tutorials/install-uninstall-nodejs-ubuntu
+https://dev.to/nagatodev/how-to-connect-flask-to-reactjs-1k8i
 
 NEW STUFF
 https://feedparser.readthedocs.io/en/latest/common-rss-elements.html
@@ -56,3 +58,4 @@ https://stackoverflow.com/questions/20986631/how-can-i-scroll-a-web-page-using-s
 INTEGRATING ALL REDDIT RSS FEEDS
 https://danielmiessler.com/blog/rss-feed-youtube-channel/
 https://www.tutorialspoint.com/python_text_processing/python_reading_rss_feed.htm
+
