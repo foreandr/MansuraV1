@@ -59,7 +59,7 @@ def home():
         session_username = session["user"]
     else:
         session_username = ""
-    helpers.log_function("request", request, session_user=session['user'])
+    # helpers.log_function("request", request, session_user=session['user'])
     '''
     print("REQUEST TYP:",request.method)
     print("REQUEST URL:",request.url)
@@ -93,7 +93,7 @@ def home():
             hi_eq_low, 
             num_search_text
         ]
-        json_search_clauses = database.TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, session_username)
+        json_search_clauses = database.TURN_CLAUSES_INTO_JSON(search, date_check, order_check, clauses_dict, "")
     
     # GRAB THE ARGS FROM QUERY BEFORE THE CURRENT PAGE [GET OR POST]
     returned_search_arguments = request.form.get("search_arguments")
@@ -115,7 +115,7 @@ def home():
     #TODO: what I may have to do is do a similar query to the one below, but just returning a path list, grab all the paths that meet the criteria, then stick is back into
     # a function that returns the correct info with the search value in there as welll
 
-    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, uploader_is_subbed, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user=session_username, custom_clauses=new_json_search_clauses)
+    file_ids_list, usernames_list, paths_list, dates_list, post_sources_list, daily_left, monthly_left, yearly_left, day_votes, month_votes, year_votes, user_balance, dailypool, monthlypool, yearlypool, daily_votes_singular,  monthly_votes_singular, yearly_votes_singular, likes, dislikes,searcher_has_liked,searcher_has_disliked, num_replies, uploader_is_subbed, search_arguments = database.universal_dataset_function(search_type="home", page_no=page_no, search_user="", custom_clauses=new_json_search_clauses)
     # print("hello??", num_replies)
     #print(searcher_has_liked)
     #print(searcher_has_disliked)
@@ -131,7 +131,7 @@ def home():
     # GRAB STUFF IT'S IT'S EMPTY EITHE RWAY
     if len(file_ids_list) == 0:
         print("IS EMPTY")
-        user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS(session_username)
+        user_balance, daily_left, monthly_left, yearly_left, dailypool, monthlypool, yearlypool = database.GET_VOTES_AND_BALANCE_AND_PAYOUTS("")
     
     username_len = len(usernames_list)
     # print("USERNAMES LEN", username_len, usernames_list)
@@ -155,7 +155,7 @@ def home():
         lengths_of_text_files.append(len(i))
 
     # GET SEARCH FAVOURITES
-    search_favourites = database.GET_SEARCH_FAVOURITES_BY_USERNAME(session["user"])
+    search_favourites = database.GET_SEARCH_FAVOURITES_BY_USERNAME("")
     favourites_len = len(search_favourites)
     if favourites_len > 20:
         favourites_len = 20
@@ -164,8 +164,7 @@ def home():
         "message":"index.html page",
         "usernames_list":usernames_list,
         "file_ids_list":file_ids_list,
-        "session_username":session_username,
-        "username_len":username_len,
+        "session_username":"",
         "paths_list":paths_list,
         "dates_list":dates_list,
         "post_sources_list":post_sources_list,
