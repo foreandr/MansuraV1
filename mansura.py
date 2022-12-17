@@ -196,7 +196,7 @@ def home():
         "favourites_len":favourites_len,
         "uploader_is_subbed":uploader_is_subbed
         }
-    print("i am getting here")
+    # print("i am getting here")
     return data
     return render_template('index.html',
                             message="index.html page",
