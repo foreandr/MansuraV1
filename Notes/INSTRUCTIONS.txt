@@ -1,0 +1,47 @@
+STEPS
+=========
+sudo apt update
+
+# NOT SURE IF IT'S THIS ONE OR ANOTHER
+curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash - 
+
+sudo apt install nodejs
+npx create-react-app client
+
+npm commands
+============
+sudo npm install -g n
+# curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+n 17.7.0
+npm audit fix --force
+npm start
+npm run build
+npm test
+npm cache clean --force
+
+DELETING
+========
+sudo rm -rf /usr/local/bin/npm 
+sudo rm -rf /usr/local/share/man/man1/node* 
+sudo rm -rf /usr/local/lib/dtrace/node.d
+rm -rf ~/.npm
+rm -rf ~/.node-gyp
+sudo rm -rf /opt/local/bin/node
+sudo rm -rf /opt/local/include/node
+sudo rm -rf /opt/local/lib/node_modules
+sudo rm -rf /usr/local/lib/node*
+sudo rm -rf /usr/local/include/node*
+sudo rm -rf /usr/local/bin/node*
+
+# MAY HAVE TO GO TO THIS PATH AND OVERWRITE FILES
+# THIS COULD CAUSE FURTHER ISSUES IN THE FUTURE
+sudo dpkg -i --force-overwrite /var/cache/apt/archives/nodejs_16.9.0-deb-1nodesource1_amd64.deb
+
+NOT WOKRING
+============
+curl -sL https://deb.nodesource.com/setup_18.x | sudo bash - 
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+apt install npm
+
+sudo apt --fix-broken install
+sudo apt upgrade
