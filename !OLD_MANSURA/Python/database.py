@@ -2266,9 +2266,7 @@ def CHECK_FILES_NOT_OVER_LIMIT(page_no):
         return False
 
 
-def CLOSE_CURSOR_AND_CONN(cursor, conn):
-    cursor.close()
-    conn.close()
+
 
 
 def GET_SINGLE_DATASET_INFO(filename):

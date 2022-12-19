@@ -18,6 +18,8 @@ def test_connection():
         print(f"Error: '{err}'")
     return conn
 
+
+
 conn = test_connection()
 # print(conn)
 '''

@@ -7,5 +7,4 @@ thread = Thread(target = distribution_algorithm.TESTING_TIMING, args = ())
 thread.start()
 
 
-
 from mansura import *

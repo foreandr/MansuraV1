@@ -1,0 +1,43 @@
+[2022-12-19 01:34:51][error][USER_CREATE_TABLE][]-syntax error at or near ")"
+LINE 9:                 );
+                        ^
+
+[2022-12-19 01:42:23][error][USER_CREATE_TABLE][]-name 'conn' is not defined
+[2022-12-19 01:47:31][error][POST_CREATE_TABLE][]-syntax error at or near ","
+LINE 7:             Category_id,
+                               ^
+
+[2022-12-19 01:47:50][error][POST_CREATE_TABLE][]-syntax error at or near ","
+LINE 7:             Category_id,
+                               ^
+
+[2022-12-19 01:51:47][error][CATEGORIES_CREATE_TABLE][]-cannot drop table categories because other objects depend on it
+DETAIL:  constraint posts_category_id_fkey on table posts depends on table categories
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+
+[2022-12-19 01:52:29][error][USER_CREATE_TABLE][]-relation "users" already exists
+
+[2022-12-19 01:52:29][error][CATEGORIES_CREATE_TABLE][]-relation "categories" already exists
+
+[2022-12-19 01:52:29][error][POST_CREATE_TABLE][]-relation "posts" already exists
+
+[2022-12-19 01:52:29][error][TAGS_CREATE_TABLE][]-relation "tags" already exists
+
+[2022-12-19 01:57:02][error][HAD TO ROLLBACK LIKES TABLE CREATION][]-syntax error at or near ","
+LINE 5:                     Liker_Username,
+                                          ^
+
+[2022-12-19 01:57:02][error][HAD TO ROLLBACK LIKES TABLE CREATION][]-relation "dislikes" already exists
+
+[2022-12-19 01:57:19][error][HAD TO ROLLBACK LIKES TABLE CREATION][]-syntax error at or near ","
+LINE 5:                     Liker_Username,
+                                          ^
+
+[2022-12-19 01:57:19][error][HAD TO ROLLBACK LIKES TABLE CREATION][]-syntax error at or near "CASCADE"
+LINE 1: DROP TABLE IF EXISTS DISLIKES; CASCADE
+                                       ^
+
+[2022-12-19 01:57:46][error][HAD TO ROLLBACK LIKES TABLE CREATION][]-syntax error at or near ","
+LINE 5:                     Liker_Username,
+                                          ^
+
