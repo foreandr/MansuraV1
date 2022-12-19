@@ -14,11 +14,26 @@ app.secret_key = 'demokey'
 
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
-    message = "hello world"
-
+    category_posts = modules.UNIVERSAL_FUNCTION(1)
+    #print(category_posts[0][2])
+    #print(type(category_posts[0][2]))
+    #print(len(category_posts[0][2]))
     return render_template('home.html',
-        msg= message 
+        msg=category_posts[0][2]
     )
+    
+@app.route("/add_connection/<User_id>", methods=['POST'])
+def add_connection(User_id):
+    modules.INSERT_CONNECTION(1, User_id)
+    return redirect(url_for('home'))
+
+    
+@app.route("/remove_connection/<User_id>", methods=['POST'])
+def remove_connection(User_id):
+    modules.DELETE_CONNECTION(1, User_id)
+    return redirect(url_for('home'))
+    
+    
 
 
 if __name__ == '__main__':

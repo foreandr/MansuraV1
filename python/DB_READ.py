@@ -50,8 +50,31 @@ def GET_POSTS_BY_CATEGORY(Category):
 def GET_POSTS_BY_TAG(Category):
     return 1 
 
-def UNIVERSAL_FUNCTION():
-    return "list of posts"
+def UNIVERSAL_FUNCTION(cat_id):
+    cursor, conn = modules.create_connection()
+    
+    
+    
+    query = f"""
+    SELECT posts.Post_title, posts.Post_description, posts.Post_html 
+    FROM POSTS posts
+    
+    INNER JOIN POST_CATEGORY post_cat
+    ON post_cat.Post_id = posts.Post_id
+    
+    INNER JOIN CATEGORIES cat
+    ON cat.Category_id = post_cat.Category_id
+    
+    WHERE cat.Category_id = '{cat_id}'
+    """
+    cursor.execute(query)
+    posts = []
+    
+    for i in cursor.fetchall():
+        posts.append(i)
+        
+    modules.close_conn(cursor, conn)
+    return posts
 
 if __name__ == "__main__": 
     # GET_ALL_USERS()
