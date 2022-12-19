@@ -3,17 +3,8 @@ try:
 except:
     import MODULES as modules
 
-
 import inspect
-
-
-# user profile picture
-#link providing peaderboards, watches views likes etcv
-#both for the poster and the intellectuals
-
-
-        
-        
+      
 def CREATE_TABLE_USER(server="false"):
     cursor, conn = modules.create_connection()
     try:
@@ -303,6 +294,35 @@ def CREATE_TABLE_CONNECTIONS(server="false"):
         
     modules.close_conn(cursor, conn)
 
+def CREATE_TABLE_BLOCKS(server="false"):
+    cursor, conn = modules.create_connection()
+    
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+            f"""
+                CREATE TABLE BLOCKS
+                (
+                    Block_id SERIAL PRIMARY KEY,
+                    User_id1 INT,
+                    User_id2 INT,
+                    Date_time timestamp,
+                    
+                    FOREIGN KEY (User_id1) REFERENCES USERS(User_id),
+                    FOREIGN KEY (User_id2) REFERENCES USERS(User_id),
+                    UNIQUE (User_id1,  User_id2)
+                );
+            """)
+        conn.commit()
+        modules.print_green("CONNECTION TABLE CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        
+    modules.close_conn(cursor, conn)
+
+
+
 
 def CREATE_TABLE_IP_ADRESSES(server="false"):
     cursor, conn = modules.create_connection()
@@ -399,5 +419,35 @@ def CREATE_TABLE_CHAT_USERS(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     modules.close_conn(cursor, conn)
+    
+    
+def CREATE_TABLE_REQUESTS(server="false"):
+    cursor, conn = modules.create_connection()
+
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE REQUESTS(
+                    User_id BIGINT,
+                    Request_type varchar,
+                    Request_content varchar,
+                    Date_time timestamp,
+                    
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
+                    
+                    CHECK( Request_type = 'CATEGORY' 
+                    OR Request_type = 'TAG'
+                    OR Request_type = 'POST')
+                );
+                """)
+        conn.commit()
+
+        modules.print_green("CHAT_ADMINS CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
+    modules.close_conn(cursor, conn)    
 
  

@@ -40,8 +40,18 @@ def GET_PROFILE_IMAGE_BY_USER(username):
     
 def GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link):
     return 1
+
 def GET_CATEGORY_ID_BY_NAME(Category):
     return 1
+
+def GET_POSTS_BY_CATEGORY(Category):
+    return 1 
+
+def GET_POSTS_BY_TAG(Category):
+    return 1 
+
+def UNIVERSAL_FUNCTION():
+    return "list of posts"
 
 if __name__ == "__main__": 
     # GET_ALL_USERS()

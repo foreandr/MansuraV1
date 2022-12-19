@@ -9,6 +9,7 @@ def INSERT_DEMO_USER():
     modules.print_title(f"{inspect.stack()[0][3]}")
     modules.INSERT_USER("Andre", "password", "foreandr@gmail.com")
     modules.INSERT_USER("Foreman", "password", "andrfore@gmail.com")
+    modules.INSERT_USER("David", "password", "david@gmail.com")
 
 def INSERT_DEMO_CATEGORIES():
     modules.print_title(f"{inspect.stack()[0][3]}")
@@ -49,6 +50,10 @@ def INSERT_DEMO_CONNECTIONS():
     modules.print_title(f"{inspect.stack()[0][3]}")
     modules.INSERT_CONNECTION(user_id1=1, user_id2=2)
     modules.INSERT_CONNECTION(user_id1=2, user_id2=1)
+    
+def INSERT_DEMO_BLOCKS():
+    modules.print_title(f"{inspect.stack()[0][3]}")
+    modules.INSERT_BLOCKS(user_id1=3, user_id2=1)
 
 def INSERT_DEMO_IP_ADRESSES():
     modules.print_title(f"{inspect.stack()[0][3]}")
@@ -69,7 +74,9 @@ def INSERT_DEMO_CHAT_ROOMS_ADMIN():
     modules.print_title(f"{inspect.stack()[0][3]}")
     modules.INSERT_CHAT_ROOMS_ADMIN(User_id=1, Room_id=1)
 
-    
+def INSERT_DEMO_REQUEST():
+    modules.print_title(f"{inspect.stack()[0][3]}")
+    modules.INSERT_REQUEST(User_id=1, Request_type="CATEGORY", Request_content="Steve Jobs")  
     
 def FULL_DEMO_INSERT():
     INSERT_DEMO_USER()
@@ -82,10 +89,12 @@ def FULL_DEMO_INSERT():
     INSERT_DEMO_COMMENTS()
     INSERT_DEMO_VIEWS()
     INSERT_DEMO_CONNECTIONS()
+    INSERT_DEMO_BLOCKS()
     INSERT_DEMO_IP_ADRESSES()
     INSERT_DEMO_CHAT_ROOMS()
     INSERT_DEMO_CHAT_ROOMS_USER()
     INSERT_DEMO_CHAT_ROOMS_ADMIN()
+    INSERT_DEMO_REQUEST()
     
 if __name__ == "__main__": 
     modules.CREATE_TABLES()

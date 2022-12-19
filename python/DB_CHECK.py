@@ -68,5 +68,13 @@ def SERVER_CHECK(server, function):
             cursor.execute("""DROP TABLE IF EXISTS CHAT_USERS CASCADE""")
             modules.print_segment()
             
+        elif function == "CREATE_TABLE_BLOCKS":
+            cursor.execute("""DROP TABLE IF EXISTS BLOCKS CASCADE""")
+            modules.print_segment()
+            
+        elif function == "CREATE_TABLE_REQUESTS":
+            cursor.execute("""DROP TABLE IF EXISTS REQUESTS CASCADE""")
+            modules.print_segment()
+             
         conn.commit()
         modules.print_green(F"CASCADE DROPPED TABLE {function}")

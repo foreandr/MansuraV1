@@ -47,7 +47,7 @@ def INSERT_CATEGORY(Category_name):
     
     modules.close_conn(cursor, conn)  
     
-def INSERT_POST(Post_title, Post_description, Post_link, User_id, Category):
+def INSERT_POST(Post_title, Post_description, Post_link, Category, User_id=1):
     
     cursor, conn = modules.create_connection()
     try:
@@ -232,6 +232,25 @@ def INSERT_CONNECTION(user_id1, user_id2):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
     
     modules.close_conn(cursor, conn) 
+    
+
+def INSERT_BLOCKS(user_id1, user_id2):
+
+    cursor, conn = modules.create_connection()
+    try:
+        cursor.execute(
+            f"""
+                INSERT INTO BLOCKS (User_Id1, User_Id2, Date_time)
+                VALUES({user_id1}, {user_id2}, NOW())
+            """)
+        conn.commit()
+        modules.print_green(f"BLOCK {user_id1} -> {user_id2}")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+    
+    modules.close_conn(cursor, conn)     
+
 
 def INSERT_IP_ADRESSES(Address, User_id):
 
@@ -311,6 +330,26 @@ def INSERT_CHAT_ROOMS_ADMIN(User_id, Room_id):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    modules.close_conn(cursor, conn)       
+    modules.close_conn(cursor, conn) 
+    
+def INSERT_REQUEST(User_id, Request_type, Request_content):
+
+    cursor, conn = modules.create_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            f"""
+            INSERT INTO REQUESTS
+            (User_id, Request_type, Request_content, Date_time)
+            VALUES
+            ('{User_id}','{Request_type}', '{Request_content}', NOW())
+            """)
+        conn.commit()
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    
+    modules.close_conn(cursor, conn)        
     
     
