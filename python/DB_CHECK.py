@@ -53,6 +53,10 @@ def SERVER_CHECK(server, function):
         elif function == "CREATE_TABLE_CHAT_ADMINS":
             cursor.execute("""DROP TABLE IF EXISTS CHAT_ADMINS CASCADE""")
             print_segment()
+        
+        elif function == "CREATE_TABLE_POST_CATEGORY":
+            cursor.execute("""DROP TABLE IF EXISTS POST_CATEGORY CASCADE""")
+            print_segment()
             
         conn.commit()
         print_green(F"CASCADE DROPPED TABLE {function}")

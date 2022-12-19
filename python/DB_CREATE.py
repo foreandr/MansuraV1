@@ -73,10 +73,8 @@ def CREATE_TABLE_POST(server="false"):
             Post_link varchar, 
             Post_html varchar,
             User_id BIGINT,
-            Category_id BIGINT,
             Date_Time timestamp,      
-            FOREIGN KEY (User_id) REFERENCES USERS(User_id),
-            FOREIGN KEY (Category_id) REFERENCES CATEGORIES(Category_id)
+            FOREIGN KEY (User_id) REFERENCES USERS(User_id)
             );
             """)
         conn.commit()
@@ -84,7 +82,29 @@ def CREATE_TABLE_POST(server="false"):
     except Exception as e:
         cursor.execute("ROLLBACK")
         log_function("error", e, function_name="POST_CREATE_TABLE")
-    
+    close_conn(cursor, conn)
+      
+        
+def CREATE_TABLE_POST_CATEGORY(server="false"):
+    cursor, conn = create_connection()
+    try:
+        SERVER_CHECK(server, inspect.stack()[0][3])
+        # Path varchar,
+        cursor.execute(
+            f"""
+            CREATE TABLE POST_CATEGORY
+            (
+            Post_id BIGINT,  
+            Category_id BIGINT,     
+            FOREIGN KEY (Post_id ) REFERENCES POSTS(Post_id),
+            FOREIGN KEY (Category_id) REFERENCES CATEGORIES(Category_id)
+            );
+            """)
+        conn.commit()
+        print_green("CREATE_TABLE_POST_CATEGORY COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     close_conn(cursor, conn)
 
 
