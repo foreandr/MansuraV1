@@ -22,7 +22,7 @@ try: #LIVE VERSION
     from Python.generating_excel import WRITE_HEADERS_TO_EXCEL
 except: #TEST VERSION ---#DEFINITELY NOT A GOOD IDEA TO DO THIS
     from generating_excel import WRITE_HEADERS_TO_EXCEL
-    import db_connection as connection
+    import connection as connection
     from  helpers import print_green, print_title, log_function
 
 

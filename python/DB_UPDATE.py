@@ -1,1 +1,1 @@
-import db_connection as connection
+from dbconnection import *

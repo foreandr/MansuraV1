@@ -1,38 +1,19 @@
-from db_connection import *
+from dbconnection import *
 from helpers import *
 from log import *
+from DB_CHECK import *
 import inspect
 
-def SERVER_CHECK(server, function):
-    # print()
-    cursor, conn = create_connection()
-    if server == "false":
-        if function == "CREATE_TABLE_USER":
-            cursor.execute("""DROP TABLE IF EXISTS USERS CASCADE""")
-        
-        elif function == "CREATE_TABLE_CATEGORIES":
-            cursor.execute("""DROP TABLE IF EXISTS CATEGORIES CASCADE""")
-        
-        elif function == "CREATE_TABLE_POST":
-            cursor.execute("""DROP TABLE IF EXISTS POSTS CASCADE""")
-        
-        elif function == "CREATE_TABLE_TAGS":
-            cursor.execute("""DROP TABLE IF EXISTS TAGS CASCADE""")
-        
-        elif function == "CREATE_TABLE_LIKES":
-            cursor.execute("""DROP TABLE IF EXISTS LIKES CASCADE""")
-        
-        elif function == "CREATE_TABLE_DISLIKES":
-            cursor.execute("""DROP TABLE IF EXISTS DISLIKES CASCADE""")
-        
-        elif function == "CREATE_TABLE_COMMENTS":
-            cursor.execute("""DROP TABLE IF EXISTS COMMENTS CASCADE""")
-        
-        elif function == "CREATE_TABLE_VIEWS":
-            cursor.execute("""DROP TABLE IF EXISTS VIEWS CASCADE""")
-        
-        conn.commit()
-        print_green(F"CASCADE DROPPED TABLE {function}")
+#post title, post description
+# post source
+# post html
+
+# user profile picture
+#link providing peaderboards, watches views likes etcv
+#both for the poster and the intellectuals
+
+#todo: add to a DB_CHECK FILES
+
         
         
 def CREATE_TABLE_USER(server="false"):
@@ -83,12 +64,14 @@ def CREATE_TABLE_POST(server="false"):
     cursor, conn = create_connection()
     try:
         SERVER_CHECK(server, inspect.stack()[0][3])
+        # Path varchar,
         cursor.execute(
             f"""
             CREATE TABLE POSTS
             (
-            Post_id SERIAL PRIMARY KEY,   
-            Path varchar,
+            Post_id SERIAL PRIMARY KEY,  
+            Post_link varchar, 
+            Post_html varchar,
             User_id BIGINT,
             Category_id BIGINT,
             Date_Time timestamp,      
@@ -117,7 +100,12 @@ def CREATE_TABLE_TAGS(server="false"):
             Tag_name varchar UNIQUE,
             Tag_type varchar,
             Post_id BIGINT, 
-            FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id)
+            FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
+            
+            CHECK( 
+                Tag_type = 'HARD'
+                OR Tag_type = 'SOFT' 
+            )
             );
             """)
         conn.commit()
@@ -137,13 +125,13 @@ def CREATE_TABLE_LIKES(server="false"):
         cursor.execute(
                 f"""
                 CREATE TABLE LIKES(
-                    Like_Id SERIAL PRIMARY KEY,
+                    Like_id SERIAL PRIMARY KEY,
                     Post_id BIGINT,
-                    Liker_id BIGINT,
+                    User_id BIGINT,
                     Date_time timestamp, 
                     FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
-                    FOREIGN KEY (Liker_id) REFERENCES USERS(User_id),
-                    UNIQUE (Post_id,  Liker_id)
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
+                    UNIQUE (Post_id,  User_id)
                 );
                 """)
         conn.commit()
@@ -156,6 +144,33 @@ def CREATE_TABLE_LIKES(server="false"):
     close_conn(cursor, conn)
     
     
+def CREATE_TABLE_FAVOURITES(server="false"):
+    cursor, conn = create_connection()
+
+    try:
+        SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE FAVOURITES(
+                    Favourite_id SERIAL PRIMARY KEY,
+                    Post_id BIGINT,
+                    User_id BIGINT,
+                    Date_time timestamp, 
+                    FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
+                    UNIQUE (Post_id,  User_id)
+                );
+                """)
+        conn.commit()
+
+        print_green("FAVOURITES CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="HAD TO ROLLBACK FAVOURITES TABLE CREATION")
+
+    close_conn(cursor, conn)
+    
+  
 def CREATE_TABLE_DISLIKES(server="false"):
     cursor, conn = create_connection()
 
@@ -164,14 +179,14 @@ def CREATE_TABLE_DISLIKES(server="false"):
         cursor.execute(
                 f"""
                 CREATE TABLE DISLIKES(
-                    Dislike_Id SERIAL PRIMARY KEY,
+                    Dislike_id SERIAL PRIMARY KEY,
                     Post_id BIGINT,
-                    Disliker_id BIGINT,
+                    User_id BIGINT,
                     Date_time timestamp,
                     FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
-                    FOREIGN KEY (Disliker_id) REFERENCES USERS(User_id),
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
                     
-                    UNIQUE (Post_id,  Disliker_id)
+                    UNIQUE (Post_id,  User_id)
                 );
                 """)
         conn.commit()
@@ -192,12 +207,12 @@ def CREATE_TABLE_COMMENTS(server="false"):
         cursor.execute(
                 f"""
                 CREATE TABLE COMMENTS(
-                    Comment_Id SERIAL PRIMARY KEY,
+                    Comment_id SERIAL PRIMARY KEY,
                     Post_id BIGINT,
-                    Commenter_id BIGINT,
+                    User_id BIGINT,
                     Date_time timestamp,
                     FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
-                    FOREIGN KEY (Commenter_id) REFERENCES USERS(User_id)
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id)
                 );
                 """)
         conn.commit()
@@ -218,12 +233,12 @@ def CREATE_TABLE_VIEWS(server="false"):
         cursor.execute(
                 f"""
                 CREATE TABLE VIEWS(
-                    Comment_Id SERIAL PRIMARY KEY,
+                    Comment_id SERIAL PRIMARY KEY,
                     Post_id BIGINT,
-                    Viewer_id BIGINT,
+                    User_id BIGINT,
                     Date_time timestamp,
                     FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
-                    FOREIGN KEY (Viewer_id) REFERENCES USERS(User_id)
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id)
                 );
                 """)
         conn.commit()
@@ -234,11 +249,104 @@ def CREATE_TABLE_VIEWS(server="false"):
         log_function("error", e, function_name="HAD TO ROLLBACK VIEWS TABLE CREATION")
 
     close_conn(cursor, conn)
+
+
+def CREATE_TABLE_CONNECTIONS(server="false"):
+    cursor, conn = create_connection()
     
-CREATE_TABLE_USER()
-CREATE_TABLE_CATEGORIES()
-CREATE_TABLE_POST()
-CREATE_TABLE_TAGS()
-CREATE_TABLE_LIKES()
-CREATE_TABLE_DISLIKES()
-CREATE_TABLE_VIEWS()
+    try:
+        SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+            f"""
+                CREATE TABLE CONNECTIONS
+                (
+                    Friendship_id SERIAL PRIMARY KEY,
+                    User_id1 INT,
+                    User_id2 INT,
+                    creation_date timestamp,
+                    
+                    FOREIGN KEY (User_id1) REFERENCES USERS(User_id),
+                    FOREIGN KEY (User_id2) REFERENCES USERS(User_id)
+                );
+            """)
+        conn.commit()
+        print_green("CONNECTION TABLE CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="CONNECTION_CREATE_TABLE")
+        
+    close_conn(cursor, conn)
+
+
+def CREATE_TABLE_IP_ADRESSES(server="false"):
+    cursor, conn = create_connection()
+
+    try:
+        SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE IP_ADRESSES(
+                    Address_id SERIAL PRIMARY KEY,
+                    Address varchar,
+                    User_id BIGINT, 
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
+                    UNIQUE (Address,  User_id)
+                );
+                """)
+        conn.commit()
+
+        print_green("IP_ADRESSES CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="HAD TO ROLLBACK IP_ADRESSES TABLE CREATION")
+
+    close_conn(cursor, conn)
+    
+    
+def CREATE_TABLE_CHAT_ROOMS(server="false"):
+    cursor, conn = create_connection()
+
+    try:
+        SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE CHAT_ROOMS(
+                    Room_id SERIAL PRIMARY KEY,
+                    Creator_id BIGINT,
+                    FOREIGN KEY (Creator_id) REFERENCES USERS(User_id)
+                );
+                """)
+        conn.commit()
+
+        print_green("CHAT_ROOMS CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="HAD TO ROLLBACK CHAT_ROOMS TABLE CREATION")
+
+    close_conn(cursor, conn)
+    
+    
+def CREATE_TABLE_CHAT_ADMINS(server="false"):
+    cursor, conn = create_connection()
+
+    try:
+        SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE CHAT_ADMINS(
+                    User_id BIGINT,
+                    Room_id BIGINT, 
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
+                    FOREIGN KEY (Room_id) REFERENCES CHAT_ROOMS(Room_id)
+                );
+                """)
+        conn.commit()
+
+        print_green("CHAT_ADMINS CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="HAD TO ROLLBACK CHAT_ADMINS TABLE CREATION")
+
+    close_conn(cursor, conn)
+
+ 

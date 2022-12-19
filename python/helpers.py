@@ -18,6 +18,9 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+def print_segment():
+    print("====================================")
+    
 def print_green(string):
     print(bcolors.OKGREEN + str(string) + bcolors.ENDC)
 

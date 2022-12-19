@@ -4,7 +4,7 @@ import random
 import os
 import csv
 import json
-from db_connection import *
+from connection import *
 import helpers as helpers
 
 conn = test_connection()

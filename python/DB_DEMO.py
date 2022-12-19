@@ -1,0 +1,27 @@
+from DB_CHECK import * 
+from DB_CREATE import * 
+from DB_DELETE import * 
+from DB_READ import * 
+from DB_INSERT import * 
+from DB_UPDATE import * 
+
+def CREATE_TABLES():
+    CREATE_TABLE_USER()
+    CREATE_TABLE_CATEGORIES()
+    CREATE_TABLE_POST()
+    CREATE_TABLE_TAGS()
+    CREATE_TABLE_LIKES()
+    CREATE_TABLE_DISLIKES()
+    CREATE_TABLE_VIEWS()
+    CREATE_TABLE_CONNECTIONS()
+    CREATE_TABLE_IP_ADRESSES()
+    CREATE_TABLE_CHAT_ROOMS()
+    CREATE_TABLE_CHAT_ADMINS()
+
+def INSERT_DEMO_USER():
+    USER_INSERT("Andre", "password", "foreandr@gmail.com")
+
+def INSERT_DEMO_CATEGORY():
+    PASS
+CREATE_TABLES()
+INSERT_DEMO_USER()
