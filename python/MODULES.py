@@ -1,3 +1,7 @@
+'''
+IF YOU EVER RUN INTO THE PROBLEM OF CIRCULAR IMPORTS,
+GO TO THAT FILE AND JUST DO THE TRY EXCEPT FOR THE FILES THAT YOU NEED
+'''
 try:    
     from python.DB_CHECK import *
     from python.DB_CREATE import *

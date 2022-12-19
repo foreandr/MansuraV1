@@ -3,10 +3,10 @@ import inspect
 from os import listdir
 from PIL import Image as PImage
 
-try:
-    from python.MODULES import *
+try:    
+    import python.MODULES as modules
 except:
-    from MODULES import *
+    import MODULES as modules
 
 
 class bcolors:

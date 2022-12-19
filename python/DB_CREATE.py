@@ -1,7 +1,7 @@
-try:
-    from python.MODULES import *
+try:    
+    import python.MODULES as modules
 except:
-    from MODULES import *
+    import MODULES as modules
 
 
 import inspect
@@ -18,9 +18,9 @@ import inspect
         
         
 def CREATE_TABLE_USER(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE USERS 
@@ -34,18 +34,18 @@ def CREATE_TABLE_USER(server="false"):
                 );
                 """)
         conn.commit()
-        print_green("CREATE_TABLE_USER COMPLETED\n")
+        modules.print_green("CREATE_TABLE_USER COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn)    
+    modules.close_conn(cursor, conn)    
     
     
 def CREATE_TABLE_CATEGORIES(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3]) 
+        modules.SERVER_CHECK(server, inspect.stack()[0][3]) 
         cursor.execute(
             f"""
             CREATE TABLE CATEGORIES
@@ -55,17 +55,17 @@ def CREATE_TABLE_CATEGORIES(server="false"):
             );
             """)
         conn.commit()
-        print_green("CREATE_TABLE_CATEGORIES COMPLETED\n")
+        modules.print_green("CREATE_TABLE_CATEGORIES COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
-    close_conn(cursor, conn)
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    modules.close_conn(cursor, conn)
       
         
 def CREATE_TABLE_POST(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         # Path varchar,
         cursor.execute(
             f"""
@@ -82,17 +82,17 @@ def CREATE_TABLE_POST(server="false"):
             );
             """)
         conn.commit()
-        print_green("CREATE_TABLE_POST COMPLETED\n")
+        modules.print_green("CREATE_TABLE_POST COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
-    close_conn(cursor, conn)
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    modules.close_conn(cursor, conn)
       
         
 def CREATE_TABLE_POST_CATEGORY(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         # Path varchar,
         cursor.execute(
             f"""
@@ -105,17 +105,17 @@ def CREATE_TABLE_POST_CATEGORY(server="false"):
             );
             """)
         conn.commit()
-        print_green("CREATE_TABLE_POST_CATEGORY COMPLETED\n")
+        modules.print_green("CREATE_TABLE_POST_CATEGORY COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
-    close_conn(cursor, conn)
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    modules.close_conn(cursor, conn)
 
 
 def CREATE_TABLE_TAGS(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
             f"""
             CREATE TABLE TAGS
@@ -134,19 +134,19 @@ def CREATE_TABLE_TAGS(server="false"):
             );
             """)
         conn.commit()
-        print_green("CREATE_TABLE_TAGS COMPLETED\n")
+        modules.print_green("CREATE_TABLE_TAGS COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
     
 
 def CREATE_TABLE_LIKES(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
 
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE LIKES(
@@ -161,19 +161,19 @@ def CREATE_TABLE_LIKES(server="false"):
                 """)
         conn.commit()
 
-        print_green("LIKES CREATE COMPLETED\n")
+        modules.print_green("LIKES CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
       
   
 def CREATE_TABLE_DISLIKES(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
 
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE DISLIKES(
@@ -189,19 +189,19 @@ def CREATE_TABLE_DISLIKES(server="false"):
                 """)
         conn.commit()
 
-        print_green("DISLIKES CREATE COMPLETED\n")
+        modules.print_green("DISLIKES CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
    
    
 def CREATE_TABLE_FAVOURITES(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
 
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE FAVOURITES(
@@ -216,19 +216,19 @@ def CREATE_TABLE_FAVOURITES(server="false"):
                 """)
         conn.commit()
 
-        print_green("FAVOURITES CREATE COMPLETED\n")
+        modules.print_green("FAVOURITES CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
     
         
 def CREATE_TABLE_COMMENTS(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
 
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE COMMENTS(
@@ -245,19 +245,19 @@ def CREATE_TABLE_COMMENTS(server="false"):
                 """)
         conn.commit()
 
-        print_green("COMMENT CREATE COMPLETED\n")
+        modules.print_green("COMMENT CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
     
     
 def CREATE_TABLE_VIEWS(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
 
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE VIEWS(
@@ -271,19 +271,19 @@ def CREATE_TABLE_VIEWS(server="false"):
                 """)
         conn.commit()
 
-        print_green("VIEWS CREATE COMPLETED\n")
+        modules.print_green("VIEWS CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
 
 
 def CREATE_TABLE_CONNECTIONS(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
             f"""
                 CREATE TABLE CONNECTIONS
@@ -299,19 +299,19 @@ def CREATE_TABLE_CONNECTIONS(server="false"):
                 );
             """)
         conn.commit()
-        print_green("CONNECTION TABLE CREATE COMPLETED\n")
+        modules.print_green("CONNECTION TABLE CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
         
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
 
 
 def CREATE_TABLE_IP_ADRESSES(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
 
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE IP_ADRESSES(
@@ -324,19 +324,19 @@ def CREATE_TABLE_IP_ADRESSES(server="false"):
                 """)
         conn.commit()
 
-        print_green("IP_ADRESSES CREATE COMPLETED\n")
+        modules.print_green("IP_ADRESSES CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
     
     
 def CREATE_TABLE_CHAT_ROOMS(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
 
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE CHAT_ROOMS(
@@ -348,19 +348,19 @@ def CREATE_TABLE_CHAT_ROOMS(server="false"):
                 """)
         conn.commit()
 
-        print_green("CHAT_ROOMS CREATE COMPLETED\n")
+        modules.print_green("CHAT_ROOMS CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
     
     
 def CREATE_TABLE_CHAT_ADMINS(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
 
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE CHAT_ADMINS(
@@ -372,19 +372,19 @@ def CREATE_TABLE_CHAT_ADMINS(server="false"):
                 """)
         conn.commit()
 
-        print_green("CHAT_ADMINS CREATE COMPLETED\n")
+        modules.print_green("CHAT_ADMINS CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
     
     
 def CREATE_TABLE_CHAT_USERS(server="false"):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
 
     try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE CHAT_USERS(
@@ -396,11 +396,11 @@ def CREATE_TABLE_CHAT_USERS(server="false"):
                 """)
         conn.commit()
 
-        print_green("CHAT_ADMINS CREATE COMPLETED\n")
+        modules.print_green("CHAT_ADMINS CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
 
  

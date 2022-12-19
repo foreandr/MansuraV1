@@ -12,11 +12,9 @@ app.secret_key = 'demokey'
 
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
-    return DB_READ.GET_PROFILE_IMAGE_BY_USER("foreandr")
+    return DB_READ.GET_PROFILE_IMAGE_BY_USER("Andre")
 
 if __name__ == '__main__':
     host = "0.0.0.0" 
     # http://165.227.35.71:8088/
     app.run(host=host, port="8096", debug=False, use_reloader=False)  
-
-    pass

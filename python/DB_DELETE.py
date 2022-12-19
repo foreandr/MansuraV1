@@ -1,4 +1,4 @@
-try:
-    from python.MODULES import *
+try:    
+    import python.MODULES as modules
 except:
-    from MODULES import *
+    import MODULES as modules

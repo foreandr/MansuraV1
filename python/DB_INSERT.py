@@ -1,14 +1,14 @@
 import hashlib
 import inspect
 
-try:
-    from python.MODULES import *
+try:    
+    import python.MODULES as modules
 except:
-    from MODULES import *
+    import MODULES as modules
 
 
 def INSERT_USER(Username, Password, Email):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
@@ -16,19 +16,19 @@ def INSERT_USER(Username, Password, Email):
             INSERT INTO USERS
             (Username, Password, Profile_pic, Email, Date_time)
             VALUES
-            ('{Username}', '{hashlib.sha256(Password.encode('utf-8')).hexdigest()}', {psycopg2.Binary(load_default_profile_pic())}, '{Email}', NOW());
+            ('{Username}', '{hashlib.sha256(Password.encode('utf-8')).hexdigest()}', {modules.psycopg2.Binary(modules.load_default_profile_pic())}, '{Email}', NOW());
             """)
         conn.commit()
 
-        print_green(F"{Username} INSERT COMPLETED")
+        modules.print_green(F"{Username} INSERT COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=f"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=f"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn)  
+    modules.close_conn(cursor, conn)  
 
 def INSERT_CATEGORY(Category_name):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
@@ -40,20 +40,20 @@ def INSERT_CATEGORY(Category_name):
             """)
         conn.commit()
 
-        print_green(F"{Category_name} INSERT COMPLETED")
+        modules.print_green(F"{Category_name} INSERT COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn)  
+    modules.close_conn(cursor, conn)  
     
 def INSERT_POST(Post_title, Post_description, Post_link, User_id, Category):
     
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
-        Post_html = translate_link_to_html(Post_link)
-        Post_title = clean_title(Post_title)
-        Post_description = clean_description(Post_description)
+        Post_html = modules.translate_link_to_html(Post_link)
+        Post_title = modules.clean_title(Post_title)
+        Post_description = modules.clean_description(Post_description)
         cursor = conn.cursor()
         cursor.execute(
             f"""
@@ -63,17 +63,17 @@ def INSERT_POST(Post_title, Post_description, Post_link, User_id, Category):
             ('{Post_title}', '{Post_description}', '{Post_link}', '{Post_html}', '{User_id}', NOW());
             """)
         conn.commit()
-        Post_id = DB_READ.GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link)
-        Category_id = DB_READ.GET_CATEGORY_ID_BY_NAME(Category)
+        Post_id = modules.DB_READ.GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link)
+        Category_id = modules.DB_READ.GET_CATEGORY_ID_BY_NAME(Category)
         
         INSERT_POST_CATEGORY(Post_id, Category_id)
         
-        print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn) 
+    modules.close_conn(cursor, conn) 
      
 def INSERT_POST_CATEGORY(Post_id, Category_id):
     cursor, conn = create_connection()
@@ -88,15 +88,15 @@ def INSERT_POST_CATEGORY(Post_id, Category_id):
             """)
         conn.commit()
 
-        print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn) 
+    modules.close_conn(cursor, conn) 
    
 def INSERT_TAGS(Tag_name, Tag_type, Post_id):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
@@ -108,15 +108,15 @@ def INSERT_TAGS(Tag_name, Tag_type, Post_id):
             """)
         conn.commit()
 
-        print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn) 
+    modules.close_conn(cursor, conn) 
 
 def INSERT_LIKE(Post_id, User_id):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
@@ -128,15 +128,15 @@ def INSERT_LIKE(Post_id, User_id):
             """)
         conn.commit()
 
-        print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn) 
+    modules.close_conn(cursor, conn) 
 
 def INSERT_DISLIKE(Post_id, User_id):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
@@ -148,16 +148,16 @@ def INSERT_DISLIKE(Post_id, User_id):
             """)
         conn.commit()
 
-        print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
 
 def INSERT_FAVOURITES(Post_id, User_id):
 
-    cursor, conn = create_connection()
+    cursor, conn =modules. create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
@@ -168,16 +168,16 @@ def INSERT_FAVOURITES(Post_id, User_id):
             ('{Post_id}', '{User_id}', NOW())
             """)
         conn.commit()
-        print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn) 
+    modules.close_conn(cursor, conn) 
      
 def INSERT_COMMENTS(Post_id, User_id, Comment_text, Replying_to_id="NULL"):
 
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
@@ -188,16 +188,16 @@ def INSERT_COMMENTS(Post_id, User_id, Comment_text, Replying_to_id="NULL"):
             ('{Post_id}', '{User_id}', {Replying_to_id}, '{Comment_text}', NOW())
             """)
         conn.commit()
-        print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn) 
+    modules.close_conn(cursor, conn) 
     
 def INSERT_VIEWS(Post_id, User_id):
 
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
@@ -208,16 +208,16 @@ def INSERT_VIEWS(Post_id, User_id):
             ('{Post_id}', '{User_id}', NOW())
             """)
         conn.commit()
-        print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn) 
+    modules.close_conn(cursor, conn) 
     
 def INSERT_CONNECTION(user_id1, user_id2):
 
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
         cursor.execute(
             f"""
@@ -225,16 +225,16 @@ def INSERT_CONNECTION(user_id1, user_id2):
                 VALUES({user_id1}, {user_id2}, NOW())
             """)
         conn.commit()
-        print_green(f"CONNECTED {user_id1} -> {user_id2}")
+        modules.print_green(f"CONNECTED {user_id1} -> {user_id2}")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
     
-    close_conn(cursor, conn) 
+    modules.close_conn(cursor, conn) 
 
 def INSERT_IP_ADRESSES(Address, User_id):
 
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
@@ -245,16 +245,16 @@ def INSERT_IP_ADRESSES(Address, User_id):
             ('{Address}', '{User_id}')
             """)
         conn.commit()
-        print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
     
 def INSERT_CHAT_ROOMS(Creator_id, Room_name):
 
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
@@ -265,16 +265,16 @@ def INSERT_CHAT_ROOMS(Creator_id, Room_name):
             ('{Creator_id}', '{Room_name}')
             """)
         conn.commit()
-        print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
     
 def INSERT_CHAT_ROOMS_USER(User_id, Room_id):
 
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
@@ -285,16 +285,16 @@ def INSERT_CHAT_ROOMS_USER(User_id, Room_id):
             ('{User_id}', '{Room_id}')
             """)
         conn.commit()
-        print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn)
+    modules.close_conn(cursor, conn)
     
 def INSERT_CHAT_ROOMS_ADMIN(User_id, Room_id):
 
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
@@ -305,11 +305,11 @@ def INSERT_CHAT_ROOMS_ADMIN(User_id, Room_id):
             ('{User_id}', '{Room_id}')
             """)
         conn.commit()
-        print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    close_conn(cursor, conn)       
+    modules.close_conn(cursor, conn)       
     
     
