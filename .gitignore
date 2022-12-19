@@ -1,35 +1,36 @@
 # THERE ARE SOME FILES YOU SHOULD GRAB WHEN YOU CLONE
 # Notes/TODO/STEPS FOR NEW DROPLETS
+!OLD_MANSURA
 
 __pychache__
 Notes/TODO/MVP.docx
 Notes/TODO/unused code.txt
 Notes/TODO/STEPS FOR NEW DROPLETS
 
-Python/__pycache__
-Python/__pychache__
+python/__pycache__
+python/__pychache__
 
-Python/logs/
-Python/logs/
-Python/logs/distro
-Python/HISTORY
-Python/Paypal
-Python/Stripe
-Python/db_connection.py
-Python/my_email.py
-Python/paypal_gmail.py
-Python/testing_database.py
-Python/token.pickle
-Python/AI/code/local_nsfw_detector.py
-Python/AI/code/local_nudenet.py
-Python/AI/code/local_tensorflow.py
+python/logs/
+python/logs/
+python/logs/distro
+python/HISTORY
+python/Paypal
+python/Stripe
+python/db_connection.py
+python/my_email.py
+python/paypal_gmail.py
+python/testing_database.py
+python/token.pickle
+python/AI/code/local_nsfw_detector.py
+python/AI/code/local_nudenet.py
+python/AI/code/local_tensorflow.py
 
 static/#UserData
 venv/
-Python/all_dates.csv
-Python/current_date.csv
-Python/AI/porn_dataset
-Python/nude_test/
+python/all_dates.csv
+python/current_date.csv
+python/AI/porn_dataset
+python/nude_test/
 
 __pycache__/app.cpython-38.pyc
 __pycache__/app.cpython-310.pyc
@@ -38,7 +39,7 @@ __pycache__/mansura.cpython-310.pyc
 __pycache__/wsgi.cpython-38.pyc
 __pycache__/wsgi.cpython-310.pyc
 
-Python/logs/distro/Daily/2022-12-04/FULL_SET.txt
+python/logs/distro/Daily/2022-12-04/FULL_SET.txt
 ystemctl daemon-reload
 upercompooper
-Python/withdrawl.csv
+python/withdrawl.csv

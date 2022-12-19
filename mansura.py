@@ -2,7 +2,7 @@ from flask import *
 from os import *
 
 # CONFIG
-TEMPLATE_DIR = path.abspath('./Templates')
+TEMPLATE_DIR = path.abspath('./templates')
 STATIC_DIR = path.abspath('./static')
 
 app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)

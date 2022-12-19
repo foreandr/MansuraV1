@@ -1,15 +1,44 @@
 from db_connection import *
 from helpers import *
 from log import *
+import inspect
 
-
-
-def CREATE_TABLE_USER(server="false"):
+def SERVER_CHECK(server, function):
+    # print()
     cursor, conn = create_connection()
     if server == "false":
-        cursor.execute("""DROP TABLE IF EXISTS USERS CASCADE""")
-        print_green("CASCADE DROPPED TABLE USERS")
+        if function == "CREATE_TABLE_USER":
+            cursor.execute("""DROP TABLE IF EXISTS USERS CASCADE""")
+        
+        elif function == "CREATE_TABLE_CATEGORIES":
+            cursor.execute("""DROP TABLE IF EXISTS CATEGORIES CASCADE""")
+        
+        elif function == "CREATE_TABLE_POST":
+            cursor.execute("""DROP TABLE IF EXISTS POSTS CASCADE""")
+        
+        elif function == "CREATE_TABLE_TAGS":
+            cursor.execute("""DROP TABLE IF EXISTS TAGS CASCADE""")
+        
+        elif function == "CREATE_TABLE_LIKES":
+            cursor.execute("""DROP TABLE IF EXISTS LIKES CASCADE""")
+        
+        elif function == "CREATE_TABLE_DISLIKES":
+            cursor.execute("""DROP TABLE IF EXISTS DISLIKES CASCADE""")
+        
+        elif function == "CREATE_TABLE_COMMENTS":
+            cursor.execute("""DROP TABLE IF EXISTS COMMENTS CASCADE""")
+        
+        elif function == "CREATE_TABLE_VIEWS":
+            cursor.execute("""DROP TABLE IF EXISTS VIEWS CASCADE""")
+        
+        conn.commit()
+        print_green(F"CASCADE DROPPED TABLE {function}")
+        
+        
+def CREATE_TABLE_USER(server="false"):
+    cursor, conn = create_connection()
     try:
+        SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE USERS 
@@ -33,9 +62,7 @@ def CREATE_TABLE_USER(server="false"):
 def CREATE_TABLE_CATEGORIES(server="false"):
     cursor, conn = create_connection()
     try:
-        if server == "false":
-            cursor.execute("""DROP TABLE IF EXISTS CATEGORIES CASCADE""")
-            print_green("CASCADE DROPPED TABLE POSTS")
+        SERVER_CHECK(server, inspect.stack()[0][3]) 
         cursor.execute(
             f"""
             CREATE TABLE CATEGORIES
@@ -55,9 +82,7 @@ def CREATE_TABLE_CATEGORIES(server="false"):
 def CREATE_TABLE_POST(server="false"):
     cursor, conn = create_connection()
     try:
-        if server == "false":
-            cursor.execute("""DROP TABLE IF EXISTS POSTS CASCADE""")
-            print_green("CASCADE DROPPED TABLE POSTS")
+        SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
             f"""
             CREATE TABLE POSTS
@@ -83,9 +108,7 @@ def CREATE_TABLE_POST(server="false"):
 def CREATE_TABLE_TAGS(server="false"):
     cursor, conn = create_connection()
     try:
-        if server == "false":
-            cursor.execute("""DROP TABLE IF EXISTS TAGS CASCADE""")
-            print_green("CASCADE DROPPED TABLE TAGS")
+        SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
             f"""
             CREATE TABLE TAGS
@@ -110,9 +133,7 @@ def CREATE_TABLE_LIKES(server="false"):
     cursor, conn = create_connection()
 
     try:
-        if server == "false":
-            cursor.execute(f"DROP TABLE IF EXISTS LIKES CASCADE;")
-            print_green("CASCADE DROPPED TABLE LIKES")
+        SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE LIKES(
@@ -134,13 +155,12 @@ def CREATE_TABLE_LIKES(server="false"):
 
     close_conn(cursor, conn)
     
+    
 def CREATE_TABLE_DISLIKES(server="false"):
     cursor, conn = create_connection()
 
     try:
-        if server == "false":
-            cursor.execute(f"DROP TABLE IF EXISTS DISLIKES CASCADE;")
-            print_green("CASCADE DROPPED TABLE DISLIKES")
+        SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE DISLIKES(
@@ -156,20 +176,19 @@ def CREATE_TABLE_DISLIKES(server="false"):
                 """)
         conn.commit()
 
-        print_green("LIKES CREATE COMPLETED\n")
+        print_green("DISLIKES CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="HAD TO ROLLBACK LIKES TABLE CREATION")
+        log_function("error", e, function_name="HAD TO ROLLBACK DISLIKES TABLE CREATION")
 
     close_conn(cursor, conn)
+   
     
 def CREATE_TABLE_COMMENTS(server="false"):
     cursor, conn = create_connection()
 
     try:
-        if server == "false":
-            cursor.execute(f"DROP TABLE IF EXISTS COMMENTS CASCADE;")
-            print_green("CASCADE DROPPED TABLE COMMENTS")
+        SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
                 CREATE TABLE COMMENTS(
@@ -183,14 +202,38 @@ def CREATE_TABLE_COMMENTS(server="false"):
                 """)
         conn.commit()
 
-        print_green("LIKES CREATE COMPLETED\n")
+        print_green("COMMENT CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="HAD TO ROLLBACK LIKES TABLE CREATION")
+        log_function("error", e, function_name="HAD TO ROLLBACK COMMENT TABLE CREATION")
 
     close_conn(cursor, conn)
     
     
+def CREATE_TABLE_VIEWS(server="false"):
+    cursor, conn = create_connection()
+
+    try:
+        SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE VIEWS(
+                    Comment_Id SERIAL PRIMARY KEY,
+                    Post_id BIGINT,
+                    Viewer_id BIGINT,
+                    Date_time timestamp,
+                    FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
+                    FOREIGN KEY (Viewer_id) REFERENCES USERS(User_id)
+                );
+                """)
+        conn.commit()
+
+        print_green("VIEWS CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name="HAD TO ROLLBACK VIEWS TABLE CREATION")
+
+    close_conn(cursor, conn)
     
 CREATE_TABLE_USER()
 CREATE_TABLE_CATEGORIES()
@@ -198,3 +241,4 @@ CREATE_TABLE_POST()
 CREATE_TABLE_TAGS()
 CREATE_TABLE_LIKES()
 CREATE_TABLE_DISLIKES()
+CREATE_TABLE_VIEWS()
