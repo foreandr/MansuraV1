@@ -1,0 +1,10 @@
+2022-12-06 19:22:32 [request][foreandr]- <Request 'http://165.227.35.71:8096/' [GET]>
+2022-12-06 19:22:32 [request][]- <Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
+2022-12-06 19:22:32 [request][foreandr]- <Request 'http://165.227.35.71:8096/' [GET]>
+2022-12-06 19:23:16 [request][]- <Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
+2022-12-06 19:56:40 [request][]- <Request 'http://165.227.35.71:8096/foreandr' [GET]>
+2022-12-06 19:56:40 [request][]- <Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
+2022-12-06 19:56:47 [request][]- <Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
+2022-12-06 19:56:48 [request][]- <Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
+2022-12-06 20:17:56 [request][]- <Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
+2022-12-06 20:18:13 [request][]- <Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>

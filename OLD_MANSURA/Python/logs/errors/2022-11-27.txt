@@ -1,0 +1,6 @@
+2022-11-27 08:43:40 [error]- duplicate key value violates unique constraint "likes_file_id_liker_username_key"
+DETAIL:  Key (file_id, liker_username)=(1, foreandr) already exists.
+
+2022-11-27 08:43:40 [error]- duplicate key value violates unique constraint "dislikes_file_id_disliker_username_key"
+DETAIL:  Key (file_id, disliker_username)=(1, foreandr) already exists.
+

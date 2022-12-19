@@ -1,0 +1,23 @@
+2022-11-24 17:41:16 [error]- cannot drop table search_algorithms because other objects depend on it
+DETAIL:  constraint search_votes_search_id_fkey on table search_votes depends on table search_algorithms
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+
+2022-11-24 17:43:40 [error]- duplicate key value violates unique constraint "likes_file_id_liker_username_key"
+DETAIL:  Key (file_id, liker_username)=(1, foreandr) already exists.
+
+2022-11-24 18:57:49 [error]- duplicate key value violates unique constraint "likes_file_id_liker_username_key"
+DETAIL:  Key (file_id, liker_username)=(1, foreandr) already exists.
+
+2022-11-24 19:02:55 [error]- duplicate key value violates unique constraint "likes_file_id_liker_username_key"
+DETAIL:  Key (file_id, liker_username)=(1, foreandr) already exists.
+
+2022-11-24 19:07:03 [error]- cannot drop table search_algorithms because other objects depend on it
+DETAIL:  constraint search_favourites_search_id_fkey on table search_favourites depends on table search_algorithms
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+
+2022-11-24 19:13:07 [error]- duplicate key value violates unique constraint "likes_file_id_liker_username_key"
+DETAIL:  Key (file_id, liker_username)=(1, foreandr) already exists.
+
+2022-11-24 19:56:03 [error]- name 'send_file' is not defined
+2022-11-24 19:56:45 [error]- [Errno 2] No such file or directory: '/root/mansura/Python/HISTORYDaily2022-11-20.xlsx'
+2022-11-24 19:57:27 [error]- [Errno 2] No such file or directory: '/root/mansura/Python/HISTORY/Daily2022-11-24.xlsx'

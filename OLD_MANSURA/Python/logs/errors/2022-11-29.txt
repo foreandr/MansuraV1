@@ -1,0 +1,16 @@
+2022-11-29 19:13:27 [error]- 'password'
+2022-11-29 19:17:08 [error]- 'password'
+2022-11-29 19:18:01 [error]- 'password'
+2022-11-29 19:19:44 [error]- 'password'
+2022-11-29 19:20:18 [error]- 'password'
+2022-11-29 19:21:36 [error]- 'password'
+2022-11-29 21:13:38 [error]- duplicate key value violates unique constraint "users_username_key"
+DETAIL:  Key (username)=(a) already exists.
+
+2022-11-29 21:16:41 [error]- syntax error at or near "$2"
+LINE 5:             ('helloworld123', 'b'$2b$12$gUMjpSGxKBLOv0sf7hG3...
+                                         ^
+
+2022-11-29 21:19:39 [error]- duplicate key value violates unique constraint "users_username_key"
+DETAIL:  Key (username)=(foreandr) already exists.
+

@@ -1,0 +1,9 @@
+MANSURA: 14.88,
+
+POSTS,
+59 [EQUAL DISTRIBUTION] : {'VALUE': {'VOTES': 3, 'PERCENT': '%100.0', 'AMOUNT': 40.17}, 'ORDER': ['foreandr', 'foreandr', 'foreandr', 'foreandr'], 'REPLY': {'REPLYING_TO': 'a', 'AMOUNT': 4.46}},
+
+SEARCH,
+[3.72]:{'AMOUNT': 1, 'SEARCHERS_LIST': ['Maire'], 'SEARCH_CREATOR': 'foreandr', 'PERCENTAGE': 0.25} ,
+[7.44]:{'AMOUNT': 2, 'SEARCHERS_LIST': ['a', 'foreandr'], 'SEARCH_CREATOR': 'a', 'PERCENTAGE': 0.5} ,
+[3.72]:{'AMOUNT': 1, 'SEARCHERS_LIST': ['andefore'], 'SEARCH_CREATOR': 'andrfore', 'PERCENTAGE': 0.25} ,

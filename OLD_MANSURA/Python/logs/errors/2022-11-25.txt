@@ -1,0 +1,88 @@
+2022-11-25 14:48:24 [error]- duplicate key value violates unique constraint "likes_file_id_liker_username_key"
+DETAIL:  Key (file_id, liker_username)=(1, foreandr) already exists.
+
+2022-11-25 17:16:44 [error]- duplicate key value violates unique constraint "likes_file_id_liker_username_key"
+DETAIL:  Key (file_id, liker_username)=(223, foreandr) already exists.
+
+2022-11-25 18:17:05 [error]- duplicate key value violates unique constraint "likes_file_id_liker_username_key"
+DETAIL:  Key (file_id, liker_username)=(1, foreandr) already exists.
+
+2022-11-25 18:17:05 [error]- relation "dislikes" does not exist
+LINE 2:             INSERT INTO DISLIKES
+                                ^
+
+2022-11-25 18:17:05 [error]- relation "dislikes" does not exist
+LINE 2:             INSERT INTO DISLIKES
+                                ^
+
+2022-11-25 18:17:05 [error]- relation "dislikes" does not exist
+LINE 2:             INSERT INTO DISLIKES
+                                ^
+
+2022-11-25 18:17:05 [error]- relation "dislikes" does not exist
+LINE 2:             INSERT INTO DISLIKES
+                                ^
+
+2022-11-25 18:17:05 [error]- relation "dislikes" does not exist
+LINE 2:             INSERT INTO DISLIKES
+                                ^
+
+2022-11-25 18:39:27 [error]- duplicate key value violates unique constraint "likes_file_id_liker_username_key"
+DETAIL:  Key (file_id, liker_username)=(1, foreandr) already exists.
+
+2022-11-25 18:39:27 [error]- relation "dislikes" does not exist
+LINE 2:             INSERT INTO DISLIKES
+                                ^
+
+2022-11-25 18:39:27 [error]- relation "dislikes" does not exist
+LINE 2:             INSERT INTO DISLIKES
+                                ^
+
+2022-11-25 18:39:27 [error]- relation "dislikes" does not exist
+LINE 2:             INSERT INTO DISLIKES
+                                ^
+
+2022-11-25 18:39:27 [error]- relation "dislikes" does not exist
+LINE 2:             INSERT INTO DISLIKES
+                                ^
+
+2022-11-25 18:39:27 [error]- relation "dislikes" does not exist
+LINE 2:             INSERT INTO DISLIKES
+                                ^
+
+2022-11-25 19:34:26 [error]- duplicate key value violates unique constraint "likes_file_id_liker_username_key"
+DETAIL:  Key (file_id, liker_username)=(1, foreandr) already exists.
+
+2022-11-25 19:34:26 [error]- duplicate key value violates unique constraint "dislikes_file_id_disliker_username_key"
+DETAIL:  Key (file_id, disliker_username)=(1, foreandr) already exists.
+
+2022-11-25 19:44:12 [error]- duplicate key value violates unique constraint "dislikes_file_id_disliker_username_key"
+DETAIL:  Key (file_id, disliker_username)=(155, foreandr) already exists.
+
+2022-11-25 19:44:12 [error]- column "disliker_username" does not exist
+LINE 3:             WHERE Disliker_username = 'foreandr' AND File_id...
+                          ^
+HINT:  Perhaps you meant to reference the column "likes.liker_username".
+
+2022-11-25 19:44:19 [error]- duplicate key value violates unique constraint "dislikes_file_id_disliker_username_key"
+DETAIL:  Key (file_id, disliker_username)=(155, foreandr) already exists.
+
+2022-11-25 19:44:19 [error]- column "disliker_username" does not exist
+LINE 3:             WHERE Disliker_username = 'foreandr' AND File_id...
+                          ^
+HINT:  Perhaps you meant to reference the column "likes.liker_username".
+
+2022-11-25 19:44:36 [error]- duplicate key value violates unique constraint "dislikes_file_id_disliker_username_key"
+DETAIL:  Key (file_id, disliker_username)=(155, foreandr) already exists.
+
+2022-11-25 19:44:36 [error]- column "disliker_username" does not exist
+LINE 3:             WHERE Disliker_username = 'foreandr' AND File_id...
+                          ^
+HINT:  Perhaps you meant to reference the column "likes.liker_username".
+
+2022-11-25 19:45:05 [error]- duplicate key value violates unique constraint "dislikes_file_id_disliker_username_key"
+DETAIL:  Key (file_id, disliker_username)=(155, foreandr) already exists.
+
+2022-11-25 19:45:08 [error]- duplicate key value violates unique constraint "likes_file_id_liker_username_key"
+DETAIL:  Key (file_id, liker_username)=(155, foreandr) already exists.
+

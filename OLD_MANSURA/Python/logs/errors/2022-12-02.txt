@@ -1,0 +1,6 @@
+2022-12-02 13:21:00 [error]- duplicate key value violates unique constraint "search_algorithms_algorithm_name_key"
+DETAIL:  Key (algorithm_name)=(foreandr-morethan42andre) already exists.
+
+2022-12-02 13:22:13 [error]- duplicate key value violates unique constraint "search_algorithms_algorithm_name_key"
+DETAIL:  Key (algorithm_name)=(foreandr-morethan42andre) already exists.
+

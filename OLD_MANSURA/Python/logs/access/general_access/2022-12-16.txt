@@ -1,0 +1,6 @@
+[2022-12-16 18:51:14][request][][]-<Request 'http://165.227.35.71:8096/favicon.ico' [GET]>
+[2022-12-16 18:51:14][request][][]-<Request 'http://165.227.35.71:8096/login' [GET]>
+[2022-12-16 18:51:15][request][][]-<Request 'http://165.227.35.71:8096/robots.txt' [GET]>
+[2022-12-16 18:51:15][request][][]-<Request 'http://165.227.35.71:8096/login' [GET]>
+[2022-12-16 18:51:15][request][][]-<Request 'http://165.227.35.71:8096/sitemap.xml' [GET]>
+[2022-12-16 18:51:15][request][][]-<Request 'http://165.227.35.71:8096/login' [GET]>

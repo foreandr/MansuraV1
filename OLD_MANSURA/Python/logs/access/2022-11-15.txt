@@ -1,0 +1,13 @@
+2022-11-15 07:41:45 [request]- <Request 'http://localhost:8081/' [GET]>
+2022-11-15 07:41:45 [request]- <Request 'http://localhost:8081/' [GET]>
+2022-11-15 07:41:47 [request]- <Request 'http://localhost:8081/user_profile' [GET]>
+2022-11-15 07:41:47 [request]- <Request 'http://localhost:8081/foreandr' [GET]>
+2022-11-15 07:43:38 [request]- <Request 'http://localhost:8081/user_profile' [GET]>
+2022-11-15 07:43:39 [request]- <Request 'http://localhost:8081/foreandr' [GET]>
+2022-11-15 07:43:59 [request]- <Request 'http://localhost:8081/foreandr' [GET]>
+2022-11-15 09:21:32 [request]- <Request 'http://localhost:8080/' [GET]>
+2022-11-15 09:21:36 [request]- <Request 'http://localhost:8080/user_profile' [GET]>
+2022-11-15 09:21:36 [request]- <Request 'http://localhost:8080/foreandr' [GET]>
+2022-11-15 09:21:39 [request]- <Request 'http://localhost:8080/logout' [GET]>
+2022-11-15 09:21:40 [request]- <Request 'http://localhost:8080/login' [GET]>
+2022-11-15 09:21:41 [request]- <Request 'http://localhost:8080/login' [GET]>

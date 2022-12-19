@@ -1,0 +1,6 @@
+2022-12-04 13:45:07 [error]- [Errno 2] No such file or directory: '/root/mansura/Python/HISTORY/Daily/2022-12-04'
+2022-12-04 13:55:45 [error]- [Errno 21] Is a directory: '/root/mansura/Python/logs/distro/Daily/2022-12-04'
+2022-12-04 13:57:13 [error]- [Errno 21] Is a directory: '/root/mansura/Python/logs/distro/Daily/2022-12-04'
+2022-12-04 19:04:09 [error]- duplicate key value violates unique constraint "dislikes_file_id_disliker_username_key"
+DETAIL:  Key (file_id, disliker_username)=(68, foreandr) already exists.
+
