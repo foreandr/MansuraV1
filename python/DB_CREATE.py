@@ -6,9 +6,6 @@ except:
 
 import inspect
 
-#post title, post description
-# post source
-# post html
 
 # user profile picture
 #link providing peaderboards, watches views likes etcv
@@ -168,7 +165,7 @@ def CREATE_TABLE_LIKES(server="false"):
 
     modules.close_conn(cursor, conn)
       
-  
+'''
 def CREATE_TABLE_DISLIKES(server="false"):
     cursor, conn = modules.create_connection()
 
@@ -195,7 +192,7 @@ def CREATE_TABLE_DISLIKES(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     modules.close_conn(cursor, conn)
-   
+''' 
    
 def CREATE_TABLE_FAVOURITES(server="false"):
     cursor, conn = modules.create_connection()

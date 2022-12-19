@@ -32,8 +32,8 @@ def GET_PROFILE_IMAGE_BY_USER(username):
     for i in cursor.fetchall():
         byte_array = bytes(i[0])
     
-    print(type(byte_array))
-    print(byte_array)
+    #print(type(byte_array))
+    #print(byte_array)
     # image = Image.open(io.BytesIO(byte_array))
     modules.close_conn(cursor, conn)
     return byte_array

@@ -63,8 +63,9 @@ def INSERT_POST(Post_title, Post_description, Post_link, User_id, Category):
             ('{Post_title}', '{Post_description}', '{Post_link}', '{Post_html}', '{User_id}', NOW());
             """)
         conn.commit()
-        Post_id = modules.DB_READ.GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link)
-        Category_id = modules.DB_READ.GET_CATEGORY_ID_BY_NAME(Category)
+        
+        Post_id = modules.GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link)
+        Category_id = modules.GET_CATEGORY_ID_BY_NAME(Category)
         
         INSERT_POST_CATEGORY(Post_id, Category_id)
         
@@ -76,7 +77,7 @@ def INSERT_POST(Post_title, Post_description, Post_link, User_id, Category):
     modules.close_conn(cursor, conn) 
      
 def INSERT_POST_CATEGORY(Post_id, Category_id):
-    cursor, conn = create_connection()
+    cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(

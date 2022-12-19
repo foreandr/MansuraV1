@@ -10,7 +10,7 @@ def CREATE_TABLES():
     modules.CREATE_TABLE_POST_CATEGORY()
     modules.CREATE_TABLE_TAGS()
     modules.CREATE_TABLE_LIKES()
-    modules.CREATE_TABLE_DISLIKES()
+    # modules.CREATE_TABLE_DISLIKES()
     modules.CREATE_TABLE_FAVOURITES()
     modules.CREATE_TABLE_COMMENTS()
     modules.CREATE_TABLE_VIEWS()
