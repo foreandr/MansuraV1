@@ -1,7 +1,9 @@
-from dbconnection import *
-from helpers import *
-from log import *
-from DB_CHECK import *
+try:
+    from python.MODULES import *
+except:
+    from MODULES import *
+
+
 import inspect
 
 #post title, post description
@@ -12,7 +14,6 @@ import inspect
 #link providing peaderboards, watches views likes etcv
 #both for the poster and the intellectuals
 
-#todo: add to a DB_CHECK FILES
 
         
         
@@ -27,6 +28,7 @@ def CREATE_TABLE_USER(server="false"):
                     User_id SERIAL PRIMARY KEY,
                     Username varchar(20) UNIQUE,
                     Password varchar(200),
+                    Profile_pic BYTEA,
                     Email varchar(200) UNIQUE,
                     Date_time timestamp
                 );
@@ -35,7 +37,7 @@ def CREATE_TABLE_USER(server="false"):
         print_green("CREATE_TABLE_USER COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="USER_CREATE_TABLE")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     close_conn(cursor, conn)    
     
@@ -56,7 +58,7 @@ def CREATE_TABLE_CATEGORIES(server="false"):
         print_green("CREATE_TABLE_CATEGORIES COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="CATEGORIES_CREATE_TABLE")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     close_conn(cursor, conn)
       
         
@@ -69,7 +71,9 @@ def CREATE_TABLE_POST(server="false"):
             f"""
             CREATE TABLE POSTS
             (
-            Post_id SERIAL PRIMARY KEY,  
+            Post_id SERIAL PRIMARY KEY, 
+            Post_title varchar, 
+            Post_description varchar,
             Post_link varchar, 
             Post_html varchar,
             User_id BIGINT,
@@ -81,7 +85,7 @@ def CREATE_TABLE_POST(server="false"):
         print_green("CREATE_TABLE_POST COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="POST_CREATE_TABLE")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     close_conn(cursor, conn)
       
         
@@ -117,22 +121,23 @@ def CREATE_TABLE_TAGS(server="false"):
             CREATE TABLE TAGS
             (
             Tag_id SERIAL PRIMARY KEY,       
-            Tag_name varchar UNIQUE,
+            Tag_name varchar,
             Tag_type varchar,
             Post_id BIGINT, 
             FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
             
-            CHECK( 
-                Tag_type = 'HARD'
-                OR Tag_type = 'SOFT' 
-            )
+            CHECK( Tag_type = 'HARD' OR Tag_type = 'SOFT'), 
+                
+                
+                
+            UNIQUE (Tag_name, Tag_type)
             );
             """)
         conn.commit()
         print_green("CREATE_TABLE_TAGS COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="TAGS_CREATE_TABLE")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     close_conn(cursor, conn)
     
@@ -159,37 +164,10 @@ def CREATE_TABLE_LIKES(server="false"):
         print_green("LIKES CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="HAD TO ROLLBACK LIKES TABLE CREATION")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     close_conn(cursor, conn)
-    
-    
-def CREATE_TABLE_FAVOURITES(server="false"):
-    cursor, conn = create_connection()
-
-    try:
-        SERVER_CHECK(server, inspect.stack()[0][3])
-        cursor.execute(
-                f"""
-                CREATE TABLE FAVOURITES(
-                    Favourite_id SERIAL PRIMARY KEY,
-                    Post_id BIGINT,
-                    User_id BIGINT,
-                    Date_time timestamp, 
-                    FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
-                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
-                    UNIQUE (Post_id,  User_id)
-                );
-                """)
-        conn.commit()
-
-        print_green("FAVOURITES CREATE COMPLETED\n")
-    except Exception as e:
-        cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="HAD TO ROLLBACK FAVOURITES TABLE CREATION")
-
-    close_conn(cursor, conn)
-    
+      
   
 def CREATE_TABLE_DISLIKES(server="false"):
     cursor, conn = create_connection()
@@ -214,11 +192,38 @@ def CREATE_TABLE_DISLIKES(server="false"):
         print_green("DISLIKES CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="HAD TO ROLLBACK DISLIKES TABLE CREATION")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     close_conn(cursor, conn)
    
+   
+def CREATE_TABLE_FAVOURITES(server="false"):
+    cursor, conn = create_connection()
+
+    try:
+        SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE FAVOURITES(
+                    Favourite_id SERIAL PRIMARY KEY,
+                    Post_id BIGINT,
+                    User_id BIGINT,
+                    Date_time timestamp, 
+                    FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
+                    UNIQUE (Post_id,  User_id)
+                );
+                """)
+        conn.commit()
+
+        print_green("FAVOURITES CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
+    close_conn(cursor, conn)
     
+        
 def CREATE_TABLE_COMMENTS(server="false"):
     cursor, conn = create_connection()
 
@@ -230,9 +235,12 @@ def CREATE_TABLE_COMMENTS(server="false"):
                     Comment_id SERIAL PRIMARY KEY,
                     Post_id BIGINT,
                     User_id BIGINT,
+                    Replying_to_id BIGINT, 
+                    Comment_text varchar,
                     Date_time timestamp,
                     FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
-                    FOREIGN KEY (User_id) REFERENCES USERS(User_id)
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
+                    FOREIGN KEY (Replying_to_id) REFERENCES COMMENTS(Comment_id)
                 );
                 """)
         conn.commit()
@@ -240,7 +248,7 @@ def CREATE_TABLE_COMMENTS(server="false"):
         print_green("COMMENT CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="HAD TO ROLLBACK COMMENT TABLE CREATION")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     close_conn(cursor, conn)
     
@@ -266,7 +274,7 @@ def CREATE_TABLE_VIEWS(server="false"):
         print_green("VIEWS CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="HAD TO ROLLBACK VIEWS TABLE CREATION")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     close_conn(cursor, conn)
 
@@ -283,17 +291,18 @@ def CREATE_TABLE_CONNECTIONS(server="false"):
                     Friendship_id SERIAL PRIMARY KEY,
                     User_id1 INT,
                     User_id2 INT,
-                    creation_date timestamp,
+                    Date_time timestamp,
                     
                     FOREIGN KEY (User_id1) REFERENCES USERS(User_id),
-                    FOREIGN KEY (User_id2) REFERENCES USERS(User_id)
+                    FOREIGN KEY (User_id2) REFERENCES USERS(User_id),
+                    UNIQUE (User_id1,  User_id2)
                 );
             """)
         conn.commit()
         print_green("CONNECTION TABLE CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="CONNECTION_CREATE_TABLE")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
         
     close_conn(cursor, conn)
 
@@ -318,7 +327,7 @@ def CREATE_TABLE_IP_ADRESSES(server="false"):
         print_green("IP_ADRESSES CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="HAD TO ROLLBACK IP_ADRESSES TABLE CREATION")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     close_conn(cursor, conn)
     
@@ -333,6 +342,7 @@ def CREATE_TABLE_CHAT_ROOMS(server="false"):
                 CREATE TABLE CHAT_ROOMS(
                     Room_id SERIAL PRIMARY KEY,
                     Creator_id BIGINT,
+                    Room_name varchar,
                     FOREIGN KEY (Creator_id) REFERENCES USERS(User_id)
                 );
                 """)
@@ -341,7 +351,7 @@ def CREATE_TABLE_CHAT_ROOMS(server="false"):
         print_green("CHAT_ROOMS CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="HAD TO ROLLBACK CHAT_ROOMS TABLE CREATION")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     close_conn(cursor, conn)
     
@@ -365,7 +375,31 @@ def CREATE_TABLE_CHAT_ADMINS(server="false"):
         print_green("CHAT_ADMINS CREATE COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
-        log_function("error", e, function_name="HAD TO ROLLBACK CHAT_ADMINS TABLE CREATION")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
+    close_conn(cursor, conn)
+    
+    
+def CREATE_TABLE_CHAT_USERS(server="false"):
+    cursor, conn = create_connection()
+
+    try:
+        SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE CHAT_USERS(
+                    User_id BIGINT,
+                    Room_id BIGINT, 
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
+                    FOREIGN KEY (Room_id) REFERENCES CHAT_ROOMS(Room_id)
+                );
+                """)
+        conn.commit()
+
+        print_green("CHAT_ADMINS CREATE COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     close_conn(cursor, conn)
 

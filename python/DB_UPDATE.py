@@ -1,1 +1,4 @@
-from dbconnection import *
+try:
+    from python.MODULES import *
+except:
+    from MODULES import *

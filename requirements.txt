@@ -6,14 +6,17 @@ gunicorn==20.1.0
 wheel==0.38.3
 Cmake==3.22.4
 Werkzeug==2.2.2
-# DATABASE 
 
+# DATABASE 
 psycopg2==2.9.3
 
 # TIME
 pytz==2022.2.1
 
-#Pillow==9.2.0
+#IMAGES
+Pillow==9.2.0
+
+
 #APScheduler==3.9.1
 #openpyxl==3.0.10
 #better_profanity==0.7.0

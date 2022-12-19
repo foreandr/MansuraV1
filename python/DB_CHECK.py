@@ -1,5 +1,7 @@
-from dbconnection import *
-from helpers import *
+try:
+    from python.MODULES import *
+except:
+    from MODULES import *
 
     
 def SERVER_CHECK(server, function):
@@ -56,6 +58,14 @@ def SERVER_CHECK(server, function):
         
         elif function == "CREATE_TABLE_POST_CATEGORY":
             cursor.execute("""DROP TABLE IF EXISTS POST_CATEGORY CASCADE""")
+            print_segment()
+        
+        elif function == "CREATE_TABLE_FAVOURITES":
+            cursor.execute("""DROP TABLE IF EXISTS FAVOURITES CASCADE""")
+            print_segment()
+            
+        elif function == "CREATE_TABLE_CHAT_USERS":
+            cursor.execute("""DROP TABLE IF EXISTS CHAT_USERS CASCADE""")
             print_segment()
             
         conn.commit()

@@ -1,4 +1,8 @@
-from helpers import *
+try:
+    from python.MODULES import *
+except:
+    from MODULES import *
+    
 from datetime import datetime
 import pytz
 

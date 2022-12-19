@@ -1,6 +1,8 @@
 from flask import *
 from os import *
 
+import python.DB_READ as DB_READ
+
 # CONFIG
 TEMPLATE_DIR = path.abspath('./templates')
 STATIC_DIR = path.abspath('./static')
@@ -10,7 +12,7 @@ app.secret_key = 'demokey'
 
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
-    return "hello world"
+    return DB_READ.GET_PROFILE_IMAGE_BY_USER("foreandr")
 
 if __name__ == '__main__':
     host = "0.0.0.0" 
