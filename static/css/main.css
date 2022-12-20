@@ -1,0 +1,54 @@
+#footerDiv {
+    position: absolute;
+    bottom: 0;
+}
+
+/*
+#dropdownMenuButton {
+    background-color:lightgrey;
+    color: black;
+
+}
+
+#dropdownMenuButton2 {
+    background-color: lightgrey;
+    color: black;
+    margin-right: 50px;
+}
+*/
+  
+#daily_votes_left{
+    color:black;
+}
+#monthly_votes_left {
+    color: black;
+}
+#yearly_votes_left {
+    color: black;
+}
+
+#adjust_nav_bar{
+  margin-right: 150px;
+  
+}
+.disabled-link {
+  pointer-events: none;
+}
+
+#adjust_title{
+  color:red
+}
+#navbarSupportedContent15{
+  position: absolute;
+  right: 10%;
+}
+
+#footer {
+  position:relative;
+  left:0px;
+  bottom:0px;
+  height:30px;
+  width:100%;          /* Footer height */
+  margin-top: -10px;
+}
+

@@ -7,6 +7,9 @@ except:
     import MODULES as modules
 
 
+#
+
+
 def GET_ALL_USERS():
     cursor, conn = modules.create_connection()
     query = """
@@ -37,6 +40,7 @@ def GET_PROFILE_IMAGE_BY_USER(username):
     # image = Image.open(io.BytesIO(byte_array))
     modules.close_conn(cursor, conn)
     return byte_array
+    
     
 def GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link):
     return 1
@@ -76,7 +80,26 @@ def UNIVERSAL_FUNCTION(cat_id):
     modules.close_conn(cursor, conn)
     return posts
 
+def GET_FOLLOWERS_BY_USER_ID(User_id):
+    cursor, conn = modules.create_connection()
+    query = f"""
+        SELECT User_id1 
+        FROM CONNECTIONS
+        WHERE User_id2 = '{User_id}'
+    """
+    cursor.execute(query)
+    followers = []
+    for i in cursor.fetchall():
+        # print(i)
+        followers.append(i[0])
+        
+    modules.close_conn(cursor, conn)
+    return followers
+
+
 if __name__ == "__main__": 
+    
+    
     # GET_ALL_USERS()
     # GET_ALL_USERS()
     GET_PROFILE_IMAGE_BY_USER("Andre")

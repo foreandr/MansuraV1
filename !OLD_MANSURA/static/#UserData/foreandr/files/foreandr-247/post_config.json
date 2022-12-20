@@ -1,9 +1,0 @@
-{
-    "txt": "initial youtub test",
-    "18+": "older_18",
-    "external_source": "\n            <iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/kEeAwUa40ig\" title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen>\n            </iframe>\n            <!--PROPERLY EMBEDDED HTML TAG-->\n            ",
-    "distro_details": [
-        "EQUAL DISTRIBUTION",
-        "None"
-    ]
-}

@@ -54,7 +54,7 @@ def CREATE_TABLE_POST(server="false"):
     cursor, conn = modules.create_connection()
     try:
         modules.SERVER_CHECK(server, inspect.stack()[0][3])
-        # Path varchar,
+        # post links unique?
         cursor.execute(
             f"""
             CREATE TABLE POSTS
@@ -272,6 +272,8 @@ def CREATE_TABLE_CONNECTIONS(server="false"):
     
     try:
         modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        # USERID1== FOLLOWER
+        # USERID2== FOLLOWING
         cursor.execute(
             f"""
                 CREATE TABLE CONNECTIONS

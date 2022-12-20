@@ -15,23 +15,37 @@ app.secret_key = 'demokey'
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
     category_posts = modules.UNIVERSAL_FUNCTION(1)
+    followers = modules.GET_FOLLOWERS_BY_USER_ID(3)
+    videos = []
+    for i in category_posts:
+        videos.append([i][0][2])
+    # print(videos)
+    # print(category_posts[0][2])
+    # print(followers)
     #print(category_posts[0][2])
     #print(type(category_posts[0][2]))
     #print(len(category_posts[0][2]))
     return render_template('home.html',
-        msg=category_posts[0][2]
+        videos=videos,
+
     )
     
 @app.route("/add_connection/<User_id>", methods=['POST'])
 def add_connection(User_id):
     modules.INSERT_CONNECTION(1, User_id)
-    return redirect(url_for('home'))
+    followers = modules.GET_FOLLOWERS_BY_USER_ID(3)
+    return render_template("connection_change.html",
+        followers=followers)
+    #return redirect(url_for('home'))
 
     
 @app.route("/remove_connection/<User_id>", methods=['POST'])
 def remove_connection(User_id):
     modules.DELETE_CONNECTION(1, User_id)
-    return redirect(url_for('home'))
+    followers = modules.GET_FOLLOWERS_BY_USER_ID(3)
+    return render_template("connection_change.html",
+        followers=followers)
+    #return redirect(url_for('home'))
     
     
 

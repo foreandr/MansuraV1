@@ -18,7 +18,17 @@ def INSERT_DEMO_CATEGORIES():
 def INSERT_DEMO_POST():
     modules.print_title(f"{inspect.stack()[0][3]}")
     modules.INSERT_POST(Post_title="Noam Chomsky X TALK", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", User_id=1, Category="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky X TALK", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", User_id=1, Category="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky X TALK", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", User_id=1, Category="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky X TALK", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", User_id=1, Category="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky X TALK", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", User_id=1, Category="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky X TALK", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", User_id=1, Category="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky X TALK", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", User_id=1, Category="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky X TALK", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", User_id=1, Category="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky X TALK", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", User_id=1, Category="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky X TALK", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", User_id=1, Category="Noam Chomsky")
 
+    
 def INSERT_DEMO_TAGS():
     modules.print_title(f"{inspect.stack()[0][3]}")
     modules.INSERT_TAGS(Tag_name="philosophy", Tag_type="HARD", Post_id=1)

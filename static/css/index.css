@@ -1,0 +1,44 @@
+
+
+#uploader_name {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    position: relative;
+    margin-top: 0px;
+    padding-bottom: 0px;
+    max-width: fit-content;
+    padding-right: 00px;
+}
+#file_id {
+    color: red
+}
+#buttons_tag {
+    color: purple
+}
+#date_tag {
+    font-size: 14px;
+    color: black;
+    margin-left: 10px;
+}
+#size_tag {
+    color:cyan;
+}
+#card_id {
+    color: cyan;
+}
+#post_pic{
+    border-radius: 25px;
+    border: 2px black;
+    padding: 20px;
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+#post_div{
+    text-align: center;
+}

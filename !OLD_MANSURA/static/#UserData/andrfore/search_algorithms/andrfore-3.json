@@ -1,4 +1,0 @@
-{
-    "ORDER_BY_CLAUSE": "",
-    "WHERE_CLAUSE": "AND U.username LIKE 'foreandr%'"
-}
