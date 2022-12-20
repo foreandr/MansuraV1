@@ -10,6 +10,7 @@ try:
     from python.DB_INSERT import *
     from python.DB_UPDATE import *
     from python.DB_RESET import *
+    from python.DB_SEARCH import *
     from python.helpers import *
     from python.dbconnection import *
     from python.log import *
@@ -21,6 +22,7 @@ except:
     from DB_INSERT import *
     from DB_UPDATE import *
     from DB_RESET import *
+    from DB_SEARCH import *
     from helpers import *
     from dbconnection import *
     from log import *

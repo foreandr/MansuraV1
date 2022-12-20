@@ -5,6 +5,7 @@ from .DB_READ import *
 from .DB_INSERT import *
 from .DB_UPDATE import *
 from .DB_RESET import *
+from .DB_SEARCH import *
 from .helpers import *
 from .dbconnection import *
 from .log import *

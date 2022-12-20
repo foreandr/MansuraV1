@@ -14,20 +14,13 @@ app.secret_key = 'demokey'
 
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
-    category_posts = modules.UNIVERSAL_FUNCTION(1)
-    followers = modules.GET_FOLLOWERS_BY_USER_ID(3)
-    videos = []
-    for i in category_posts:
-        videos.append([i][0][2])
-    # print(videos)
-    # print(category_posts[0][2])
-    # print(followers)
-    #print(category_posts[0][2])
-    #print(type(category_posts[0][2]))
-    #print(len(category_posts[0][2]))
+    posts = modules.UNIVERSAL_FUNCTION()
+    # followers = modules.GET_FOLLOWERS_BY_USER_ID(3)
+    for i in posts:
+        print(i)
+        
     return render_template('home.html',
-        videos=videos,
-
+        posts=posts,
     )
     
 @app.route("/add_connection/<User_id>", methods=['POST'])
@@ -45,8 +38,21 @@ def remove_connection(User_id):
     followers = modules.GET_FOLLOWERS_BY_USER_ID(3)
     return render_template("connection_change.html",
         followers=followers)
-    #return redirect(url_for('home'))
     
+@app.route("/categories", methods=['GET', 'POST'])
+def categories():
+    categories = modules.GET_ALL_CATEGORIES()
+    print(categories)        
+    return render_template("categories.html",
+        categories=categories)
+
+@app.route("/category/<cat_id>", methods=['GET', 'POST'])
+def category(cat_id):
+    posts = modules.UNIVERSAL_FUNCTION(cat_id=cat_id)
+    
+    return render_template('home.html',
+        posts=posts,
+    )
     
 
 

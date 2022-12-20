@@ -22,6 +22,40 @@ def GET_ALL_USERS():
         
     modules.close_conn(cursor, conn)
     
+def GET_ALL_POSTS():
+    cursor, conn = modules.create_connection()
+    query = """
+        SELECT * FROM POSTS
+    """
+    cursor.execute(query)
+    
+    for i in cursor.fetchall():
+        print(i)
+        
+    modules.close_conn(cursor, conn) 
+
+def GET_ALL_CATEGORIES():
+    cursor, conn = modules.create_connection()
+    query = """
+        SELECT cat.Category_id, 
+        cat.Category_name,        
+        (   
+            SELECT COUNT(*) 
+            FROM POST_CATEGORY post_cat
+            WHERE post_cat.Category_id = cat.Category_id
+        ) 
+        
+        FROM CATEGORIES cat
+        
+    """
+    cursor.execute(query)
+    results = []
+    for i in cursor.fetchall():
+        results.append([i[0],i[1],i[2]])
+        
+    modules.close_conn(cursor, conn) 
+    return results
+     
     
 def GET_PROFILE_IMAGE_BY_USER(username):
     cursor, conn = modules.create_connection()
@@ -43,24 +77,49 @@ def GET_PROFILE_IMAGE_BY_USER(username):
     
     
 def GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link):
-    return 1
+    cursor, conn = modules.create_connection()
+    query = f"""
+        SELECT Post_id
+        FROM POSTS
+        WHERE User_id = '{User_id}'
+        AND Post_link = '{Post_link}'
+    """
+    cursor.execute(query)
+    
+    for i in cursor.fetchall():
+        post_link = i[0]
+    
+    modules.close_conn(cursor, conn)
+    return post_link
 
 def GET_CATEGORY_ID_BY_NAME(Category):
-    return 1
+    cursor, conn = modules.create_connection()
+    query = f"""
+        SELECT Category_id 
+        FROM CATEGORIES
+        WHERE Category_name = '{Category}'
+    """
+    cursor.execute(query)
+    
+    for i in cursor.fetchall():
+        category = i[0]
+    
+    modules.close_conn(cursor, conn)
+    return category
 
 def GET_POSTS_BY_CATEGORY(Category):
     return 1 
 
 def GET_POSTS_BY_TAG(Category):
     return 1 
-
-def UNIVERSAL_FUNCTION(cat_id):
+ 
+def UNIVERSAL_FUNCTION(cat_id=""):
     cursor, conn = modules.create_connection()
-    
+    cat = modules.CATEGORY_SEARCH(cat_id)
     
     
     query = f"""
-    SELECT posts.Post_title, posts.Post_description, posts.Post_html 
+    SELECT posts.Post_title, posts.Post_description, posts.Post_html, posts.Date_time, cat.Category_name
     FROM POSTS posts
     
     INNER JOIN POST_CATEGORY post_cat
@@ -69,13 +128,15 @@ def UNIVERSAL_FUNCTION(cat_id):
     INNER JOIN CATEGORIES cat
     ON cat.Category_id = post_cat.Category_id
     
-    WHERE cat.Category_id = '{cat_id}'
+    WHERE 1 =1 
+    {cat}
     """
     cursor.execute(query)
     posts = []
     
     for i in cursor.fetchall():
-        posts.append(i)
+        posts.append([i[0], i[1], i[2], i[3], i[4]])
+        # print(i)
         
     modules.close_conn(cursor, conn)
     return posts
@@ -102,4 +163,5 @@ if __name__ == "__main__":
     
     # GET_ALL_USERS()
     # GET_ALL_USERS()
-    GET_PROFILE_IMAGE_BY_USER("Andre")
+    #GET_PROFILE_IMAGE_BY_USER("Andre")
+    GET_ALL_POSTS()

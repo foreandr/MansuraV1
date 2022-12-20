@@ -1,40 +1,33 @@
 {% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
 {%block main %}
+<div class="row" style="margin: auto">
+    {% for post in posts %}
+    <div class="col">
+        <div class="card" id="videos">
+            <div class="card-header">
+                <h1>{{post[0]}}</h1>
+            </div>
+            <div>
+                <a href="category/{{post[4]}}"><h3>{{post[4]}}</h3></a>
+                <h5>{{post[1]}}</h5>
+            </div>
+            
 
-<!-- have a button POST a click via AJAX -->
-<button hx-post="/add_connection/3" hx-trigger="click" hx-target="#current_connections">
-    add
-</button>
-
-<button hx-post="/remove_connection/3" hx-trigger="click" hx-target="#current_connections">
-    remove
-</button>
-
-<div id="current_connections">
-    {{followers}}
-</div>
-
-
-<div class="row">
-    {% for video in videos %}
-        <div class="col-sm" id="videos">
-            {{video | safe}}
-        </div>    
+            {{post[2] | safe}}
+            <div class=" card-footer d-flex justify-content-between align-items-center">
+                <small class="text-muted" id="post_details">
+                    <span>{{post[3]}}</span>
+                    <span>likes</span>
+                    <span>comments</span>
+                    <span>send</span>
+                </small>
+            </div>
+        </div>   
+    </div>
     {% endfor %}
 </div>
 
-
-
-
-
-
-
-
-
-
 <script>
-
-
 
 </script>
 {% endblock main %}

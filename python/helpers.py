@@ -82,10 +82,6 @@ def translate_link_to_html(link):
             
             link = tiktok_template
             
-            # print(F"FINAL LINK", link) 
-            #exit()
-
-        
         elif "youtube" in link:
             if "list" in link: # check if if it's a playlist or any other ways youtube can be fucked about with
                 return link
@@ -106,17 +102,45 @@ def translate_link_to_html(link):
             youtube_template = youtube_template.replace("YOUTUBE_FILE_ID", youtube_file_id)
             link = youtube_template
 
-        # print("FINAL", link)
+        elif "spotify" in link:
+            # print(link, "\n")
+                        
+            spotify_template = """
+                <iframe src="https://open.spotify.com/embed/episode/@SPOTIFY_EPISDE_ID?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            """
+            # https://open.spotify.com/episode/4CESb99rKgkQ5MvNL4HaFJ?si=3e1ea553d7c14637
+            link_without_tail = link.split("?")[0]
+            id = link_without_tail.split("episode/")[1]
+            
+            #print("SPOTIFY ID", id, "\n")
+            
+            spotify_template = spotify_template.replace("@SPOTIFY_EPISDE_ID", id)
+            
+            #print(spotify_template)
+            link = spotify_template
+        
+        elif "rumble" in link:
+            link = link
+
         return link
     except Exception as e:
-        log_function("error", str(e), function_name=F"{inspect.stack()[0][3]}")
+        modules.log_function("error", str(e), function_name=F"{inspect.stack()[0][3]}")
         return link  
-    
+
+def remove_special_characters(string):
+    return string
+
+def check_tribunal_cuss_words(string):
+    return string
+
 def clean_title(Post_title):
-    return "title of post" 
+    Post_title = remove_special_characters(Post_title)
+    Post_title = check_tribunal_cuss_words(Post_title)
+    
+    return Post_title 
 
 def clean_description(Post_description):
-    return "description of post" 
+    return Post_description
 
 
 
@@ -130,6 +154,7 @@ def load_default_profile_pic():
 
 if __name__ == "__main__":
     print_title(F"{inspect.stack()[0][3]}")
+    translate_link_to_html("https://rumble.com/v10648s-paypal-co-founder-peter-thiel-bitcoin-keynote-bitcoin-2022-conference.html")
     # load_default_profile_pic()
 
 

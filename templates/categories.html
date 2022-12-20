@@ -1,0 +1,10 @@
+{% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
+{%block main %}
+
+
+{% for category in categories %}
+<a href="category/{{category[0]}}">{{category[1]}} {{category[2]}}</a>
+{% endfor %}
+<script>
+</script>
+{% endblock main %}

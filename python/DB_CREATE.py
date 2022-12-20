@@ -62,7 +62,7 @@ def CREATE_TABLE_POST(server="false"):
             Post_id SERIAL PRIMARY KEY, 
             Post_title varchar, 
             Post_description varchar,
-            Post_link varchar, 
+            Post_link varchar UNIQUE, 
             Post_html varchar,
             User_id BIGINT,
             Date_Time timestamp,      

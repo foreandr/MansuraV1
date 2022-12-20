@@ -1,0 +1,32 @@
+PAGES
+========
+Categories
+Profile
+Phrase Tribunal (put words and votes in db)
+Comment Section (Modal, nested comments?)
+Register
+Login
+Logout
+Favourites
+Contact
+Terms
+Mission
+
+REQUESTING
+==========
+Max length desc / title
+a few bad requests mutes, a few more bans, a few more IP bans
+grand some people request admin privileges
+
+SEARCH
+==========
+
+CATEGORIES
+===========
+ORDER BY 
+    - COUNT
+    - ALPHA
+    - SUGGESTED
+    - HOT
+
+

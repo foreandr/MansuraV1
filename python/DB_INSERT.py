@@ -54,6 +54,9 @@ def INSERT_POST(Post_title, Post_description, Post_link, Category, User_id=1):
         Post_html = modules.translate_link_to_html(Post_link)
         Post_title = modules.clean_title(Post_title)
         Post_description = modules.clean_description(Post_description)
+        
+        Category_id = modules.GET_CATEGORY_ID_BY_NAME(Category)
+        
         cursor = conn.cursor()
         cursor.execute(
             f"""
@@ -65,8 +68,6 @@ def INSERT_POST(Post_title, Post_description, Post_link, Category, User_id=1):
         conn.commit()
         
         Post_id = modules.GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link)
-        Category_id = modules.GET_CATEGORY_ID_BY_NAME(Category)
-        
         INSERT_POST_CATEGORY(Post_id, Category_id)
         
         modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")

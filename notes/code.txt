@@ -1,0 +1,12 @@
+<!-- have a button POST a click via AJAX -->
+<button hx-post="/add_connection/3" hx-trigger="click" hx-target="#current_connections">
+    add
+</button>
+
+<button hx-post="/remove_connection/3" hx-trigger="click" hx-target="#current_connections">
+    remove
+</button>
+
+<div id="current_connections">
+    {{followers}}
+</div>

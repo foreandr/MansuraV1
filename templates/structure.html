@@ -8,9 +8,9 @@
 
     <!--MY CSS-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="static/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="static/css/2bootstrap.min.css" />
-    <link rel="stylesheet" media="screen" href="static/css/main.css"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/2bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/main.css') }}">
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 </head>
 
@@ -33,7 +33,14 @@
                         <input class="btn btn-link" type="submit" value="HOME" style="text-decoration: none; color: white; border-right: 1px solid gray">
                     </form>
                 </div>
-            </li>        
+            </li>
+            <li>
+                <div>
+                    <form action="/categories">
+                        <input class="btn btn-link" type="submit" value="CATEGORIES" style="text-decoration: none; color: white; border-right: 1px solid gray">
+                    </form>
+                </div>
+            </li>           
    
              <li>
                 <div class="dropdown" id="nav_dropdown">
@@ -99,6 +106,7 @@
     <div class="col-lg-3 item social" id="footer">
         <h6 class="copyright">Mansura © 2022</h6>
     </div>
+    
     <!-- Production version POPPER -->
     <!-- HAVE TO MAKE CHANGES TO THE BROWSER -->
 
