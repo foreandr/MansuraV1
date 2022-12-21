@@ -1,0 +1,57 @@
+{% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
+{%block main %}
+
+<!--
+<select class="form-select" aria-label="Default select example" disabled>
+    <option selected >Sort By</option>
+    <option value="Alpha">Alpha</option>
+    <option value="2">Most Posts</option>
+    <option value="3">Most Likes</option>
+    <option value="3">Most Comments</option>
+    <option value="3">Most Views</option>
+  </select>
+-->
+
+<div class="d-flex justify-content-center">
+    {% for letter in alpha_chars %}
+    <a class="btn btn-primary btn-lg" href="/people/alpha/{{letter}}" role="button">{{letter}}</a>
+    {% endfor %}
+</div>
+
+
+
+<div class="container">
+    
+    <div class="row">
+      
+        <div class="col-sm">
+        {% for person in people[0] %}
+        <div>
+            <h3><a href="/person/{{person[0]}}">{{person[1]}} <b>{{person[2]}}</b></a></h3>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="col-sm">
+        {% for person in people[1] %}
+        <div>
+            <h3><a href="/person/{{person[0]}}">{{person[1]}} <b>{{person[2]}}</b></a></h3>
+        </div>
+        
+        {% endfor %}
+      </div>
+
+      <div class="col-sm">
+        {% for person in people[2] %}
+        <div>
+            <h3><a href="/person/{{person[0]}}">{{person[1]}} <b>{{person[2]}}</b></a></h3>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+
+<script>
+</script>
+{% endblock main %}

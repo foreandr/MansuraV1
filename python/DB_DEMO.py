@@ -123,6 +123,9 @@ def FULL_DEMO_INSERT():
     INSERT_DEMO_CHAT_ROOMS_ADMIN()
     INSERT_DEMO_REQUEST()
     
-if __name__ == "__main__": 
-    modules.CREATE_TABLES()
-    FULL_DEMO_INSERT()
+if __name__ == "__main__":
+
+    answer = input("DO YOU WANT TO REALLY RESET?")
+    if answer.lower() in ["y", "yes"]:
+        modules.CREATE_TABLES("false")
+        FULL_DEMO_INSERT()

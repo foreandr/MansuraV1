@@ -7,12 +7,12 @@ from email.mime.text import MIMEText
 def send_email(email, one_time_password):
 
     email_sender = "mansuracorp@gmail.com"
-    password = '***************************'
+    password = '****'
     reciver = email
 
     subject = "Forgot Password Recovery"
     msg = MIMEText(f'''
-    <a href="/mansura/password_reset">Reset Password</a>
+    <a href="http://mansura.ca/password_reset">Reset Password</a>
     One Time Password:{one_time_password}
     ''', 'html')
     em = EmailMessage()

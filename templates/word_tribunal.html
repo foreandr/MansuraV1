@@ -27,15 +27,15 @@
             </tr>        
         </thead>
         <tbody>
-            {%for i in range(0, blocked_words_len )%}
+            {%for group in blocked_words %}
             <tr>
-                <td>{{blocked_words[i][1]}}</td>
+                <td>{{group[0]}}</td>
                 <td>
                     <form action="/word_tribunal" method="post">      
-                        <input class="btn btn-secondary" type="submit" type="hidden" value="{{blocked_words[i][1]}}:  {{blocked_words[i][2]}}" name="keep_phrase"/>
+                        <input class="btn btn-secondary" type="submit" type="hidden" value="{{group[0]}}:  {{group[1]}}" name="keep_phrase"/>
                 </td>
                 <td>
-                        <input class="btn btn-secondary" type="submit" value="{{blocked_words[i][1]}}:  {{blocked_words[i][3]}}" name="block_phrase"/>
+                        <input class="btn btn-secondary" type="submit" value="{{group[0]}}:  {{group[2]}}" name="block_phrase"/>
                     </form>
                 </td>
             </tr>

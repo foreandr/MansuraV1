@@ -18,7 +18,7 @@ def home():
     if "email" not in session: 
         return redirect(url_for("login"))
     
-    posts = modules.UNIVERSAL_FUNCTION()
+    posts = modules.UNIVERSAL_FUNCTION(searcher=session["user"])
         
     return render_template('home.html',
         posts=posts,
@@ -41,18 +41,23 @@ def remove_connection(User_id):
     return render_template("connection_change.html",
         followers=followers)
     
-@app.route("/categories", methods=['GET', 'POST'])
-def categories():
+@app.route("/people/<sort_method>/<letter>", methods=['GET', 'POST'])
+def people(sort_method, letter):
     modules.log_function("request", request)
-    categories = modules.GET_ALL_CATEGORIES()
-    print(categories)        
-    return render_template("categories.html",
-        categories=categories)
+    people = modules.GET_ALL_PEOPLE(sort_method=sort_method, letter=letter) #TODO: By letter
+    people = list(modules.triple_split(people, 3))
 
-@app.route("/category/<cat_id>", methods=['GET', 'POST'])
-def category(cat_id):
+    alpha_chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    
+    return render_template("people.html",
+        people=people,
+        alpha_chars=alpha_chars
+        )
+
+@app.route("/person/<person_id>", methods=['GET', 'POST'])
+def person(person_id):
     modules.log_function("request", request)
-    posts = modules.UNIVERSAL_FUNCTION(cat_id=cat_id)
+    posts = modules.UNIVERSAL_FUNCTION(searcher=session["user"], person_id=person_id)
     
     return render_template('home.html',
         posts=posts,
@@ -72,63 +77,53 @@ def login():
     modules.log_function("request", request)
     if "email" in session:
         email = session["email"]  
-        return redirect(url_for("user_profile"))
+        return redirect(url_for("home"))
     
     if request.method == 'GET':
-        login_message = 'Please LOGIN'
-        return render_template('login.html', message=login_message)
+        return render_template('login.html')
     
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
         signed_in = modules.validate_user_from_session(email, password)
 
-        if signed_in[0]:
+        if signed_in[0]: # First element in dict is bool for success/failure
             session["id"] = signed_in[1]
             session["user"] = signed_in[2]
             session["email"] = email
-            #session["password"] = password
-            # print('SESSION INFO: ', session)
-            return redirect(url_for("user_profile"))
+            return redirect(url_for("home"))
         else:
             return render_template('login.html', message="wrong email or password, try again")
 
 @app.route('/logout', methods=['GET'])
 def logout():
     modules.log_function("request", request)
-    session.pop("email", None)  # remove data from session
-    session.pop("user", None)  # remove data from session
-    session.pop("password", None)  # remove data from session
+    # DON'T KNOW HOW WELL THIS ACTUALLY WORKS
+    session.pop("email", None) 
+    session.pop("user", None)
+    session.pop("password", None)
     return redirect(url_for("login"))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    #print("RENDERING TEMPLATE")
-    # print('EXECUTING REGISTER FUNCTION')
     modules.log_function("request", request)
     if "email" in session:
-        return redirect(url_for("user_profile"))
+        return redirect(url_for("home"))
     if request.method == 'GET':
         sign_up_message = 'Please sign up'
         return render_template('register.html', message=sign_up_message)
 
     if request.method == 'POST':
         my_dict = request.form.to_dict(flat=False)
-        #print(my_dict)
-        try:  # DO NOT EXECUTE UNTIL SUBMIT IS CLICKED
-            #print("INSIDE REGISTER POST")
+        try:
             registering_username = my_dict['username'][0]
             password = my_dict['password'][0]
             email = my_dict['email'][0]
             
             has_bad_words = modules.USERNAME_PROFANITY_CHECK(registering_username)
             if not has_bad_words:
-                #TODO: FIX THIS, SHOULD JUST BE A REGULAR INSERT?
-                #TODO: ADD SUB DESCRIPTIONS TO PEOPLES PROFILES, MANY WILL HAVE SAME NAMES
-                # database.create_user(conn=connection, username="hello", password="password", email="bce@hotmail.com")
-                if database.full_register(username=registering_username, password=hashedPassword, email=email, paypal_email=paypal_email, balance=0):
+                if modules.INSERT_USER(registering_username, password, email):
                     return redirect(url_for('login'))
-                # GO TO THEIR PROFILE
                 else:
                     return render_template('register.html', 
                     return_message="Name already exists"
@@ -137,7 +132,6 @@ def register():
                 return render_template('register.html', 
                     return_message="Mansura thinks you either have a bad word, or something that could be used for an SQL attack of some kind."
                 )
-
         except Exception as e:
             modules.log_function("error", e, function_name="register")
         return redirect(url_for("login"))
@@ -145,38 +139,21 @@ def register():
 @app.route("/password_recovery", methods=['GET', 'POST'])
 def password_recovery():
     modules.log_function("request", request)
-    #print("LOADING PASSWORD RECOVERY")
-
     if request.method == "POST":
         recovery_email = request.form["email"]
-        # print(recovery_email)
         modules.CREATE_AND_SEND_ONE_TIME_PASS_EMAIL(recovery_email)
-        # my_email.send_email(recovery_email)
         return redirect(url_for('password_reset'))
     return render_template(f"password_recovery.html")
 
 @app.route("/password_reset", methods=['GET', 'POST'])
 def password_reset():#TODO: GET THIS WORKING, CHECK IF OEN TIME PASS IS THE SMAE
-    if modules.CHECK_IF_MOBILE(request):
-        return redirect(url_for('cover_page'))
     modules.log_function("request", request)
-
     if request.method == "POST":
-        print("TEST 1 ")
-        
         email = request.form["email"]
         password = request.form["password"]
         repeat_pass = request.form["check_password"]
         one_time_pass = request.form["One Time Password"]
         current_one_time_pass = modules.GET_ONE_TIME_PASS(email)
-        
-        print("email                :",email)
-        print("password             :",password)
-        print("repeat_pass          :",repeat_pass)
-        print("one_time_pass        :",one_time_pass)
-        print("current_one_time_pass:",current_one_time_pass)
-        
-
         if (password == repeat_pass) and (one_time_pass == current_one_time_pass):
             modules.CHANGE_PASSWORD( email, password)
             return redirect(url_for("login"))
@@ -185,7 +162,33 @@ def password_reset():#TODO: GET THIS WORKING, CHECK IF OEN TIME PASS IS THE SMAE
     else:
         return render_template(f"password_reset.html")
 
+@app.route("/word_tribunal", methods=['GET', "POST"])
+def word_tribunal():
+    if "email" not in session:
+        return redirect(url_for('login'))
+    modules.log_function("request", request, session_user=session['user'])
+    
+    if request.method == "POST":
+        keep_phrase = request.form.get("keep_phrase")
+        block_phrase = request.form.get("block_phrase")
+        
+        vote_type = None
+        
+        if keep_phrase != None:
+            phrase = keep_phrase.split(":")[0]
+            vote_type = "UP"
+        else:
+            phrase = block_phrase.split(":")[0]
+            vote_type = "DOWN"
+        word_id = modules.GET_WORD_PHRASE_ID_BY_NAME(phrase)
+        modules.INSERT_INTO_PROFANITY_LIST_VOTES(word_id, session["id"], vote_type)
+    
+        
+    blocked_words = modules.GET_ALL_TRIBUNAL_WORDS()
 
+    return render_template(f"word_tribunal.html",
+        blocked_words=blocked_words
+    )
 
 
 

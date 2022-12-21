@@ -1,14 +1,15 @@
 gdsaqlhggkishjng
+pytest
 
 PAGES
 ========
-Categories
+DONE.people
 Profile
 Phrase Tribunal (put words and votes in db)
 Comment Section (Modal, nested comments?)
-Register
-Login
-Logout
+DONE. Register
+DONE. Login
+DONE. Logout
 Favourites
 Contact
 Terms
@@ -19,6 +20,7 @@ REQUESTING
 Max length desc / title
 a few bad requests mutes, a few more bans, a few more IP bans
 grand some people request admin privileges
+check description before entering into database frontend and backend
 
 SEARCH
 ==========
@@ -34,6 +36,10 @@ ORDER BY
 
 RECOVERY
 ===========
-CHECK FUNCTIONALITY
+DONE.CHECK FUNCTIONALITY
 
-
+MONETIZATION
+=============
+DONATIONS
+SUBSCRIPTIONS
+ADS

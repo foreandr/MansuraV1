@@ -36,20 +36,27 @@
             </li>
             <li>
                 <div>
-                    <form action="/categories">
-                        <input class="btn btn-link" type="submit" value="CATEGORIES" style="text-decoration: none; color: white; border-right: 1px solid gray">
+                    <form action="/people/alpha/a">
+                        <input class="btn btn-link" type="submit" value="PEOPLE" style="text-decoration: none; color: white; border-right: 1px solid gray">
                     </form>
                 </div>
-            </li>  
+            </li> 
+            <li>
+                <div>
+                    <form action="/subjects/alpha/a">
+                        <input class="btn btn-link" type="submit" value="SUBJECTS" style="text-decoration: none; color: white; border-right: 1px solid gray" disabled>
+                    </form>
+                </div>
+            </li>   
             <li>
                 <div class="dropdown" id="nav_dropdown">
                     <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">
                         REQUEST
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
-                        <a href="/request_form/category" class="nav-link">Category</a>
+                        <a href="/request_form/person" class="nav-link">Person</a>
                         <a href="/request_form/post" class="nav-link">Post</a>
-                        <a href="/request_form/tag" class="nav-link">Tag</a>
+                        <a href="/request_form/subject" class="nav-link">Subject</a>
                     </div>
                 </div>
             </li>           
@@ -125,13 +132,13 @@
     <!-- HAVE TO MAKE CHANGES TO THE BROWSER -->
 
     <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="static/js/bootstrap-js/bootstrap.js"></script>
     <script src="https://unpkg.com/htmx.org@1.8.4"></script>
     
     <!-- daniel javascript additions-->
     <link rel="shortcut icon" href="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='js/popper.min.js') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='js/bootstrap.min.js') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='js/bootstrap.js') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='js/jquery.sticky.js') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename='js/main.js') }}">
     <script async src="https://www.tiktok.com/embed.js"></script>

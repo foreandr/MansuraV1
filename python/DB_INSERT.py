@@ -7,7 +7,7 @@ except:
     import MODULES as modules
 
 
-def INSERT_USER(Username, Password, Email):
+def INSERT_USER(username, password, Email):
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
@@ -16,16 +16,20 @@ def INSERT_USER(Username, Password, Email):
             INSERT INTO USERS
             (Username, Password, Profile_pic, Email, Date_time)
             VALUES
-            ('{Username}', '{hashlib.sha256(Password.encode('utf-8')).hexdigest()}', {modules.psycopg2.Binary(modules.load_default_profile_pic())}, '{Email}', NOW());
+            ('{username}', '{hashlib.sha256(password.encode('utf-8')).hexdigest()}', {modules.psycopg2.Binary(modules.load_default_profile_pic())}, '{Email}', NOW());
             """)
         conn.commit()
 
-        modules.print_green(F"{Username} INSERT COMPLETED")
+        modules.print_green(F"{username} INSERT COMPLETED")
+        modules.close_conn(cursor, conn) 
+        return True
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=f"{inspect.stack()[0][3]}")
-    
+        
     modules.close_conn(cursor, conn)  
+    return False
+    
 
 def INSERT_PERSON(Person_name):
     cursor, conn = modules.create_connection()
@@ -36,7 +40,8 @@ def INSERT_PERSON(Person_name):
             INSERT INTO PEOPLE
             (Person_name)
             VALUES
-            ('{Person_name}');
+            ('{Person_name}')
+            ON CONFLICT DO NOTHING
             """)
         conn.commit()
 
@@ -351,6 +356,69 @@ def INSERT_REQUEST(User_id, Request_type, Request_content):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
+    modules.close_conn(cursor, conn)
+
+def INSERT_TRIBUNAL_WORD(word):
+    cursor, conn = modules.create_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            f"""
+            INSERT INTO TRIBUNAL_WORD
+            ( Tribunal_word)
+            VALUES
+            ('{word}')
+            ON CONFLICT DO NOTHING
+            """)
+        conn.commit()
+        modules.print_green(F"{inspect.stack()[0][3]} [{word}] COMPLETED")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    
     modules.close_conn(cursor, conn)        
+          
+def INSERT_DEMO_WORD_LIST(server="false"):
+    word_list = modules.GET_ORIGINAL_PROFANITY_LIST()
+    max = 10
+    if server != "false":
+        max = 1000 
+        
+    for i in range(len(word_list)):
+        if i > max:
+            break  # 10 is just for demo testing functionality
+        INSERT_TRIBUNAL_WORD(word_list[i])
+          
+def INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        INSERT INTO TRIBUNAL_WORD_VOTE(Tribunal_word_id, User_id, Vote_Type)
+        VALUES('{word_id}', '{voter_id}', '{vote_Type}')
+        ON CONFLICT DO NOTHING          
+    """)
+    conn.commit()
+    modules.close_conn(cursor, conn)    
     
+def INSERT_DEMO_PEOPLE():
+    word_list = modules.GET_ORIGINAL_PEOPLE_LIST()
+    for i in range(len(word_list)):
+        INSERT_PERSON(word_list[i])
+          
+def INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        INSERT INTO TRIBUNAL_WORD_VOTE(Tribunal_word_id, User_id, Vote_Type)
+        VALUES('{word_id}', '{voter_id}', '{vote_Type}')
+        ON CONFLICT DO NOTHING          
+    """)
+    conn.commit()
+    modules.close_conn(cursor, conn)      
+
     
+def INSERT_INTO_PROFANITY_LIST_VOTES(word_id, voter_id, vote_Type):
+    cursor, conn = modules.create_connection()
+    if modules.CHECK_IF_WORD_VOTE_EXISTS(word_id, voter_id):
+        modules.UPDATE_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type)
+    else:
+        modules.INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type)
+    modules.close_conn(cursor, conn)

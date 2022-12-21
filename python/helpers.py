@@ -2,11 +2,14 @@ import os as os
 import inspect
 from os import listdir
 from PIL import Image as PImage
+from better_profanity import profanity
+import hashlib
 
 try:    
     import python.MODULES as modules
 except:
     import MODULES as modules
+
 
 
 class bcolors:
@@ -22,12 +25,12 @@ class bcolors:
 
 def validate_user_from_session(email, password):
     cursor, conn = modules.create_connection()
-    print(f"VALIDATE {email} | {password}")  # GET THIS FROM JAVASCRIPT
+    # print(f"VALIDATE {email} | {password}")  # GET THIS FROM JAVASCRIPT
     cursor.execute(f"""
     SELECT * 
     FROM USERS
     WHERE email = '{email}'
-    AND password = '{password}'
+    AND password = '{hashlib.sha256(password.encode('utf-8')).hexdigest()}'
     """)
     tables = cursor.fetchall()
     user = ""
@@ -185,6 +188,49 @@ def load_default_profile_pic():
 
 
     
+def USERNAME_PROFANITY_CHECK(word):
+    # print("CHECKING USERNAME FOR BADWORDS: ", type(word), {word})
+
+    f = open("/root/mansura/files/bad_words_username.txt", "r")        
+    bad_words = f.read().split(",")
+    for i in bad_words:
+        if i != "" and i != " ":
+            if i in word:
+                print(F"FOUND {i} in {word} {len(i)}")
+                return True
+            else:
+                pass
+
+    # 1. my word check
+    if word.lower() in bad_words:
+        print("it is in list of bad words")
+        return True
+        
+    # 2. simple profanity check
+    if profanity.contains_profanity(word):
+        print("DETECTED BY PROFTANITY LIBRARY")
+        return True
+        
+    # 3. spaces check
+    if ' ' in word:
+        print("THERE IS A SPACE IN ", word)
+        return True
+        
+    # 4: 20 CHARS
+    if len(word) > 20:
+        print(f"{word} TOO LONG: {len(word)}")
+        return True       
+    
+    #5 ALPHANUMERIC
+    if any(not c.isalnum() for c in word):
+        print(f"{word} has non alphanumeric chracters, cant in name")
+        return True
+    
+    return False
+
+def triple_split(a, n):
+    k, m = divmod(len(a), n)
+    return (a[i*k+min(i, m):(i+1)*k+min(i+1, m)] for i in range(n))
 
 if __name__ == "__main__":
     print_title(F"{inspect.stack()[0][3]}")

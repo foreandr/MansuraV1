@@ -1,14 +1,38 @@
 {% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
 {%block main %}
 
-{{request_type}}
-
-{% if request_type == "tag"%}
+{% if request_type == "subject"%}
 tag
-{% elif request_type == "category" %}
-category
+{% elif request_type == "person" %}
+<form action="upload" method="POST" enctype="multipart/form-data">
+    <div>
+        <label><b>Name (can be psudonym though less likely to be accepted)</b></label>
+        <input class="form-control" id="name" name="name" placeholder="Name">
+    </div>
+    <div>
+        <label><b>Example of their work link</b></label>
+        <input class="form-control"id="link" name="link" type="url" placeholder="Video Link">
+    </div> 
+    <div>
+        <label for="textbox">Description of link</label>
+        <textarea class="form-control" id="textbox" name="textbox" rows="2" cols="50" maxlength="200" required></textarea>
+    </div>
+    
+    <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
+</form>
 {% elif request_type == "post" %}
-post
+<form action="upload" method="POST" enctype="multipart/form-data">
+    <div>
+        <label><b>Source Link:</b></label>
+        <input class="form-control"id="link" name="link" type="url" placeholder="Video Link">
+    </div> 
+    <div>
+        <label for="textbox">Description of link</label>
+        <textarea class="form-control" id="textbox" name="textbox" rows="7" cols="50" maxlength="200" required></textarea>
+    </div>
+    
+    <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
+</form>
 {% endif %}
 
 

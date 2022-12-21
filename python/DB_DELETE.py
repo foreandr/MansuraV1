@@ -53,3 +53,13 @@ def DELETE_ADMIN_PRIVILAGE(Creator_id, Admin_id, Room_name):
 def DELETE_ADMIN_PRIVILAGE(Creator_id, Admin_id, Room_name):
 
     pass
+
+def DELETE_TRIBUNAL_WORD_VOTE(word_id, voter_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        DELETE FROM TRIBUNAL_WORD_VOTE
+        WHERE User_id = '{voter_id}'
+        AND Tribunal_word_id = '{word_id}'
+    """)
+    conn.commit()
+    modules.close_conn(cursor, conn) 

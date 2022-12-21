@@ -16,9 +16,12 @@ def CREATE_TABLE_USER(server="false"):
                     User_id SERIAL PRIMARY KEY,
                     Username varchar(20) UNIQUE,
                     Password varchar(200),
+                    Description varchar,
                     Profile_pic BYTEA,
                     Email varchar(200) UNIQUE,
-                    Date_time timestamp
+                    Date_time timestamp,
+                    
+                    UNIQUE(Username, Description)
                 );
                 """)
         conn.commit()
@@ -39,7 +42,8 @@ def CREATE_TABLE_PEOPLE(server="false"):
             CREATE TABLE PEOPLE
             (
             Person_id SERIAL PRIMARY KEY,       
-            Person_name varchar
+            Person_name varchar UNIQUE
+            
             );
             """)
         conn.commit()
@@ -115,9 +119,7 @@ def CREATE_TABLE_SUBJECTS(server="false"):
             FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
             
             CHECK( Subject_type = 'HARD' OR Subject_type = 'SOFT'), 
-                
-                
-                
+ 
             UNIQUE (Subject_name, Subject_type)
             );
             """)
@@ -460,7 +462,7 @@ def CREATE_TABLE_1_TIME_PASSWORDS(server="false"):
         cursor.execute("""
             CREATE TABLE ONE_TIME_PASSWORDS
             (
-                One_Time_Id SERIAL PRIMARY KEY,
+                One_Time_id SERIAL PRIMARY KEY,
                 Email varchar UNIQUE,
                 Generated_Pass_Code varchar,
                 FOREIGN KEY (Email) REFERENCES USERS(Email)
@@ -472,4 +474,47 @@ def CREATE_TABLE_1_TIME_PASSWORDS(server="false"):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    modules.close_conn(cursor, conn)    
+    modules.close_conn(cursor, conn) 
+    
+def CREATE_TABLE_TRIBUNAL_WORD(server="false"):
+    cursor, conn = modules.create_connection()
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute("""
+            CREATE TABLE TRIBUNAL_WORD
+            (
+                Tribunal_word_id SERIAL PRIMARY KEY,
+                Tribunal_word varchar UNIQUE
+                
+            );
+        """)
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    
+    modules.close_conn(cursor, conn)  
+    
+def CREATE_TABLE_TRIBUNAL_WORD_VOTE(server="false"):
+    cursor, conn = modules.create_connection()
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute("""
+            CREATE TABLE TRIBUNAL_WORD_VOTE
+            (
+                Tribunal_word_id BIGINT,
+                User_id BIGINT,
+                Vote_type varchar,
+                
+                UNIQUE(Tribunal_word_id, User_id),
+                CHECK(Vote_type = 'UP' OR Vote_type = 'DOWN')   
+            );
+        """)
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    
+    modules.close_conn(cursor, conn)      

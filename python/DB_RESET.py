@@ -3,9 +3,10 @@ try:
 except:
     import MODULES as modules
 
-def CREATE_TABLES():
+def CREATE_TABLES(server="false"):
     modules.CREATE_TABLE_USER()
     modules.CREATE_TABLE_PEOPLE()
+    modules.INSERT_DEMO_PEOPLE()
     modules.CREATE_TABLE_POST()
     modules.CREATE_TABLE_POST_PERSON()
     modules.CREATE_TABLE_SUBJECTS()
@@ -22,11 +23,37 @@ def CREATE_TABLES():
     modules.CREATE_TABLE_CHAT_USERS()
     modules.CREATE_TABLE_REQUESTS()
     modules.CREATE_TABLE_1_TIME_PASSWORDS()
+    modules.CREATE_TABLE_TRIBUNAL_WORD()
+    modules.INSERT_DEMO_WORD_LIST(server) # INSERTS
+    modules.CREATE_TABLE_TRIBUNAL_WORD_VOTE()
 
 
+def GET_ORIGINAL_PROFANITY_LIST():
+    word_array = []
+    f = open("/root/mansura/files/initial_profanity_insert.txt", "r")
+    word_array = f.read().split("\n")[:-1]
     
-def FULL_RESET():
-    CREATE_TABLES()
+    #for i in range(len(word_array)):
+    #    print(i, word_array[i])
+        
+    return word_array
+
+def GET_ORIGINAL_PEOPLE_LIST():
+    word_array = []
+    f = open("/root/mansura/files/db_people.txt", "r")
+    word_array = f.read().split("\n")[:-1]
+    
+    #for i in range(len(word_array)):
+    #    print(i, word_array[i])
+        
+    return word_array
+       
+
+def FULL_RESET(): 
+    CREATE_TABLES("true")
+
     
 if __name__ == "__main__":
-    FULL_RESET()
+    answer = input("DO YOU WANT TO REALLY RESET?")
+    if answer.lower() in ["y", "yes"]:
+        FULL_RESET()
