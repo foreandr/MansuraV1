@@ -1,0 +1,17 @@
+{% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
+{%block main %}
+
+{{request_type}}
+
+{% if request_type == "tag"%}
+tag
+{% elif request_type == "category" %}
+category
+{% elif request_type == "post" %}
+post
+{% endif %}
+
+
+<script>
+</script>
+{% endblock main %}

@@ -11,6 +11,8 @@ try:
     from python.DB_UPDATE import *
     from python.DB_RESET import *
     from python.DB_SEARCH import *
+    from python.DB_RECOVERY import *
+    from python.DB_EMAIL import *
     from python.helpers import *
     from python.dbconnection import *
     from python.log import *
@@ -23,6 +25,8 @@ except:
     from DB_UPDATE import *
     from DB_RESET import *
     from DB_SEARCH import *
+    from DB_RECOVERY import *
+    from DB_EMAIL import *
     from helpers import *
     from dbconnection import *
     from log import *

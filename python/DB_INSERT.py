@@ -27,27 +27,27 @@ def INSERT_USER(Username, Password, Email):
     
     modules.close_conn(cursor, conn)  
 
-def INSERT_CATEGORY(Category_name):
+def INSERT_PERSON(Person_name):
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
             f"""
-            INSERT INTO CATEGORIES
-            (Category_name)
+            INSERT INTO PEOPLE
+            (Person_name)
             VALUES
-            ('{Category_name}');
+            ('{Person_name}');
             """)
         conn.commit()
 
-        modules.print_green(F"{Category_name} INSERT COMPLETED")
+        modules.print_green(F"{Person_name} INSERT COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)  
     
-def INSERT_POST(Post_title, Post_description, Post_link, Category, User_id=1):
+def INSERT_POST(Post_title, Post_description, Post_link, Person, User_id=1):
     
     cursor, conn = modules.create_connection()
     try:
@@ -55,7 +55,7 @@ def INSERT_POST(Post_title, Post_description, Post_link, Category, User_id=1):
         Post_title = modules.clean_title(Post_title)
         Post_description = modules.clean_description(Post_description)
         
-        Category_id = modules.GET_CATEGORY_ID_BY_NAME(Category)
+        Person_id = modules.GET_PERSON_ID_BY_NAME(Person)
         
         cursor = conn.cursor()
         cursor.execute(
@@ -68,7 +68,7 @@ def INSERT_POST(Post_title, Post_description, Post_link, Category, User_id=1):
         conn.commit()
         
         Post_id = modules.GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link)
-        INSERT_POST_CATEGORY(Post_id, Category_id)
+        INSERT_POST_PERSON(Post_id, Person_id)
         
         modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
@@ -77,16 +77,16 @@ def INSERT_POST(Post_title, Post_description, Post_link, Category, User_id=1):
     
     modules.close_conn(cursor, conn) 
      
-def INSERT_POST_CATEGORY(Post_id, Category_id):
+def INSERT_POST_PERSON(Post_id, Person_id):
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
             f"""
-            INSERT INTO POST_CATEGORY
-            (Post_id, Category_id)
+            INSERT INTO POST_PERSON
+            (Post_id, Person_id)
             VALUES
-            ('{Post_id}', '{Category_id}')
+            ('{Post_id}', '{Person_id}')
             """)
         conn.commit()
 
@@ -97,16 +97,16 @@ def INSERT_POST_CATEGORY(Post_id, Category_id):
     
     modules.close_conn(cursor, conn) 
    
-def INSERT_TAGS(Tag_name, Tag_type, Post_id):
+def INSERT_SUBJECTS(Subject_name, Subject_type, Post_id):
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
             f"""
-            INSERT INTO TAGS
-            (Tag_name, Tag_type, Post_id)
+            INSERT INTO SUBJECTS
+            (Subject_name, Subject_type, Post_id)
             VALUES
-            ('{Tag_name}', '{Tag_type}', '{Post_id}')
+            ('{Subject_name}', '{Subject_type}', '{Post_id}')
             """)
         conn.commit()
 

@@ -22,7 +22,7 @@ def CREATE_TABLE_USER(server="false"):
                 );
                 """)
         conn.commit()
-        modules.print_green("CREATE_TABLE_USER COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -30,20 +30,20 @@ def CREATE_TABLE_USER(server="false"):
     modules.close_conn(cursor, conn)    
     
     
-def CREATE_TABLE_CATEGORIES(server="false"):
+def CREATE_TABLE_PEOPLE(server="false"):
     cursor, conn = modules.create_connection()
     try:
         modules.SERVER_CHECK(server, inspect.stack()[0][3]) 
         cursor.execute(
             f"""
-            CREATE TABLE CATEGORIES
+            CREATE TABLE PEOPLE
             (
-            Category_id SERIAL PRIMARY KEY,       
-            Category_name varchar
+            Person_id SERIAL PRIMARY KEY,       
+            Person_name varchar
             );
             """)
         conn.commit()
-        modules.print_green("CREATE_TABLE_CATEGORIES COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -70,59 +70,59 @@ def CREATE_TABLE_POST(server="false"):
             );
             """)
         conn.commit()
-        modules.print_green("CREATE_TABLE_POST COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     modules.close_conn(cursor, conn)
       
         
-def CREATE_TABLE_POST_CATEGORY(server="false"):
+def CREATE_TABLE_POST_PERSON(server="false"):
     cursor, conn = modules.create_connection()
     try:
         modules.SERVER_CHECK(server, inspect.stack()[0][3])
         # Path varchar,
         cursor.execute(
             f"""
-            CREATE TABLE POST_CATEGORY
+            CREATE TABLE POST_Person
             (
             Post_id BIGINT,  
-            Category_id BIGINT,     
+            Person_id BIGINT,     
             FOREIGN KEY (Post_id ) REFERENCES POSTS(Post_id),
-            FOREIGN KEY (Category_id) REFERENCES CATEGORIES(Category_id)
+            FOREIGN KEY (Person_id) REFERENCES PEOPLE(Person_id)
             );
             """)
         conn.commit()
-        modules.print_green("CREATE_TABLE_POST_CATEGORY COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     modules.close_conn(cursor, conn)
 
 
-def CREATE_TABLE_TAGS(server="false"):
+def CREATE_TABLE_SUBJECTS(server="false"):
     cursor, conn = modules.create_connection()
     try:
         modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
             f"""
-            CREATE TABLE TAGS
+            CREATE TABLE SUBJECTS
             (
-            Tag_id SERIAL PRIMARY KEY,       
-            Tag_name varchar,
-            Tag_type varchar,
+            Subject_id SERIAL PRIMARY KEY,       
+            Subject_name varchar,
+            Subject_type varchar,
             Post_id BIGINT, 
             FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
             
-            CHECK( Tag_type = 'HARD' OR Tag_type = 'SOFT'), 
+            CHECK( Subject_type = 'HARD' OR Subject_type = 'SOFT'), 
                 
                 
                 
-            UNIQUE (Tag_name, Tag_type)
+            UNIQUE (Subject_name, Subject_type)
             );
             """)
         conn.commit()
-        modules.print_green("CREATE_TABLE_TAGS COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -149,7 +149,7 @@ def CREATE_TABLE_LIKES(server="false"):
                 """)
         conn.commit()
 
-        modules.print_green("LIKES CREATE COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -204,7 +204,7 @@ def CREATE_TABLE_FAVOURITES(server="false"):
                 """)
         conn.commit()
 
-        modules.print_green("FAVOURITES CREATE COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -233,7 +233,7 @@ def CREATE_TABLE_COMMENTS(server="false"):
                 """)
         conn.commit()
 
-        modules.print_green("COMMENT CREATE COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -259,7 +259,7 @@ def CREATE_TABLE_VIEWS(server="false"):
                 """)
         conn.commit()
 
-        modules.print_green("VIEWS CREATE COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -289,7 +289,7 @@ def CREATE_TABLE_CONNECTIONS(server="false"):
                 );
             """)
         conn.commit()
-        modules.print_green("CONNECTION TABLE CREATE COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -316,7 +316,7 @@ def CREATE_TABLE_BLOCKS(server="false"):
                 );
             """)
         conn.commit()
-        modules.print_green("CONNECTION TABLE CREATE COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -343,7 +343,7 @@ def CREATE_TABLE_IP_ADRESSES(server="false"):
                 """)
         conn.commit()
 
-        modules.print_green("IP_ADRESSES CREATE COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -367,7 +367,7 @@ def CREATE_TABLE_CHAT_ROOMS(server="false"):
                 """)
         conn.commit()
 
-        modules.print_green("CHAT_ROOMS CREATE COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -391,7 +391,7 @@ def CREATE_TABLE_CHAT_ADMINS(server="false"):
                 """)
         conn.commit()
 
-        modules.print_green("CHAT_ADMINS CREATE COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -415,7 +415,7 @@ def CREATE_TABLE_CHAT_USERS(server="false"):
                 """)
         conn.commit()
 
-        modules.print_green("CHAT_ADMINS CREATE COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -438,14 +438,14 @@ def CREATE_TABLE_REQUESTS(server="false"):
                     
                     FOREIGN KEY (User_id) REFERENCES USERS(User_id),
                     
-                    CHECK( Request_type = 'CATEGORY' 
-                    OR Request_type = 'TAG'
+                    CHECK( Request_type = 'PERSON' 
+                    OR Request_type = 'SUBJECT'
                     OR Request_type = 'POST')
                 );
                 """)
         conn.commit()
 
-        modules.print_green("CHAT_ADMINS CREATE COMPLETED\n")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -453,3 +453,23 @@ def CREATE_TABLE_REQUESTS(server="false"):
     modules.close_conn(cursor, conn)    
 
  
+def CREATE_TABLE_1_TIME_PASSWORDS(server="false"):
+    cursor, conn = modules.create_connection()
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute("""
+            CREATE TABLE ONE_TIME_PASSWORDS
+            (
+                One_Time_Id SERIAL PRIMARY KEY,
+                Email varchar UNIQUE,
+                Generated_Pass_Code varchar,
+                FOREIGN KEY (Email) REFERENCES USERS(Email)
+            );
+        """)
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    
+    modules.close_conn(cursor, conn)    

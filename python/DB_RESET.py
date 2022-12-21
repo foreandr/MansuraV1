@@ -5,10 +5,10 @@ except:
 
 def CREATE_TABLES():
     modules.CREATE_TABLE_USER()
-    modules.CREATE_TABLE_CATEGORIES()
+    modules.CREATE_TABLE_PEOPLE()
     modules.CREATE_TABLE_POST()
-    modules.CREATE_TABLE_POST_CATEGORY()
-    modules.CREATE_TABLE_TAGS()
+    modules.CREATE_TABLE_POST_PERSON()
+    modules.CREATE_TABLE_SUBJECTS()
     modules.CREATE_TABLE_LIKES()
     # modules.CREATE_TABLE_DISLIKES()
     modules.CREATE_TABLE_FAVOURITES()
@@ -21,11 +21,9 @@ def CREATE_TABLES():
     modules.CREATE_TABLE_CHAT_ADMINS()
     modules.CREATE_TABLE_CHAT_USERS()
     modules.CREATE_TABLE_REQUESTS()
-    # BLOCKS
-    # REQUESTS
-    # TAG REQUESTS
-    # POST REQUESTS
-    # CATEGORY REQUESTS
+    modules.CREATE_TABLE_1_TIME_PASSWORDS()
+
+
     
 def FULL_RESET():
     CREATE_TABLES()

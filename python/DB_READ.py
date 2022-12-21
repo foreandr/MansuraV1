@@ -34,18 +34,18 @@ def GET_ALL_POSTS():
         
     modules.close_conn(cursor, conn) 
 
-def GET_ALL_CATEGORIES():
+def GET_ALL_PEOPLE():
     cursor, conn = modules.create_connection()
     query = """
-        SELECT cat.Category_id, 
-        cat.Category_name,        
+        SELECT people.Person_id, 
+        people.Person_name,        
         (   
             SELECT COUNT(*) 
-            FROM POST_CATEGORY post_cat
-            WHERE post_cat.Category_id = cat.Category_id
+            FROM POST_PERSON post_person
+            WHERE post_person.Person_id = people.Person_id
         ) 
         
-        FROM CATEGORIES cat
+        FROM PEOPLE people
         
     """
     cursor.execute(query)
@@ -92,12 +92,12 @@ def GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link):
     modules.close_conn(cursor, conn)
     return post_link
 
-def GET_CATEGORY_ID_BY_NAME(Category):
+def GET_PERSON_ID_BY_NAME(Person):
     cursor, conn = modules.create_connection()
     query = f"""
-        SELECT Category_id 
-        FROM CATEGORIES
-        WHERE Category_name = '{Category}'
+        SELECT Person_id 
+        FROM PEOPLE
+        WHERE Person_name = '{Person}'
     """
     cursor.execute(query)
     
@@ -107,26 +107,26 @@ def GET_CATEGORY_ID_BY_NAME(Category):
     modules.close_conn(cursor, conn)
     return category
 
-def GET_POSTS_BY_CATEGORY(Category):
+def GET_POSTS_BY_PERSON(Person):
     return 1 
 
-def GET_POSTS_BY_TAG(Category):
+def GET_POSTS_BY_TAG(Person):
     return 1 
  
 def UNIVERSAL_FUNCTION(cat_id=""):
     cursor, conn = modules.create_connection()
-    cat = modules.CATEGORY_SEARCH(cat_id)
+    cat = modules.PERSON_SEARCH(cat_id)
     
     
     query = f"""
-    SELECT posts.Post_title, posts.Post_description, posts.Post_html, posts.Date_time, cat.Category_name
+    SELECT posts.Post_title, posts.Post_description, posts.Post_html, posts.Date_time, people.Person_name, people.Person_id
     FROM POSTS posts
     
-    INNER JOIN POST_CATEGORY post_cat
-    ON post_cat.Post_id = posts.Post_id
+    INNER JOIN POST_PERSON post_person
+    ON post_person.Post_id = posts.Post_id
     
-    INNER JOIN CATEGORIES cat
-    ON cat.Category_id = post_cat.Category_id
+    INNER JOIN PEOPLE people
+    ON cat.Person_id = post_person.Person_id
     
     WHERE 1 =1 
     {cat}
@@ -135,7 +135,7 @@ def UNIVERSAL_FUNCTION(cat_id=""):
     posts = []
     
     for i in cursor.fetchall():
-        posts.append([i[0], i[1], i[2], i[3], i[4]])
+        posts.append([i[0], i[1], i[2], i[3], i[4], i[5]])
         # print(i)
         
     modules.close_conn(cursor, conn)

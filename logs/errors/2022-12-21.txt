@@ -1,0 +1,3 @@
+[2022-12-21 09:56:54][error][INSERT_REQUEST][]-new row for relation "requests" violates check constraint "requests_request_type_check"
+DETAIL:  Failing row contains (1, Person, Steve Jobs, 2022-12-21 14:56:54.726871).
+

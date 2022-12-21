@@ -2,6 +2,7 @@
 requests==2.28.1
 flask==2.1.2
 gunicorn==20.1.0
+
 # waitress==2.1.2
 wheel==0.38.3
 Cmake==3.22.4
@@ -13,13 +14,16 @@ psycopg2==2.9.3
 # TIME
 pytz==2022.2.1
 
-#IMAGES
+# IMAGES
 Pillow==9.2.0
+
+# PROFANITY
+better_profanity==0.7.0
 
 
 #APScheduler==3.9.1
 #openpyxl==3.0.10
-#better_profanity==0.7.0
+
 #numpy==1.23.4
 #matplotlib==3.6.2
 #nsfw-detector==1.1.1

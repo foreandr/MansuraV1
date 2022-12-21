@@ -20,6 +20,37 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+def validate_user_from_session(email, password):
+    cursor, conn = modules.create_connection()
+    print(f"VALIDATE {email} | {password}")  # GET THIS FROM JAVASCRIPT
+    cursor.execute(f"""
+    SELECT * 
+    FROM USERS
+    WHERE email = '{email}'
+    AND password = '{password}'
+    """)
+    tables = cursor.fetchall()
+    user = ""
+    user_id = ""
+    for i in tables:
+        # print(i)
+        user_id = i[0]
+        user = i[1]
+        
+    modules.close_conn(cursor, conn)
+    
+    if len(tables) > 0:
+        print("SIGNING IN")
+        return [True, user_id, user, email, password]
+    else:
+        print("NOT SIGNING IN")
+        return [False]
+    
+    
+def STRING_SIMILARITY_CHECK(a, b):
+    from difflib import SequenceMatcher
+    return SequenceMatcher(None, a, b).ratio()
+
 def check_and_save_dir(path):
     # Create a new directory because it does not exist
     print("RUNNING CHECK AND SAVE DIR")
@@ -151,6 +182,9 @@ def load_default_profile_pic():
     pic = open(path, 'rb').read()
 
     return pic
+
+
+    
 
 if __name__ == "__main__":
     print_title(F"{inspect.stack()[0][3]}")

@@ -29,15 +29,15 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None", ses
 
     elif msg_type == "request":
         if session_user in my_accounts:
-            with open(f'/root/mansura/logs/access/general_access/{current_date}.txt', 'a') as f:
+            with open(f'/root/mansura/logs/access/general/{current_date}.txt', 'a') as f:
                 f.write(err_string)
         else:
-            with open(f'/root/mansura/logs/access/user_access/{current_date}.txt', 'a') as f:
+            with open(f'/root/mansura/logs/access/user/{current_date}.txt', 'a') as f:
                 f.write(err_string)
     elif msg_type == "distro":
         err_string = f"{log_string}"
         my_path = f"/root/mansura/logs/distro/{vote_type}/{current_date}"
-        check_and_save_dir(my_path)
+        modules.check_and_save_dir(my_path)
         if distro_type == "initial":
             with open(f'{my_path}/FULL_SET.txt', 'a') as f:
                 f.write(err_string + ",\n")
@@ -46,11 +46,11 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None", ses
                 f.write(err_string + ",\n")
     elif msg_type == 'payment':
         my_path = f"/root/mansura/logs/payment"
-        check_and_save_dir(my_path)
+        modules.check_and_save_dir(my_path)
         with open(f'{my_path}/{current_date}.txt', 'a') as f:
                 f.write(err_string + ",\n")
     elif msg_type == 'test':
         my_path = f"/root/mansura/Python/logs/test"
-        check_and_save_dir(my_path)
+        modules.check_and_save_dir(my_path)
         with open(f'{my_path}/{current_date}.txt', 'a') as f:
                 f.write(err_string + ",\n")

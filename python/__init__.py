@@ -6,6 +6,8 @@ from .DB_INSERT import *
 from .DB_UPDATE import *
 from .DB_RESET import *
 from .DB_SEARCH import *
+from .DB_RECOVERY import *
+from .DB_EMAIL import *
 from .helpers import *
 from .dbconnection import *
 from .log import *

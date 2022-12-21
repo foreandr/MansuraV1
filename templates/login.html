@@ -1,0 +1,31 @@
+{% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
+
+{%block main %}
+<div class="container">
+    <form name="my_form" class="form-signup" method="POST" >
+      <h2 class="form-signup-heading">Please Sign In</h2>
+      
+      <label id="email" class="sr-only" ><b>Email</b></label>
+      <input name=email type="email"  class="form-control" placeholder="Enter Email" required>
+
+      <label class="sr-only" id="password">Password</label>
+      <input id="password" name="password" type="password" class="form-control" placeholder="Password" required>
+
+      <button class="btn btn-lg btn-primary btn-block" onclick="session_variables()" type="submit" value="submit">Sign In</button>
+    </form>
+
+    <div>
+        <a href="./register">Dont have an account? Click here to register!</a>
+    </div>
+
+    <div>
+        <a href="./password_recovery">Forgot Password?</a>
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock main %}
+
+
+

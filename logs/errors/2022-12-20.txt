@@ -1,2 +1,5 @@
-[2022-12-20 12:19:51][error][INSERT_POST][]-local variable 'category' referenced before assignment
-[2022-12-20 12:20:27][error][INSERT_POST][]-local variable 'category' referenced before assignment
+[2022-12-20 16:14:03][error][CREATE_TABLE_1_TIME_PASSWORDS][]-syntax error at or near "EXISTSONE_TIME_PASSWORDS"
+LINE 1: DROP TABLE IF EXISTSONE_TIME_PASSWORDS CASCADE
+                      ^
+
+[2022-12-20 16:19:18][error][register][]-'paypal_email'
