@@ -24,7 +24,25 @@ def home():
         posts=posts,
         num_posts=len(posts)
     )
+
+@app.route("/person/<person_id>", methods=['GET', 'POST'])
+def person(person_id):
+    modules.log_function("request", request)
+    posts = modules.UNIVERSAL_FUNCTION(searcher=session["user"], person_id=person_id)
     
+    return render_template('home.html',
+        posts=posts,
+    )
+    
+    
+    
+    
+    
+    
+    
+    
+    
+     
 @app.route("/add_connection/<User_id>", methods=['POST'])
 def add_connection(User_id):
     modules.log_function("request", request)
@@ -55,14 +73,7 @@ def people(sort_method, letter):
         alpha_chars=alpha_chars
         )
 
-@app.route("/person/<person_id>", methods=['GET', 'POST'])
-def person(person_id):
-    modules.log_function("request", request)
-    posts = modules.UNIVERSAL_FUNCTION(searcher=session["user"], person_id=person_id)
-    
-    return render_template('home.html',
-        posts=posts,
-    )
+
     
 @app.route("/request_form/<request_type>", methods=['GET'])
 def request_form(request_type):

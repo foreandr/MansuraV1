@@ -16,3 +16,91 @@ CHAT LOGO
     <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
     <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
   </svg>
+
+
+@app.route('/page/<page_no>/<person_id>', methods=['GET', 'POST'])  # homepage
+def page(page_no, person_id):
+    print("RENDERING NEW PAGE")
+    modules.log_function("request", request)
+    if "email" not in session: 
+        return redirect(url_for("login"))
+    
+    posts, new_page_no, posts_per_page, can_scroll = modules.UNIVERSAL_FUNCTION(
+        searcher=session["user"], 
+        page_no=int(page_no)+1
+    )
+    offset_calc = int(int(page_no) * int(posts_per_page))
+    print("can_scroll", can_scroll)
+    return render_template('home_scroll.html',
+        posts=posts,
+        num_posts=len(posts),
+        
+        page_no=new_page_no,
+        offset_calc=offset_calc,
+        can_scroll=can_scroll,
+        posts_per_page=posts_per_page
+    )
+  
+'''
+@app.route('/<person_id>', methods=['GET', 'POST'])  # homepage
+def home(person_id):
+    print("RENDERING HOME PAGE")
+    modules.log_function("request", request)
+    if "email" not in session: 
+        return redirect(url_for("login"))
+    
+    posts, new_page_no, posts_per_page, _scroll_  = modules.UNIVERSAL_FUNCTION(searcher=session["user"])
+    print("can_scroll", _scroll_)
+    return render_template('home.html',
+        posts=posts,
+        num_posts=len(posts),
+        page_no=new_page_no
+        
+    )
+    
+@app.route("/person/<person_id>", methods=['GET', 'POST'])
+def person(person_id):
+    print("PERSON PAGE")
+    modules.log_function("request", request)
+    posts, new_page_no, posts_per_page, can_scroll = modules.UNIVERSAL_FUNCTION(searcher=session["user"], person_id=person_id)
+    
+    print("can_scroll", can_scroll)
+    offset_calc = int(0 * int(posts_per_page))
+
+    return render_template('home_person.html',
+        posts=posts,
+        num_posts=len(posts),
+        
+        person_id=person_id,
+        page_no=new_page_no,
+        offset_calc=offset_calc,
+        can_scroll=can_scroll,
+        posts_per_page=posts_per_page
+    )
+
+@app.route('/person/<person_id>/<page_no>', methods=['GET', 'POST'])  # homepage
+def person_page(person_id, page_no):
+    print(" PERSON PAGE SCROLL")
+    modules.log_function("request", request)
+    if "email" not in session: 
+        return redirect(url_for("login"))
+    
+    posts, new_page_no, posts_per_page, can_scroll = modules.UNIVERSAL_FUNCTION(
+        searcher=session["user"], 
+        page_no=int(page_no)+1,
+        person_id=person_id
+    )
+    print("can_scroll", can_scroll)
+    offset_calc = int(int(page_no) * int(posts_per_page))
+
+    return render_template('home_scroll.html',
+        posts=posts,
+        num_posts=len(posts),
+        
+        page_no=new_page_no,
+        offset_calc=offset_calc,
+        can_scroll=can_scroll,
+        posts_per_page=posts_per_page
+    )
+''' 
+  

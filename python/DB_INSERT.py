@@ -143,7 +143,7 @@ def INSERT_LIKE(Post_id, User_id):
             """)
         conn.commit()
 
-        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED {Post_id, User_id}")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")

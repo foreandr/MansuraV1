@@ -192,12 +192,48 @@ def GET_NUM_LIKES_BY_POST_ID(Post_id):
     modules.close_conn(cursor, conn)
     return results
     
+def GET_NUM_COMMENTS_BY_POST_ID(Post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+       
+        SELECT COUNT(*) 
+        FROM COMMENTS comments
+        WHERE comments.Post_id = '{Post_id}'
+    
+    """)
+    results = 0
+    for i in cursor.fetchall():
+        results = i[0]
+    modules.close_conn(cursor, conn)
+    return results
 
-def UNIVERSAL_FUNCTION(searcher, person_id=""):
+def GET_NUM_FAVOURITES_BY_POST_ID(Post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+       
+        SELECT COUNT(*) 
+        FROM FAVOURITES favs
+        WHERE favs.Post_id = '{Post_id}'
+    
+    """)
+    results = 0
+    for i in cursor.fetchall():
+        results = i[0]
+    modules.close_conn(cursor, conn)
+    return results
+
+def SEARCH_DETAILS(searcher, person_id="", page_no=1):
+    print("SEARCH DETAILS============")
+    print("searcher      :", searcher)
+    print("person_id     :", person_id)
+    print("page_no       :", page_no)
+
+def UNIVERSAL_FUNCTION(searcher, person_id="", page_no=1):
+    SEARCH_DETAILS(searcher=searcher, person_id=person_id, page_no=page_no)
     cursor, conn = modules.create_connection()
     person = modules.PERSON_SEARCH(person_id)
     searcher_id = GET_USER_ID_FROM_NAME(searcher) 
-
+    posts_per_page = 5
     
     query = f"""
     SELECT 
@@ -227,9 +263,16 @@ def UNIVERSAL_FUNCTION(searcher, person_id=""):
     
     WHERE 1=1 
     {person}
+    
+    ORDER BY Person_name ASC
+    
+    OFFSET ( ({page_no}-1)  * {posts_per_page} )
+    LIMIT {posts_per_page};
     """
     cursor.execute(query)
     posts = []
+    for i in range((page_no-1) * posts_per_page):
+        posts.append([])
     
     for i in cursor.fetchall():
         posts.append([
@@ -243,14 +286,23 @@ def UNIVERSAL_FUNCTION(searcher, person_id=""):
             i[7], #count comments
             i[8], #count favourites
             i[9], #count views
-            i[10], # has searcher liked post
+            i[10], # has searcher liked post ( 0 == unliked)
             i[11], # post_id
         ])
         # print(i)
         
     modules.close_conn(cursor, conn)
-    return posts
+    return posts, int(page_no), posts_per_page, CHECK_CAN_SCROLl(len(posts), posts_per_page)
 
+
+
+
+def CHECK_CAN_SCROLl(num_posts, posts_per_page):
+    if num_posts < posts_per_page:
+        print("CANT SCROLL ANYMORE")
+        return False
+    else: return True
+    
 def GET_FOLLOWERS_BY_USER_ID(User_id):
     cursor, conn = modules.create_connection()
     query = f"""
@@ -285,5 +337,6 @@ def CHECK_IF_WORD_VOTE_EXISTS(word_id, user_id):
     else: return False
 
 if __name__ == "__main__": 
+    print(UNIVERSAL_FUNCTION(searcher="Andre", page_no=1))
+    print(UNIVERSAL_FUNCTION(searcher="Andre", page_no=2))
 
-    GET_ALL_POSTS()

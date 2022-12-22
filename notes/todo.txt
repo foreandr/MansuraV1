@@ -43,3 +43,7 @@ MONETIZATION
 DONATIONS
 SUBSCRIPTIONS
 ADS
+
+LOGGING
+=============
+log db actions instead of printing them

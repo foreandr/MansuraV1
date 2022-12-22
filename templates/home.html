@@ -1,14 +1,13 @@
 {% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
 {%block main %}
 
-
-
-<div class="row" style="margin: auto">
+<div class="row" style="margin: auto" hx-post="/page/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
     {% for i in range(0, num_posts) %}
     <div class="col">
         <div class="card" id="videos">
             <div class="card-header">
                 <h1>{{posts[i][0]}}</h1>
+                <h1>{{[i]}}</h1>
             </div>
 
             <div>
@@ -25,7 +24,7 @@
                     <!--LIKES-->
                     <span>
                         {% if posts[i][10] == 0%}
-                        <button class="btn btn-outline-dark" hx-post="/update_like/{{posts[i][11]}}" hx-trigger="click" hx-target="#like_location{{i}}" id="unliked" onclick="like_logic(this)">
+                        <button class="btn btn-outline-dark" hx-post="/update_like/{{posts[i][11]}}" hx-trigger="click" hx-target="#like_location{{i}}" hx-swap="innerHTML" onclick="like_logic(this)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                                 <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
                               </svg>
@@ -37,7 +36,7 @@
 
                         {% else %}
 
-                        <button class="btn btn-danger" hx-post="/update_like/{{posts[i][11]}}" hx-trigger="click" hx-target="#like_location{{i}}" id="liked" onclick="like_logic(this)">
+                        <button class="btn btn-danger" hx-post="/update_like/{{posts[i][11]}}" hx-trigger="click" hx-target="#like_location{{i}}" hx-swap="innerHTML" id="liked" onclick="like_logic(this)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                                 <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
                               </svg>
@@ -55,15 +54,9 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
                                 <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                             </svg>
-                            COMMENTS: {{posts[i][7]}}
+                            {{posts[i][7]}}
                         </button>
                     </span>
-
-                    <div id="like_section">
-
-                    </div>
-
-
 
                     <span>
                         <button class="btn btn-outline-primary">
@@ -72,7 +65,6 @@
                                 <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z"/>
                               </svg>
                         </button>
-                        send
                     </span>
 
                     <span>{{posts[i][3]}}</span>
