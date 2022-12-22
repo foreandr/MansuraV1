@@ -1,0 +1,11 @@
+[2022-12-22 15:30:46][error][CREATE_TABLE_USER][]-module 'python.MODULES' has no attribute 'SERVER_CHECK'
+[2022-12-22 15:34:01][error][INSERT_LIKE][]-insert or update on table "likes" violates foreign key constraint "likes_post_id_fkey"
+DETAIL:  Key (post_id)=(0) is not present in table "posts".
+
+[2022-12-22 15:34:04][error][INSERT_LIKE][]-insert or update on table "likes" violates foreign key constraint "likes_post_id_fkey"
+DETAIL:  Key (post_id)=(0) is not present in table "posts".
+
+[2022-12-22 15:41:22][error][DELETE_LIKE][]-syntax error at or near "="
+LINE 3:                 WHEREPost_id = '3' AND User_id = '1'
+                                     ^
+

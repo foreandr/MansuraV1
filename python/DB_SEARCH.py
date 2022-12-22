@@ -21,6 +21,7 @@ def CHECK_PEOPLE_ORDER(sort_method):
         return "ORDER BY DESC"
     else: return ""
     
+
 def GET_POST_LIKE_COUNT():
     return """
     (   

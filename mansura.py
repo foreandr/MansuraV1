@@ -22,6 +22,7 @@ def home():
         
     return render_template('home.html',
         posts=posts,
+        num_posts=len(posts)
     )
     
 @app.route("/add_connection/<User_id>", methods=['POST'])
@@ -38,7 +39,7 @@ def remove_connection(User_id):
     modules.log_function("request", request)
     modules.DELETE_CONNECTION(1, User_id)
     followers = modules.GET_FOLLOWERS_BY_USER_ID(3)
-    return render_template("connection_change.html",
+    return render_template("update_connection.html",
         followers=followers)
     
 @app.route("/people/<sort_method>/<letter>", methods=['GET', 'POST'])
@@ -190,6 +191,12 @@ def word_tribunal():
         blocked_words=blocked_words
     )
 
+@app.route("/update_like/<Post_id>", methods=['GET', 'POST'])
+def update_like(Post_id):
+    modules.log_function("request", request)
+    modules.LIKE_LOGIC(Post_id, session["id"])
+    return render_template(f"update_like.html",
+        likes=modules.GET_NUM_LIKES_BY_POST_ID(Post_id))
 
 
 

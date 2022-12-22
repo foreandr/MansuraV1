@@ -177,6 +177,21 @@ def GET_POSTS_BY_PERSON(Person):
 def GET_POSTS_BY_TAG(Person):
     return 1 
 
+def GET_NUM_LIKES_BY_POST_ID(Post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+       
+        SELECT COUNT(*) 
+        FROM LIKES likes
+        WHERE likes.Post_id = '{Post_id}'
+    
+    """)
+    results = 0
+    for i in cursor.fetchall():
+        results = i[0]
+    modules.close_conn(cursor, conn)
+    return results
+    
 
 def UNIVERSAL_FUNCTION(searcher, person_id=""):
     cursor, conn = modules.create_connection()
@@ -229,9 +244,7 @@ def UNIVERSAL_FUNCTION(searcher, person_id=""):
             i[8], #count favourites
             i[9], #count views
             i[10], # has searcher liked post
-            
-            
-            # i[11], #BENCHMARK POST ID'S
+            i[11], # post_id
         ])
         # print(i)
         

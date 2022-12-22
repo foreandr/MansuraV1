@@ -3,7 +3,6 @@ IF YOU EVER RUN INTO THE PROBLEM OF CIRCULAR IMPORTS,
 GO TO THAT FILE AND JUST DO THE TRY EXCEPT FOR THE FILES THAT YOU NEED
 '''
 try:    
-    from python.DB_CHECK import *
     from python.DB_CREATE import *
     from python.DB_DELETE import *
     from python.DB_READ import *
@@ -17,7 +16,6 @@ try:
     from python.dbconnection import *
     from python.log import *
 except:
-    from DB_CHECK import *
     from DB_CREATE import *
     from DB_DELETE import *
     from DB_READ import *

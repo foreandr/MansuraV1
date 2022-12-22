@@ -6,7 +6,21 @@ except:
 import inspect
 
 def DELETE_LIKE(Post_id, User_id):
-    pass
+    cursor, conn = modules.create_connection()
+    
+    try:
+        cursor.execute(
+            f"""
+                DELETE FROM LIKES 
+                WHERE Post_id = '{Post_id}' AND User_id = '{User_id}'
+            """)
+        conn.commit()
+        modules.print_green(f"REMOVED LIKED {User_id} from post  {Post_id}")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+    
+    modules.close_conn(cursor, conn) 
 
 def DELETE_FAVOURITE(Post_id, User_id):
     pass
@@ -28,7 +42,7 @@ def DELETE_CONNECTION(user_id1, user_id2):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
     
     modules.close_conn(cursor, conn) 
-    pass
+    
 
 def DELETE_COMMENT(Post_id, User_id):
     # JUST REMOVE THE TEXT
