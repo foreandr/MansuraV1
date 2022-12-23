@@ -230,6 +230,12 @@ def update_like(Post_id):
     return render_template(f"update_like.html",
         likes=modules.GET_NUM_LIKES_BY_POST_ID(Post_id))
 
+@app.route("/update_fave/<Post_id>", methods=['GET', 'POST'])
+def update_fave(Post_id):
+    modules.log_function("request", request)
+    modules.FAVE_LOGIC(Post_id, session["id"])
+    return render_template(f"update_fave.html",
+        faves=modules.GET_NUM_FAVES_BY_POST_ID(Post_id))
 
 
 

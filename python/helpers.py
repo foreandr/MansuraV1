@@ -350,6 +350,25 @@ def CHECK_LIKE_EXISTS(Post_id, User_id):
         return True
     else: 
         return False
+    
+def CHECK_FAVE_EXISTS(Post_id, User_id):
+    cursor, conn = modules.create_connection()
+    
+    cursor.execute(f"""
+        SELECT COUNT(*)
+        FROM FAVOURITES
+        WHERE Post_id = '{Post_id}'
+        AND User_id = '{User_id}'              
+    """)
+    result = 0
+    for i in cursor.fetchall():
+        result = i[0]
+    
+    modules.close_conn(cursor, conn) 
+    if result > 0:
+        return True
+    else: 
+        return False
           
 
 

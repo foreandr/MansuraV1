@@ -9,3 +9,6 @@ DETAIL:  Key (post_id)=(0) is not present in table "posts".
 LINE 3:                 WHEREPost_id = '3' AND User_id = '1'
                                      ^
 
+[2022-12-22 22:46:48][error][INSERT_LIKE][]-insert or update on table "likes" violates foreign key constraint "likes_post_id_fkey"
+DETAIL:  Key (post_id)=(0) is not present in table "posts".
+

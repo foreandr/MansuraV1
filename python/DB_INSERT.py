@@ -125,10 +125,19 @@ def INSERT_SUBJECTS(Subject_name, Subject_type, Post_id):
 def LIKE_LOGIC(Post_id, User_id):
     already_liked = modules.CHECK_LIKE_EXISTS(Post_id, User_id)
     if already_liked:
-        print( User_id, "has already liked",Post_id)
+        #print( User_id, "has already liked",Post_id)
         modules.DELETE_LIKE(Post_id, User_id)
     else:
         modules.INSERT_LIKE(Post_id, User_id)
+
+def FAVE_LOGIC(Post_id, User_id):
+    already_liked = modules.CHECK_FAVE_EXISTS(Post_id, User_id)
+    if already_liked:
+        #print( User_id, "has already faved",Post_id)
+        modules.DELETE_FAVOURITE(Post_id, User_id)
+    else:
+        modules.INSERT_FAVOURITES(Post_id, User_id)
+
 
 def INSERT_LIKE(Post_id, User_id):
     cursor, conn = modules.create_connection()

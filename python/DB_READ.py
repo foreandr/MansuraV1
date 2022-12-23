@@ -191,6 +191,21 @@ def GET_NUM_LIKES_BY_POST_ID(Post_id):
         results = i[0]
     modules.close_conn(cursor, conn)
     return results
+
+def GET_NUM_FAVES_BY_POST_ID(Post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+       
+        SELECT COUNT(*) 
+        FROM FAVOURITES fave
+        WHERE fave.Post_id = '{Post_id}'
+    
+    """)
+    results = 0
+    for i in cursor.fetchall():
+        results = i[0]
+    modules.close_conn(cursor, conn)
+    return results
     
 def GET_NUM_COMMENTS_BY_POST_ID(Post_id):
     cursor, conn = modules.create_connection()
@@ -228,6 +243,25 @@ def SEARCH_DETAILS(searcher, person_id="", page_no=1):
     print("person_id     :", person_id)
     print("page_no       :", page_no)
 
+def SEARCH_USER_HAS_LIKED(searcher_id):
+    return f"""
+        (
+            SELECT COUNT(*)
+            FROM LIKES likes
+            WHERE likes.Post_id = posts.Post_id
+            AND '{searcher_id}' = likes.User_id
+        ),
+    """
+def SEARCH_USER_HAS_SAVED(searcher_id):
+    return f"""
+        (
+            SELECT COUNT(*)
+            FROM FAVOURITES faves
+            WHERE faves.Post_id = posts.Post_id
+            AND '{searcher_id}' = faves.User_id
+        )
+    """     
+
 def UNIVERSAL_FUNCTION(searcher, person_id="", page_no=1):
     SEARCH_DETAILS(searcher=searcher, person_id=person_id, page_no=page_no)
     cursor, conn = modules.create_connection()
@@ -243,16 +277,14 @@ def UNIVERSAL_FUNCTION(searcher, person_id="", page_no=1):
     posts.Date_time, 
     people.Person_name, 
     people.Person_id,
+    posts.Post_id,
     {modules.GET_ALL_COUNTS()}
-    (
-        SELECT COUNT(*)
-        FROM LIKES likes
-        WHERE likes.Post_id = posts.Post_id
-        AND '{searcher_id}' = likes.User_id
-    ),
+    {modules.SEARCH_USER_HAS_LIKED(searcher_id)}
+    {modules.SEARCH_USER_HAS_SAVED(searcher_id)}
+    
  
     
-    posts.Post_id
+    
     FROM POSTS posts
     
     INNER JOIN POST_PERSON post_person
@@ -282,12 +314,13 @@ def UNIVERSAL_FUNCTION(searcher, person_id="", page_no=1):
             i[3], #posts.Date_time, 
             i[4], #people.Person_name,
             i[5], #people.Person_id,
-            i[6], #count likes
-            i[7], #count comments
-            i[8], #count favourites
-            i[9], #count views
-            i[10], # has searcher liked post ( 0 == unliked)
-            i[11], # post_id
+            i[6], # post_id#
+            i[7], # count likes
+            i[8], # count comments
+            i[9], #count favourites 
+            i[10], #count views 
+            i[11], # has searcher liked post ( 0 == unliked)
+            i[12], # has searcher SAVED post ( 0 == unliked)
         ])
         # print(i)
         
