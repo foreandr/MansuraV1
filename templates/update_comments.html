@@ -1,0 +1,52 @@
+<!--how this works, i dont have a fucking clue-->
+<div class="modal-header">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            ORDER BY
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+            <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{comment_post_id}}/10/date"  hx-target="#comment_section" hx-swap="innerHTML">DATE</a>
+            <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{comment_post_id}}/10/likes"  hx-target="#comment_section" hx-swap="innerHTML">LIKES</a> 
+        </div>
+    </div>
+</div>
+{% if commenting  == "true"%}
+<form action="update_comment/{{comment_post_id}}" method="POST" enctype="multipart/form-data">
+    Leave A Comment
+</form>
+{% else %}
+<div class="modal-header">
+    <h5 class="modal-title">
+        <form action="update_comment/{{comment_post_id}}" method="POST" enctype="multipart/form-data">
+            <span class="input-group-prepend">
+                <button class="btn btn-outline-secondary" hx-post="/update_comment/{{comment_post_id}}" type="button" hx-trigger="click" hx-swap="innerHTML">
+                        Leave A Comment
+                </button>
+            </span>
+            <input type="text" name="input_field" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">    
+        </form>
+    </h5>
+</div>
+
+<div class="modal-header">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            HOW MANY?
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{comment_post_id}}/10/likes"    hx-target="#comment_section" hx-swap="innerHTML">10</a>
+            <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{comment_post_id}}/100/10/likes"   hx-target="#comment_section" hx-swap="innerHTML">100</a>
+            <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{comment_post_id}}/1000/10/likes"  hx-target="#comment_section" hx-swap="innerHTML">1000</a>
+            <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{comment_post_id}}/10000/10/likes" hx-target="#comment_section" hx-swap="innerHTML">10000</a>  
+        </div>
+    </div>
+</div>
+
+{% for comment in comments %}
+{{comment | safe}}
+{% endfor %}
+
+{% endif %}
+
+    
+

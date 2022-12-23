@@ -235,11 +235,40 @@ def update_fave(Post_id):
     modules.log_function("request", request)
     modules.FAVE_LOGIC(Post_id, session["id"])
     return render_template(f"update_fave.html",
-        faves=modules.GET_NUM_FAVES_BY_POST_ID(Post_id))
+        faves=modules.GET_NUM_FAVES_BY_POST_ID(Post_id)
+        )
+@app.route("/update_comment/<Post_id>", methods=['GET', 'POST'])
+def update_comment(Post_id):
+    modules.log_function("request", request)
+    input_field = request.form.get("input_field")
+    how_many = 11
+    
+    print("comment update:")
+    print("POST ID       :", Post_id)
+    print("input_field   :", input_field)
+    print("howmany       :", how_many)
+    
+    modules.INSERT_COMMENTS(Post_id=Post_id, User_id=session["id"], Comment_text=input_field)
+    return redirect(url_for('comment_section', Post_id=Post_id,how_many=how_many))
+
+
+
+@app.route("/comment_section/<Post_id>/<how_many>/<order>", methods=['GET', 'POST'])
+def comment_section(Post_id, how_many, order):
+    modules.log_function("request", request)
+    transformed_comments = modules.TRANSFRM_COMMENT_ARRAY_INTO_HTML(modules.GET_N_COMMENTS(Post_id=Post_id, N=how_many, new_comment=modules.JANKY_COMMENT_CHECK(how_many), check_order=order))
+
+    return render_template(f"update_comments.html",
+        comments=transformed_comments,
+        how_many=int(how_many)+1,
+        comment_post_id=Post_id,
+        commenting=modules.JANKY_COMMENT_CHECK(how_many),
+        num_comments=modules.GET_COUNT_COMMENTS_BY_ID(Post_id)
+        )
 
 
 
 if __name__ == '__main__':
     host = "0.0.0.0" 
     # http://165.227.35.71:8088/
-    app.run(host=host, port="8096", debug=False, use_reloader=False)  
+    app.run(host=host, port="8097", debug=False, use_reloader=False)  

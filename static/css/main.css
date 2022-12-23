@@ -3,29 +3,8 @@
     bottom: 0;
 }
 
-/*
-#dropdownMenuButton {
-    background-color:lightgrey;
-    color: black;
 
-}
 
-#dropdownMenuButton2 {
-    background-color: lightgrey;
-    color: black;
-    margin-right: 50px;
-}
-*/
-  
-#daily_votes_left{
-    color:black;
-}
-#monthly_votes_left {
-    color: black;
-}
-#yearly_votes_left {
-    color: black;
-}
 
 #adjust_nav_bar{
   margin-right: 150px;
@@ -41,6 +20,14 @@
 #navbarSupportedContent15{
   position: absolute;
   right: 10%;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
 }
 
 #footer {

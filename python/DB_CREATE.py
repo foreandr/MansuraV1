@@ -241,6 +241,33 @@ def CREATE_TABLE_COMMENTS(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     modules.close_conn(cursor, conn)
+  
+def CREATE_TABLE_COMMENT_VOTES(server="false"):
+    cursor, conn = modules.create_connection()
+
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE COMMENT_VOTES(
+                    Comment_vote_id SERIAL PRIMARY KEY,
+                    Comment_id BIGINT,
+                    User_id BIGINT,
+                    Vote_type varchar,
+                    Date_time timestamp, 
+                    FOREIGN KEY (Comment_id) REFERENCES COMMENTS(Comment_id),
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
+                    UNIQUE (Comment_id,  User_id)
+                );
+                """)
+        conn.commit()
+
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
+    modules.close_conn(cursor, conn)
     
     
 def CREATE_TABLE_VIEWS(server="false"):

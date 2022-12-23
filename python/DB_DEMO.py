@@ -4,6 +4,15 @@ try:
 except:
     import MODULES as modules
 
+def INSERT_DEMO_COMMENT_VOTE():
+    modules.INSERT_COMMENT_VOTE(Comment_id=1, User_id=1, Vote_type="UP")
+    modules.INSERT_COMMENT_VOTE(Comment_id=1, User_id=1, Vote_type="UP") 
+    
+    modules.INSERT_COMMENT_VOTE(Comment_id=2, User_id=1, Vote_type="UP")
+    modules.INSERT_COMMENT_VOTE(Comment_id=1, User_id=3, Vote_type="UP")
+    
+    modules.INSERT_COMMENT_VOTE(Comment_id=1, User_id=1, Vote_type="UP")
+    modules.INSERT_COMMENT_VOTE(Comment_id=2, User_id=2, Vote_type="UP")  
 
 def INSERT_DEMO_USER():
     modules.print_title(f"{inspect.stack()[0][3]}")
@@ -85,7 +94,46 @@ def INSERT_DEMO_FAVOURITES():
 def INSERT_DEMO_COMMENTS():
     modules.print_title(f"{inspect.stack()[0][3]}")
     modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="baby girl")
-    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world", Replying_to_id=1)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world i think noam chomsky is just the coolest guy ever hellow world testing testingn lololo hehe xd nono lol max tecxtkjsdahfalksjhdflakjhds", Replying_to_id=1)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world1", Replying_to_id=1)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world2", Replying_to_id=1)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world3")
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world4", Replying_to_id=1)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world5")
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world6", Replying_to_id=1)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world7", Replying_to_id=1)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world8", Replying_to_id=1)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world9", Replying_to_id=1)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world0")
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world10", Replying_to_id=1)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world101")
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world102", Replying_to_id=1)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world103", Replying_to_id=1)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world102334245", Replying_to_id=1)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world102345", Replying_to_id=2)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world10435", Replying_to_id=2)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world10564", Replying_to_id=2)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world1067")
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world1087", Replying_to_id=2)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world10678", Replying_to_id=2)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world345103635")
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello wor3456ld10", Replying_to_id=2)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello wo3456rld10", Replying_to_id=2)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello w345orld10")
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello 63world10", Replying_to_id=2)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello 445634565634563world10", Replying_to_id=3)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world10", Replying_to_id=3)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world")
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello w21456world10")
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello 456w3orld10", Replying_to_id=3)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello 412world10", Replying_to_id=3)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello 36345", Replying_to_id=4)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world10")
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello world10", Replying_to_id=4)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello 12341234123world10", Replying_to_id=4)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello 1234123412341234124world10")
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello w12341234123412341234orld10", Replying_to_id=3)
+    modules.INSERT_COMMENTS(Post_id=1, User_id=1, Comment_text="hello wo123412341234rld10", Replying_to_id=3)
     
 def INSERT_DEMO_VIEWS():
     modules.print_title(f"{inspect.stack()[0][3]}")
@@ -133,6 +181,7 @@ def FULL_DEMO_INSERT():
     # INSERT_DEMO_DISLIKES()
     INSERT_DEMO_FAVOURITES()
     INSERT_DEMO_COMMENTS()
+    INSERT_DEMO_COMMENT_VOTE()
     INSERT_DEMO_VIEWS()
     INSERT_DEMO_CONNECTIONS()
     INSERT_DEMO_BLOCKS()

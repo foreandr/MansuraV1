@@ -35,11 +35,85 @@ def GET_ALL_USERS():
         print(i)
         
     modules.close_conn(cursor, conn)
+
+
+
+        
+def GET_COUNT_COMMENTS_BY_ID(Post_id):
+    cursor, conn = modules.create_connection()
+    query = F"""
+        SELECT COUNT(*)
+        FROM COMMENTS comments
+        
+        WHERE comments.Post_id = '{Post_id}'
+    """
+    cursor.execute(query)
+    results = 0
+    for i in cursor.fetchall():
+        results = i[0]
+        
+    modules.close_conn(cursor, conn)
+    return results
+
+
+def GET_N_COMMENTS(Post_id, N=3, comment_page_no=0, new_comment="false", check_order="likes"):
+    '''
+    if new_comment == "true":
+        new_comment_order = "ORDER BY comments.Date_time DESC"
+    else:
+        new_comment_order = ""
+    '''
+    if check_order == "alpha":
+        comment_ordering = '''
+            ORDER BY (SELECT COUNT(*) 
+            FROM COMMENT_VOTES comm_vote_count
+            WHERE comm_vote_count.Comment_id = comments.Comment_id
+            AND word_vote.Vote_type = 'UP') 
+        '''
+    elif check_order == "likes":
+        comment_ordering = '''
+        
+        '''
+    
+        
+    cursor, conn = modules.create_connection()
+    query = F"""
+        SELECT users.Username, comments.Comment_text, comments.Date_time
+        FROM COMMENTS comments
+        
+        INNER JOIN USERS users
+        on users.User_id = comments.User_id
+        
+        WHERE comments.Post_id = '{Post_id}'
+        
+        
+        OFFSET ( ({comment_page_no})  * {N} )
+        LIMIT {N}
+    """
+    cursor.execute(query)
+    results = []
+    for i in cursor.fetchall():
+        results.append([i[0], i[1], i[2]])
+        
+    modules.close_conn(cursor, conn)
+    return results
     
 def GET_ALL_POSTS():
     cursor, conn = modules.create_connection()
     query = """
         SELECT * FROM POSTS
+    """
+    cursor.execute(query)
+    
+    for i in cursor.fetchall():
+        print(i)
+        
+    modules.close_conn(cursor, conn) 
+
+def GET_ALL_COMMENTS():
+    cursor, conn = modules.create_connection()
+    query = """
+        SELECT * FROM COMMENTS
     """
     cursor.execute(query)
     
@@ -332,7 +406,7 @@ def GET_MAX_POSTS(person_id):
     #THIS COULD SERIOUSLY SLOW THINGS DOWN
     cursor, conn = modules.create_connection()
     # count = 10000000 # arbitrary big number
-    if person_id == '0':
+    if person_id == '0' or person_id == "":
         person_query = ""
     else:
         person_query = f"""WHERE Person_id = '{person_id}'"""
@@ -401,6 +475,5 @@ def CHECK_IF_WORD_VOTE_EXISTS(word_id, user_id):
     else: return False
 
 if __name__ == "__main__": 
-    print(UNIVERSAL_FUNCTION(searcher="Andre", page_no=1))
-    print(UNIVERSAL_FUNCTION(searcher="Andre", page_no=2))
+    GET_ALL_COMMENTS()
 

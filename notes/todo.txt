@@ -1,11 +1,19 @@
 gdsaqlhggkishjng
 pytest
 
+
+COMMENT
+===========
+COMMENT VOTES TABLE
+SORT BY DATE, VOTES 
+just do scroll functionality, replies to hard rn
+
 save AND VIEWS MISSING
 
 POSTS=
 ========
 SHOW LINK UNDER POSTS, SOME WILL BE BROKEN
+SHOW TAGS
 
 PAGES
 ========

@@ -14,6 +14,7 @@ def CREATE_TABLES(server="false"):
     # modules.CREATE_TABLE_DISLIKES()
     modules.CREATE_TABLE_FAVOURITES()
     modules.CREATE_TABLE_COMMENTS()
+    modules.CREATE_TABLE_COMMENT_VOTES()
     modules.CREATE_TABLE_VIEWS()
     modules.CREATE_TABLE_CONNECTIONS()
     modules.CREATE_TABLE_BLOCKS()
