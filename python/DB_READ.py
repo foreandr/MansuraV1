@@ -296,23 +296,30 @@ def UNIVERSAL_FUNCTION(searcher, person_id="", page_no=1):
 
 
 def GET_MAX_POSTS(person_id):
+    #THIS COULD SERIOUSLY SLOW THINGS DOWN
     cursor, conn = modules.create_connection()
-    count = 10000000 # arbitrary big number
-    if person_id != '0':
-        query = f"""
-            SELECT COUNT(*)
-            FROM POSTS posts
+    # count = 10000000 # arbitrary big number
+    if person_id == '0':
+        person_query = ""
+    else:
+        person_query = f"""WHERE Person_id = '{person_id}'"""
+    
+    query = f"""
+        SELECT COUNT(*)
+        FROM POSTS posts
             
-            INNER JOIN POST_PERSON post_per
-            ON post_per.Post_id = POSTS.Post_id
-            
-            WHERE Person_id = '{person_id}'
-        """
-        cursor.execute(query)
+        INNER JOIN POST_PERSON post_per
+        ON post_per.Post_id = POSTS.Post_id
         
-        for i in cursor.fetchall():
-            print(i[0])
-            count =  i[0]
+        {person_query}
+            
+        
+    """
+    cursor.execute(query)
+        
+    for i in cursor.fetchall():
+        print(i[0])
+        count =  i[0]
     modules.close_conn(cursor, conn)
     return count 
         
