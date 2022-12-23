@@ -1,8 +1,118 @@
-{% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
-{%block main %}
+{% extends "structure.html" %}
 
-<div class="row" style="margin: auto" hx-post="/page/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+{% block nav %}
+
+{% if page_no == 1 %}
+<nav class="navbar navbar-expand-lg navbar-light bg-dark" id="nav_test">
+    <span><a id="navbar_name" class="navbar-brand mx-3" style="color:white;"href="/">Mansura</a></span>
+    <span style="font-size:11px;color:white;">open beta v0.1</span>
+    <span style=color:#333333>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
+    <!--<span><a class="nav-link" id="index_daily" style="color:green;"></a></span>-->
+    <span><a class="nav-link" id="index_monthly" style="color:green;"></a></span>
+    <!--<span><a class="nav-link" id="index_yearly" style="color:green;"></a></span>-->
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent15">
+      <ul class="navbar-nav ms-auto" id="ULBUTTONS">
+          <li>
+              <div>
+                  <form action="/">
+                      <input class="btn btn-link" type="submit" value="HOME" style="text-decoration: none; color: white; border-right: 1px solid gray">
+                  </form>
+              </div>
+          </li>
+          <li>
+              <div>
+                  <form action="/people/alpha/a">
+                      <input class="btn btn-link" type="submit" value="PEOPLE" style="text-decoration: none; color: white; border-right: 1px solid gray">
+                  </form>
+              </div>
+          </li> 
+          <li>
+              <div>
+                  <form action="/subjects/alpha/a">
+                      <input class="btn btn-link" type="submit" value="SUBJECTS" style="text-decoration: none; color: white; border-right: 1px solid gray" disabled>
+                  </form>
+              </div>
+          </li>   
+          <li>
+              <div class="dropdown" id="nav_dropdown">
+                  <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">
+                      REQUEST
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
+                      <a href="/request_form/person" class="nav-link">Person</a>
+                      <a href="/request_form/post" class="nav-link">Post</a>
+                      <a href="/request_form/subject" class="nav-link">Subject</a>
+                  </div>
+              </div>
+          </li>           
+ 
+           <li>
+              <div class="dropdown" id="nav_dropdown">
+                  <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">TRIBUNAL</button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a href="/word_tribunal" class="nav-link">Phrase Tribunal</a>
+                      <a href="/account_tribunal" class="nav-link disabled">Account Tribunal</a>
+                      <a href="/system_tribunal" class="nav-link disabled">Mansura Tribunal</a>
+                  </div>
+              </div>
+            </li>
+ 
+           <li>
+               <div class="dropdown" id="nav_dropdown">
+                   <button class="btn btn-link dropdown-toggle" type="button" id="user_name_location" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">
+                       USER:
+                   </button>
+                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
+                          <a id="username_location" class="nav-link" href="/user_profile">Profile</a>
+                          <a class="nav-link" href="/register">Register</a>
+                          <a class="nav-link disabled" href="/messages">Messages</a>
+                          <a class="nav-link disabled" href="/notifications">Notifications</a>
+                          <a id="username_location" class="nav-link" href="/favourites">Favourites</a>
+                          <a class="nav-link" href="/login">Login</a>
+                          <a class="nav-link" href="/logout">Logout</a>
+                   </div>
+               </div>
+           </li>
+              
+           <li>
+              <div class="dropdown" id="nav_dropdown">
+                  <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">
+                      HELP
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
+                      <a href="/settings" class="nav-link disabled" >Settings</a>
+                      <a href="/contact" class="nav-link">Contact</a>
+                      <a href="/instructions" class="nav-link">Intstructions</a>
+                      <a href="/FAQ" class="nav-link disabled">FAQ</a>
+                      <a href="/terms_and_conditions" class="nav-link">Terms and Conditions</a>
+                      <a href="/patch_notes" class="nav-link disabled">Patch Notes</a>
+                      <a href="/newsletter" class="nav-link disabled">Newsletter</a>
+                      <a href="/cover_page" class="nav-link">Mission</a>
+                      <a href="/careers" class="nav-link disabled">Careers</a>
+                  </div>
+              </div>
+          </li>   
+
+
+       </ul>
+    </div>
+    
+</nav>
+{% else %}
+{% endif %}
+{% endblock nav %}
+
+
+
+
+
+
+{%block main %}
+<div class="row" style="margin: auto" hx-post="/0/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
     {% for i in range(0, num_posts) %}
+    {% if posts[i][0] |length  == 0%} <!--DON'T print the empties-->
+    {% else %}
     <div class="col">
         <div class="card" id="videos">
             <div class="card-header">
@@ -72,10 +182,14 @@
             </div>
         </div>   
     </div>
+    {% endif %}
     {% endfor %}
+
+
 </div>
 
 <script>
+
 
 function like_logic(value){
     console.log(value)
@@ -86,6 +200,17 @@ function like_logic(value){
     else{
         $(value).removeClass("btn btn-outline-dark");
         $(value).addClass("btn btn-danger");  
+    }
+}
+
+//nav_function()
+
+function nav_function(){
+
+    page_no = '{{page_no}}'
+    if (page_no != "0" && page_no != "1"){
+        const element = document.getElementById("nav_test");
+        element.remove();
     }
 }
 

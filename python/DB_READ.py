@@ -229,11 +229,11 @@ def SEARCH_DETAILS(searcher, person_id="", page_no=1):
     print("page_no       :", page_no)
 
 def UNIVERSAL_FUNCTION(searcher, person_id="", page_no=1):
-    SEARCH_DETAILS(searcher=searcher, person_id=person_id, page_no=page_no)
+    # SEARCH_DETAILS(searcher=searcher, person_id=person_id, page_no=page_no)
     cursor, conn = modules.create_connection()
     person = modules.PERSON_SEARCH(person_id)
     searcher_id = GET_USER_ID_FROM_NAME(searcher) 
-    posts_per_page = 5
+    posts_per_page = 9
     
     query = f"""
     SELECT 
@@ -299,7 +299,7 @@ def UNIVERSAL_FUNCTION(searcher, person_id="", page_no=1):
 
 def CHECK_CAN_SCROLl(num_posts, posts_per_page):
     if num_posts < posts_per_page:
-        print("CANT SCROLL ANYMORE")
+        # print("CANT SCROLL ANYMORE")
         return False
     else: return True
     
