@@ -1,7 +1,6 @@
 {% extends "structure.html" %}
 
 {% block nav %}
-
 {% if page_no == 1 %}
 {% block nav_location %}
 {{super()}}
@@ -9,11 +8,6 @@
 {% else %}
 {% endif %}
 {% endblock nav %}
-
-
-
-
-
 
 {%block main %}
 <div class="row" style="margin: auto" hx-post="/0/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
@@ -92,12 +86,16 @@
     {% endif %}
     {% endfor %}
 
-
 </div>
 
+{% block footer %}
+{% if page_no == 1 %}
+{{super()}}
+{% endif %}
+{% endblock footer %}
+
+
 <script>
-
-
 function like_logic(value){
     console.log(value)
     if ( $(value).hasClass("btn btn-danger")){
@@ -109,17 +107,5 @@ function like_logic(value){
         $(value).addClass("btn btn-danger");  
     }
 }
-
-//nav_function()
-
-function nav_function(){
-
-    page_no = '{{page_no}}'
-    if (page_no != "0" && page_no != "1"){
-        const element = document.getElementById("nav_test");
-        element.remove();
-    }
-}
-
 </script>
 {% endblock main %}

@@ -129,10 +129,13 @@
 
         {% endblock main %}
     </div>
-    
+
+    {% block footer %}
     <div class="col-lg-3 item social" id="footer">
         <h6 class="copyright">Mansura © 2022</h6>
     </div>
+    {% endblock footer %}
+
 
     <!-- Production version POPPER -->
     <!-- HAVE TO MAKE CHANGES TO THE BROWSER -->
@@ -152,103 +155,7 @@
 </body>
 </html>
 <script>
-    nav_bar = `
-    <nav class="navbar navbar-expand-lg navbar-light bg-dark" id="nav_test">
-            <span><a id="navbar_name" class="navbar-brand mx-3" style="color:white;"href="/">Mansura</a></span>
-            <span style="font-size:11px;color:white;">open beta v0.1</span>
-            <span style=color:#333333>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</span>
-            <!--<span><a class="nav-link" id="index_daily" style="color:green;"></a></span>-->
-            <span><a class="nav-link" id="index_monthly" style="color:green;"></a></span>
-            <!--<span><a class="nav-link" id="index_yearly" style="color:green;"></a></span>-->
-          
-            <div class="collapse navbar-collapse" id="navbarSupportedContent15">
-              <ul class="navbar-nav ms-auto" id="ULBUTTONS">
-                  <li>
-                      <div>
-                          <form action="/">
-                              <input class="btn btn-link" type="submit" value="HOME" style="text-decoration: none; color: white; border-right: 1px solid gray">
-                          </form>
-                      </div>
-                  </li>
-                  <li>
-                      <div>
-                          <form action="/people/alpha/a">
-                              <input class="btn btn-link" type="submit" value="PEOPLE" style="text-decoration: none; color: white; border-right: 1px solid gray">
-                          </form>
-                      </div>
-                  </li> 
-                  <li>
-                      <div>
-                          <form action="/subjects/alpha/a">
-                              <input class="btn btn-link" type="submit" value="SUBJECTS" style="text-decoration: none; color: white; border-right: 1px solid gray" disabled>
-                          </form>
-                      </div>
-                  </li>   
-                  <li>
-                      <div class="dropdown" id="nav_dropdown">
-                          <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">
-                              REQUEST
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
-                              <a href="/request_form/person" class="nav-link">Person</a>
-                              <a href="/request_form/post" class="nav-link">Post</a>
-                              <a href="/request_form/subject" class="nav-link">Subject</a>
-                          </div>
-                      </div>
-                  </li>           
-         
-                   <li>
-                      <div class="dropdown" id="nav_dropdown">
-                          <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">TRIBUNAL</button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                              <a href="/word_tribunal" class="nav-link">Phrase Tribunal</a>
-                              <a href="/account_tribunal" class="nav-link disabled">Account Tribunal</a>
-                              <a href="/system_tribunal" class="nav-link disabled">Mansura Tribunal</a>
-                          </div>
-                      </div>
-                    </li>
-         
-                   <li>
-                       <div class="dropdown" id="nav_dropdown">
-                           <button class="btn btn-link dropdown-toggle" type="button" id="user_name_location" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">
-                               USER:
-                           </button>
-                           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
-                                  <a id="username_location" class="nav-link" href="/user_profile">Profile</a>
-                                  <a class="nav-link" href="/register">Register</a>
-                                  <a class="nav-link disabled" href="/messages">Messages</a>
-                                  <a class="nav-link disabled" href="/notifications">Notifications</a>
-                                  <a id="username_location" class="nav-link" href="/favourites">Favourites</a>
-                                  <a class="nav-link" href="/login">Login</a>
-                                  <a class="nav-link" href="/logout">Logout</a>
-                           </div>
-                       </div>
-                   </li>
-                      
-                   <li>
-                      <div class="dropdown" id="nav_dropdown">
-                          <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: white; border-right: 1px solid gray">
-                              HELP
-                          </button>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
-                              <a href="/settings" class="nav-link disabled" >Settings</a>
-                              <a href="/contact" class="nav-link">Contact</a>
-                              <a href="/instructions" class="nav-link">Intstructions</a>
-                              <a href="/FAQ" class="nav-link disabled">FAQ</a>
-                              <a href="/terms_and_conditions" class="nav-link">Terms and Conditions</a>
-                              <a href="/patch_notes" class="nav-link disabled">Patch Notes</a>
-                              <a href="/newsletter" class="nav-link disabled">Newsletter</a>
-                              <a href="/cover_page" class="nav-link">Mission</a>
-                              <a href="/careers" class="nav-link disabled">Careers</a>
-                          </div>
-                      </div>
-                  </li>   
-      
-      
-               </ul>
-            </div>
-            
-        </nav>
-    `
+
+
 
 </script>
