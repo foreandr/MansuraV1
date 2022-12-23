@@ -229,7 +229,7 @@ def SEARCH_DETAILS(searcher, person_id="", page_no=1):
     print("page_no       :", page_no)
 
 def UNIVERSAL_FUNCTION(searcher, person_id="", page_no=1):
-    # SEARCH_DETAILS(searcher=searcher, person_id=person_id, page_no=page_no)
+    SEARCH_DETAILS(searcher=searcher, person_id=person_id, page_no=page_no)
     cursor, conn = modules.create_connection()
     person = modules.PERSON_SEARCH(person_id)
     searcher_id = GET_USER_ID_FROM_NAME(searcher) 
@@ -292,16 +292,40 @@ def UNIVERSAL_FUNCTION(searcher, person_id="", page_no=1):
         # print(i)
         
     modules.close_conn(cursor, conn)
-    return posts, int(page_no), posts_per_page, CHECK_CAN_SCROLl(len(posts), posts_per_page)
+    return query, posts, int(page_no), posts_per_page, CHECK_CAN_SCROLL(len(posts), GET_MAX_POSTS(person_id)), person_id
 
 
-
-
-def CHECK_CAN_SCROLl(num_posts, posts_per_page):
-    if num_posts < posts_per_page:
-        # print("CANT SCROLL ANYMORE")
+def GET_MAX_POSTS(person_id):
+    cursor, conn = modules.create_connection()
+    count = 10000000 # arbitrary big number
+    if person_id != '0':
+        query = f"""
+            SELECT COUNT(*)
+            FROM POSTS posts
+            
+            INNER JOIN POST_PERSON post_per
+            ON post_per.Post_id = POSTS.Post_id
+            
+            WHERE Person_id = '{person_id}'
+        """
+        cursor.execute(query)
+        
+        for i in cursor.fetchall():
+            print(i[0])
+            count =  i[0]
+    modules.close_conn(cursor, conn)
+    return count 
+        
+def CHECK_CAN_SCROLL(num_posts, max_posts):
+    print("NUM POSTS FOR QUERY :", num_posts)
+    print("MAX POSTS      :", max_posts)
+    
+    if num_posts > max_posts:
+        print("CANT SCROLL ANYMORE")
         return False
-    else: return True
+    else: 
+        print("SAFE TO SCROLL")
+        return True
     
 def GET_FOLLOWERS_BY_USER_ID(User_id):
     cursor, conn = modules.create_connection()

@@ -19,25 +19,25 @@ def home():
     
 @app.route("/<person_id>/<page_no>", methods=['GET', 'POST'])
 def post_logic(person_id, page_no):
-    print("person_id", person_id)
-    print("page_no", page_no)
-
     modules.log_function("request", request)
     if "email" not in session: 
         return redirect(url_for("login"))
-    
-    posts, new_page_no, posts_per_page, can_scroll = modules.UNIVERSAL_FUNCTION(
+    query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"],
-        page_no=int(page_no)+1
+        page_no=int(page_no)+1,
+        person_id=person_id
         )
+    
     
     offset_calc = int(int(page_no) * int(posts_per_page))
 
-
     return render_template('home.html',
+        query=query,                   
+                           
         posts=posts,
         num_posts=len(posts),
-
+        
+        person_id=person_id,
         page_no=new_page_no,
         offset_calc=offset_calc,
         can_scroll=can_scroll,

@@ -88,7 +88,7 @@ def CREATE_TABLE_POST_PERSON(server="false"):
         # Path varchar,
         cursor.execute(
             f"""
-            CREATE TABLE POST_Person
+            CREATE TABLE POST_PERSON
             (
             Post_id BIGINT,  
             Person_id BIGINT,     
