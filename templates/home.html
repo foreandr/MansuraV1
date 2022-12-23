@@ -93,7 +93,13 @@
 
 </div>
 
-
+<div id="footer_location">
+    {% block footer %}
+    {% if page_no == 1 %}
+    {{super()}}
+    {% endif %}
+    {% endblock footer %}
+</div>
 
 <script>
 
