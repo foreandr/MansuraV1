@@ -1,6 +1,7 @@
 import hashlib
 import inspect
-
+import datetime
+ 
 try:    
     import python.MODULES as modules
 except:
@@ -243,25 +244,71 @@ def INSERT_COMMENTS(Post_id, User_id, Comment_text, Replying_to_id="NULL"):
     
     modules.close_conn(cursor, conn) 
     
-def INSERT_VIEWS(Post_id, User_id):
-
+def CHECK_IF_BEEN_30s_SINCE_LAST_VIEW(Post_id, User_id):
     cursor, conn = modules.create_connection()
-    try:
-        cursor = conn.cursor()
-        cursor.execute(
-            f"""
-            INSERT INTO VIEWS
-            (Post_id, User_id, Date_time)
-            VALUES
-            ('{Post_id}', '{User_id}', NOW())
-            """)
-        conn.commit()
-        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
-    except Exception as e:
-        cursor.execute("ROLLBACK")
-        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    cursor.execute(f"""
+        SELECT Comment_id, Date_time
+        FROM VIEWS views
+        WHERE views.Post_id = '{Post_id}'
+        AND views.User_id = '{User_id}'
+        
+        -- TO GET THE MOST RECENT
+        ORDER BY Date_time DESC
+        LIMIT 2
+        """
+    )
+    results = []
+    for i in cursor.fetchall():
+        results.append([i[0], i[1]])
+    modules.close_conn(cursor, conn)
     
-    modules.close_conn(cursor, conn) 
+    if len(results) != 2:
+    # this means it returned 0 or 1 from the db, free to view 
+        return True
+    else:
+        # IF CURRENT TIME IS 30S LATER THAN LAST VIEW
+        # using datetime module
+        
+        
+        # ct stores current time
+        ct = datetime.datetime.now()
+        now_seconds = (ct - results[0][1]).seconds
+        print('SECONDS BETWEEN RECENT VIEW AND NOW: ', now_seconds)
+        if now_seconds > 30:
+            return True
+        '''
+        seconds = (results[0][1]-results[1][1]).seconds  # returns a timedelta object in seconds
+        print('SECONDS BETWEEN VIEWS              : ', seconds)
+        if seconds > 30:
+            return True
+        '''
+        
+    return False
+
+    
+def INSERT_VIEWS(Post_id, User_id):
+    cursor, conn = modules.create_connection()
+    can_view = CHECK_IF_BEEN_30s_SINCE_LAST_VIEW(Post_id, User_id)
+    if not can_view:
+        modules.close_conn(cursor, conn)
+        print("TIME BETWEEN VIEWS TOO SHORT") 
+    else:
+        try:
+            cursor = conn.cursor()
+            cursor.execute(
+                f"""
+                INSERT INTO VIEWS
+                (Post_id, User_id, Date_time)
+                VALUES
+                ('{Post_id}', '{User_id}', NOW())
+                """)
+            conn.commit()
+            modules.print_green(F"{inspect.stack()[0][3]} {Post_id, User_id}COMPLETED")
+        except Exception as e:
+            cursor.execute("ROLLBACK")
+            modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        
+        modules.close_conn(cursor, conn) 
     
 def INSERT_CONNECTION(user_id1, user_id2):
 
@@ -319,6 +366,7 @@ def INSERT_IP_ADRESSES(Address, User_id):
     
     modules.close_conn(cursor, conn)
     
+    
 def INSERT_CHAT_ROOMS(Creator_id, Room_name):
 
     cursor, conn = modules.create_connection()
@@ -338,6 +386,7 @@ def INSERT_CHAT_ROOMS(Creator_id, Room_name):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)
+    
     
 def INSERT_CHAT_ROOMS_USER(User_id, Room_id):
 
@@ -359,6 +408,7 @@ def INSERT_CHAT_ROOMS_USER(User_id, Room_id):
     
     modules.close_conn(cursor, conn)
     
+    
 def INSERT_CHAT_ROOMS_ADMIN(User_id, Room_id):
 
     cursor, conn = modules.create_connection()
@@ -378,6 +428,7 @@ def INSERT_CHAT_ROOMS_ADMIN(User_id, Room_id):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn) 
+    
     
 def INSERT_REQUEST(User_id, Request_type, Request_content):
 
@@ -399,6 +450,7 @@ def INSERT_REQUEST(User_id, Request_type, Request_content):
     
     modules.close_conn(cursor, conn)
 
+
 def INSERT_TRIBUNAL_WORD(word):
     cursor, conn = modules.create_connection()
     try:
@@ -418,6 +470,7 @@ def INSERT_TRIBUNAL_WORD(word):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)        
+      
           
 def INSERT_DEMO_WORD_LIST(server="false"):
     word_list = modules.GET_ORIGINAL_PROFANITY_LIST()
@@ -429,6 +482,7 @@ def INSERT_DEMO_WORD_LIST(server="false"):
         if i > max:
             break  # 10 is just for demo testing functionality
         INSERT_TRIBUNAL_WORD(word_list[i])
+         
           
 def INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type):
     cursor, conn = modules.create_connection()
@@ -439,11 +493,13 @@ def INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type):
     """)
     conn.commit()
     modules.close_conn(cursor, conn)    
+   
     
 def INSERT_DEMO_PEOPLE():
     word_list = modules.GET_ORIGINAL_PEOPLE_LIST()
     for i in range(len(word_list)):
         INSERT_PERSON(word_list[i])
+   
           
 def INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type):
     cursor, conn = modules.create_connection()
@@ -463,3 +519,7 @@ def INSERT_INTO_PROFANITY_LIST_VOTES(word_id, voter_id, vote_Type):
     else:
         modules.INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type)
     modules.close_conn(cursor, conn)
+
+
+if __name__ == "__main__":
+    CHECK_IF_BEEN_30s_SINCE_LAST_VIEW(15, 1)

@@ -4,9 +4,9 @@ pytest
 
 COMMENT
 ===========
-COMMENT VOTES TABLE
-SORT BY DATE, VOTES 
-just do scroll functionality, replies to hard rn
+DONE.COMMENT VOTES TABLE
+DOESNT REFRESH, NOT SURE, VOTES 
+NOT DONE. just do scroll functionality, replies to hard rn
 
 save AND VIEWS MISSING
 

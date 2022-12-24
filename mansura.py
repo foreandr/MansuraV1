@@ -55,15 +55,6 @@ def person(person_id):
         posts=posts,
     )
     
-    
-    
-    
-    
-    
-    
-    
-    
-     
 @app.route("/add_connection/<User_id>", methods=['POST'])
 def add_connection(User_id):
     modules.log_function("request", request)
@@ -232,11 +223,22 @@ def update_like(Post_id):
 
 @app.route("/update_fave/<Post_id>", methods=['GET', 'POST'])
 def update_fave(Post_id):
+    print("helloo1")
     modules.log_function("request", request)
     modules.FAVE_LOGIC(Post_id, session["id"])
     return render_template(f"update_fave.html",
         faves=modules.GET_NUM_FAVES_BY_POST_ID(Post_id)
         )
+    
+@app.route("/update_view/<Post_id>", methods=['GET', 'POST'])
+def update_view(Post_id):
+    modules.log_function("request", request)
+    modules.INSERT_VIEWS(Post_id, session["id"])
+    return render_template(f"update_view.html",
+        views=modules.GET_NUM_VIEWS_BY_POST_ID(Post_id)
+        )
+    
+    
 @app.route("/update_comment/<Post_id>", methods=['GET', 'POST'])
 def update_comment(Post_id):
     modules.log_function("request", request)
@@ -249,7 +251,7 @@ def update_comment(Post_id):
     print("howmany       :", how_many)
     
     modules.INSERT_COMMENTS(Post_id=Post_id, User_id=session["id"], Comment_text=input_field)
-    return redirect(url_for('comment_section', Post_id=Post_id,how_many=how_many))
+    return redirect(url_for('comment_section', Post_id=Post_id,how_many=how_many, order="date"))
 
 
 

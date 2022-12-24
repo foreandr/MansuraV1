@@ -1,7 +1,13 @@
+
+{% if commenting  == "true"%}
+<form action="update_comment/{{comment_post_id}}" method="POST" enctype="multipart/form-data">
+    Leave another comment?
+</form>
+{% else %}
 <!--how this works, i dont have a fucking clue-->
 <div class="modal-header">
     <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
             ORDER BY
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
@@ -10,17 +16,12 @@
         </div>
     </div>
 </div>
-{% if commenting  == "true"%}
-<form action="update_comment/{{comment_post_id}}" method="POST" enctype="multipart/form-data">
-    Leave A Comment
-</form>
-{% else %}
 <div class="modal-header">
     <h5 class="modal-title">
         <form action="update_comment/{{comment_post_id}}" method="POST" enctype="multipart/form-data">
             <span class="input-group-prepend">
                 <button class="btn btn-outline-secondary" hx-post="/update_comment/{{comment_post_id}}" type="button" hx-trigger="click" hx-swap="innerHTML">
-                        Leave A Comment
+                        Leave a comment?
                 </button>
             </span>
             <input type="text" name="input_field" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">    

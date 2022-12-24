@@ -280,6 +280,21 @@ def GET_NUM_FAVES_BY_POST_ID(Post_id):
         results = i[0]
     modules.close_conn(cursor, conn)
     return results
+
+def GET_NUM_VIEWS_BY_POST_ID(Post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+       
+        SELECT COUNT(*) 
+        FROM VIEWS views
+        WHERE views.Post_id = '{Post_id}'
+    
+    """)
+    results = 0
+    for i in cursor.fetchall():
+        results = i[0]
+    modules.close_conn(cursor, conn)
+    return results
     
 def GET_NUM_COMMENTS_BY_POST_ID(Post_id):
     cursor, conn = modules.create_connection()
