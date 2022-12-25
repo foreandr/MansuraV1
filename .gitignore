@@ -43,3 +43,4 @@ python/logs/distro/Daily/2022-12-04/FULL_SET.txt
 ystemctl daemon-reload
 upercompooper
 python/withdrawl.csv
+logs/access/general/

@@ -223,9 +223,10 @@ def INSERT_FAVOURITES(Post_id, User_id):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn) 
-     
-def INSERT_COMMENTS(Post_id, User_id, Comment_text, Replying_to_id="NULL"):
+    
 
+def INSERT_COMMENTS(Post_id, User_id, Comment_text, Replying_to_id="NULL"):
+    Comment_text = modules.COMMENT_TEXT_CHECK(Comment_text)
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
@@ -266,17 +267,15 @@ def CHECK_IF_BEEN_30s_SINCE_LAST_VIEW(Post_id, User_id):
     # this means it returned 0 or 1 from the db, free to view 
         return True
     else:
-        # IF CURRENT TIME IS 30S LATER THAN LAST VIEW
-        # using datetime module
-        
-        
-        # ct stores current time
+        # SHOULD ADD LOGIC FOR BOT DETECTION LIKE
+            # IF VIEW TIME DIFFERENCES ARE WITHIN 0.0010 MILISECONDS OR SOMETHING
         ct = datetime.datetime.now()
         now_seconds = (ct - results[0][1]).seconds
         print('SECONDS BETWEEN RECENT VIEW AND NOW: ', now_seconds)
         if now_seconds > 30:
             return True
-        '''
+        
+        ''' WRONG LOGIC
         seconds = (results[0][1]-results[1][1]).seconds  # returns a timedelta object in seconds
         print('SECONDS BETWEEN VIEWS              : ', seconds)
         if seconds > 30:
@@ -309,6 +308,7 @@ def INSERT_VIEWS(Post_id, User_id):
             modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
         
         modules.close_conn(cursor, conn) 
+    
     
 def INSERT_CONNECTION(user_id1, user_id2):
 
@@ -451,19 +451,41 @@ def INSERT_REQUEST(User_id, Request_type, Request_content):
     modules.close_conn(cursor, conn)
 
 
+def CHECK_NEW_BANNED_WORD_IS_NOT_STUPID(word):
+    # TURN THIS INTO A FILE WITH A BIG LIST
+    list_of_good_words = ["and", "or", "if"]
+    if word in list_of_good_words:
+        return False
+    else:
+        return True
 def INSERT_TRIBUNAL_WORD(word):
+    
+    if not CHECK_NEW_BANNED_WORD_IS_NOT_STUPID(word):
+        
+        return "" # exit function if stupid
+    
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
             f"""
             INSERT INTO TRIBUNAL_WORD
-            ( Tribunal_word)
+            (Tribunal_word)
             VALUES
             ('{word}')
             ON CONFLICT DO NOTHING
             """)
         conn.commit()
+        
+        # CHECK IF WORD IN TXT FILE
+        bad_words = modules.GET_ORIGINAL_PROFANITY_LIST()
+        if word in bad_words:
+            # print(word, "is a cuss word already")
+            pass
+        else:
+            with open("/root/mansura/files/profanity_list.txt", "a") as f:
+                f.write(f",{word}")
+            # print(word, "is now in the cuss txt file")
         modules.print_green(F"{inspect.stack()[0][3]} [{word}] COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
@@ -471,6 +493,7 @@ def INSERT_TRIBUNAL_WORD(word):
     
     modules.close_conn(cursor, conn)        
       
+
           
 def INSERT_DEMO_WORD_LIST(server="false"):
     word_list = modules.GET_ORIGINAL_PROFANITY_LIST()
@@ -482,8 +505,25 @@ def INSERT_DEMO_WORD_LIST(server="false"):
         if i > max:
             break  # 10 is just for demo testing functionality
         INSERT_TRIBUNAL_WORD(word_list[i])
+        for j in range(10):
+            INSERT_INTO_PROFANITY_LIST_VOTES(i, 1, "DOWN")
+            
          
-          
+
+
+def INSERT_INTO_PROFANITY_LIST_VOTES(word_id, voter_id, vote_Type):
+    if voter_id == 1: # SO that on my account i can vote infinitely
+        modules.INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type)     
+        return ""
+    
+
+    if modules.CHECK_IF_WORD_VOTE_EXISTS(word_id, voter_id):
+        modules.UPDATE_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type)
+    else:
+        modules.INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type)
+
+     
+           
 def INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
@@ -492,6 +532,7 @@ def INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type):
         ON CONFLICT DO NOTHING          
     """)
     conn.commit()
+    modules.print_green(f"{inspect.stack()[0][3]} {word_id, voter_id, vote_Type} COMPLETED")
     modules.close_conn(cursor, conn)    
    
     
@@ -499,27 +540,7 @@ def INSERT_DEMO_PEOPLE():
     word_list = modules.GET_ORIGINAL_PEOPLE_LIST()
     for i in range(len(word_list)):
         INSERT_PERSON(word_list[i])
-   
-          
-def INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type):
-    cursor, conn = modules.create_connection()
-    cursor.execute(f"""
-        INSERT INTO TRIBUNAL_WORD_VOTE(Tribunal_word_id, User_id, Vote_Type)
-        VALUES('{word_id}', '{voter_id}', '{vote_Type}')
-        ON CONFLICT DO NOTHING          
-    """)
-    conn.commit()
-    modules.close_conn(cursor, conn)      
-
-    
-def INSERT_INTO_PROFANITY_LIST_VOTES(word_id, voter_id, vote_Type):
-    cursor, conn = modules.create_connection()
-    if modules.CHECK_IF_WORD_VOTE_EXISTS(word_id, voter_id):
-        modules.UPDATE_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type)
-    else:
-        modules.INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type)
-    modules.close_conn(cursor, conn)
 
 
 if __name__ == "__main__":
-    CHECK_IF_BEEN_30s_SINCE_LAST_VIEW(15, 1)
+    INSERT_TRIBUNAL_WORD("faggotere")

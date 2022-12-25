@@ -25,18 +25,19 @@ def CREATE_TABLES(server="false"):
     modules.CREATE_TABLE_REQUESTS()
     modules.CREATE_TABLE_1_TIME_PASSWORDS()
     modules.CREATE_TABLE_TRIBUNAL_WORD()
-    modules.INSERT_DEMO_WORD_LIST(server) # INSERTS
     modules.CREATE_TABLE_TRIBUNAL_WORD_VOTE()
+    modules.INSERT_DEMO_WORD_LIST(server) # INSERTS
+
+    
 
 
 def GET_ORIGINAL_PROFANITY_LIST():
     word_array = []
-    f = open("/root/mansura/files/initial_profanity_insert.txt", "r")
-    word_array = f.read().split("\n")[:-1]
+    f = open("/root/mansura/files/profanity_list.txt", "r")
+    word_array = f.read().split(",")[:-1]
     
     #for i in range(len(word_array)):
     #    print(i, word_array[i])
-        
     return word_array
 
 def GET_ORIGINAL_PEOPLE_LIST():

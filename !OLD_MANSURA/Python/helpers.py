@@ -1,7 +1,7 @@
 import os.path
 import random
 import json
-
+import inspect
 from os import path
 import os
 from nudenet import NudeClassifier # NUDITY CLASSIFIER
@@ -411,21 +411,8 @@ def GET_USER_BIO(username):
 
 
 def POST_TEXT_CHECK(entered_string):
-    """
-    f = open("/root/mansura/Python/bad_words_post.txt", "r")
-    bad_words = f.read()
-    print(F"bad words:\n{bad_words}")
-    """
 
 
-    from better_profanity import profanity
-    censored_text = profanity.censor(entered_string)
-    # print(censored_text)
-
-
-    # print(len(text_list))
-    #print(text_list)
-    return censored_text
 
 
 def POST_IMG_CHECK(image_file, testing=False):
@@ -742,23 +729,6 @@ def CREATING_EMBED_STRUCTURE(link):
         return link
 
 
+if __name__ == "__main__":
+    print_title(F"{inspect.stack()[0][3]}")
 
-#demo_list = ['AND', 'POST DAY VOTES', '==', '9']
-#demo_list2 = ['OR', 'POST MONTH VOTES', '<=', '10']
-#demo_list3 = ['AND', 'POST YEAR VOTES', '==', '1']
-#TURN_WHERE_CLAUSE_TO_STRING(demo_list)
-#TURN_WHERE_CLAUSE_TO_STRING(demo_list2)
-#TURN_WHERE_CLAUSE_TO_STRING(demo_list3)
-
-    
-# GET_USER_BIO("foreandr")
-# FULL_GIANT_REGISTER()
-# print(USERNAME_sPROFANITY_CHECK("bozo0000000000000000", testing=True))
-# print(get_postinfo_from_path("/root/mansura/static/#UserData/foreandr/files/foreandr-157"))
-
-"/root/mansura/static/#UserData/foreandr/files/foreandr-157/pic.jpg"
-"/root/mansura/static/#UserData/foreandr/files/foreandr-157/pic.jpg"
-# POST_IMG_CHECK("test",testing=True)
-# POST_IMG_CHECK("", True)
-# POST_TEXT_CHECK("")
-# GIANT_FILE_VOTE_INSERT()

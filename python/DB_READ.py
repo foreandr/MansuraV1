@@ -371,8 +371,6 @@ def UNIVERSAL_FUNCTION(searcher, person_id="", page_no=1):
     {modules.SEARCH_USER_HAS_LIKED(searcher_id)}
     {modules.SEARCH_USER_HAS_SAVED(searcher_id)}
     
- 
-    
     
     FROM POSTS posts
     

@@ -64,7 +64,7 @@ def CREATE_TABLE_POST(server="false"):
             CREATE TABLE POSTS
             (
             Post_id SERIAL PRIMARY KEY, 
-            Post_title varchar, 
+            Post_title varchar UNIQUE, 
             Post_description varchar,
             Post_link varchar UNIQUE, 
             Post_html varchar,
@@ -533,8 +533,6 @@ def CREATE_TABLE_TRIBUNAL_WORD_VOTE(server="false"):
                 Tribunal_word_id BIGINT,
                 User_id BIGINT,
                 Vote_type varchar,
-                
-                UNIQUE(Tribunal_word_id, User_id),
                 CHECK(Vote_type = 'UP' OR Vote_type = 'DOWN')   
             );
         """)

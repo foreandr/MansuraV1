@@ -24,14 +24,15 @@ def CHANGE_PASSWORD(email, password):
     
 
 
-def UPDATE_TRIBUNAL_WORD_VOTE(word_id, voter_id, Vote_Type):
+def UPDATE_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
         UPDATE TRIBUNAL_WORD_VOTE
-        SET Vote_type = '{Vote_Type}'
+        SET Vote_type = '{vote_Type}'
         WHERE User_id = '{voter_id}'
         AND Tribunal_word_id = '{word_id}'
     """)
     conn.commit()
+    modules.print_green(f"{inspect.stack()[0][3]} {word_id, voter_id, vote_Type} COMPLETED\n")
     modules.close_conn(cursor, conn)
  

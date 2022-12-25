@@ -439,10 +439,106 @@ def TRANSFRM_COMMENT_ARRAY_INTO_HTML(comment_array):
     
     return html_array
 
+def GET_DOWNVOTES_BY_WORD(word):
+    """ WAS GOING TO DO IT IN THE SQL BUT KEPT RUNNING INTO ISSUES
+    down_votes = '''(SELECT COUNT(*) FROM TRIBUNAL_WORD_VOTE votes WHERE Vote_type = 'DOWN' )'''
+    up_votes = '''(SELECT COUNT(*) FROM TRIBUNAL_WORD_VOTE votes WHERE Vote_type = 'UP' )'''    
+    vote_count_check = f'''({down_votes} / ({down_votes} + {up_votes})) >= 0.0 '''       
+    """
+    cursor, conn = modules.create_connection()
+    # GET DOWNVOTES    
+    cursor.execute(f"""
+        SELECT COUNT(*) 
+        FROM TRIBUNAL_WORD_VOTE votes 
+                
+        INNER JOIN TRIBUNAL_WORD word   
+        ON word.Tribunal_word_id = votes.Tribunal_word_id
+                
+        WHERE Vote_type = 'DOWN' 
+        AND word.Tribunal_word = '{word}'        
+            """)
+    downvotes = 0
+    for k in cursor.fetchall():
+        downvotes = k[0]     
+    modules.close_conn(cursor, conn)
+    return downvotes  
+    
+ 
+
+def GET_UPVOTES_BY_WORD(word):
+    cursor, conn = modules.create_connection()
+        # GET UPVOTES
+    cursor.execute(f"""
+                SELECT COUNT(*) 
+                FROM TRIBUNAL_WORD_VOTE votes 
+                
+                INNER JOIN TRIBUNAL_WORD word   
+                ON word.Tribunal_word_id = votes.Tribunal_word_id
+                
+                WHERE Vote_type = 'UP' 
+                AND word.Tribunal_word = '{word}'
+                          
+    """)
+    upvotes = 0
+    for j in cursor.fetchall():
+         upvotes = j[0]   
+    
+    modules.close_conn(cursor, conn)
+    return upvotes
+
+
+def COMMENT_TEXT_CHECK(entered_string):
+    cursor, conn = modules.create_connection()
+
+    my_lines = []
+    with open('/root/mansura/files/profanity_list.txt') as f:
+        # print("opened fie")
+        lines = f.readlines()[0].split(",") # NOT SURE WHY I HAVE TO INDEX FIRST
+        my_lines = lines
+        
+    entered_string = entered_string.split(" ") # GET each word
+        
+    for i in range(len(entered_string)):
+        if entered_string[i] in my_lines:
+            print("FOUND", entered_string[i], len(entered_string[i]), i)
+
+            upvotes = GET_UPVOTES_BY_WORD(entered_string[i])
+            downvotes = GET_DOWNVOTES_BY_WORD(entered_string[i])
+            
+            print("UPVOTES      :", upvotes)
+            print("DOWNVOTES    :", downvotes)
+            
+            total_votes = int(upvotes) + int(downvotes)
+            if downvotes >= 10:
+                dislike_ratio = int(downvotes) / (total_votes)
+                print("dislike_ratio:",dislike_ratio)
+                if (dislike_ratio) >= 0.8:
+                    print("changing", entered_string[i], "to ****")
+                    entered_string[i] = "****"
+
+    modules.close_conn(cursor, conn) 
+    final_string = " ".join((map(str,entered_string))) # turn list back to stirng
+    return final_string
+    
+
+def COUNT_HOW_MANY_CUSS_WORD():
+    cursor, conn = modules.create_connection()
+    
+    cursor.execute("""
+    SELECT COUNT(*)
+    FROM TRIBUNAL_WORD             
+    """)
+    
+    for i in cursor.fetchall():
+        print(i)
+    modules.close_conn(cursor, conn)
+    
+
 if __name__ == "__main__":
-    print_title(F"{inspect.stack()[0][3]}")
-    translate_link_to_html("https://rumble.com/v10648s-paypal-co-founder-peter-thiel-bitcoin-keynote-bitcoin-2022-conference.html")
-    # load_default_profile_pic()
+    print_title(F"{inspect.stack()[0][3]}\n")
+    COMMENT_TEXT_CHECK("hello world anal")
+    # COUNT_HOW_MANY_CUSS_WORD()
+
 
 
 

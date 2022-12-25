@@ -1,0 +1,72 @@
+[2022-12-24 21:27:34][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(Noam Chomsky Ukraine 2 TALK) already exists.
+
+[2022-12-24 21:27:34][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(Noam Chomsky Ukraine 2 TALK) already exists.
+
+[2022-12-24 21:27:34][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(Noam Chomsky Ukraine 2 TALK) already exists.
+
+[2022-12-24 21:27:34][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(Noam Chomsky Ukraine 2 TALK) already exists.
+
+[2022-12-24 21:27:35][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(Peter Thiel X talk) already exists.
+
+[2022-12-24 21:27:35][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(Peter Thiel X talk) already exists.
+
+[2022-12-24 21:27:35][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(Peter Thiel X talk) already exists.
+
+[2022-12-24 21:27:35][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(Michael Sugrue X talk) already exists.
+
+[2022-12-24 21:27:35][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(Michael Sugrue X talk) already exists.
+
+[2022-12-24 21:27:35][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(Michael Sugrue X talk) already exists.
+
+[2022-12-24 21:27:35][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(John Vervaeke X talk) already exists.
+
+[2022-12-24 21:27:35][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(John Vervaeke X talk) already exists.
+
+[2022-12-24 21:27:35][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(John Vervaeke X talk) already exists.
+
+[2022-12-24 21:27:35][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(John Vervaeke X talk) already exists.
+
+[2022-12-24 21:27:35][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(John Vervaeke X talk) already exists.
+
+[2022-12-24 21:27:35][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(John Vervaeke X talk) already exists.
+
+[2022-12-24 21:27:35][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(John Vervaeke X talk) already exists.
+
+[2022-12-24 21:27:36][error][INSERT_POST][]-duplicate key value violates unique constraint "posts_post_title_key"
+DETAIL:  Key (post_title)=(John Vervaeke X talk) already exists.
+
+[2022-12-24 21:27:36][error][INSERT_LIKE][]-insert or update on table "likes" violates foreign key constraint "likes_post_id_fkey"
+DETAIL:  Key (post_id)=(2) is not present in table "posts".
+
+[2022-12-24 21:27:36][error][INSERT_LIKE][]-insert or update on table "likes" violates foreign key constraint "likes_post_id_fkey"
+DETAIL:  Key (post_id)=(3) is not present in table "posts".
+
+[2022-12-24 21:27:36][error][INSERT_LIKE][]-insert or update on table "likes" violates foreign key constraint "likes_post_id_fkey"
+DETAIL:  Key (post_id)=(4) is not present in table "posts".
+
+[2022-12-24 21:27:36][error][INSERT_LIKE][]-insert or update on table "likes" violates foreign key constraint "likes_post_id_fkey"
+DETAIL:  Key (post_id)=(2) is not present in table "posts".
+
+[2022-12-24 21:27:36][error][INSERT_LIKE][]-insert or update on table "likes" violates foreign key constraint "likes_post_id_fkey"
+DETAIL:  Key (post_id)=(3) is not present in table "posts".
+
+[2022-12-24 21:27:36][error][INSERT_LIKE][]-insert or update on table "likes" violates foreign key constraint "likes_post_id_fkey"
+DETAIL:  Key (post_id)=(4) is not present in table "posts".
+

@@ -5,14 +5,15 @@
     <div class="jumbotron" style="  padding-top: 10px !important;padding-bottom: 10px !important;">
         <h1><ul>PHRASE TRIBUNAL</ul></h1>
         <p class="lead">Scraped commonly offensive terms off the internet, blocked by default (just changed into ****).</p>
-        <p class="lead">If enough people want these terms on the site, they are removed from the block list.</p>
+        <p class="lead">Feel free to add more, they will be subject to the same criterion.</p>
+        <p class="lead">Equation:</p>
+        <p class="lead">If (word.numdislikes) > 10 && (word.numdislikes / (word.numdislikes + word.numlikes)) > 0.8</p>
     </div>
-    <form>
+    <form name="my_form" class="form-signup" method="POST">
         <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <button class="btn btn-outline-secondary" type="submit" disabled>Add New Word</button>
-            </div>
-            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" value="(disabled for now)"disabled>
+            <input name="bad_word" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" value="" maxlength="20">
+            <button  class="btn btn-lg btn-primary btn-block" type="submit">Vote to disable this word</button>
+            <p>If you choose a stupid word like "and" I'll just disable the functionality to participate in governance on your account.</p>
         </div>
     </form>
 </div>

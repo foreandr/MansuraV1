@@ -85,8 +85,6 @@ def people(sort_method, letter):
         alpha_chars=alpha_chars
         )
 
-
-    
 @app.route("/request_form/<request_type>", methods=['GET'])
 def request_form(request_type):
     modules.log_function("request", request)
@@ -193,23 +191,29 @@ def word_tribunal():
     modules.log_function("request", request, session_user=session['user'])
     
     if request.method == "POST":
-        keep_phrase = request.form.get("keep_phrase")
-        block_phrase = request.form.get("block_phrase")
-        
-        vote_type = None
-        
-        if keep_phrase != None:
-            phrase = keep_phrase.split(":")[0]
-            vote_type = "UP"
+        # THIS ALL ASSUMES THERE ARE REALLY ONLY 2 TYPES OF POST REQUESTS
+        new_bad_word = request.form.get("bad_word")
+        print("new_bad_word", new_bad_word)
+        if new_bad_word != None:
+            modules.INSERT_TRIBUNAL_WORD(new_bad_word.lower())
         else:
-            phrase = block_phrase.split(":")[0]
-            vote_type = "DOWN"
-        word_id = modules.GET_WORD_PHRASE_ID_BY_NAME(phrase)
-        modules.INSERT_INTO_PROFANITY_LIST_VOTES(word_id, session["id"], vote_type)
+            keep_phrase = request.form.get("keep_phrase")
+            block_phrase = request.form.get("block_phrase")
+            
+            vote_type = None
+            
+            if keep_phrase != None:
+                phrase = keep_phrase.split(":")[0]
+                vote_type = "UP"
+            else:
+                phrase = block_phrase.split(":")[0]
+                vote_type = "DOWN"
+            word_id = modules.GET_WORD_PHRASE_ID_BY_NAME(phrase)
+            modules.INSERT_INTO_PROFANITY_LIST_VOTES(word_id, session["id"], vote_type)
     
         
     blocked_words = modules.GET_ALL_TRIBUNAL_WORDS()
-
+    print(blocked_words)
     return render_template(f"word_tribunal.html",
         blocked_words=blocked_words
     )
@@ -223,7 +227,6 @@ def update_like(Post_id):
 
 @app.route("/update_fave/<Post_id>", methods=['GET', 'POST'])
 def update_fave(Post_id):
-    print("helloo1")
     modules.log_function("request", request)
     modules.FAVE_LOGIC(Post_id, session["id"])
     return render_template(f"update_fave.html",
