@@ -271,7 +271,7 @@ def CHECK_IF_BEEN_30s_SINCE_LAST_VIEW(Post_id, User_id):
             # IF VIEW TIME DIFFERENCES ARE WITHIN 0.0010 MILISECONDS OR SOMETHING
         ct = datetime.datetime.now()
         now_seconds = (ct - results[0][1]).seconds
-        print('SECONDS BETWEEN RECENT VIEW AND NOW: ', now_seconds)
+        # print('SECONDS BETWEEN RECENT VIEW AND NOW: ', now_seconds)
         if now_seconds > 30:
             return True
         
@@ -292,7 +292,7 @@ def INSERT_VIEWS(Post_id, User_id):
     can_view = CHECK_IF_BEEN_30s_SINCE_LAST_VIEW(Post_id, User_id)
     if not can_view:
         modules.close_conn(cursor, conn)
-        print("TIME BETWEEN VIEWS TOO SHORT") 
+        # print("TIME BETWEEN VIEWS TOO SHORT") 
     else:
         try:
             cursor = conn.cursor()

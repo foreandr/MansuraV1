@@ -23,12 +23,31 @@ tag
 {% elif request_type == "post" %}
 <form action="upload" method="POST" enctype="multipart/form-data">
     <div>
-        <label><b>Source Link:</b></label>
-        <input class="form-control"id="link" name="link" type="url" placeholder="Video Link">
+        <label><b><u><h2>Who is in this video?</h2></u></b></label>
+        <div>
+            <input class="form-control" id="link" name="person_name" type="text" hx-get="/search_users_by_text" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search...">
+        </div>
+        </br>
+    </div> 
+    <div id="search-results"></div>
+
+    <div id="selected_users">
+
+    </div>
+    <div>
+        <a href="/request_form/person">
+            <h6><i>Can't find who you're looking for? Add them here.</i></h6>
+        </a>
+    </div>
+
+
+    <div>
+        <label><b><u><h2>Source Link:</h2></u></b></label>
+        <input class="form-control"id="link" name="post_link" type="url" placeholder="Video Link">
     </div> 
     <div>
-        <label for="textbox">Description of link</label>
-        <textarea class="form-control" id="textbox" name="textbox" rows="7" cols="50" maxlength="200" required></textarea>
+        <label for="textbox"><b><u><h2>Description:</h2></u></b></label>
+        <textarea class="form-control" id="textbox" name="description" rows="2" cols="50" maxlength="200" required></textarea>
     </div>
     
     <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
@@ -37,5 +56,15 @@ tag
 
 
 <script>
+    count = 0
+    function choose_selected_user(user){
+        if (count <= 5)
+            document.getElementById("selected_users").innerHTML += `
+            <div>
+                <h2><u>Person:${user}</u></h2
+            </div>
+            `
+            count +=1
+    }
 </script>
 {% endblock main %}

@@ -1,0 +1,10 @@
+
+<div class="col-sm-3 selectdiv">
+    <select class="selectpicker form-control" onchange="choose_selected_user(this.value)">
+        {% for i in range(0, users | length) %}
+        <option>{{users[i]}}</option>
+        {% endfor %}
+    </select>
+</div>
+
+

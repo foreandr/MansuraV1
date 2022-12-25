@@ -7,12 +7,26 @@ except:
     import MODULES as modules
 
 
-#
+def GET_USERS_BY_TEXT(text):
+    print("GET_USERS_BY_TEXT:", text)
+    cursor, conn = modules.create_connection()
+    query = f"""
+        SELECT Person_name
+        FROM PEOPLE
+        WHERE LOWER(Person_name) LIKE LOWER('%{text}%')
+    """
+    cursor.execute(query)
+    results = []
+    for i in cursor.fetchall():
+        results.append(i[0])
+        
+    modules.close_conn(cursor, conn)
+    return results
 
 def GET_USER_ID_FROM_NAME(username):
     cursor, conn = modules.create_connection()
     query = f"""
-        SELECT USer_id 
+        SELECT User_id 
         FROM USERS
         WHERE Username = '{username}'
     """

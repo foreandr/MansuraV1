@@ -422,7 +422,7 @@ def TRANSFRM_COMMENT_ARRAY_INTO_HTML(comment_array):
             </span>
             
             <div>
-            ======================================
+            ==============================
             </div>   
                    
 

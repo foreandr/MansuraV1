@@ -112,13 +112,22 @@ def people(sort_method, letter):
         alpha_chars=alpha_chars
         )
 
-@app.route("/request_form/<request_type>", methods=['GET'])
+@app.route("/request_form/<request_type>", methods=['GET', 'POST'])
 def request_form(request_type):
     modules.log_function("request", request)
     print("request_type", request_type)
-    
+    if request.method == "POST":
+        print("")
     return render_template(f'request_form.html',
         request_type=request_type
+    )
+@app.route("/search_users_by_text", methods=['GET'])
+def search_users_by_text():
+    # GOTTA BE A BETTER WAY to get the query
+    query_text = str(request.url).split("person_name=")[1]
+    users = modules.GET_USERS_BY_TEXT(query_text)
+    return render_template(f'update_user_search.html',
+        users=users
     )
     
 @app.route('/login', methods=['GET', 'POST'])
@@ -289,13 +298,13 @@ def update_comment(Post_id):
 def comment_section(Post_id, how_many, order):
     modules.log_function("request", request)
     transformed_comments = modules.TRANSFRM_COMMENT_ARRAY_INTO_HTML(modules.GET_N_COMMENTS(Post_id=Post_id, N=how_many, new_comment=modules.JANKY_COMMENT_CHECK(how_many), check_order=order))
-
+    print("getting here?")
     return render_template(f"update_comments.html",
         comments=transformed_comments,
         how_many=int(how_many)+1,
         comment_post_id=Post_id,
         commenting=modules.JANKY_COMMENT_CHECK(how_many),
-        num_comments=modules.GET_COUNT_COMMENTS_BY_ID(Post_id)
+        num_comments=modules.GET_COUNT_COMMENTS_BY_ID(Post_id),
         )
 
 @app.route("/contact", methods=['GET'])
