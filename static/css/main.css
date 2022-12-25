@@ -3,25 +3,6 @@
     bottom: 0;
 }
 
-
-
-
-#adjust_nav_bar{
-  margin-right: 150px;
-  
-}
-.disabled-link {
-  pointer-events: none;
-}
-
-#adjust_title{
-  color:red
-}
-#navbarSupportedContent15{
-  position: absolute;
-  right: 10%;
-}
-
 .modal-content {
   background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
@@ -37,5 +18,12 @@
   height:30px;
   width:100%;          /* Footer height */
   margin-top: -10px;
+}
+
+@include media-breakpoint-down(xs) {
+  .container {
+      margin-left: 0;
+      margin-right: 0;
+  }
 }
 

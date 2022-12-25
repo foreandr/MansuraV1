@@ -385,7 +385,6 @@ def UNIVERSAL_FUNCTION(searcher, searcher_id="", person_id="", page_no=1, favour
     {modules.SEARCH_USER_HAS_LIKED(searcher_id)}
     {modules.SEARCH_USER_HAS_SAVED(searcher_id)}
     
-    
     FROM POSTS posts
     
     INNER JOIN POST_PERSON post_person
@@ -396,7 +395,6 @@ def UNIVERSAL_FUNCTION(searcher, searcher_id="", person_id="", page_no=1, favour
     
     {fave_inner_join}
 
-    
     WHERE 1=1 
     {person}
     {fave_string}

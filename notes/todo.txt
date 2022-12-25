@@ -6,6 +6,9 @@ fix navbar
 make the cards narrower, less whitespace
 put in larger descriptions to test size
 
+
+tribunal video list
+    - if not a moderator, show (apply to be a content moderator)
 COMMENT
 ===========
 DONE.COMMENT VOTES TABLE

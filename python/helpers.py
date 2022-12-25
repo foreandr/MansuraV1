@@ -500,20 +500,20 @@ def COMMENT_TEXT_CHECK(entered_string):
         
     for i in range(len(entered_string)):
         if entered_string[i] in my_lines:
-            print("FOUND", entered_string[i], len(entered_string[i]), i)
+            #print("FOUND", entered_string[i], len(entered_string[i]), i)
 
             upvotes = GET_UPVOTES_BY_WORD(entered_string[i])
             downvotes = GET_DOWNVOTES_BY_WORD(entered_string[i])
             
-            print("UPVOTES      :", upvotes)
-            print("DOWNVOTES    :", downvotes)
+            #print("UPVOTES      :", upvotes)
+            #print("DOWNVOTES    :", downvotes)
             
             total_votes = int(upvotes) + int(downvotes)
             if downvotes >= 10:
                 dislike_ratio = int(downvotes) / (total_votes)
-                print("dislike_ratio:",dislike_ratio)
+                # print("dislike_ratio:",dislike_ratio)
                 if (dislike_ratio) >= 0.8:
-                    print("changing", entered_string[i], "to ****")
+                    # print("changing", entered_string[i], "to ****")
                     entered_string[i] = "****"
 
     modules.close_conn(cursor, conn) 
