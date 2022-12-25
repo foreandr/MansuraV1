@@ -298,7 +298,16 @@ def comment_section(Post_id, how_many, order):
         num_comments=modules.GET_COUNT_COMMENTS_BY_ID(Post_id)
         )
 
+@app.route("/contact", methods=['GET'])
+def contact():
+    if "email" not in session:
+        return redirect(url_for('login'))
+    modules.log_function("request", request, session_user=session['user'])
+    
+    return render_template(f"contact.html",
 
+
+    )
 
 if __name__ == '__main__':
     host = "0.0.0.0" 

@@ -2,6 +2,10 @@ gdsaqlhggkishjng
 pytest
 
 
+fix navbar
+make the cards narrower, less whitespace
+put in larger descriptions to test size
+
 COMMENT
 ===========
 DONE.COMMENT VOTES TABLE
@@ -37,7 +41,7 @@ Comment Section (Modal, nested comments?)
 DONE. Register
 DONE. Login
 DONE. Logout
-Favourites
+DONE.Favourites
 Contact
 Terms
 Mission
