@@ -392,7 +392,7 @@ def TRANSFRM_COMMENT_ARRAY_INTO_HTML(comment_array):
             </div>
             
             <div style="word-break: break-all;"> <!--PREVENTS WRAP ARROUND-->
-                <h5>@TEXT</h5>
+                <h6>@TEXT</h6>
             </div>
 
             <span>
@@ -422,11 +422,11 @@ def TRANSFRM_COMMENT_ARRAY_INTO_HTML(comment_array):
             </span>
             
             <div>
-            ==============================
-            </div>   
+            </br>
+        </div>   
                    
 
-        </div>
+        
     """
     for i in comment_array:
         username = i[0]
