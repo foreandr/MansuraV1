@@ -46,15 +46,17 @@
                 </a>
                 <h5>{{posts[i][1]}}</h5>
             </div>
-            
-            <div>
-                {{posts[i][2] | safe}}
-            </div>
-            
-            <div class=" card-footer d-flex justify-content-between align-items-center">
-                <small class="text-muted">
+
+            <div class="row no-gutters">
+                <!--VIDEO-->
+                <div class="col-md-4">
+                    {{posts[i][2] | safe}}
+                </div>
+
+                <div class="col-md-8 text-right">
+                  <div class="card-body">
                     <!--LIKES-->
-                    <span>
+                    <div>
                         {% if posts[i][11] == 0%}
                         <button class="btn btn-outline-dark" hx-post="/update_like/{{posts[i][6]}}" hx-trigger="click" hx-target="#like_location{{i}}" hx-swap="innerHTML" onclick="like_logic(this)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
@@ -77,30 +79,22 @@
                               </div>
                         </button>
                         {% endif %}
-                    </span>
+                    </div>
+                    </br>
 
                     <!-- COMMENTS-->
-                    <span>
+                    <div>
                         <button class="btn btn-outline-dark" onclick="modal_toggle({{posts[i][6]}})" hx-post="/comment_section/{{posts[i][6]}}/10/likes" hx-trigger="click" hx-target="#comment_section" hx-swap="innerHTML">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
                                 <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                             </svg>
                             {{posts[i][8]}}
                         </button>
-                    </span>
-
-                    <!-- SEND-->
-                    <span>
-                        <button class="btn btn-outline-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-plus" viewBox="0 0 16 16">
-                                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z"/>
-                                <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z"/>
-                              </svg>
-                        </button>
-                    </span>
+                    </div>
+                    </br>
 
                     <!-- FAVOURITE-->
-                    <span>
+                    <div>
                         {% if posts[i][12] == 0%}
                         <button class="btn btn-outline-dark" hx-post="/update_fave/{{posts[i][6]}}" hx-trigger="click" hx-target="#fave_location{{i}}" hx-swap="innerHTML" onclick="fave_logic(this)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
@@ -124,7 +118,35 @@
                             </div>
                         </button>
                         {% endif %}
-                    </span>
+                    </div>
+                    </br>
+
+                    <!-- SEND-->
+                    <div>
+                        <button class="btn btn-outline-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-plus" viewBox="0 0 16 16">
+                                <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z"/>
+                                <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z"/>
+                              </svg>
+                        </button>
+                    </div>
+                    
+                    </br>
+
+                  </div>
+                </div>
+              </div>
+            
+            <div class=" card-footer d-flex justify-content-between align-items-center">
+                <small class="text-muted">
+                    
+
+
+
+
+
+
+
 
                     <!--VIEWS-->
                     <span>
@@ -139,7 +161,6 @@
                             </div>
 
                         </button>
-
 
                     </span>
 

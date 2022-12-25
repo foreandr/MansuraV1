@@ -2,7 +2,8 @@ gdsaqlhggkishjng
 pytest
 
 
-fix navbar
+remove spaces from entered tribunal words 
+DONE. fix navbar
 make the cards narrower, less whitespace
 put in larger descriptions to test size
 

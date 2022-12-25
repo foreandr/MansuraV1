@@ -44,3 +44,4 @@
 [2022-12-25 11:29:27][request][][Andre]-<Request 'http://165.227.35.71:8097/word_tribunal' [POST]>
 [2022-12-25 11:30:03][request][][Andre]-<Request 'http://165.227.35.71:8097/word_tribunal' [POST]>
 [2022-12-25 11:31:07][request][][Andre]-<Request 'http://165.227.35.71:8097/word_tribunal' [POST]>
+[2022-12-25 14:13:55][request][][Andre]-<Request 'http://165.227.35.71:8097/word_tribunal' [GET]>

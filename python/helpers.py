@@ -63,7 +63,7 @@ def check_and_save_dir(path):
         os.makedirs(path)
 
 def print_segment():
-    print("====================================")
+    print("==============================")
     
 def print_green(string):
     print(bcolors.OKGREEN + str(string) + bcolors.ENDC)
@@ -123,7 +123,7 @@ def translate_link_to_html(link):
             
             #print("THIS IS A YOUTUBE VIDEO")
             youtube_template = '''
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/YOUTUBE_FILE_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            <iframe width="500" height="315" src="https://www.youtube.com/embed/YOUTUBE_FILE_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
             </iframe>
             <!--PROPERLY EMBEDDED HTML TAG-->
             '''
@@ -422,7 +422,7 @@ def TRANSFRM_COMMENT_ARRAY_INTO_HTML(comment_array):
             </span>
             
             <div>
-            ===========================================
+            ======================================
             </div>   
                    
 
