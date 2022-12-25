@@ -5,9 +5,9 @@ pytest
 COMMENT
 ===========
 DONE.COMMENT VOTES TABLE
-comment validation
-DOESNT REFRESH, NOT SURE, VOTES 
-NOT DONE. just do scroll functionality, replies to hard rn
+DONE. comment validation
+NOT DOING. DOESNT REFRESH, NOT SURE, VOTES 
+NOT DOING. just do scroll functionality, replies to hard rn
 
 save AND VIEWS MISSING
 

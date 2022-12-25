@@ -80,11 +80,11 @@
                                USER:
                            </button>
                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
-                                  <a id="username_location" class="nav-link" href="/user_profile">Profile</a>
+                                  <a id="username_location" class="nav-link" href="/user_profile" disabled>Profile</a>
                                   <a class="nav-link" href="/register">Register</a>
                                   <a class="nav-link disabled" href="/messages">Messages</a>
-                                  <a class="nav-link disabled" href="/notifications">Notifications</a>
-                                  <a id="username_location" class="nav-link" href="/favourites">Favourites</a>
+                                  <a class="nav-link disabled" href="/notifications" disabled>Notifications</a>
+                                  <a id="username_location" class="nav-link" href="/favourites/0">Favourites</a>
                                   <a class="nav-link" href="/login">Login</a>
                                   <a class="nav-link" href="/logout">Logout</a>
                            </div>
@@ -129,13 +129,13 @@
 
         {% endblock main %}
     </div>
-
+    <!--
     {% block footer %}
     <div class="col-lg-3 item social" id="footer">
         <h6 class="copyright">Mansura © 2022</h6>
     </div>
     {% endblock footer %}
-
+    -->
 
 
     <!-- Production version POPPER -->

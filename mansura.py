@@ -41,10 +41,37 @@ def post_logic(person_id, page_no):
         page_no=new_page_no,
         offset_calc=offset_calc,
         can_scroll=can_scroll,
-        posts_per_page=posts_per_page
+        posts_per_page=posts_per_page,
+        
+
     )
     
+@app.route("/favourites/<page_no>", methods=['GET', 'POST'])
+def favourites(page_no):
+    modules.log_function("request", request)
+    query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
+        searcher=session["user"], 
+        searcher_id=session["id"],
+        page_no=int(page_no)+1,
+        favourites=True
+    )
+    offset_calc = int(int(page_no) * int(posts_per_page))
     
+    return render_template('home.html',
+        query=query,                   
+                           
+        posts=posts,
+        num_posts=len(posts),
+        
+        person_id=person_id,
+        page_no=new_page_no,
+        offset_calc=offset_calc,
+        can_scroll=can_scroll,
+        posts_per_page=posts_per_page,
+        coming_from_favourites= "true" #fucking hate javascript
+        
+
+    )    
     
 @app.route("/person/<person_id>", methods=['GET', 'POST'])
 def person(person_id):

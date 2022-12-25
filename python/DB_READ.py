@@ -350,12 +350,26 @@ def SEARCH_USER_HAS_SAVED(searcher_id):
             AND '{searcher_id}' = faves.User_id
         )
     """     
-
-def UNIVERSAL_FUNCTION(searcher, person_id="", page_no=1):
+def FAVOURITE_QUERY(favourites, searcher_id):
+    if favourites:
+        fave_string = F"AND faves.User_id = '{searcher_id}'"
+        fave_inner_join = """
+            INNER JOIN FAVOURITES faves
+            ON faves.Post_id = posts.Post_id
+        """
+        return fave_string, fave_inner_join
+    else:
+        return "", ""
+    
+    
+def UNIVERSAL_FUNCTION(searcher, searcher_id="", person_id="", page_no=1, favourites=False):
+    
     SEARCH_DETAILS(searcher=searcher, person_id=person_id, page_no=page_no)
     cursor, conn = modules.create_connection()
+    
     person = modules.PERSON_SEARCH(person_id)
     searcher_id = GET_USER_ID_FROM_NAME(searcher) 
+    fave_string, fave_inner_join = FAVOURITE_QUERY(favourites, searcher_id)
     posts_per_page = 9
     
     query = f"""
@@ -380,8 +394,12 @@ def UNIVERSAL_FUNCTION(searcher, person_id="", page_no=1):
     INNER JOIN PEOPLE people
     ON people.Person_id = post_person.Person_id
     
+    {fave_inner_join}
+
+    
     WHERE 1=1 
     {person}
+    {fave_string}
     
     ORDER BY Person_name ASC
     

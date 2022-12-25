@@ -286,6 +286,8 @@ def CHECK_IF_BEEN_30s_SINCE_LAST_VIEW(Post_id, User_id):
 
     
 def INSERT_VIEWS(Post_id, User_id):
+    #TODO: i would like to put some kind of sleep functionality here os people cant see thier view right away
+    
     cursor, conn = modules.create_connection()
     can_view = CHECK_IF_BEEN_30s_SINCE_LAST_VIEW(Post_id, User_id)
     if not can_view:
@@ -302,7 +304,7 @@ def INSERT_VIEWS(Post_id, User_id):
                 ('{Post_id}', '{User_id}', NOW())
                 """)
             conn.commit()
-            modules.print_green(F"{inspect.stack()[0][3]} {Post_id, User_id}COMPLETED")
+            modules.print_green(F"{inspect.stack()[0][3]} {Post_id, User_id} COMPLETED")
         except Exception as e:
             cursor.execute("ROLLBACK")
             modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
