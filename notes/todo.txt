@@ -2,6 +2,8 @@ gdsaqlhggkishjng
 pytest
 
 
+show convos,
+    - sne dpost
 remove spaces from entered tribunal words 
 DONE. fix navbar
 make the cards narrower, less whitespace
