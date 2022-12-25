@@ -10,6 +10,10 @@ make the cards narrower, less whitespace
 put in larger descriptions to test size
 
 
+tags when entering a video,
+suggested tags as well
+
+
 tribunal video list
     - if not a moderator, show (apply to be a content moderator)
 COMMENT
