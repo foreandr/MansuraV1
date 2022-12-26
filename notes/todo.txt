@@ -2,6 +2,10 @@ gdsaqlhggkishjng
 pytest
 
 
+liimit number user interactions per minute
+goiogle popular linux hack commands
+put input validation in any location there is user input
+
 show convos,
     - sne dpost
 remove spaces from entered tribunal words 

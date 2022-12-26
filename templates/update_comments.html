@@ -1,15 +1,3 @@
-
-{% if commenting  == "true"%}
-<form action="update_comment/{{comment_post_id}}" method="POST" enctype="multipart/form-data">
-    Leave another comment?
-</form>
-{% else %}
-<!--how this works, i dont have a fucking clue-->
 {% for comment in comments %}
 {{comment | safe}}
 {% endfor %}
-
-{% endif %}
-
-    
-

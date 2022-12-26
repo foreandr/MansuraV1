@@ -69,14 +69,17 @@ def GET_COUNT_COMMENTS_BY_ID(Post_id):
     modules.close_conn(cursor, conn)
     return results
 
-
-def GET_N_COMMENTS(Post_id, N=3, comment_page_no=0, new_comment="false", check_order="likes"):
-    '''
+def NEW_COMMENT_ORDER(new_comment):
     if new_comment == "true":
         new_comment_order = "ORDER BY comments.Date_time DESC"
     else:
         new_comment_order = ""
-    '''
+    return new_comment_order
+    
+def GET_N_COMMENTS(Post_id, N=3, comment_page_no=0, new_comment="false", check_order="likes"):
+    """ """
+
+    """
     if check_order == "alpha":
         comment_ordering = '''
             ORDER BY (SELECT COUNT(*) 
@@ -88,8 +91,9 @@ def GET_N_COMMENTS(Post_id, N=3, comment_page_no=0, new_comment="false", check_o
         comment_ordering = '''
         
         '''
-    
-        
+    """
+   
+
     cursor, conn = modules.create_connection()
     query = F"""
         SELECT users.Username, comments.Comment_text, comments.Date_time
@@ -100,15 +104,18 @@ def GET_N_COMMENTS(Post_id, N=3, comment_page_no=0, new_comment="false", check_o
         
         WHERE comments.Post_id = '{Post_id}'
         
+        {NEW_COMMENT_ORDER(new_comment)}
         
         OFFSET ( ({comment_page_no})  * {N} )
         LIMIT {N}
     """
     cursor.execute(query)
     results = []
+    
     for i in cursor.fetchall():
         results.append([i[0], i[1], i[2]])
-        
+    
+
     modules.close_conn(cursor, conn)
     return results
     
@@ -518,5 +525,5 @@ def CHECK_IF_WORD_VOTE_EXISTS(word_id, user_id):
     else: return False
 
 if __name__ == "__main__": 
-    GET_ALL_COMMENTS()
+    GET_N_COMMENTS(15, 10, "likes")
 
