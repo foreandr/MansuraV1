@@ -30,9 +30,11 @@ def validate_user_from_session(email, password):
     cursor.execute(f"""
     SELECT * 
     FROM USERS
-    WHERE email = '{email}'
-    AND password = '{hashlib.sha256(password.encode('utf-8')).hexdigest()}'
-    """)
+    WHERE email = %(email)s
+    AND password = %(password)s
+    """, {'email': email,
+          'password':hashlib.sha256(password.encode('utf-8')).hexdigest()}
+    )
     tables = cursor.fetchall()
     user = ""
     user_id = ""
@@ -45,7 +47,7 @@ def validate_user_from_session(email, password):
     
     if len(tables) > 0:
         print("SIGNING IN")
-        return [True, user_id, user, email, password]
+        return [True, user_id, user, email]
     else:
         print("NOT SIGNING IN")
         return [False]
@@ -68,14 +70,11 @@ def print_segment():
 def print_green(string):
     print(bcolors.OKGREEN + str(string) + bcolors.ENDC)
 
-
 def print_title(string):
     print(bcolors.HEADER + bcolors.UNDERLINE + str(string) + bcolors.ENDC)
 
-
 def print_error(string):
     print(bcolors.FAIL + str(string) + bcolors.ENDC)
-
 
 def print_warning(string):
     print(bcolors.WARNING + str(string) + bcolors.ENDC)     
@@ -177,8 +176,6 @@ def clean_title(Post_title):
 def clean_description(Post_description):
     return Post_description
 
-
-
 def load_default_profile_pic():
     #img = PImage.open(path)
     #return img
@@ -186,9 +183,7 @@ def load_default_profile_pic():
     pic = open(path, 'rb').read()
 
     return pic
-
-
-    
+   
 def USERNAME_PROFANITY_CHECK(word):
     # print("CHECKING USERNAME FOR BADWORDS: ", type(word), {word})
 
@@ -322,8 +317,7 @@ def SERVER_CHECK(server, function):
              
         conn.commit()
         modules.print_green(F"CASCADE DROPPED TABLE {function}")
-      
-        
+       
 def CHECK_IF_MOBILE(request):
     devices = ["Android", "webOS", "iPhone", "iPad", "iPod", "BlackBerry", "IEMobile", "Opera Mini"]
     result = False
@@ -336,16 +330,18 @@ def CHECK_IF_MOBILE(request):
         modules.log_function("error", e)
         return result
 
-
 def CHECK_LIKE_EXISTS(Post_id, User_id):
     cursor, conn = modules.create_connection()
     
     cursor.execute(f"""
         SELECT COUNT(*)
         FROM LIKES
-        WHERE Post_id = '{Post_id}'
-        AND User_id = '{User_id}'              
-    """)
+        WHERE Post_id = %(Post_id)s
+        AND User_id = %(User_id)s          
+    """, {'Post_id': Post_id,
+          'User_id': User_id
+        }
+    )
     result = 0
     for i in cursor.fetchall():
         result = i[0]
@@ -362,9 +358,11 @@ def CHECK_FAVE_EXISTS(Post_id, User_id):
     cursor.execute(f"""
         SELECT COUNT(*)
         FROM FAVOURITES
-        WHERE Post_id = '{Post_id}'
-        AND User_id = '{User_id}'              
-    """)
+        WHERE Post_id = %(Post_id)s
+        AND User_id = %(User_id)s            
+    """, {'Post_id': Post_id,
+          'User_id': User_id
+        })
     result = 0
     for i in cursor.fetchall():
         result = i[0]
@@ -381,7 +379,6 @@ def JANKY_COMMENT_CHECK(how_many):
     else:
         commenting =  "false"
     return commenting
- 
  
 def TRANSFRM_COMMENT_ARRAY_INTO_HTML(comment_array):
     html_array = []
@@ -452,16 +449,14 @@ def GET_DOWNVOTES_BY_WORD(word):
         ON word.Tribunal_word_id = votes.Tribunal_word_id
                 
         WHERE Vote_type = 'DOWN' 
-        AND word.Tribunal_word = '{word}'        
-            """)
+        AND word.Tribunal_word =  %(word)s  
+            """, {'word': word})
     downvotes = 0
     for k in cursor.fetchall():
         downvotes = k[0]     
     modules.close_conn(cursor, conn)
     return downvotes  
     
- 
-
 def GET_UPVOTES_BY_WORD(word):
     cursor, conn = modules.create_connection()
         # GET UPVOTES
@@ -473,16 +468,16 @@ def GET_UPVOTES_BY_WORD(word):
                 ON word.Tribunal_word_id = votes.Tribunal_word_id
                 
                 WHERE Vote_type = 'UP' 
-                AND word.Tribunal_word = '{word}'
+                AND word.Tribunal_word = %(word)s
                           
-    """)
+    """, {'word': word}
+    )
     upvotes = 0
     for j in cursor.fetchall():
          upvotes = j[0]   
     
     modules.close_conn(cursor, conn)
     return upvotes
-
 
 def COMMENT_TEXT_CHECK(entered_string):
     cursor, conn = modules.create_connection()
@@ -517,7 +512,6 @@ def COMMENT_TEXT_CHECK(entered_string):
     final_string = " ".join((map(str,entered_string))) # turn list back to stirng
     return final_string
     
-
 def COUNT_HOW_MANY_CUSS_WORD():
     cursor, conn = modules.create_connection()
     
@@ -530,7 +524,6 @@ def COUNT_HOW_MANY_CUSS_WORD():
         print(i)
     modules.close_conn(cursor, conn)
     
-
 if __name__ == "__main__":
     print_title(F"{inspect.stack()[0][3]}\n")
     COMMENT_TEXT_CHECK("hello world anal")

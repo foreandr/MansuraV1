@@ -15,18 +15,20 @@ def CREATE_AND_SEND_ONE_TIME_PASS_EMAIL(email):
     if CHECK_FOR_A_ONE_TIME_PASS(email):
         cursor.execute(f"""
             UPDATE ONE_TIME_PASSWORDS
-            SET Generated_Pass_Code = '{password}'
-            WHERE Email = '{email}'
-        """)
+            SET Generated_Pass_Code = %(password)s
+            WHERE Email = %(email)s
+        """, {'password': password,
+              'email': email})
         conn.commit()
         print("SUCCESSFULLY UPDATED PRE EXISTING ONE")
 
     else:
         cursor.execute(f"""
             INSERT INTO ONE_TIME_PASSWORDS(email,Generated_Pass_Code)
-            VALUES ('{email}', '{password}')
+            VALUES (%(email)s,  %(password)s)
             ON CONFLICT DO NOTHING
-        """)
+        """,{'password': password,
+              'email': email})
         conn.commit()
         print("SUCCESSFULLY INSERTED NEW ONE")
 
@@ -46,12 +48,11 @@ def CREATE_ONE_TIME_PASS(length=10):
 def GET_ONE_TIME_PASS(email):
     cursor, conn = modules.create_connection()
     cursor = conn.cursor()
-    
     cursor.execute(f"""
         SELECT Generated_Pass_Code
         FROM ONE_TIME_PASSWORDS
-        WHERE email = '{email}'
-    """)
+        WHERE email = %(email)s
+    """, {'email': email})
     one_time = ""
     for i in cursor.fetchall():
         # print(i)
@@ -64,12 +65,11 @@ def GET_ONE_TIME_PASS(email):
 
 def CHECK_FOR_A_ONE_TIME_PASS(email):
     cursor, conn = modules.create_connection()
-
     cursor.execute(f"""
         SELECT * 
         FROM ONE_TIME_PASSWORDS
-        WHERE email = '{email}'
-    """)
+        WHERE email = %(email)s
+    """, {'email': email})
     my_array = []
     for i in cursor.fetchall():
         # print(i)

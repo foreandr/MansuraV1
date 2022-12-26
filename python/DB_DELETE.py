@@ -42,13 +42,16 @@ def DELETE_FAVOURITE(Post_id, User_id):
 def DELETE_CONNECTION(user_id1, user_id2):
     # DELETE FROM films USING producers
     cursor, conn = modules.create_connection()
-    
     try:
         cursor.execute(
             f"""
                 DELETE FROM CONNECTIONS 
-                WHERE user_id1 = '{user_id1}' AND user_id2 = '{user_id2}'
-            """)
+                WHERE user_id1 = %(user_id1)s 
+                AND user_id2 = %(user_id2)s
+            """, {'user_id1':user_id1,
+                  'user_id2':user_id2
+                  }
+            )
         conn.commit()
         modules.print_green(f"REMOVED {user_id1} -> {user_id2}")
     except Exception as e:
@@ -86,8 +89,14 @@ def DELETE_TRIBUNAL_WORD_VOTE(word_id, voter_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
         DELETE FROM TRIBUNAL_WORD_VOTE
-        WHERE User_id = '{voter_id}'
-        AND Tribunal_word_id = '{word_id}'
-    """)
+        WHERE User_id = %(word_id)s
+        AND Tribunal_word_id = %(voter_id)s
+    """, {'voter_id': voter_id,
+          'word_id': word_id
+        }
+    )
     conn.commit()
     modules.close_conn(cursor, conn) 
+    
+if __name__ == "__main__":
+    DELETE_CONNECTION(1, 2)

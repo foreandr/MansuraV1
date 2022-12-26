@@ -1,0 +1,8 @@
+[2022-12-26 13:06:17][error][INSERT_USER][]-argument formats can't be mixed
+[2022-12-26 13:09:18][error][INSERT_USER][]-syntax error at or near "ON"
+LINE 7:             ON CONFLICT DO NOTHING
+                    ^
+
+[2022-12-26 13:23:38][error][INSERT_CONNECTION][]-duplicate key value violates unique constraint "connections_user_id1_user_id2_key"
+DETAIL:  Key (user_id1, user_id2)=(1, 2) already exists.
+

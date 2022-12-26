@@ -4,9 +4,11 @@ except:
     import MODULES as modules
     
 def DROP_TABLE_X(table_name):
-    
     cursor, conn = modules.create_connection()
-    cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
+    cursor.execute(f"""
+        DROP TABLE 
+        IF EXISTS %(table_name)s
+    """, {'table_name': table_name})
     modules.close_conn(cursor, conn)
     
 if __name__ == '__main__':

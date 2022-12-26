@@ -25,19 +25,19 @@ def GET_USERS_BY_TEXT(text):
 
 def GET_USER_ID_FROM_NAME(username):
     cursor, conn = modules.create_connection()
-    query = f"""
+    
+    cursor.execute(f"""
         SELECT User_id 
         FROM USERS
-        WHERE Username = '{username}'
-    """
-    cursor.execute(query)
+        WHERE Username = %(username)s
+    """, {'username': username}
+    )
     
     for i in cursor.fetchall():
         modules.close_conn(cursor, conn)
         return i[0]
     return "NO NAME"
-        
-    
+            
 def GET_ALL_USERS():
     cursor, conn = modules.create_connection()
     query = """
@@ -49,19 +49,16 @@ def GET_ALL_USERS():
         print(i)
         
     modules.close_conn(cursor, conn)
-
-
-
-        
+      
 def GET_COUNT_COMMENTS_BY_ID(Post_id):
     cursor, conn = modules.create_connection()
-    query = F"""
+
+    cursor.execute(F"""
         SELECT COUNT(*)
         FROM COMMENTS comments
         
-        WHERE comments.Post_id = '{Post_id}'
-    """
-    cursor.execute(query)
+        WHERE comments.Post_id = %(Post_id)s
+    """, {'Post_id': Post_id})
     results = 0
     for i in cursor.fetchall():
         results = i[0]
@@ -77,38 +74,23 @@ def NEW_COMMENT_ORDER(new_comment):
     return new_comment_order
     
 def GET_N_COMMENTS(Post_id, N=3, comment_page_no=0, new_comment="false", check_order="likes"):
-    """ """
 
-    """
-    if check_order == "alpha":
-        comment_ordering = '''
-            ORDER BY (SELECT COUNT(*) 
-            FROM COMMENT_VOTES comm_vote_count
-            WHERE comm_vote_count.Comment_id = comments.Comment_id
-            AND word_vote.Vote_type = 'UP') 
-        '''
-    elif check_order == "likes":
-        comment_ordering = '''
-        
-        '''
-    """
-   
     cursor, conn = modules.create_connection()
-    query = F"""
+    cursor.execute(F"""
         SELECT users.Username, comments.Comment_text, comments.Date_time
         FROM COMMENTS comments
         
         INNER JOIN USERS users
         on users.User_id = comments.User_id
         
-        WHERE comments.Post_id = '{Post_id}'
+        WHERE comments.Post_id = %(Post_id)s
         
         {NEW_COMMENT_ORDER(new_comment)}
         
         OFFSET ( ({comment_page_no})  * {N} )
         LIMIT {N}
-    """
-    cursor.execute(query)
+        """,{'Post_id': Post_id}
+    )
     results = []
     
     for i in cursor.fetchall():
@@ -171,26 +153,23 @@ def GET_ALL_TRIBUNAL_WORDS():
     modules.close_conn(cursor, conn) 
     return results
 
-
 def GET_WORD_PHRASE_ID_BY_NAME(phrase):
     cursor, conn = modules.create_connection()
     cursor.execute(F"""
     SELECT Tribunal_word_id
     FROM TRIBUNAL_WORD
-    WHERE Tribunal_word = '{phrase}'       
-    """)
+    WHERE Tribunal_word = %(phrase)s  
+    """, {'phrase': phrase}
+    )
     results = 0
     for i in cursor.fetchall():
         results = i[0]
     modules.close_conn(cursor, conn) 
     return results
 
-
-
-
 def GET_ALL_PEOPLE(sort_method, letter=""):
     cursor, conn = modules.create_connection()
-    query = F"""
+    cursor.execute(F"""
         SELECT people.Person_id, 
         people.Person_name,        
         (   
@@ -205,23 +184,21 @@ def GET_ALL_PEOPLE(sort_method, letter=""):
         {modules.CHECK_PEOPLE_ORDER(sort_method)}
         
         
-    """
-    cursor.execute(query)
+    """)
     results = []
     for i in cursor.fetchall():
         results.append([i[0],i[1],i[2]])
         
     modules.close_conn(cursor, conn) 
     return results
-     
-    
+       
 def GET_PROFILE_IMAGE_BY_USER(username):
     cursor, conn = modules.create_connection()
     query = f"""
         SELECT Profile_pic 
         FROM USERS
-        WHERE username = '{username}'
-    """
+        WHERE username = %(username)s
+    """, {'username': username}
     cursor.execute(query)
     byte_array = ""
     for i in cursor.fetchall():
@@ -233,16 +210,19 @@ def GET_PROFILE_IMAGE_BY_USER(username):
     modules.close_conn(cursor, conn)
     return byte_array
     
-    
 def GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link):
     cursor, conn = modules.create_connection()
-    query = f"""
+ 
+    cursor.execute(f"""
         SELECT Post_id
         FROM POSTS
-        WHERE User_id = '{User_id}'
-        AND Post_link = '{Post_link}'
-    """
-    cursor.execute(query)
+        WHERE User_id = %(User_id)s
+        AND Post_link = %(Post_link)s
+        """, 
+            {'User_id': User_id,
+             'Post_link': Post_link
+            }  
+    )
     
     for i in cursor.fetchall():
         post_link = i[0]
@@ -252,12 +232,11 @@ def GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link):
 
 def GET_PERSON_ID_BY_NAME(Person):
     cursor, conn = modules.create_connection()
-    query = f"""
+    cursor.execute(f"""
         SELECT Person_id 
         FROM PEOPLE
-        WHERE Person_name = '{Person}'
-    """
-    cursor.execute(query)
+        WHERE Person_name = %(Person)s
+    """, {'Person': Person})
     
     for i in cursor.fetchall():
         person = i[0]
@@ -274,12 +253,11 @@ def GET_POSTS_BY_TAG(Person):
 def GET_NUM_LIKES_BY_POST_ID(Post_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
-       
         SELECT COUNT(*) 
         FROM LIKES likes
-        WHERE likes.Post_id = '{Post_id}'
-    
-    """)
+        WHERE likes.Post_id = %(Post_id)s
+    """, {'Post_id': Post_id}
+    )
     results = 0
     for i in cursor.fetchall():
         results = i[0]
@@ -289,12 +267,11 @@ def GET_NUM_LIKES_BY_POST_ID(Post_id):
 def GET_NUM_FAVES_BY_POST_ID(Post_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
-       
         SELECT COUNT(*) 
         FROM FAVOURITES fave
-        WHERE fave.Post_id = '{Post_id}'
-    
-    """)
+        WHERE fave.Post_id = %(Post_id)s
+    """, {'Post_id': Post_id}
+    )
     results = 0
     for i in cursor.fetchall():
         results = i[0]
@@ -304,12 +281,11 @@ def GET_NUM_FAVES_BY_POST_ID(Post_id):
 def GET_NUM_VIEWS_BY_POST_ID(Post_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
-       
         SELECT COUNT(*) 
         FROM VIEWS views
-        WHERE views.Post_id = '{Post_id}'
-    
-    """)
+        WHERE views.Post_id = %(Post_id)s
+    """, {'Post_id': Post_id}
+    )
     results = 0
     for i in cursor.fetchall():
         results = i[0]
@@ -319,12 +295,11 @@ def GET_NUM_VIEWS_BY_POST_ID(Post_id):
 def GET_NUM_COMMENTS_BY_POST_ID(Post_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
-       
         SELECT COUNT(*) 
         FROM COMMENTS comments
-        WHERE comments.Post_id = '{Post_id}'
-    
-    """)
+        WHERE comments.Post_id = %(Post_id)s
+    """, {'Post_id': Post_id}
+    )
     results = 0
     for i in cursor.fetchall():
         results = i[0]
@@ -334,12 +309,12 @@ def GET_NUM_COMMENTS_BY_POST_ID(Post_id):
 def GET_NUM_FAVOURITES_BY_POST_ID(Post_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
-       
         SELECT COUNT(*) 
         FROM FAVOURITES favs
-        WHERE favs.Post_id = '{Post_id}'
+        WHERE favs.Post_id = %(Post_id)s
+    """, {'Post_id': Post_id}
     
-    """)
+    )
     results = 0
     for i in cursor.fetchall():
         results = i[0]
@@ -361,6 +336,7 @@ def SEARCH_USER_HAS_LIKED(searcher_id):
             AND '{searcher_id}' = likes.User_id
         ),
     """
+
 def SEARCH_USER_HAS_SAVED(searcher_id):
     return f"""
         (
@@ -370,6 +346,7 @@ def SEARCH_USER_HAS_SAVED(searcher_id):
             AND '{searcher_id}' = faves.User_id
         )
     """     
+
 def FAVOURITE_QUERY(favourites, searcher_id):
     if favourites:
         fave_string = F"AND faves.User_id = '{searcher_id}'"
@@ -380,8 +357,7 @@ def FAVOURITE_QUERY(favourites, searcher_id):
         return fave_string, fave_inner_join
     else:
         return "", ""
-    
-    
+       
 def UNIVERSAL_FUNCTION(searcher, searcher_id="", person_id="", page_no=1, favourites=False):
     
     SEARCH_DETAILS(searcher=searcher, person_id=person_id, page_no=page_no)
@@ -450,7 +426,6 @@ def UNIVERSAL_FUNCTION(searcher, searcher_id="", person_id="", page_no=1, favour
     modules.close_conn(cursor, conn)
     return query, posts, int(page_no), posts_per_page, CHECK_CAN_SCROLL(len(posts), GET_MAX_POSTS(person_id)), person_id
 
-
 def GET_MAX_POSTS(person_id):
     #THIS COULD SERIOUSLY SLOW THINGS DOWN
     cursor, conn = modules.create_connection()
@@ -492,12 +467,13 @@ def CHECK_CAN_SCROLL(num_posts, max_posts):
     
 def GET_FOLLOWERS_BY_USER_ID(User_id):
     cursor, conn = modules.create_connection()
-    query = f"""
+
+    cursor.execute(f"""
         SELECT User_id1 
         FROM CONNECTIONS
-        WHERE User_id2 = '{User_id}'
-    """
-    cursor.execute(query)
+        WHERE User_id2 = %(User_id)s
+        """, {'User_id': User_id}
+        )
     followers = []
     for i in cursor.fetchall():
         # print(i)
@@ -507,14 +483,17 @@ def GET_FOLLOWERS_BY_USER_ID(User_id):
     return followers
 
 def CHECK_IF_WORD_VOTE_EXISTS(word_id, user_id):
-
     cursor, _ = modules.create_connection()
     cursor.execute(f"""
         SELECT COUNT(*)
         FROM TRIBUNAL_WORD_VOTE
-        WHERE User_id = '{user_id}'
-        AND Tribunal_word_id = '{word_id}'
-    """)
+        WHERE User_id = %(word_id)s
+        AND Tribunal_word_id = %(user_id)s
+        """, {'word_id': word_id,
+            'user_id': user_id
+            }
+    
+    )
     count = 0
     for i in cursor.fetchall():
         count = i[0]
@@ -604,6 +583,12 @@ def GET_ALL_INTERACTIONS(User_id):
     modules.close_conn(cursor, conn)
     
 if __name__ == "__main__": 
-    GET_ALL_INTERACTIONS(1)
+    #GET_ALL_INTERACTIONS(1)
     # GET_N_COMMENTS(15, 10, "likes")
+    #print(GET_USER_ID_FROM_NAME("Andre"))
+    #GET_COUNT_COMMENTS_BY_ID(2)
+    GET_N_COMMENTS(1)
+    print(GET_POST_ID_BY_LINK_AND_USER_ID(1, "https://www.youtube.com/watch?v=J_jzFt8VLnk"))
+    GET_PERSON_ID_BY_NAME("Noam Chomsky")
+    pass
 

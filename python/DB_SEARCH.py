@@ -22,7 +22,6 @@ def CHECK_PEOPLE_ORDER(sort_method):
         return "ORDER BY DESC"
     else: return ""
     
-
 def GET_POST_LIKE_COUNT():
     return """
     (   
@@ -38,6 +37,7 @@ def GET_POST_VIEW_COUNT():
         WHERE views.Post_id = posts.Post_id
     ), 
     """
+
 def GET_POST_COMMENT_COUNT():
     return """
     (   
@@ -46,6 +46,7 @@ def GET_POST_COMMENT_COUNT():
         WHERE comments.Post_id = posts.Post_id
     ),
     """
+
 def GET_POST_FAVOURITE_COUNT():
     return """(   
         SELECT COUNT(*) 
