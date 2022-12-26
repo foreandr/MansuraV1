@@ -5,7 +5,7 @@ except:
 
 def PERSON_SEARCH(person_id):
     if person_id == "" or str(person_id) == '0':
-        print("empty person id")
+        # print("empty person id")
         return ""
     else:
         return F"AND post_person.Person_id = '{person_id}'"

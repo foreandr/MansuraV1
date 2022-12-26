@@ -1,0 +1,3 @@
+[2022-12-26 17:15:18][request][][Andre]-<Request 'http://165.227.35.71:8097/word_tribunal' [GET]>
+[2022-12-26 17:15:23][request][][Andre]-<Request 'http://165.227.35.71:8097/word_tribunal' [POST]>
+[2022-12-26 17:16:41][request][][Andre]-<Request 'http://165.227.35.71:8097/word_tribunal' [POST]>

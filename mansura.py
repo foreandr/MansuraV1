@@ -27,7 +27,6 @@ def post_logic(person_id, page_no):
         person_id=person_id
         )
     
-    
     offset_calc = int(int(page_no) * int(posts_per_page))
 
     return render_template('home.html',
@@ -41,8 +40,6 @@ def post_logic(person_id, page_no):
         offset_calc=offset_calc,
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
-        
-
     )
     
 @app.route("/favourites/<page_no>", methods=['GET', 'POST'])
@@ -116,7 +113,7 @@ def request_form(request_type):
     modules.log_function("request", request)
     print("request_type", request_type)
     if request.method == "POST":
-        print("")
+        print("post request enter info ")
     return render_template(f'request_form.html',
         request_type=request_type
     )
@@ -125,7 +122,10 @@ def request_form(request_type):
 def search_users_by_text():
     # GOTTA BE A BETTER WAY to get the query
     query_text = str(request.url).split("person_name=")[1]
-    users = modules.GET_USERS_BY_TEXT(query_text)
+    if modules.CHECK_INJECTION(query_text):
+        users = modules.GET_USERS_BY_TEXT(query_text)
+    else:
+        users = ["None"]
     return render_template(f'update_user_search.html',
         users=users
     )
@@ -143,15 +143,17 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-        signed_in = modules.validate_user_from_session(email, password)
-
-        if signed_in[0]: # First element in dict is bool for success/failure
-            session["id"] = signed_in[1]
-            session["user"] = signed_in[2]
-            session["email"] = email
-            return redirect(url_for("home"))
-        else:
-            return render_template('login.html', message="wrong email or password, try again")
+        if modules.CHECK_INJECTION(email) and modules.CHECK_INJECTION(password):
+            signed_in = modules.validate_user_from_session(email, password)
+            
+            if signed_in[0]: # First element in dict is bool for success/failure
+                session["id"] = signed_in[1]
+                session["user"] = signed_in[2]
+                session["email"] = email
+                return redirect(url_for("home"))
+            else:
+                return render_template('login.html', message="wrong email or password, try again")
+    return render_template('login.html', message="")
 
 @app.route('/logout', methods=['GET'])
 def logout():
@@ -179,7 +181,7 @@ def register():
             email = my_dict['email'][0]
             
             has_bad_words = modules.USERNAME_PROFANITY_CHECK(registering_username)
-            if not has_bad_words:
+            if not has_bad_words and modules.CHECK_INJECTION(password):
                 if modules.INSERT_USER(registering_username, password, email):
                     return redirect(url_for('login'))
                 else:
@@ -188,7 +190,7 @@ def register():
                 )
             else:
                 return render_template('register.html', 
-                    return_message="Mansura thinks you either have a bad word, or something that could be used for an SQL attack of some kind."
+                    return_message="Mansura thinks you either have a bad word or other bad user input"
                 )
         except Exception as e:
             modules.log_function("error", e, function_name="register")
@@ -212,11 +214,16 @@ def password_reset():#TODO: GET THIS WORKING, CHECK IF OEN TIME PASS IS THE SMAE
         repeat_pass = request.form["check_password"]
         one_time_pass = request.form["One Time Password"]
         current_one_time_pass = modules.GET_ONE_TIME_PASS(email)
-        if (password == repeat_pass) and (one_time_pass == current_one_time_pass):
-            modules.CHANGE_PASSWORD( email, password)
-            return redirect(url_for("login"))
+        if modules.CHECK_INJECTION(email) and modules.CHECK_INJECTION(password):
+            if (password == repeat_pass) and (one_time_pass == current_one_time_pass):
+                modules.CHANGE_PASSWORD( email, password)
+                return redirect(url_for("login"))
+            else:
+                return render_template(f"password_reset.html", message="Passwords are not the same! \nOr One Time Password is Incorrect!")
         else:
-            return render_template(f"password_reset.html", message="Passwords are not the same! \nOr One Time Password is Incorrect!")
+            return render_template(f"password_reset.html", message="Or Email/Password is failing hack tests.")
+    
+    # GET REQUEST
     else:
         return render_template(f"password_reset.html")
 
@@ -229,25 +236,25 @@ def word_tribunal():
     if request.method == "POST":
         # THIS ALL ASSUMES THERE ARE REALLY ONLY 2 TYPES OF POST REQUESTS
         new_bad_word = request.form.get("bad_word")
-        print("new_bad_word", new_bad_word)
-        if new_bad_word != None:
-            modules.INSERT_TRIBUNAL_WORD(new_bad_word.lower())
-        else:
-            keep_phrase = request.form.get("keep_phrase")
-            block_phrase = request.form.get("block_phrase")
-            
-            vote_type = None
-            
-            if keep_phrase != None:
-                phrase = keep_phrase.split(":")[0]
-                vote_type = "UP"
+        if modules.CHECK_INJECTION(new_bad_word):
+            print("new_bad_word", new_bad_word)
+            if new_bad_word != None:
+                modules.INSERT_TRIBUNAL_WORD(new_bad_word.lower())
             else:
-                phrase = block_phrase.split(":")[0]
-                vote_type = "DOWN"
-            word_id = modules.GET_WORD_PHRASE_ID_BY_NAME(phrase)
-            modules.INSERT_INTO_PROFANITY_LIST_VOTES(word_id, session["id"], vote_type)
-    
-        
+                keep_phrase = request.form.get("keep_phrase")
+                block_phrase = request.form.get("block_phrase")
+                
+                vote_type = None
+                
+                if keep_phrase != None:
+                    phrase = keep_phrase.split(":")[0]
+                    vote_type = "UP"
+                else:
+                    phrase = block_phrase.split(":")[0]
+                    vote_type = "DOWN"
+                word_id = modules.GET_WORD_PHRASE_ID_BY_NAME(phrase)
+                modules.INSERT_INTO_PROFANITY_LIST_VOTES(word_id, session["id"], vote_type)
+  
     blocked_words = modules.GET_ALL_TRIBUNAL_WORDS()
     print(blocked_words)
     return render_template(f"word_tribunal.html",
@@ -287,8 +294,9 @@ def update_comment(Post_id):
     print("POST ID       :", Post_id)
     print("input_field   :", input_field)
     print("howmany       :", how_many)
+    if modules.CHECK_INJECTION(input_field):
+        modules.INSERT_COMMENTS(Post_id=Post_id, User_id=session["id"], Comment_text=input_field) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     
-    modules.INSERT_COMMENTS(Post_id=Post_id, User_id=session["id"], Comment_text=input_field) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     return redirect(url_for('comment_section', Post_id=Post_id,how_many=how_many, order="date"))
 
 @app.route("/comment_section/<Post_id>/<how_many>/<order>", methods=['GET', 'POST'])

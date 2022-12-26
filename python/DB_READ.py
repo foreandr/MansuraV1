@@ -322,11 +322,13 @@ def GET_NUM_FAVOURITES_BY_POST_ID(Post_id):
     return results
 
 def SEARCH_DETAILS(searcher, person_id="", page_no=1):
+    """
     print("SEARCH DETAILS============")
     print("searcher      :", searcher)
     print("person_id     :", person_id)
     print("page_no       :", page_no)
-
+    """
+    pass
 def SEARCH_USER_HAS_LIKED(searcher_id):
     return f"""
         (
@@ -442,27 +444,25 @@ def GET_MAX_POSTS(person_id):
         INNER JOIN POST_PERSON post_per
         ON post_per.Post_id = POSTS.Post_id
         
-        {person_query}
-            
-        
+        {person_query}   
     """
     cursor.execute(query)
         
     for i in cursor.fetchall():
-        print(i[0])
+        # print(i[0])
         count =  i[0]
     modules.close_conn(cursor, conn)
     return count 
         
 def CHECK_CAN_SCROLL(num_posts, max_posts):
-    print("NUM POSTS FOR QUERY :", num_posts)
-    print("MAX POSTS      :", max_posts)
+    #print("NUM POSTS FOR QUERY :", num_posts)
+    #print("MAX POSTS      :", max_posts)
     
     if num_posts > max_posts:
-        print("CANT SCROLL ANYMORE")
+        # print("CANT SCROLL ANYMORE")
         return False
     else: 
-        print("SAFE TO SCROLL")
+        # print("SAFE TO SCROLL")
         return True
     
 def GET_FOLLOWERS_BY_USER_ID(User_id):

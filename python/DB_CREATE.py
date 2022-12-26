@@ -92,7 +92,7 @@ def CREATE_TABLE_POST_PERSON(server="false"):
             (
             Post_id BIGINT,  
             Person_id BIGINT,     
-            FOREIGN KEY (Post_id ) REFERENCES POSTS(Post_id),
+            FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
             FOREIGN KEY (Person_id) REFERENCES PEOPLE(Person_id)
             );
             """)

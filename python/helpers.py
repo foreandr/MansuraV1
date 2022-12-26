@@ -524,9 +524,21 @@ def COUNT_HOW_MANY_CUSS_WORD():
         print(i)
     modules.close_conn(cursor, conn)
     
+def GET_INJECTION_TERMS():
+    f = open("/root/mansura/files/bad_words_username.txt", "r")
+    injection_terms = f.read().split(",")
+    injection_terms = list(map(lambda x: x.lower(), injection_terms))
+    return injection_terms
+def CHECK_INJECTION(word):
+    array = modules.GET_INJECTION_TERMS()
+    # print(array)
+    if word.lower() in array:
+        return False
+    else:
+        return True
 if __name__ == "__main__":
     print_title(F"{inspect.stack()[0][3]}\n")
-    COMMENT_TEXT_CHECK("hello world anal")
+    print(CHECK_INJECTION("--"))
     # COUNT_HOW_MANY_CUSS_WORD()
 
 

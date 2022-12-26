@@ -236,7 +236,7 @@ def INSERT_DISLIKE(Post_id, User_id):
     modules.close_conn(cursor, conn)
 
 def INSERT_FAVOURITES(Post_id, User_id):
-
+    print(Post_id, User_id)
     cursor, conn =modules. create_connection()
     try:
         cursor = conn.cursor()
@@ -245,7 +245,7 @@ def INSERT_FAVOURITES(Post_id, User_id):
             INSERT INTO FAVOURITES
             (Post_id, User_id, Date_time)
             VALUES
-            (%(Post_id)s, %(Post_id)s, NOW())
+            (%(Post_id)s, %(User_id)s, NOW())
             ON CONFLICT DO NOTHING
             """, {'Post_id': Post_id,
                   'User_id': User_id
@@ -265,20 +265,35 @@ def INSERT_COMMENTS(Post_id, User_id, Comment_text, Replying_to_id="NULL"):
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
-        cursor.execute(
-            f"""
-            INSERT INTO COMMENTS
-            (Post_id, User_id, Replying_to_id, Comment_text, Date_time)
-            VALUES
-            (%(Post_id)s, %(User_id)s, %(Replying_to_id)s, %(Comment_text)s, NOW())
-            """, {
-                'Post_id': Post_id,
-                'User_id': User_id,
-                'Replying_to_id': Replying_to_id,
-                'Comment_text': Comment_text
-                }
-            
-            )
+        if Replying_to_id == "NULL":
+            cursor.execute(
+                f"""
+                INSERT INTO COMMENTS
+                (Post_id, User_id, Comment_text, Date_time)
+                VALUES
+                (%(Post_id)s, %(User_id)s, %(Comment_text)s, NOW())
+                """, {
+                    'Post_id': Post_id,
+                    'User_id': User_id,
+                    'Comment_text': Comment_text
+                    }
+                
+                )
+        else:
+            cursor.execute(
+                f"""
+                INSERT INTO COMMENTS
+                (Post_id, User_id, Replying_to_id, Comment_text, Date_time)
+                VALUES
+                (%(Post_id)s, %(User_id)s, %(Replying_to_id)s, %(Comment_text)s, NOW())
+                """, {
+                    'Post_id': Post_id,
+                    'User_id': User_id,
+                    'Replying_to_id': int(Replying_to_id),
+                    'Comment_text': Comment_text
+                    }
+                
+                )
         conn.commit()
         modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
@@ -578,7 +593,7 @@ def INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_type):
           'vote_type': vote_type}
     )
     conn.commit()
-    modules.print_green(f"{inspect.stack()[0][3]} {word_id, voter_id, vote_Type} COMPLETED")
+    modules.print_green(f"{inspect.stack()[0][3]} {word_id, voter_id, vote_type} COMPLETED")
     modules.close_conn(cursor, conn)    
      
 def INSERT_DEMO_PEOPLE():

@@ -6,3 +6,33 @@ LINE 7:             ON CONFLICT DO NOTHING
 [2022-12-26 13:23:38][error][INSERT_CONNECTION][]-duplicate key value violates unique constraint "connections_user_id1_user_id2_key"
 DETAIL:  Key (user_id1, user_id2)=(1, 2) already exists.
 
+[2022-12-26 16:54:37][error][INSERT_COMMENTS][]-invalid input syntax for type bigint: "NULL"
+LINE 5:             ('15', 1, 'NULL', 'bitches and hpes', NOW())
+                              ^
+
+[2022-12-26 16:57:15][error][INSERT_COMMENTS][]-unsupported format character 'i' (0x69) at index 181
+[2022-12-26 16:58:00][error][INSERT_COMMENTS][]-unsupported format character 'd' (0x64) at index 181
+[2022-12-26 16:58:01][error][INSERT_COMMENTS][]-unsupported format character 'd' (0x64) at index 181
+[2022-12-26 16:59:07][error][INSERT_COMMENTS][]-unsupported format character 'd' (0x64) at index 181
+[2022-12-26 16:59:22][error][INSERT_COMMENTS][]-invalid literal for int() with base 10: 'NULL'
+[2022-12-26 17:00:50][error][INSERT_FAVOURITES][]-insert or update on table "favourites" violates foreign key constraint "favourites_user_id_fkey"
+DETAIL:  Key (user_id)=(17) is not present in table "users".
+
+[2022-12-26 17:02:33][error][INSERT_FAVOURITES][]-insert or update on table "favourites" violates foreign key constraint "favourites_user_id_fkey"
+DETAIL:  Key (user_id)=(16) is not present in table "users".
+
+[2022-12-26 17:02:33][error][INSERT_FAVOURITES][]-insert or update on table "favourites" violates foreign key constraint "favourites_user_id_fkey"
+DETAIL:  Key (user_id)=(16) is not present in table "users".
+
+[2022-12-26 17:02:39][error][INSERT_FAVOURITES][]-insert or update on table "favourites" violates foreign key constraint "favourites_user_id_fkey"
+DETAIL:  Key (user_id)=(16) is not present in table "users".
+
+[2022-12-26 17:02:40][error][INSERT_FAVOURITES][]-insert or update on table "favourites" violates foreign key constraint "favourites_user_id_fkey"
+DETAIL:  Key (user_id)=(16) is not present in table "users".
+
+[2022-12-26 17:02:40][error][INSERT_FAVOURITES][]-insert or update on table "favourites" violates foreign key constraint "favourites_user_id_fkey"
+DETAIL:  Key (user_id)=(16) is not present in table "users".
+
+[2022-12-26 17:03:11][error][INSERT_FAVOURITES][]-insert or update on table "favourites" violates foreign key constraint "favourites_user_id_fkey"
+DETAIL:  Key (user_id)=(16) is not present in table "users".
+
