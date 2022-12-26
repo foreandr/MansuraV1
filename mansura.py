@@ -15,7 +15,6 @@ app.secret_key = 'demokey'
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
     return redirect(url_for('post_logic', person_id=0,page_no=0 ))
-
     
 @app.route("/<person_id>/<page_no>", methods=['GET', 'POST'])
 def post_logic(person_id, page_no):
@@ -85,11 +84,11 @@ def person(person_id):
 @app.route("/add_connection/<User_id>", methods=['POST'])
 def add_connection(User_id):
     modules.log_function("request", request)
-    modules.INSERT_CONNECTION(1, User_id)
+    
+    modules.INSERT_CONNECTION(1, User_id) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     followers = modules.GET_FOLLOWERS_BY_USER_ID(3)
     return render_template("connection_change.html",
         followers=followers)
-    #return redirect(url_for('home'))
 
 @app.route("/remove_connection/<User_id>", methods=['POST'])
 def remove_connection(User_id):
@@ -258,14 +257,14 @@ def word_tribunal():
 @app.route("/update_like/<Post_id>", methods=['GET', 'POST'])
 def update_like(Post_id):
     modules.log_function("request", request)
-    modules.LIKE_LOGIC(Post_id, session["id"])
+    modules.LIKE_LOGIC(Post_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     return render_template(f"update_like.html",
         likes=modules.GET_NUM_LIKES_BY_POST_ID(Post_id))
 
 @app.route("/update_fave/<Post_id>", methods=['GET', 'POST'])
 def update_fave(Post_id):
     modules.log_function("request", request)
-    modules.FAVE_LOGIC(Post_id, session["id"])
+    modules.FAVE_LOGIC(Post_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     return render_template(f"update_fave.html",
         faves=modules.GET_NUM_FAVES_BY_POST_ID(Post_id)
         )
@@ -273,7 +272,7 @@ def update_fave(Post_id):
 @app.route("/update_view/<Post_id>", methods=['GET', 'POST'])
 def update_view(Post_id):
     modules.log_function("request", request)
-    modules.INSERT_VIEWS(Post_id, session["id"])
+    modules.INSERT_VIEWS(Post_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     return render_template(f"update_view.html",
         views=modules.GET_NUM_VIEWS_BY_POST_ID(Post_id)
         )
@@ -289,7 +288,7 @@ def update_comment(Post_id):
     print("input_field   :", input_field)
     print("howmany       :", how_many)
     
-    modules.INSERT_COMMENTS(Post_id=Post_id, User_id=session["id"], Comment_text=input_field)
+    modules.INSERT_COMMENTS(Post_id=Post_id, User_id=session["id"], Comment_text=input_field) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     return redirect(url_for('comment_section', Post_id=Post_id,how_many=how_many, order="date"))
 
 @app.route("/comment_section/<Post_id>/<how_many>/<order>", methods=['GET', 'POST'])

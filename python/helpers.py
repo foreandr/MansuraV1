@@ -424,9 +424,6 @@ def TRANSFRM_COMMENT_ARRAY_INTO_HTML(comment_array):
             <div>
             </br>
         </div>   
-                   
-
-        
     """
     for i in comment_array:
         username = i[0]

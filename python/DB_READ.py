@@ -93,7 +93,6 @@ def GET_N_COMMENTS(Post_id, N=3, comment_page_no=0, new_comment="false", check_o
         '''
     """
    
-
     cursor, conn = modules.create_connection()
     query = F"""
         SELECT users.Username, comments.Comment_text, comments.Date_time
@@ -524,6 +523,87 @@ def CHECK_IF_WORD_VOTE_EXISTS(word_id, user_id):
         return True
     else: return False
 
+def GET_ALL_INTERACTIONS(User_id):
+    print("RUNNING GET_ALL_INTERACTIONS")
+    cursor, conn = modules.create_connection()
+    query = F"""
+        SELECT users.User_id,
+        (
+            SELECT COUNT(*)
+            FROM LIKES likes 
+            WHERE likes.User_id = users.User_id
+            AND Date_Time > now() - interval '30 second'
+        ),
+        (
+            SELECT COUNT(*)
+            FROM FAVOURITES faves
+            WHERE faves.User_id = users.User_id
+            AND Date_Time > now() - interval '30 second'
+        ),
+        (
+            SELECT COUNT(*)
+            FROM COMMENTS comments
+            WHERE comments.User_id = users.User_id
+            AND Date_Time > now() - interval '30 second'
+        ),
+        (
+            SELECT COUNT(*)
+            FROM COMMENT_VOTES comm_votes
+            WHERE comm_votes.User_id = users.User_id
+            AND Date_Time > now() - interval '30 second'
+        ),
+        (
+            SELECT COUNT(*)
+            FROM VIEWS views
+            WHERE views.User_id = users.User_id
+            AND Date_Time > now() - interval '30 second'
+        ),
+        (
+            SELECT COUNT(*)
+            FROM CONNECTIONS conn
+            WHERE conn.User_id1 = users.User_id
+            AND Date_Time > now() - interval '30 second'
+        ),
+        (
+            SELECT COUNT(*)
+            FROM  BLOCKS block
+            WHERE block.User_id1 = users.User_id
+            AND Date_Time > now() - interval '30 second'
+        )
+        
+        FROM USERS users
+    
+        WHERE users.User_id = '{User_id}'
+    """
+    results = []
+    cursor.execute(query)
+    for i in cursor.fetchall():
+        # print(i)
+        results.append([
+            i[0], # USER_ID1
+            i[1], # LIKES
+            i[2], # FAVOURITES
+            i[3], # COMMENTS
+            i[4], # COMM VOTE
+            i[5], # VIEW
+            i[6], # CONN
+            i[7]  # BLOCKS
+            ])
+        
+    results = results[0]
+    # print(results)
+    count = 0
+    for i in range(1, len(results)):
+        # print(results[i])
+        count += results[i]
+    if count > 20: # PROBABLY NEED TO REFINE THIS NUMBER
+        # print("too much traffic from user")
+        return False
+    return True
+    
+    modules.close_conn(cursor, conn)
+    
 if __name__ == "__main__": 
-    GET_N_COMMENTS(15, 10, "likes")
+    GET_ALL_INTERACTIONS(1)
+    # GET_N_COMMENTS(15, 10, "likes")
 
