@@ -7,7 +7,7 @@ from email.mime.text import MIMEText
 def send_email(email, one_time_password):
 
     email_sender = "mansuracorp@gmail.com"
-    password = '****'
+    password = 'gdsaqlhggkishjng'
     reciver = email
 
     subject = "Forgot Password Recovery"
