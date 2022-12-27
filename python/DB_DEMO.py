@@ -30,39 +30,39 @@ def INSERT_DEMO_PEOPLE():
 def INSERT_DEMO_POST():
     modules.print_title(f"{inspect.stack()[0][3]}")
     # CHOMSKY DEMO
-    modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK2", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", User_id=1, Person="Noam Chomsky")
-    modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK3", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=2IWkSTrfBdU", User_id=1, Person="Noam Chomsky")
-    modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK4", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=w_X5czMVKT8", User_id=1, Person="Noam Chomsky")
-    modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK5", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=XNSxj0TVeJs&t=1360s", User_id=1, Person="Noam Chomsky")
-    modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK6", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=aiJEmB3wBxM", User_id=1, Person="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK2", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", Post_live="True", User_id=1, Person="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK3", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=2IWkSTrfBdU", Post_live="True", User_id=1, Person="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK4", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=w_X5czMVKT8", Post_live="True", User_id=1, Person="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK5", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=XNSxj0TVeJs&t=1360s", Post_live="True", User_id=1, Person="Noam Chomsky")
+    modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK6", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=aiJEmB3wBxM",Post_live="True", User_id=1, Person="Noam Chomsky")
     
     # PETER THIEL DEMO
-    modules.INSERT_POST(Post_title="Peter Thiel X talk1", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=XvKi7Omg1_M", User_id=1, Person="Peter Thiel")
-    modules.INSERT_POST(Post_title="Peter Thiel X talk2", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=qYSnVR7d4VE", User_id=1, Person="Peter Thiel")
-    modules.INSERT_POST(Post_title="Peter Thiel X talk3", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=F3EBfS9IcB4&t=2518s", User_id=1, Person="Peter Thiel")
-    modules.INSERT_POST(Post_title="Peter Thiel X talk4", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=3Fx5Q8xGU8k&t=2553s", User_id=1, Person="Peter Thiel") 
+    modules.INSERT_POST(Post_title="Peter Thiel X talk1", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=XvKi7Omg1_M",Post_live="True", User_id=1, Person="Peter Thiel")
+    modules.INSERT_POST(Post_title="Peter Thiel X talk2", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=qYSnVR7d4VE",Post_live="True", User_id=1, Person="Peter Thiel")
+    modules.INSERT_POST(Post_title="Peter Thiel X talk3", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=F3EBfS9IcB4&t=2518s",Post_live="True", User_id=1, Person="Peter Thiel")
+    modules.INSERT_POST(Post_title="Peter Thiel X talk4", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=3Fx5Q8xGU8k&t=2553s",Post_live="True", User_id=1, Person="Peter Thiel") 
     # modules.INSERT_POST(Post_title="SPOTIFY Peter Thiel X talk", Post_description="here is peter thiel philosopher talking about x", Post_link="https://open.spotify.com/episode/4CESb99rKgkQ5MvNL4HaFJ?si=3e1ea553d7c14637", User_id=1, Person="Peter Thiel") 
-    modules.INSERT_POST(Post_title="tiktok Peter Thiel X talk", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7177147474233150726?is_copy_url=1&is_from_webapp=v1", User_id=1, Person="Peter Thiel")
+    modules.INSERT_POST(Post_title="tiktok Peter Thiel X talk", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7177147474233150726?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Peter Thiel")
     # modules.INSERT_POST(Post_title="rumble Peter Thiel X talk", Post_description="here is peter thiel philosopher talking about x", Post_link="https://rumble.com/v10648s-paypal-co-founder-peter-thiel-bitcoin-keynote-bitcoin-2022-conference.html", User_id=1, Person="Peter Thiel")    
     # 
  
     # MICHAEL SUGRUE DEMO
-    modules.INSERT_POST(Post_title="Michael Sugrue X talk1", Post_description="here is michael sugrue philosopher talking about x", Post_link="https://www.youtube.com/watch?v=UlsR7_Wn8wc", User_id=1, Person="Michael Sugrue")
-    modules.INSERT_POST(Post_title="Michael Sugrue X talk2", Post_description="here is michael sugrue philosopher talking about x", Post_link="https://www.youtube.com/watch?v=_PSRVuQvVuU", User_id=1, Person="Michael Sugrue")
-    modules.INSERT_POST(Post_title="Michael Sugrue X talk3", Post_description="here is michael sugrue philosopher talking about x", Post_link="https://www.youtube.com/watch?v=WHiPfvzap3o", User_id=1, Person="Michael Sugrue")
-    modules.INSERT_POST(Post_title="Michael Sugrue X talk4", Post_description="here is michael sugrue philosopher talking about x", Post_link="https://www.youtube.com/watch?v=tyb93qZIC7g&t=1556s", User_id=1, Person="Michael Sugrue") 
+    modules.INSERT_POST(Post_title="Michael Sugrue X talk1", Post_description="here is michael sugrue philosopher talking about x", Post_link="https://www.youtube.com/watch?v=UlsR7_Wn8wc",Post_live="True", User_id=1, Person="Michael Sugrue")
+    modules.INSERT_POST(Post_title="Michael Sugrue X talk2", Post_description="here is michael sugrue philosopher talking about x", Post_link="https://www.youtube.com/watch?v=_PSRVuQvVuU",Post_live="True", User_id=1, Person="Michael Sugrue")
+    modules.INSERT_POST(Post_title="Michael Sugrue X talk3", Post_description="here is michael sugrue philosopher talking about x", Post_link="https://www.youtube.com/watch?v=WHiPfvzap3o",Post_live="True", User_id=1, Person="Michael Sugrue")
+    modules.INSERT_POST(Post_title="Michael Sugrue X talk4", Post_description="here is michael sugrue philosopher talking about x", Post_link="https://www.youtube.com/watch?v=tyb93qZIC7g&t=1556s",Post_live="True", User_id=1, Person="Michael Sugrue") 
 
     # VERVAEKE DEMO
-    modules.INSERT_POST(Post_title="John Vervaeke X talk1", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=54l8_ewcOlY&t=1488s", User_id=1, Person="John Vervaeke") 
-    modules.INSERT_POST(Post_title="John Vervaeke talk2", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=aF9HeXg65AE&t=71s", User_id=1, Person="John Vervaeke") 
-    modules.INSERT_POST(Post_title="John Vervaeke X talk3", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=C1AaqD8t3pk", User_id=1, Person="John Vervaeke") 
-    modules.INSERT_POST(Post_title="John Vervaeke X talk4", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=Lhl51bZQlM8", User_id=1, Person="John Vervaeke") 
-    modules.INSERT_POST(Post_title="John Vervaeke X talk5", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=A_gH5VIZO0Q&t=158s", User_id=1, Person="John Vervaeke") 
-    modules.INSERT_POST(Post_title="John Vervaeke X talk6", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=EWumJSBqXa8", User_id=1, Person="John Vervaeke") 
-    modules.INSERT_POST(Post_title="John Vervaeke X talk7", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=39NpjQDtqNw", User_id=1, Person="John Vervaeke") 
-    modules.INSERT_POST(Post_title="John Vervaeke X talk8", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=KoqibFwvQJ4", User_id=1, Person="John Vervaeke") 
-    modules.INSERT_POST(Post_title="John Vervaeke X talk9", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=rpivf1SoEdc", User_id=1, Person="John Vervaeke") 
-    modules.INSERT_POST(Post_title="John Vervaeke X talk10", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=hl2TE-mXPwM", User_id=1, Person="John Vervaeke") 
+    modules.INSERT_POST(Post_title="John Vervaeke X talk1", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=54l8_ewcOlY&t=1488s",Post_live="True", User_id=1, Person="John Vervaeke") 
+    modules.INSERT_POST(Post_title="John Vervaeke talk2", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=aF9HeXg65AE&t=71s",Post_live="True", User_id=1, Person="John Vervaeke") 
+    modules.INSERT_POST(Post_title="John Vervaeke X talk3", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=C1AaqD8t3pk",Post_live="True", User_id=1, Person="John Vervaeke") 
+    modules.INSERT_POST(Post_title="John Vervaeke X talk4", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=Lhl51bZQlM8",Post_live="True", User_id=1, Person="John Vervaeke") 
+    modules.INSERT_POST(Post_title="John Vervaeke X talk5", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=A_gH5VIZO0Q&t=158s",Post_live="True", User_id=1, Person="John Vervaeke") 
+    modules.INSERT_POST(Post_title="John Vervaeke X talk6", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=EWumJSBqXa8",Post_live="True", User_id=1, Person="John Vervaeke") 
+    modules.INSERT_POST(Post_title="John Vervaeke X talk7", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=39NpjQDtqNw",Post_live="True", User_id=1, Person="John Vervaeke") 
+    modules.INSERT_POST(Post_title="John Vervaeke X talk8", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=KoqibFwvQJ4",Post_live="True", User_id=1, Person="John Vervaeke") 
+    modules.INSERT_POST(Post_title="John Vervaeke X talk9", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=rpivf1SoEdc",Post_live="True", User_id=1, Person="John Vervaeke") 
+    modules.INSERT_POST(Post_title="John Vervaeke X talk10", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=hl2TE-mXPwM",Post_live="False", User_id=1, Person="John Vervaeke") 
 
 
 def INSERT_DEMO_SUBJECTS():
@@ -183,7 +183,7 @@ def INSERT_DEMO_CHAT_ROOMS_ADMIN():
 
 def INSERT_DEMO_REQUEST():
     modules.print_title(f"{inspect.stack()[0][3]}")
-    modules.INSERT_REQUEST(User_id=1, Request_type="PERSON", Request_content="Steve Jobs")  
+    # modules.INSERT_REQUEST(User_id=1, Request_type="PERSON", Request_content="Steve Jobs")  
     
 def FULL_DEMO_INSERT():
     INSERT_DEMO_USER()

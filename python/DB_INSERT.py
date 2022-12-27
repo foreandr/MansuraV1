@@ -59,7 +59,7 @@ def INSERT_PERSON(Person_name):
     
     modules.close_conn(cursor, conn)  
      
-def INSERT_POST(Post_title, Post_description, Post_link, Person, User_id=1):
+def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User_id=1):
     
     cursor, conn = modules.create_connection()
     try:
@@ -73,18 +73,17 @@ def INSERT_POST(Post_title, Post_description, Post_link, Person, User_id=1):
         cursor.execute(
             f"""
             INSERT INTO POSTS
-            (Post_title, Post_description, Post_link, Post_html, User_id, Date_Time)
+            (Post_title, Post_description, Post_link, Post_html, Post_live, User_id, Date_Time)
             VALUES
-            (%(Post_title)s, %(Post_description)s, %(Post_link)s, %(Post_html)s, %(User_id)s, NOW());
+            (%(Post_title)s, %(Post_description)s, %(Post_link)s, %(Post_html)s, %(Post_live)s, %(User_id)s, NOW());
             """, {'Post_title': Post_title,
                   'Post_description': Post_description, 
                   'Post_link':Post_link, 
-                  'Post_html':Post_html, 
+                  'Post_html':Post_html,
+                  'Post_live':Post_live,
                   'User_id':User_id
-                  }
+                }
             )
-            
-            
         conn.commit()
         
         Post_id = modules.GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link)
@@ -488,8 +487,10 @@ def INSERT_CHAT_ROOMS_ADMIN(User_id, Room_id):
             INSERT INTO CHAT_ADMINS
             (User_id, Room_id)
             VALUES
-            ('{User_id}', '{Room_id}')
-            """)
+            (%(User_id)s, %(Room_id)s)
+            """, {'User_id': User_id,
+                  'Room_id': Room_id
+                })
         conn.commit()
         modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
@@ -498,18 +499,23 @@ def INSERT_CHAT_ROOMS_ADMIN(User_id, Room_id):
     
     modules.close_conn(cursor, conn) 
     
-def INSERT_REQUEST(User_id, Request_type, Request_content):
-
+def INSERT_REQUEST(User_id, Post_title, Description, Link, Person_name):
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
             f"""
             INSERT INTO REQUESTS
-            (User_id, Request_type, Request_content, Date_time)
+            (User_id, Post_title, Description, Link, Person_name, Date_time)
             VALUES
-            ('{User_id}','{Request_type}', '{Request_content}', NOW())
-            """)
+            (%(User_id)s,%(Post_title)s, %(Description)s, %(Link)s,%(Person_name)s, NOW())
+            """, {'User_id': User_id,
+                  'Post_title':Post_title,
+                  'Description':Description,
+                  'Link':Link,
+                  'Person_name':Person_name
+                }
+            )
         conn.commit()
         modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
@@ -517,6 +523,31 @@ def INSERT_REQUEST(User_id, Request_type, Request_content):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)
+
+def INSERT_SUBJECT_REQUEST(User_id, Subject,Post_id):
+    cursor, conn = modules.create_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            f"""
+            INSERT INTO SUBJECT_REQUESTS
+            (User_id, Subject,Post_id)
+            VALUES
+            (%(User_id)s, %(Subject)s, %(Post_id)s)
+            """, {'User_id': User_id,
+                  'Subject':Subject,
+                  'Post_id':Post_id,
+                }
+            )
+        conn.commit()
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    
+    modules.close_conn(cursor, conn)
+
+
 
 def CHECK_NEW_BANNED_WORD_IS_NOT_STUPID(word):
     # TURN THIS INTO A FILE WITH A BIG LIST
@@ -602,6 +633,7 @@ def INSERT_DEMO_PEOPLE():
         INSERT_PERSON(word_list[i])
 
 if __name__ == "__main__":
-    INSERT_USER("coomerdoomer", "password", "coomerdoomer@gmail.com")
-    INSERT_CONNECTION(1, 2)
+    #INSERT_USER("coomerdoomer", "password", "coomerdoomer@gmail.com")
+    #INSERT_CONNECTION(1, 2)
+     modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK2", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", Post_live="True", User_id=1, Person="Noam Chomsky")
     # INSERT_TRIBUNAL_WORD("faggotere")

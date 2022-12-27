@@ -42,6 +42,36 @@ def post_logic(person_id, page_no):
         posts_per_page=posts_per_page,
     )
     
+@app.route("/post_tribunal/<page_no>", methods=['GET', "POST"])
+def post_tribunal(page_no):
+    modules.log_function("request", request)
+    query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
+        searcher=session["user"], 
+        searcher_id=session["id"],
+        page_no=int(page_no)+1,
+        post_tribunal=True
+    )
+    offset_calc = int(int(page_no) * int(posts_per_page))
+    
+    can_vote = modules.CHECK_USER_IS_GLOBAL_ADMIN(session["id"])
+    
+    return render_template('home.html',
+        query=query,                   
+                           
+        posts=posts,
+        num_posts=len(posts),
+        
+        person_id=person_id,
+        page_no=new_page_no,
+        offset_calc=offset_calc,
+        can_scroll=can_scroll,
+        posts_per_page=posts_per_page,
+        coming_from_tribunal="true",
+        can_vote=can_vote
+        #fucking hate javascript
+    ) 
+ 
+   
 @app.route("/favourites/<page_no>", methods=['GET', 'POST'])
 def favourites(page_no):
     modules.log_function("request", request)
@@ -65,8 +95,6 @@ def favourites(page_no):
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
         coming_from_favourites= "true" #fucking hate javascript
-        
-
     )    
     
 @app.route("/person/<person_id>", methods=['GET', 'POST'])
@@ -111,9 +139,55 @@ def people(sort_method, letter):
 @app.route("/request_form/<request_type>", methods=['GET', 'POST'])
 def request_form(request_type):
     modules.log_function("request", request)
-    print("request_type", request_type)
-    if request.method == "POST":
-        print("post request enter info ")
+    #print("request_type", request_type)
+    if request.method == "POST":     
+        if request_type == "post":
+            
+            post_title = request.form["post_title"]
+            post_title = modules.clean_title(post_title)
+            #print("post_title", post_title)
+            
+            description = request.form["description"]
+            description = modules.COMMENT_TEXT_CHECK(description)
+            #print("description", description)
+            
+            link = request.form["post_link"]
+            #print("link", link)
+            
+            person_name = request.form["chosen_name"]
+            # print("person_name", person_name)
+            
+            modules.INSERT_REQUEST(
+                User_id=session["id"],
+                Post_title=post_title,
+                Description=description,
+                Link=link,
+                Person_name=person_name
+                )  
+        elif request_type == "person":
+            
+            post_title = request.form["post_title"]
+            post_title = modules.clean_title(post_title)
+            #print("post_title", post_title)
+            
+            description = request.form["description"]
+            description = modules.COMMENT_TEXT_CHECK(description)
+            #print("description", description)
+            
+            link = request.form["post_link"]
+            # print("link", link)
+
+            person_name = request.form["person_name"]
+            
+            modules.INSERT_REQUEST(
+                User_id=session["id"],
+                Post_title=post_title,
+                Description=description,
+                Link=link,
+                Person_name=person_name
+                )  
+
+            
     return render_template(f'request_form.html',
         request_type=request_type
     )
@@ -121,7 +195,9 @@ def request_form(request_type):
 @app.route("/search_users_by_text", methods=['GET'])
 def search_users_by_text():
     # GOTTA BE A BETTER WAY to get the query
+    print(request.url)
     query_text = str(request.url).split("person_name=")[1]
+
     if modules.CHECK_INJECTION(query_text):
         users = modules.GET_USERS_BY_TEXT(query_text)
     else:
@@ -260,6 +336,8 @@ def word_tribunal():
     return render_template(f"word_tribunal.html",
         blocked_words=blocked_words
     )
+
+
 
 @app.route("/update_like/<Post_id>", methods=['GET', 'POST'])
 def update_like(Post_id):

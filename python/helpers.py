@@ -11,8 +11,6 @@ try:
 except:
     import MODULES as modules
 
-
-
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -51,7 +49,6 @@ def validate_user_from_session(email, password):
     else:
         print("NOT SIGNING IN")
         return [False]
-    
     
 def STRING_SIMILARITY_CHECK(a, b):
     from difflib import SequenceMatcher
@@ -298,6 +295,10 @@ def SERVER_CHECK(server, function):
         elif function == "CREATE_TABLE_REQUESTS":
             cursor.execute("""DROP TABLE IF EXISTS REQUESTS CASCADE""")
             modules.print_segment()
+        
+        elif function == "CREATE_TABLE_SUBJECT_REQUESTS":
+            cursor.execute("""DROP TABLE IF EXISTS SUBJECT_REQUESTS CASCADE""")
+            modules.print_segment()
             
         elif function == "CREATE_TABLE_1_TIME_PASSWORDS":
             cursor.execute("""DROP TABLE IF EXISTS ONE_TIME_PASSWORDS CASCADE""")
@@ -529,6 +530,12 @@ def GET_INJECTION_TERMS():
     injection_terms = f.read().split(",")
     injection_terms = list(map(lambda x: x.lower(), injection_terms))
     return injection_terms
+
+def CHECK_USER_IS_GLOBAL_ADMIN(user_id):
+    if 1 == 1:
+        return "true" # because it's being funneled to javascript
+    else: 
+        return "false"
 def CHECK_INJECTION(word):
     array = modules.GET_INJECTION_TERMS()
     # print(array)

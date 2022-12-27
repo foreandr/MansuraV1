@@ -359,8 +359,22 @@ def FAVOURITE_QUERY(favourites, searcher_id):
         return fave_string, fave_inner_join
     else:
         return "", ""
-       
-def UNIVERSAL_FUNCTION(searcher, searcher_id="", person_id="", page_no=1, favourites=False):
+
+def IN_POST_TRIBUNAL(post_tribunal):
+    if post_tribunal == False:
+        return "AND posts.Post_live = 'True'"
+    else:
+        return "AND posts.Post_live != 'True'"
+        
+
+def UNIVERSAL_FUNCTION(
+    searcher, 
+    searcher_id="", 
+    person_id="",
+    page_no=1, 
+    favourites=False,
+    post_tribunal=False
+    ):
     
     SEARCH_DETAILS(searcher=searcher, person_id=person_id, page_no=page_no)
     cursor, conn = modules.create_connection()
@@ -396,6 +410,7 @@ def UNIVERSAL_FUNCTION(searcher, searcher_id="", person_id="", page_no=1, favour
     WHERE 1=1 
     {person}
     {fave_string}
+    {IN_POST_TRIBUNAL(post_tribunal)}
     
     ORDER BY Person_name ASC
     
@@ -503,7 +518,7 @@ def CHECK_IF_WORD_VOTE_EXISTS(word_id, user_id):
     else: return False
 
 def GET_ALL_INTERACTIONS(User_id):
-    print("RUNNING GET_ALL_INTERACTIONS")
+    # print("RUNNING GET_ALL_INTERACTIONS")
     cursor, conn = modules.create_connection()
     query = F"""
         SELECT users.User_id,

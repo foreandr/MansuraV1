@@ -68,6 +68,7 @@ def CREATE_TABLE_POST(server="false"):
             Post_description varchar,
             Post_link varchar UNIQUE, 
             Post_html varchar,
+            Post_live varchar,
             User_id BIGINT,
             Date_Time timestamp,      
             FOREIGN KEY (User_id) REFERENCES USERS(User_id)
@@ -451,25 +452,21 @@ def CREATE_TABLE_CHAT_USERS(server="false"):
 
     modules.close_conn(cursor, conn)
     
-    
-def CREATE_TABLE_REQUESTS(server="false"):
+
+def CREATE_TABLE_SUBJECT_REQUESTS(server="false"):
     cursor, conn = modules.create_connection()
 
     try:
         modules.SERVER_CHECK(server, inspect.stack()[0][3])
         cursor.execute(
                 f"""
-                CREATE TABLE REQUESTS(
+                CREATE TABLE SUBJECT_REQUESTS(
                     User_id BIGINT,
-                    Request_type varchar,
-                    Request_content varchar,
-                    Date_time timestamp,
-                    
+                    Subject varchar,
+                    Post_id BIGINT,
+
                     FOREIGN KEY (User_id) REFERENCES USERS(User_id),
-                    
-                    CHECK( Request_type = 'PERSON' 
-                    OR Request_type = 'SUBJECT'
-                    OR Request_type = 'POST')
+                    FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id)
                 );
                 """)
         conn.commit()
@@ -479,7 +476,7 @@ def CREATE_TABLE_REQUESTS(server="false"):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
-    modules.close_conn(cursor, conn)    
+    modules.close_conn(cursor, conn)  
 
  
 def CREATE_TABLE_1_TIME_PASSWORDS(server="false"):

@@ -3,6 +3,10 @@ pytest
 
 input vaidate search
 
+put a warning modal whensomeone goes to tribunal page
+    - going to be graphic, 
+    -  likely 18+ filled with all kinds of terrible shit, this si where psots are decieed whther they make rddlabsdodgfo
+
 
 DONE.liimit number user interactions per minute
 DONE.goiogle popular linux hack commands
@@ -12,7 +16,7 @@ show convos,
     - sne dpost
 remove spaces from entered tribunal words 
 DONE. fix navbar
-make the cards narrower, less whitespace
+DONE.make the cards narrower, less whitespace
 put in larger descriptions to test size
 
 
