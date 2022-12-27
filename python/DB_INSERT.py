@@ -589,11 +589,14 @@ def INSERT_TRIBUNAL_WORD(word):
     
     modules.close_conn(cursor, conn)        
       
-def INSERT_DEMO_WORD_LIST(server="false"):
+def INSERT_DEMO_WORD_LIST():
     word_list = modules.GET_ORIGINAL_PROFANITY_LIST()
-    max = 10
-    if server != "false":
-        max = 1000 
+    all_words = input("do you want all the words?")
+   
+    if all_words.lower() == "yes" or all_words.lower() == "y":
+        max = 1000
+    else: 
+        max = 10
         
     for i in range(len(word_list)):
         if i > max:
@@ -635,5 +638,6 @@ def INSERT_DEMO_PEOPLE():
 if __name__ == "__main__":
     #INSERT_USER("coomerdoomer", "password", "coomerdoomer@gmail.com")
     #INSERT_CONNECTION(1, 2)
-     modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK2", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", Post_live="True", User_id=1, Person="Noam Chomsky")
+    INSERT_DEMO_PEOPLE()
+    #modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK2", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", Post_live="True", User_id=1, Person="Noam Chomsky")
     # INSERT_TRIBUNAL_WORD("faggotere")

@@ -1,0 +1,248 @@
+[2022-12-26 20:36:32][error][CREATE_TABLE_USER][]-relation "users" already exists
+
+[2022-12-26 20:36:32][error][CREATE_TABLE_PEOPLE][]-relation "people" already exists
+
+[2022-12-26 20:37:05][error][CREATE_TABLE_USER][]-relation "users" already exists
+
+[2022-12-26 20:37:05][error][CREATE_TABLE_PEOPLE][]-relation "people" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_POST][]-relation "posts" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_POST_PERSON][]-relation "post_person" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_SUBJECTS][]-relation "subjects" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_LIKES][]-relation "likes" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_FAVOURITES][]-relation "favourites" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_COMMENTS][]-relation "comments" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_COMMENT_VOTES][]-relation "comment_votes" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_VIEWS][]-relation "views" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_CONNECTIONS][]-relation "connections" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_BLOCKS][]-relation "blocks" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_IP_ADRESSES][]-relation "ip_adresses" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_CHAT_ROOMS][]-relation "chat_rooms" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_CHAT_ADMINS][]-relation "chat_admins" already exists
+
+[2022-12-26 20:37:09][error][CREATE_TABLE_CHAT_USERS][]-relation "chat_users" already exists
+
+[2022-12-26 20:37:10][error][CREATE_TABLE_SUBJECT_REQUESTS][]-relation "subject_requests" already exists
+
+[2022-12-26 20:37:10][error][CREATE_TABLE_1_TIME_PASSWORDS][]-relation "one_time_passwords" already exists
+
+[2022-12-26 20:37:10][error][CREATE_TABLE_TRIBUNAL_WORD][]-relation "tribunal_word" already exists
+
+[2022-12-26 20:37:10][error][CREATE_TABLE_TRIBUNAL_WORD_VOTE][]-relation "tribunal_word_vote" already exists
+
+[2022-12-26 20:37:45][error][CREATE_TABLE_USER][]-relation "users" already exists
+
+[2022-12-26 20:37:45][error][CREATE_TABLE_PEOPLE][]-relation "people" already exists
+
+[2022-12-26 20:37:47][error][CREATE_TABLE_USER][]-relation "users" already exists
+
+[2022-12-26 20:37:47][error][CREATE_TABLE_PEOPLE][]-relation "people" already exists
+
+[2022-12-26 20:37:50][error][CREATE_TABLE_POST][]-relation "posts" already exists
+
+[2022-12-26 20:37:50][error][CREATE_TABLE_POST_PERSON][]-relation "post_person" already exists
+
+[2022-12-26 20:37:50][error][CREATE_TABLE_SUBJECTS][]-relation "subjects" already exists
+
+[2022-12-26 20:37:50][error][CREATE_TABLE_LIKES][]-relation "likes" already exists
+
+[2022-12-26 20:37:50][error][CREATE_TABLE_FAVOURITES][]-relation "favourites" already exists
+
+[2022-12-26 20:37:50][error][CREATE_TABLE_COMMENTS][]-relation "comments" already exists
+
+[2022-12-26 20:37:50][error][CREATE_TABLE_COMMENT_VOTES][]-relation "comment_votes" already exists
+
+[2022-12-26 20:37:50][error][CREATE_TABLE_VIEWS][]-relation "views" already exists
+
+[2022-12-26 20:37:50][error][CREATE_TABLE_CONNECTIONS][]-relation "connections" already exists
+
+[2022-12-26 20:37:50][error][CREATE_TABLE_BLOCKS][]-relation "blocks" already exists
+
+[2022-12-26 20:37:51][error][CREATE_TABLE_IP_ADRESSES][]-relation "ip_adresses" already exists
+
+[2022-12-26 20:37:51][error][CREATE_TABLE_CHAT_ROOMS][]-relation "chat_rooms" already exists
+
+[2022-12-26 20:37:51][error][CREATE_TABLE_CHAT_ADMINS][]-relation "chat_admins" already exists
+
+[2022-12-26 20:37:51][error][CREATE_TABLE_CHAT_USERS][]-relation "chat_users" already exists
+
+[2022-12-26 20:37:51][error][CREATE_TABLE_SUBJECT_REQUESTS][]-relation "subject_requests" already exists
+
+[2022-12-26 20:37:51][error][CREATE_TABLE_1_TIME_PASSWORDS][]-relation "one_time_passwords" already exists
+
+[2022-12-26 20:37:51][error][CREATE_TABLE_TRIBUNAL_WORD][]-relation "tribunal_word" already exists
+
+[2022-12-26 20:37:51][error][CREATE_TABLE_TRIBUNAL_WORD_VOTE][]-relation "tribunal_word_vote" already exists
+
+[2022-12-26 20:40:00][error][CREATE_TABLE_USER][]-relation "users" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_PEOPLE][]-relation "people" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_POST][]-relation "posts" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_POST_PERSON][]-relation "post_person" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_SUBJECTS][]-relation "subjects" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_LIKES][]-relation "likes" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_FAVOURITES][]-relation "favourites" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_COMMENTS][]-relation "comments" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_COMMENT_VOTES][]-relation "comment_votes" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_VIEWS][]-relation "views" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_CONNECTIONS][]-relation "connections" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_BLOCKS][]-relation "blocks" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_IP_ADRESSES][]-relation "ip_adresses" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_CHAT_ROOMS][]-relation "chat_rooms" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_CHAT_ADMINS][]-relation "chat_admins" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_CHAT_USERS][]-relation "chat_users" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_SUBJECT_REQUESTS][]-relation "subject_requests" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_1_TIME_PASSWORDS][]-relation "one_time_passwords" already exists
+
+[2022-12-26 20:40:01][error][CREATE_TABLE_TRIBUNAL_WORD][]-relation "tribunal_word" already exists
+
+[2022-12-26 20:40:02][error][CREATE_TABLE_TRIBUNAL_WORD_VOTE][]-relation "tribunal_word_vote" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_USER][]-relation "users" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_PEOPLE][]-relation "people" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_POST][]-relation "posts" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_POST_PERSON][]-relation "post_person" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_SUBJECTS][]-relation "subjects" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_LIKES][]-relation "likes" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_FAVOURITES][]-relation "favourites" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_COMMENTS][]-relation "comments" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_COMMENT_VOTES][]-relation "comment_votes" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_VIEWS][]-relation "views" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_CONNECTIONS][]-relation "connections" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_BLOCKS][]-relation "blocks" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_IP_ADRESSES][]-relation "ip_adresses" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_CHAT_ROOMS][]-relation "chat_rooms" already exists
+
+[2022-12-26 20:44:07][error][CREATE_TABLE_CHAT_ADMINS][]-relation "chat_admins" already exists
+
+[2022-12-26 20:44:08][error][CREATE_TABLE_CHAT_USERS][]-relation "chat_users" already exists
+
+[2022-12-26 20:44:08][error][CREATE_TABLE_SUBJECT_REQUESTS][]-relation "subject_requests" already exists
+
+[2022-12-26 20:44:08][error][CREATE_TABLE_1_TIME_PASSWORDS][]-relation "one_time_passwords" already exists
+
+[2022-12-26 20:44:08][error][CREATE_TABLE_TRIBUNAL_WORD][]-relation "tribunal_word" already exists
+
+[2022-12-26 20:44:08][error][CREATE_TABLE_TRIBUNAL_WORD_VOTE][]-relation "tribunal_word_vote" already exists
+
+[2022-12-26 20:44:12][error][CREATE_TABLE_USER][]-relation "users" already exists
+
+[2022-12-26 20:44:12][error][CREATE_TABLE_PEOPLE][]-relation "people" already exists
+
+[2022-12-26 20:44:12][error][CREATE_TABLE_POST][]-relation "posts" already exists
+
+[2022-12-26 20:44:12][error][CREATE_TABLE_POST_PERSON][]-relation "post_person" already exists
+
+[2022-12-26 20:44:12][error][CREATE_TABLE_SUBJECTS][]-relation "subjects" already exists
+
+[2022-12-26 20:44:12][error][CREATE_TABLE_LIKES][]-relation "likes" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_FAVOURITES][]-relation "favourites" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_COMMENTS][]-relation "comments" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_COMMENT_VOTES][]-relation "comment_votes" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_VIEWS][]-relation "views" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_CONNECTIONS][]-relation "connections" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_BLOCKS][]-relation "blocks" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_IP_ADRESSES][]-relation "ip_adresses" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_CHAT_ROOMS][]-relation "chat_rooms" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_CHAT_ADMINS][]-relation "chat_admins" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_CHAT_USERS][]-relation "chat_users" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_SUBJECT_REQUESTS][]-relation "subject_requests" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_1_TIME_PASSWORDS][]-relation "one_time_passwords" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_TRIBUNAL_WORD][]-relation "tribunal_word" already exists
+
+[2022-12-26 20:44:13][error][CREATE_TABLE_TRIBUNAL_WORD_VOTE][]-relation "tribunal_word_vote" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_USER][]-relation "users" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_PEOPLE][]-relation "people" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_POST][]-relation "posts" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_POST_PERSON][]-relation "post_person" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_SUBJECTS][]-relation "subjects" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_LIKES][]-relation "likes" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_FAVOURITES][]-relation "favourites" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_COMMENTS][]-relation "comments" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_COMMENT_VOTES][]-relation "comment_votes" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_VIEWS][]-relation "views" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_CONNECTIONS][]-relation "connections" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_BLOCKS][]-relation "blocks" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_IP_ADRESSES][]-relation "ip_adresses" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_CHAT_ROOMS][]-relation "chat_rooms" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_CHAT_ADMINS][]-relation "chat_admins" already exists
+
+[2022-12-26 20:50:09][error][CREATE_TABLE_CHAT_USERS][]-relation "chat_users" already exists
+
+[2022-12-26 20:50:10][error][CREATE_TABLE_SUBJECT_REQUESTS][]-relation "subject_requests" already exists
+
+[2022-12-26 20:50:10][error][CREATE_TABLE_1_TIME_PASSWORDS][]-relation "one_time_passwords" already exists
+
+[2022-12-26 20:50:10][error][CREATE_TABLE_TRIBUNAL_WORD][]-relation "tribunal_word" already exists
+
+[2022-12-26 20:50:10][error][CREATE_TABLE_TRIBUNAL_WORD_VOTE][]-relation "tribunal_word_vote" already exists
+

@@ -4,30 +4,35 @@ except:
     import MODULES as modules
 
 def CREATE_TABLES(server="false"):
-    modules.CREATE_TABLE_USER()
-    modules.CREATE_TABLE_PEOPLE()
-    modules.INSERT_DEMO_PEOPLE()
-    modules.CREATE_TABLE_POST()
-    modules.CREATE_TABLE_POST_PERSON()
-    modules.CREATE_TABLE_SUBJECTS()
-    modules.CREATE_TABLE_LIKES()
-    # modules.CREATE_TABLE_DISLIKES()
-    modules.CREATE_TABLE_FAVOURITES()
-    modules.CREATE_TABLE_COMMENTS()
-    modules.CREATE_TABLE_COMMENT_VOTES()
-    modules.CREATE_TABLE_VIEWS()
-    modules.CREATE_TABLE_CONNECTIONS()
-    modules.CREATE_TABLE_BLOCKS()
-    modules.CREATE_TABLE_IP_ADRESSES()
-    modules.CREATE_TABLE_CHAT_ROOMS()
-    modules.CREATE_TABLE_CHAT_ADMINS()
-    modules.CREATE_TABLE_CHAT_USERS()
-    modules.CREATE_TABLE_REQUESTS()
-    modules.CREATE_TABLE_SUBJECT_REQUESTS()
-    modules.CREATE_TABLE_1_TIME_PASSWORDS()
-    modules.CREATE_TABLE_TRIBUNAL_WORD()
-    modules.CREATE_TABLE_TRIBUNAL_WORD_VOTE()
-    modules.INSERT_DEMO_WORD_LIST(server) # INSERTS
+    if server == "true":
+        modules.print_title(f"INSIDE SERVER, ONLY ADD NEW TABLES [{server}]")
+    else:
+        modules.print_title(f"DEVELOPING, RECREATING ALL TABLES [{server}]", )
+        
+    modules.CREATE_TABLE_USER(server)
+    modules.CREATE_TABLE_PEOPLE(server)
+    modules.CREATE_TABLE_POST(server)
+    modules.CREATE_TABLE_POST_PERSON(server)
+    modules.CREATE_TABLE_SUBJECTS(server)
+    modules.CREATE_TABLE_LIKES(server)
+    modules.CREATE_TABLE_FAVOURITES(server)
+    modules.CREATE_TABLE_COMMENTS(server)
+    modules.CREATE_TABLE_COMMENT_VOTES(server)
+    modules.CREATE_TABLE_VIEWS(server)
+    modules.CREATE_TABLE_CONNECTIONS(server)
+    modules.CREATE_TABLE_BLOCKS(server)
+    modules.CREATE_TABLE_IP_ADRESSES(server)
+    modules.CREATE_TABLE_CHAT_ROOMS(server)
+    modules.CREATE_TABLE_CHAT_ADMINS(server)
+    modules.CREATE_TABLE_CHAT_USERS(server)
+    modules.CREATE_TABLE_SUBJECT_REQUESTS(server)
+    modules.CREATE_TABLE_1_TIME_PASSWORDS(server)
+    modules.CREATE_TABLE_TRIBUNAL_WORD(server)
+    modules.CREATE_TABLE_TRIBUNAL_WORD_VOTE(server)
+    
+    if server != "true":
+        modules.INSERT_DEMO_PEOPLE()
+        modules.INSERT_DEMO_WORD_LIST() # INSERTS
 
 def GET_ORIGINAL_PROFANITY_LIST():
     word_array = []
@@ -48,11 +53,14 @@ def GET_ORIGINAL_PEOPLE_LIST():
         
     return word_array
        
-def FULL_RESET(): 
-    CREATE_TABLES("true")
+def FULL_LIVE_RESET(server="true"): 
+    CREATE_TABLES(server=server)
 
     
 if __name__ == "__main__":
-    answer = input("DO YOU WANT TO REALLY RESET?")
-    if answer.lower() in ["y", "yes"]:
-        FULL_RESET()
+    first_reset = input("is this the first reset?")
+    if first_reset.lower() == "yes" or first_reset.lower() == "y":
+        FULL_LIVE_RESET("false")
+    else:
+        FULL_LIVE_RESET("true")
+        
