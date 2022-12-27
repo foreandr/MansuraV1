@@ -1,5 +1,7 @@
 REFRESH PROCESS
 
+find / -name "ipc.sock"
+
 0. source venv/bin/activate
 IF CHANGED CLOUD STRUCTURE, RECREATE tmp/mansura/ipc.sock file
 IF INSTALLED NEW LIBRARIES
@@ -9,8 +11,8 @@ IF CHANGE DB
 3. sudo nginx -s reload 
 
 ps ax|grep gunicorn
-4. pkill gunicorn
-5. kill -HUP 66173
+4. pkill mansura
+5. pkill gunicorn
 
 6. systemctl daemon-reload
 7. sudo systemctl start mansura

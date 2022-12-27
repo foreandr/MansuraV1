@@ -180,3 +180,6 @@ Python/__pycache__/helpers.cpython-310.pyc
 Python/__pycache__/my_email.cpython-310.pyc
 Python/__pycache__/procedures.cpython-310.pyc
 python/DB_EMAIL.py
+logs/errors/2022-12-26.txt
+python/DB_RESET.py
+python/dbconnection.py

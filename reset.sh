@@ -1,9 +1,12 @@
-mkdir /tmp/mansura
-touch /tmp/mansura/ipc.sock
+#!/bin/bash
+
+#mkdir /tmp/mansura
+#touch /tmp/mansura/ipc.sock
+sudo chmod 666 /tmp/mansura/ipc.sock
 
 #1. 
-source venv/bin/activate
-pip install -r requirments.txt
+. /root/mansura/venv/bin/activate
+pip install -r requirements.txt
 
 cd python
 python DB_RESET.py
@@ -19,4 +22,3 @@ systemctl daemon-reload
 sudo systemctl start mansura
 sudo systemctl enable mansura
 sudo systemctl status mansura
-

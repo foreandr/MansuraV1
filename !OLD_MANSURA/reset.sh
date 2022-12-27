@@ -21,7 +21,7 @@ python reset.py
 sudo nginx -s reload 
 
 # 3. 
-pkill gunicorn
+pkill mansura
 systemctl daemon-reload
 sudo systemctl start mansura
 sudo systemctl enable mansura

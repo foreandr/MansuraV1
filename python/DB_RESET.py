@@ -60,9 +60,5 @@ def FULL_LIVE_RESET(server="true"):
 
     
 if __name__ == "__main__":
-    first_reset = input("is this the first reset?")
-    if first_reset.lower() == "yes" or first_reset.lower() == "y":
-        FULL_LIVE_RESET("false")
-    else:
-        FULL_LIVE_RESET("true")
+    FULL_LIVE_RESET("true")
         
