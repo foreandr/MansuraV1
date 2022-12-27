@@ -3,4 +3,4 @@ MANSURA: 1.11,
 POSTS,
 
 SEARCH,
-[1.11]:{'AMOUNT': 1, 'SEARCHERS_LIST': ['foreandr'], 'SEARCH_CREATOR': 'foreandr', 'PERCENTAGE': 1.0} ,
+[1.11]:{'AMOUNT': 1, 'SEARCHERS_LIST': ['dailyinsights'], 'SEARCH_CREATOR': 'dailyinsights', 'PERCENTAGE': 1.0} ,

@@ -1,176 +1,72 @@
-[2022-12-10 11:09:13][error][USER_CREATE_TABLE][]-relation "users" already exists
+[2022-12-10 11:00:57][error][USER_CREATE_TABLE][]-relation "users" already exists
 
-[2022-12-10 11:09:13][error][CREATE_PAYOUTS_TABLE][]-relation "payouts" already exists
+[2022-12-10 11:00:57][error][CREATE_PAYOUTS_TABLE][]-relation "payouts" already exists
 
-[2022-12-10 11:09:13][error][FILE_CREATE_TABLE][]-relation "files" already exists
+[2022-12-10 11:00:57][error][FILE_CREATE_TABLE][]-relation "files" already exists
 
-[2022-12-10 11:09:13][error][HAD TO ROLLBACK LIKES TABLE CREATION][]-relation "likes" already exists
+[2022-12-10 11:00:57][error][HAD TO ROLLBACK LIKES TABLE CREATION][]-relation "likes" already exists
 
-[2022-12-10 11:09:13][error][DILIKES_CREATE_TABLE][]-relation "dislikes" already exists
+[2022-12-10 11:00:57][error][DILIKES_CREATE_TABLE][]-relation "dislikes" already exists
 
-[2022-12-10 11:09:13][error][CREATE_TABLE_KEYWORDS][]-relation "keywords" already exists
+[2022-12-10 11:00:57][error][CREATE_TABLE_KEYWORDS][]-relation "keywords" already exists
 
-[2022-12-10 11:09:13][error][CREATE_TABLE_FILE_KEYWORDS][]-relation "file_keywords" already exists
+[2022-12-10 11:00:57][error][CREATE_TABLE_FILE_KEYWORDS][]-relation "file_keywords" already exists
 
-[2022-12-10 11:09:13][error][FILE_VOTE_CREATE_TABLE][]-relation "file_votes" already exists
+[2022-12-10 11:00:58][error][FILE_VOTE_CREATE_TABLE][]-relation "file_votes" already exists
 
-[2022-12-10 11:09:13][error][CONNECTION_CREATE_TABLE][]-relation "connections" already exists
+[2022-12-10 11:00:58][error][CONNECTION_CREATE_TABLE][]-relation "connections" already exists
 
-[2022-12-10 11:09:13][error][CREATE_MANSURA_TABLE][]-relation "subscriptions_mensura" already exists
+[2022-12-10 11:00:58][error][CREATE_MANSURA_TABLE][]-relation "subscriptions_mensura" already exists
 
-[2022-12-10 11:09:13][error][CREATE_MANSURA_TABLE][]-relation "search_algorithms" already exists
+[2022-12-10 11:00:58][error][CREATE_MANSURA_TABLE][]-relation "search_algorithms" already exists
 
-[2022-12-10 11:09:13][error][CREATE_TABLE_SEARCH_VOTES][]-relation "search_votes" already exists
+[2022-12-10 11:00:58][error][CREATE_TABLE_SEARCH_VOTES][]-relation "search_votes" already exists
 
-[2022-12-10 11:09:14][error][CREATE_TABLE_SEARCH_FAVOURITES][]-relation "search_favourites" already exists
+[2022-12-10 11:00:58][error][CREATE_TABLE_SEARCH_FAVOURITES][]-relation "search_favourites" already exists
 
-[2022-12-10 11:09:14][error][CREATE_TABLE_POST_FAVOURITES][]-relation "post_favourites" already exists
+[2022-12-10 11:00:58][error][CREATE_TABLE_POST_FAVOURITES][]-relation "post_favourites" already exists
 
-[2022-12-10 11:09:14][error][EQUITY_CREATE_TABLE][]-relation "equity" already exists
+[2022-12-10 11:00:59][error][EQUITY_CREATE_TABLE][]-relation "equity" already exists
 
-[2022-12-10 11:09:14][error][CREATE_TABLE_1_TIME_PASSWORDS][]-relation "one_time_passwords" already exists
+[2022-12-10 11:00:59][error][CREATE_TABLE_1_TIME_PASSWORDS][]-relation "one_time_passwords" already exists
 
-[2022-12-10 11:09:14][error][CREATE_TABLE_TRIBUNAL][]-relation "tribunal" already exists
+[2022-12-10 11:00:59][error][CREATE_TABLE_TRIBUNAL][]-relation "tribunal" already exists
 
-[2022-12-10 11:09:14][error][CREATE_TABLE_PROFANITY_LIST][]-relation "profanity_list" already exists
+[2022-12-10 11:06:32][error][USER_CREATE_TABLE][]-relation "users" already exists
 
-[2022-12-10 11:09:14][error][CREATE_TABLE_PROFANITY_LIST_VOTES][]-relation "profanity_list_votes" already exists
+[2022-12-10 11:06:32][error][CREATE_PAYOUTS_TABLE][]-relation "payouts" already exists
 
-[2022-12-10 11:09:52][error][USER_CREATE_TABLE][]-relation "users" already exists
+[2022-12-10 11:06:32][error][FILE_CREATE_TABLE][]-relation "files" already exists
 
-[2022-12-10 11:09:52][error][CREATE_PAYOUTS_TABLE][]-relation "payouts" already exists
+[2022-12-10 11:06:33][error][HAD TO ROLLBACK LIKES TABLE CREATION][]-relation "likes" already exists
 
-[2022-12-10 11:09:52][error][FILE_CREATE_TABLE][]-relation "files" already exists
+[2022-12-10 11:06:33][error][DILIKES_CREATE_TABLE][]-relation "dislikes" already exists
 
-[2022-12-10 11:09:52][error][HAD TO ROLLBACK LIKES TABLE CREATION][]-relation "likes" already exists
+[2022-12-10 11:06:33][error][CREATE_TABLE_KEYWORDS][]-relation "keywords" already exists
 
-[2022-12-10 11:09:52][error][DILIKES_CREATE_TABLE][]-relation "dislikes" already exists
+[2022-12-10 11:06:33][error][CREATE_TABLE_FILE_KEYWORDS][]-relation "file_keywords" already exists
 
-[2022-12-10 11:09:52][error][CREATE_TABLE_KEYWORDS][]-relation "keywords" already exists
+[2022-12-10 11:06:33][error][FILE_VOTE_CREATE_TABLE][]-relation "file_votes" already exists
 
-[2022-12-10 11:09:52][error][CREATE_TABLE_FILE_KEYWORDS][]-relation "file_keywords" already exists
+[2022-12-10 11:06:33][error][CONNECTION_CREATE_TABLE][]-relation "connections" already exists
 
-[2022-12-10 11:09:52][error][FILE_VOTE_CREATE_TABLE][]-relation "file_votes" already exists
+[2022-12-10 11:06:33][error][CREATE_MANSURA_TABLE][]-relation "subscriptions_mensura" already exists
 
-[2022-12-10 11:09:52][error][CONNECTION_CREATE_TABLE][]-relation "connections" already exists
+[2022-12-10 11:06:34][error][CREATE_MANSURA_TABLE][]-relation "search_algorithms" already exists
 
-[2022-12-10 11:09:52][error][CREATE_MANSURA_TABLE][]-relation "subscriptions_mensura" already exists
+[2022-12-10 11:06:34][error][CREATE_TABLE_SEARCH_VOTES][]-relation "search_votes" already exists
 
-[2022-12-10 11:09:52][error][CREATE_MANSURA_TABLE][]-relation "search_algorithms" already exists
+[2022-12-10 11:06:34][error][CREATE_TABLE_SEARCH_FAVOURITES][]-relation "search_favourites" already exists
 
-[2022-12-10 11:09:52][error][CREATE_TABLE_SEARCH_VOTES][]-relation "search_votes" already exists
+[2022-12-10 11:06:34][error][CREATE_TABLE_POST_FAVOURITES][]-relation "post_favourites" already exists
 
-[2022-12-10 11:09:52][error][CREATE_TABLE_SEARCH_FAVOURITES][]-relation "search_favourites" already exists
+[2022-12-10 11:06:34][error][EQUITY_CREATE_TABLE][]-relation "equity" already exists
 
-[2022-12-10 11:09:52][error][CREATE_TABLE_POST_FAVOURITES][]-relation "post_favourites" already exists
+[2022-12-10 11:06:34][error][CREATE_TABLE_1_TIME_PASSWORDS][]-relation "one_time_passwords" already exists
 
-[2022-12-10 11:09:52][error][EQUITY_CREATE_TABLE][]-relation "equity" already exists
+[2022-12-10 11:06:34][error][CREATE_TABLE_TRIBUNAL][]-relation "tribunal" already exists
 
-[2022-12-10 11:09:52][error][CREATE_TABLE_1_TIME_PASSWORDS][]-relation "one_time_passwords" already exists
+[2022-12-10 11:06:35][error][CREATE_TABLE_PROFANITY_LIST][]-relation "profanity_list" already exists
 
-[2022-12-10 11:09:52][error][CREATE_TABLE_TRIBUNAL][]-relation "tribunal" already exists
+[2022-12-10 11:06:35][error][CREATE_TABLE_PROFANITY_LIST_VOTES][]-relation "profanity_list_votes" already exists
 
-[2022-12-10 11:09:52][error][CREATE_TABLE_PROFANITY_LIST][]-relation "profanity_list" already exists
-
-[2022-12-10 11:09:52][error][CREATE_TABLE_PROFANITY_LIST_VOTES][]-relation "profanity_list_votes" already exists
-
-[2022-12-10 11:10:02][error][USER_CREATE_TABLE][]-relation "users" already exists
-
-[2022-12-10 11:10:02][error][CREATE_PAYOUTS_TABLE][]-relation "payouts" already exists
-
-[2022-12-10 11:10:03][error][FILE_CREATE_TABLE][]-relation "files" already exists
-
-[2022-12-10 11:10:03][error][HAD TO ROLLBACK LIKES TABLE CREATION][]-relation "likes" already exists
-
-[2022-12-10 11:10:03][error][DILIKES_CREATE_TABLE][]-relation "dislikes" already exists
-
-[2022-12-10 11:10:03][error][CREATE_TABLE_KEYWORDS][]-relation "keywords" already exists
-
-[2022-12-10 11:10:03][error][CREATE_TABLE_FILE_KEYWORDS][]-relation "file_keywords" already exists
-
-[2022-12-10 11:10:03][error][FILE_VOTE_CREATE_TABLE][]-relation "file_votes" already exists
-
-[2022-12-10 11:10:03][error][CONNECTION_CREATE_TABLE][]-relation "connections" already exists
-
-[2022-12-10 11:10:03][error][CREATE_MANSURA_TABLE][]-relation "subscriptions_mensura" already exists
-
-[2022-12-10 11:10:03][error][CREATE_MANSURA_TABLE][]-relation "search_algorithms" already exists
-
-[2022-12-10 11:10:03][error][CREATE_TABLE_SEARCH_VOTES][]-relation "search_votes" already exists
-
-[2022-12-10 11:10:03][error][CREATE_TABLE_SEARCH_FAVOURITES][]-relation "search_favourites" already exists
-
-[2022-12-10 11:10:03][error][CREATE_TABLE_POST_FAVOURITES][]-relation "post_favourites" already exists
-
-[2022-12-10 11:10:03][error][EQUITY_CREATE_TABLE][]-relation "equity" already exists
-
-[2022-12-10 11:10:03][error][CREATE_TABLE_1_TIME_PASSWORDS][]-relation "one_time_passwords" already exists
-
-[2022-12-10 11:10:03][error][CREATE_TABLE_TRIBUNAL][]-relation "tribunal" already exists
-
-[2022-12-10 11:10:03][error][CREATE_TABLE_PROFANITY_LIST][]-relation "profanity_list" already exists
-
-[2022-12-10 11:10:03][error][CREATE_TABLE_PROFANITY_LIST_VOTES][]-relation "profanity_list_votes" already exists
-
-[2022-12-10 18:35:04][error][FAVOURITE_INSERT][]-column "sticky" does not exist
-LINE 5:             (sticky-footer.css, 'foreandr', CURRENT_TIMESTAM...
-                     ^
-
-[2022-12-10 18:35:04][error][FAVOURITE_REMOVE][]-column "sticky" does not exist
-LINE 3: ...RE Favouriter_Username = 'foreandr' AND File_id = sticky-foo...
-                                                             ^
-
-[2022-12-10 18:35:26][error][FAVOURITE_INSERT][]-column "sticky" does not exist
-LINE 5:             (sticky-footer.css, 'foreandr', CURRENT_TIMESTAM...
-                     ^
-
-[2022-12-10 18:35:26][error][FAVOURITE_REMOVE][]-column "sticky" does not exist
-LINE 3: ...RE Favouriter_Username = 'foreandr' AND File_id = sticky-foo...
-                                                             ^
-
-[2022-12-10 18:36:42][error][FAVOURITE_INSERT][]-duplicate key value violates unique constraint "file_favourite_pkey"
-DETAIL:  Key (favorite_id)=(14) already exists.
-
-[2022-12-10 18:36:42][error][FAVOURITE_INSERT][]-column "sticky" does not exist
-LINE 5:             (sticky-footer.css, 'foreandr', CURRENT_TIMESTAM...
-                     ^
-
-[2022-12-10 18:36:42][error][FAVOURITE_REMOVE][]-column "sticky" does not exist
-LINE 3: ...RE Favouriter_Username = 'foreandr' AND File_id = sticky-foo...
-                                                             ^
-
-[2022-12-10 18:37:40][error][FAVOURITE_INSERT][]-duplicate key value violates unique constraint "file_favourite_pkey"
-DETAIL:  Key (favorite_id)=(14) already exists.
-
-[2022-12-10 18:37:59][error][FAVOURITE_INSERT][]-duplicate key value violates unique constraint "file_favourite_pkey"
-DETAIL:  Key (favorite_id)=(36) already exists.
-
-[2022-12-10 18:38:17][error][FAVOURITE_INSERT][]-duplicate key value violates unique constraint "file_favourite_pkey"
-DETAIL:  Key (favorite_id)=(36) already exists.
-
-[2022-12-10 18:38:20][error][FAVOURITE_INSERT][]-duplicate key value violates unique constraint "file_favourite_pkey"
-DETAIL:  Key (favorite_id)=(36) already exists.
-
-[2022-12-10 18:40:04][error][FAVOURITE_INSERT][]-duplicate key value violates unique constraint "file_favourite_pkey"
-DETAIL:  Key (favorite_id)=(12) already exists.
-
-[2022-12-10 18:40:09][error][FAVOURITE_INSERT][]-duplicate key value violates unique constraint "file_favourite_pkey"
-DETAIL:  Key (favorite_id)=(12) already exists.
-
-[2022-12-10 18:42:26][error][FAVOURITE_INSERT][]-duplicate key value violates unique constraint "file_favourite_pkey"
-DETAIL:  Key (favorite_id)=(36) already exists.
-
-[2022-12-10 18:43:19][error][FAVOURITE_INSERT][]-duplicate key value violates unique constraint "file_favourite_pkey"
-DETAIL:  Key (favorite_id)=(36) already exists.
-
-[2022-12-10 18:54:28][error][FAVOURITE_INSERT][]-INSERT has more target columns than expressions
-LINE 3: ...      (Favorite_Id, File_id, Favouriter_Username, Date_Time)
-                                                             ^
-
-[2022-12-10 18:55:43][error][FAVOURITE_INSERT][]-duplicate key value violates unique constraint "file_favourite_file_id_favouriter_username_key"
-DETAIL:  Key (file_id, favouriter_username)=(36, foreandr) already exists.
-
-[2022-12-10 18:56:37][error][FAVOURITE_INSERT][]-duplicate key value violates unique constraint "file_favourite_file_id_favouriter_username_key"
-DETAIL:  Key (file_id, favouriter_username)=(14, foreandr) already exists.
-
-[2022-12-10 18:56:37][error][FAVOURITE_REMOVE][]-print_green() takes 1 positional argument but 3 were given

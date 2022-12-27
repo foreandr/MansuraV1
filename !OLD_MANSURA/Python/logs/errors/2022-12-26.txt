@@ -1,0 +1,40 @@
+[2022-12-26 20:59:22][error][USER_CREATE_TABLE][]-relation "users" already exists
+
+[2022-12-26 20:59:22][error][CREATE_PAYOUTS_TABLE][]-relation "payouts" already exists
+
+[2022-12-26 20:59:22][error][FILE_CREATE_TABLE][]-relation "files" already exists
+
+[2022-12-26 20:59:22][error][HAD TO ROLLBACK LIKES TABLE CREATION][]-relation "likes" already exists
+
+[2022-12-26 20:59:23][error][DILIKES_CREATE_TABLE][]-relation "dislikes" already exists
+
+[2022-12-26 20:59:23][error][CREATE_TABLE_KEYWORDS][]-relation "keywords" already exists
+
+[2022-12-26 20:59:23][error][CREATE_TABLE_FILE_KEYWORDS][]-relation "file_keywords" already exists
+
+[2022-12-26 20:59:23][error][FILE_VOTE_CREATE_TABLE][]-relation "file_votes" already exists
+
+[2022-12-26 20:59:23][error][CONNECTION_CREATE_TABLE][]-relation "connections" already exists
+
+[2022-12-26 20:59:23][error][CREATE_MANSURA_TABLE][]-relation "subscriptions_mensura" already exists
+
+[2022-12-26 20:59:23][error][CREATE_MANSURA_TABLE][]-relation "search_algorithms" already exists
+
+[2022-12-26 20:59:24][error][CREATE_TABLE_SEARCH_VOTES][]-relation "search_votes" already exists
+
+[2022-12-26 20:59:24][error][CREATE_TABLE_SEARCH_FAVOURITES][]-relation "search_favourites" already exists
+
+[2022-12-26 20:59:24][error][CREATE_TABLE_POST_FAVOURITES][]-relation "post_favourites" already exists
+
+[2022-12-26 20:59:24][error][EQUITY_CREATE_TABLE][]-relation "equity" already exists
+
+[2022-12-26 20:59:24][error][CREATE_TABLE_1_TIME_PASSWORDS][]-relation "one_time_passwords" already exists
+
+[2022-12-26 20:59:24][error][CREATE_TABLE_TRIBUNAL][]-relation "tribunal" already exists
+
+[2022-12-26 20:59:24][error][CREATE_TABLE_PROFANITY_LIST][]-relation "profanity_list" already exists
+
+[2022-12-26 20:59:25][error][CREATE_TABLE_PROFANITY_LIST_VOTES][]-relation "profanity_list_votes" already exists
+
+[2022-12-26 20:59:25][error][HAD TO ROLLBACK FAVOURITES TABLE CREATION][]-relation "file_favourite" already exists
+

@@ -1,0 +1,1 @@
+curl https://api.stripe.com/v1/payouts -u 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 -H "Stripe-Account: acct_1LrTnAR64MSyIzXb" -d amount=1 -d currency=usd

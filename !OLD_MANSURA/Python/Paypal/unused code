@@ -1,0 +1,37 @@
+
+<script src="https://www.paypal.com/sdk/js?client-id=AYQLIdaKdimWeGBm2GA-sQKJEMeFxMHtutYMwIGEA92gQSAGJb-9d1oyksP9MozKYSspppmB70KIxb4v"></script>
+<script src="{{ url_for('static', filename='js/add_funds.js') }}"></script>
+<div>
+    ADDING FUNDS
+</div>
+
+
+<div id="paypal">
+
+</div>
+
+<script>
+
+    // SANDBOX PERSONAL USER:sb-ju6lw21136599@personal.example.com
+    // SANDBOX PERSONAL PASS:_^z3MR'k
+
+    // SANDBOX BUSINESS USER:sb-tg3ys21044261@business.example.com
+    // SANDBOX BUSINESS PASS:uE9>W56&
+    amount = ' {{amount}}'
+    amount_float = parseFloat(amount);
+    //console.log(amount)
+    // console.log(amount_int)
+    paypal.Buttons({
+        createOrder: function (data, actions) {
+            // Set up the transaction
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: amount_float,
+                        currencycode: 'CAD',
+                    }
+                }]
+            });
+        }
+    }).render('#paypal');
+</script>

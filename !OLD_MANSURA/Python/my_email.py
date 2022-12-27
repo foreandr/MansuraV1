@@ -14,7 +14,7 @@ def send_email(email, one_time_password):
 
     subject = "Forgot Password Recovery"
     msg = MIMEText(f'''
-    <a href="http://165.227.35.71:809/password_reset">Reset Password</a>
+    <a href="https://mansura.ca/password_reset">Reset Password</a>
 
     One Time Password:{one_time_password}
     ''', 'html')

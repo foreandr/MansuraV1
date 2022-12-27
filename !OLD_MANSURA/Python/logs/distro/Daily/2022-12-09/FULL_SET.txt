@@ -1,13 +1,6 @@
-MANSURA: 14.71,
+MANSURA: 0.0,
 
 POSTS,
-13 [EQUAL DISTRIBUTION] : {'VALUE': {'VOTES': 2, 'PERCENT': '%20.0', 'AMOUNT': 7.94}, 'ORDER': ['Valen', 'Tyriek', 'Tyrece'], 'REPLY': {'REPLYING_TO': 'Valen', 'AMOUNT': 0.88}},
-12 [EQUAL DISTRIBUTION] : {'VALUE': {'VOTES': 2, 'PERCENT': '%20.0', 'AMOUNT': 7.94}, 'ORDER': ['Valen', 'Tyeesha', 'Travers'], 'REPLY': {'REPLYING_TO': 'Valen', 'AMOUNT': 0.88}},
-19 [EQUAL DISTRIBUTION] : {'VALUE': {'VOTES': 2, 'PERCENT': '%20.0', 'AMOUNT': 7.94}, 'ORDER': ['Valen', 'Tya', 'Terresa'], 'REPLY': {'REPLYING_TO': 'Valen', 'AMOUNT': 0.88}},
-26 [EQUAL DISTRIBUTION] : {'VALUE': {'VOTES': 2, 'PERCENT': '%20.0', 'AMOUNT': 7.94}, 'ORDER': ['Valen', 'Tong', 'Terral'], 'REPLY': {'REPLYING_TO': 'Valen', 'AMOUNT': 0.88}},
-17 [EQUAL DISTRIBUTION] : {'VALUE': {'VOTES': 2, 'PERCENT': '%20.0', 'AMOUNT': 7.94}, 'ORDER': ['Valen', 'Timithy', 'Tedd'], 'REPLY': {'REPLYING_TO': 'Valen', 'AMOUNT': 0.88}},
 
 SEARCH,
-[7.355]:{'AMOUNT': 2, 'SEARCHERS_LIST': ['foreandr', 'a'], 'SEARCH_CREATOR': 'a', 'PERCENTAGE': 0.5} ,
-[3.6775]:{'AMOUNT': 1, 'SEARCHERS_LIST': ['Maire'], 'SEARCH_CREATOR': 'foreandr', 'PERCENTAGE': 0.25} ,
-[3.6775]:{'AMOUNT': 1, 'SEARCHERS_LIST': ['andefore'], 'SEARCH_CREATOR': 'andrfore', 'PERCENTAGE': 0.25} ,
+[0.0]:{'AMOUNT': 1, 'SEARCHERS_LIST': ['dailyinsights'], 'SEARCH_CREATOR': 'dailyinsights', 'PERCENTAGE': 1.0} ,

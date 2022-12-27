@@ -1,239 +1,171 @@
-[2022-12-08 08:59:08][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 09:16:50][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 09:44:11][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 09:44:16][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 09:44:46][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 09:46:35][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 09:46:48][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 09:47:16][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 09:48:00][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:02:45][request][][]-<Request 'http://165.227.35.71:8096/favicon.ico' [GET]>
-[2022-12-08 10:03:18][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:03:29][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:03:31][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:03:37][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:05:36][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:05:39][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:05:43][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:06:08][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:06:14][request][][]-<Request 'http://165.227.35.71:8096/Valen_Valen-21-post_page' [GET]>
-[2022-12-08 10:06:14][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:06:17][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:06:19][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:06:20][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:07:05][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:07:07][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:08:11][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:08:14][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:08:17][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:08:23][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:08:58][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:09:02][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:11:17][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:11:20][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:14:16][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:15:29][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:17:00][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:17:19][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:42:58][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:43:58][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:46:28][request][][]-<Request 'http://165.227.35.71:8096/Valen_Valen-21-post_page' [GET]>
-[2022-12-08 10:46:29][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:46:45][request][][]-<Request 'http://165.227.35.71:8096/foreandr_foreandr-70-post_page' [GET]>
-[2022-12-08 10:46:47][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 10:46:55][request][][]-<Request 'http://165.227.35.71:8096/foreandr_foreandr-70-post_page' [GET]>
-[2022-12-08 10:46:56][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 11:12:44][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 12:06:07][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 12:06:14][request][][]-<Request 'http://165.227.35.71:8096/foreandr' [GET]>
-[2022-12-08 12:06:15][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 12:06:20][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 12:08:34][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 12:08:40][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 12:18:49][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 13:01:28][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 13:01:34][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:02:51][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:06:46][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:12:09][request][][]-<Request 'http://165.227.35.71:8096/favicon.ico' [GET]>
-[2022-12-08 14:12:26][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:13:07][request][][]-<Request 'http://165.227.35.71:8096/favicon.ico' [GET]>
-[2022-12-08 14:13:28][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:14:32][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:15:33][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:25:48][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:30:11][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:31:24][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:32:26][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:32:28][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:32:37][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:32:53][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:33:34][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:34:30][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:34:35][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:34:39][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:34:42][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:34:45][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:34:52][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:34:57][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:38:22][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:38:40][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:38:42][request][][]-<Request 'http://165.227.35.71:8096/terms_and_conditions' [GET]>
-[2022-12-08 14:38:42][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:39:08][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:39:25][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:40:23][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:40:31][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:41:15][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:41:59][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:42:35][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:43:16][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:44:11][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:46:31][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:47:30][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:47:35][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:47:57][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:47:58][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:48:03][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:48:03][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:48:06][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:49:22][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:49:23][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:49:43][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:49:44][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:50:41][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:50:42][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:51:01][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:51:02][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:51:11][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:51:12][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:51:24][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:51:26][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:51:39][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:51:40][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:51:51][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:51:52][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:52:02][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:52:03][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:52:17][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:52:18][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:52:41][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:52:41][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:52:54][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:52:55][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:53:06][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:53:07][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:53:34][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:53:35][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:53:58][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:53:59][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:54:12][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:54:13][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:54:26][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:54:27][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:54:47][request][][]-<Request 'http://165.227.35.71:8096/Valen' [GET]>
-[2022-12-08 14:54:47][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:54:52][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 14:55:15][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 15:04:42][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 15:04:45][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 15:04:58][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 15:05:53][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 15:05:56][request][][]-<Request 'http://165.227.35.71:8096/favicon.ico' [GET]>
-[2022-12-08 15:12:15][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 15:50:23][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 15:50:28][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 15:50:31][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 15:50:36][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 15:51:51][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 15:54:14][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:03:46][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:03:50][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:05:34][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:22:46][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:23:15][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:30:46][request][][]-<Request 'http://165.227.35.71:8096/foreandr' [GET]>
-[2022-12-08 16:30:46][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:33:26][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:35:02][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:35:05][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:35:49][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:38:56][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:39:15][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:39:19][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:39:28][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:40:03][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:41:36][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:42:01][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:42:24][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:42:30][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:43:34][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:43:44][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:44:05][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:44:49][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:44:59][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:46:02][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:46:13][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:46:35][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:47:35][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:47:41][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:48:04][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:48:10][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:48:15][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:48:18][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:48:19][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:48:22][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 16:48:31][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 17:30:17][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 17:30:26][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 17:41:58][request][][]-<Request 'http://165.227.35.71:8096/cover_page' [GET]>
-[2022-12-08 18:47:23][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:12:37][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:31:02][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:31:04][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:31:23][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:31:50][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:35:11][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:37:02][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:37:50][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:38:33][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:38:36][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:39:17][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:39:21][request][][]-<Request 'http://165.227.35.71:8096/favicon.ico' [GET]>
-[2022-12-08 19:39:31][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:41:05][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:59:39][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 19:59:55][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:00:00][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:00:02][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:00:06][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:00:11][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:00:13][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:00:16][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:01:47][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:01:49][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:02:26][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:02:28][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:02:31][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:02:36][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:02:39][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:02:42][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:11:43][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:11:47][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:11:50][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:12:45][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:12:48][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:13:16][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:13:19][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:13:22][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:13:25][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:13:33][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:14:20][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:14:25][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:14:29][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:14:32][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:15:43][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:15:46][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:15:49][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:15:51][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
-[2022-12-08 20:15:54][request][][]-<Request 'http://165.227.35.71:8096/sticky-footer.css' [GET]>
+2022-12-08 00:04:39 [request][]- <Request 'https://165.227.39.3/favicon.ico' [GET]>
+2022-12-08 00:10:14 [request][]- <Request 'https://165.227.39.3/cover_page' [GET]>
+2022-12-08 10:24:42 [request][]- <Request 'https://165.227.39.3/cover_page' [GET]>
+2022-12-08 11:12:13 [request][]- <Request 'https://dfperuano.life/.env' [GET]>
+2022-12-08 11:12:14 [request][]- <Request 'https://dfperuano.life/.env' [POST]>
+2022-12-08 11:18:55 [request][youtubebot]- <Request 'https://mansura.ca/' [GET]>
+2022-12-08 11:18:55 [request][]- <Request 'https://mansura.ca/sticky-footer.css' [GET]>
+2022-12-08 11:18:56 [request][youtubebot]- <Request 'https://mansura.ca/' [GET]>
+2022-12-08 12:06:47 [request][]- <Request 'https://165.227.39.3/cover_page' [GET]>
+2022-12-08 12:06:48 [request][]- <Request 'https://165.227.39.3/favicon.ico' [GET]>
+2022-12-08 12:06:48 [request][]- <Request 'https://165.227.39.3/login' [GET]>
+2022-12-08 12:06:48 [request][]- <Request 'https://165.227.39.3/cover_page' [GET]>
+2022-12-08 13:08:22 [request][]- <Request 'https://dfperuano.life/robots.txt' [GET]>
+2022-12-08 13:08:22 [request][]- <Request 'https://dfperuano.life/login' [GET]>
+2022-12-08 13:08:22 [request][]- <Request 'https://dfperuano.life/robots.txt' [GET]>
+2022-12-08 13:08:22 [request][]- <Request 'https://dfperuano.life/login' [GET]>
+2022-12-08 13:55:39 [request][]- <Request 'https://165.227.39.3/Portal0000.htm' [GET]>
+2022-12-08 13:55:39 [request][]- <Request 'https://165.227.39.3/login' [GET]>
+2022-12-08 13:55:40 [request][]- <Request 'https://165.227.39.3/nmaplowercheck1670525739' [GET]>
+2022-12-08 13:55:40 [request][]- <Request 'https://165.227.39.3/HNAP1' [GET]>
+2022-12-08 13:55:40 [request][]- <Request 'https://165.227.39.3/main.shtml' [GET]>
+2022-12-08 13:55:40 [request][]- <Request 'https://165.227.39.3/sdk' [POST]>
+2022-12-08 13:55:40 [request][]- <Request 'https://165.227.39.3/__Additional' [GET]>
+2022-12-08 13:55:40 [request][]- <Request 'https://165.227.39.3/cover_page' [GET]>
+2022-12-08 13:55:40 [request][]- <Request 'https://165.227.39.3/home.cfm' [GET]>
+2022-12-08 13:55:40 [request][]- <Request 'https://165.227.39.3/cover_page' [GET]>
+2022-12-08 13:55:41 [request][]- <Request 'https://165.227.39.3/pools' [GET]>
+2022-12-08 13:55:41 [request][]- <Request 'https://165.227.39.3/start.shtml' [GET]>
+2022-12-08 13:55:41 [request][]- <Request 'https://165.227.39.3/cover_page' [GET]>
+2022-12-08 13:55:41 [request][]- <Request 'https://165.227.39.3/index.jsa' [GET]>
+2022-12-08 13:55:41 [request][]- <Request 'https://165.227.39.3/robots.txt' [GET]>
+2022-12-08 13:55:41 [request][]- <Request 'https://165.227.39.3/favicon.ico' [GET]>
+2022-12-08 13:55:41 [request][]- <Request 'https://165.227.39.3/home.pl' [GET]>
+2022-12-08 13:55:41 [request][]- <Request 'https://165.227.39.3/cover_page' [HEAD]>
+2022-12-08 13:55:42 [request][]- <Request 'https://165.227.39.3/readme.txt' [GET]>
+2022-12-08 13:55:42 [request][]- <Request 'https://165.227.39.3/menu.cfm' [GET]>
+2022-12-08 13:55:42 [request][]- <Request 'https://165.227.39.3/cover_page' [GET]>
+2022-12-08 13:55:42 [request][]- <Request 'https://165.227.39.3/main.php' [GET]>
+2022-12-08 13:55:43 [request][]- <Request 'https://165.227.39.3/default.cgi' [GET]>
+2022-12-08 13:55:43 [request][]- <Request 'https://165.227.39.3/main.cgi' [GET]>
+2022-12-08 13:55:43 [request][]- <Request 'https://165.227.39.3/admin.jhtml' [GET]>
+2022-12-08 13:55:43 [request][]- <Request 'https://165.227.39.3/index.html' [GET]>
+2022-12-08 13:55:43 [request][]- <Request 'https://165.227.39.3/indice.shtml' [GET]>
+2022-12-08 13:55:43 [request][]- <Request 'https://165.227.39.3/admin.pl' [GET]>
+2022-12-08 13:55:44 [request][]- <Request 'https://165.227.39.3/localstart.jhtml' [GET]>
+2022-12-08 13:55:44 [request][]- <Request 'https://165.227.39.3/inicio.html' [GET]>
+2022-12-08 13:55:44 [request][]- <Request 'https://165.227.39.3/index.cfm' [GET]>
+2022-12-08 13:55:44 [request][]- <Request 'https://165.227.39.3/admin.php' [GET]>
+2022-12-08 13:55:44 [request][]- <Request 'https://165.227.39.3/main.pl' [GET]>
+2022-12-08 13:55:44 [request][]- <Request 'https://165.227.39.3/start.jsa' [GET]>
+2022-12-08 13:55:45 [request][]- <Request 'https://165.227.39.3/admin.html' [GET]>
+2022-12-08 13:55:45 [request][]- <Request 'https://165.227.39.3/default.shtml' [GET]>
+2022-12-08 13:55:45 [request][]- <Request 'https://165.227.39.3/base.jsp' [GET]>
+2022-12-08 13:55:45 [request][]- <Request 'https://165.227.39.3/admin.shtml' [GET]>
+2022-12-08 13:55:45 [request][]- <Request 'https://165.227.39.3/admin.jsa' [GET]>
+2022-12-08 13:55:45 [request][]- <Request 'https://165.227.39.3/admin.cgi' [GET]>
+2022-12-08 13:55:45 [request][]- <Request 'https://165.227.39.3/menu.asp' [GET]>
+2022-12-08 13:55:46 [request][]- <Request 'https://165.227.39.3/base.jsa' [GET]>
+2022-12-08 13:55:46 [request][]- <Request 'https://165.227.39.3/admin.aspx' [GET]>
+2022-12-08 13:55:46 [request][]- <Request 'https://165.227.39.3/menu.cgi' [GET]>
+2022-12-08 13:55:46 [request][]- <Request 'https://165.227.39.3/admin.asp' [GET]>
+2022-12-08 13:55:46 [request][]- <Request 'https://165.227.39.3/base.cgi' [GET]>
+2022-12-08 13:55:47 [request][]- <Request 'https://165.227.39.3/base.pl' [GET]>
+2022-12-08 13:55:47 [request][]- <Request 'https://165.227.39.3/base.shtml' [GET]>
+2022-12-08 13:55:47 [request][]- <Request 'https://165.227.39.3/localstart.pl' [GET]>
+2022-12-08 13:55:47 [request][]- <Request 'https://165.227.39.3/admin.cfm' [GET]>
+2022-12-08 13:55:47 [request][]- <Request 'https://165.227.39.3/start.cgi' [GET]>
+2022-12-08 13:55:47 [request][]- <Request 'https://165.227.39.3/localstart.aspx' [GET]>
+2022-12-08 13:55:48 [request][]- <Request 'https://165.227.39.3/base.asp' [GET]>
+2022-12-08 13:55:48 [request][]- <Request 'https://165.227.39.3/home.aspx' [GET]>
+2022-12-08 13:55:48 [request][]- <Request 'https://165.227.39.3/home.jsa' [GET]>
+2022-12-08 13:55:48 [request][]- <Request 'https://165.227.39.3/default.cfm' [GET]>
+2022-12-08 13:55:48 [request][]- <Request 'https://165.227.39.3/start.pl' [GET]>
+2022-12-08 13:55:48 [request][]- <Request 'https://165.227.39.3/base.cfm' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/menu.pl' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/localstart.html' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/base.aspx' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/menu.php' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/base.inc' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/indice.pl' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/menu.jsp' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/indice.php' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/localstart.shtml' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/menu.html' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/inicio.cgi' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/default.pl' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/default.aspx' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/main.asp' [GET]>
+2022-12-08 13:55:49 [request][]- <Request 'https://165.227.39.3/indice.jsa' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/home.cgi' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/index.aspx' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/default.jsa' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/localstart.php' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/indice.jhtml' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/home.html' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/main.jhtml' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/base.php' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/main.jsp' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/start.html' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/index.shtml' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/main.jsa' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/default.asp' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/start.aspx' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/indice.cgi' [GET]>
+2022-12-08 13:55:50 [request][]- <Request 'https://165.227.39.3/indice.cfm' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/inicio.php' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/indice.aspx' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/default.jsp' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/indice.asp' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/inicio.aspx' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/inicio.shtml' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/inicio.asp' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/inicio.pl' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/index.jsp' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/inicio.jsa' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/default.php' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/inicio.jhtml' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/menu.jsa' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/menu.shtml' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/indice.jsp' [GET]>
+2022-12-08 13:55:51 [request][]- <Request 'https://165.227.39.3/localstart.jsp' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/menu.jhtml' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/indice.html' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/index.asp' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/localstart.cgi' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/index.jhtml' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/home.shtml' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/inicio.cfm' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/index.php' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/main.aspx' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/index.cgi' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/home.asp' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/start.jsp' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/localstart.cfm' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/start.php' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/base.html' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/default.html' [GET]>
+2022-12-08 13:55:52 [request][]- <Request 'https://165.227.39.3/menu.aspx' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/base.jhtml' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/start.cfm' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/start.asp' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/admin.jsp' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/main.html' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/home.jsp' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/inicio.jsp' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/start.jhtml' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/home.php' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/localstart.jsa' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/index.pl' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/main.cfm' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/default.jhtml' [GET]>
+2022-12-08 13:55:53 [request][]- <Request 'https://165.227.39.3/localstart.asp' [GET]>
+2022-12-08 13:58:39 [request][]- <Request 'https://165.227.39.3/cover_page' [GET]>
+2022-12-08 14:16:32 [request][]- <Request 'https://mansura.ca/cover_page' [GET]>
+2022-12-08 14:16:33 [request][]- <Request 'https://mansura.ca/sticky-footer.css' [GET]>
+2022-12-08 14:16:33 [request][]- <Request 'https://mansura.ca/login' [GET]>
+2022-12-08 14:16:34 [request][]- <Request 'https://mansura.ca/cover_page' [GET]>
+2022-12-08 14:16:34 [request][]- <Request 'https://mansura.ca/cover_page' [GET]>
+2022-12-08 14:16:35 [request][]- <Request 'https://mansura.ca/sticky-footer.css' [GET]>
+2022-12-08 14:16:35 [request][]- <Request 'https://mansura.ca/sticky-footer.css' [GET]>
+2022-12-08 14:16:36 [request][]- <Request 'https://mansura.ca/login' [GET]>
+2022-12-08 14:16:39 [request][]- <Request 'https://mansura.ca/login' [GET]>
+2022-12-08 14:27:51 [request][]- <Request 'https://165.227.39.3/cover_page' [GET]>
+2022-12-08 16:24:10 [request][]- <Request 'https://165.227.39.3/I9qi' [GET]>
+2022-12-08 16:24:11 [request][]- <Request 'https://165.227.39.3/login' [GET]>
+2022-12-08 16:24:11 [request][]- <Request 'https://165.227.39.3/FYvH' [GET]>
+2022-12-08 17:40:41 [request][]- <Request 'https://165.227.39.3/cover_page' [GET]>
+2022-12-08 18:30:14 [request][]- <Request 'https://165.227.39.3/version' [GET]>
+2022-12-08 20:38:36 [request][youtubebot]- <Request 'https://mansura.ca/' [GET]>
+2022-12-08 20:38:36 [request][]- <Request 'https://mansura.ca/sticky-footer.css' [GET]>
+2022-12-08 20:38:37 [request][youtubebot]- <Request 'https://mansura.ca/' [GET]>
