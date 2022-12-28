@@ -1,0 +1,6 @@
+https://stackoverflow.com/questions/21820444/nginx-error-13-permission-denied-while-connecting-to-upstream
+
+1. Change permissions of the .sock file (not sure about the impact)
+2. Change NGINX config 
+    FROM: user www-data;
+    TO  : user root;

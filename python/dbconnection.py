@@ -23,3 +23,4 @@ def create_connection():
     conn = test_connection()
     cursor = conn.cursor()
     return cursor, conn
+
