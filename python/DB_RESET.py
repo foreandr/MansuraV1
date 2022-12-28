@@ -30,11 +30,11 @@ def CREATE_TABLES(server="false"):
     modules.CREATE_TABLE_TRIBUNAL_WORD(server)
     modules.CREATE_TABLE_TRIBUNAL_WORD_VOTE(server)
     
-    '''
+    
     if server != "true":
         modules.INSERT_DEMO_PEOPLE()
         modules.INSERT_DEMO_WORD_LIST() # INSERTS
-    '''
+    
 
 def GET_ORIGINAL_PROFANITY_LIST():
     word_array = []
