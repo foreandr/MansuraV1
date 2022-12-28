@@ -14,6 +14,7 @@ app.secret_key = 'demokey'
 
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
+    print("test================")
     return redirect(url_for('post_logic', person_id=0,page_no=0 ))
     
 @app.route("/<person_id>/<page_no>", methods=['GET', 'POST'])

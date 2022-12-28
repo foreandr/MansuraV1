@@ -55,8 +55,10 @@ def GET_ORIGINAL_PEOPLE_LIST():
         
     return word_array
        
-def FULL_LIVE_RESET(server="true"): 
-    CREATE_TABLES(server=server)
+def FULL_LIVE_RESET(server="true"):
+    answer = input(F"DO YOU WANT TO RESET [{server}]") 
+    if answer.lower() == "y": 
+        CREATE_TABLES(server=server)
 
     
 if __name__ == "__main__":

@@ -207,7 +207,7 @@ def FULL_DEMO_INSERT():
     
 if __name__ == "__main__":
 
-    answer = input("DO YOU WANT TO REALLY RESET?")
+    answer = input("DO YOU WANT TO REALLY RESET? [NOT IN SERVER]")
     if answer.lower() in ["y", "yes"]:
         modules.CREATE_TABLES("false")
         FULL_DEMO_INSERT()
