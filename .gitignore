@@ -323,3 +323,6 @@ python/dbconnection.py
 !OLD_MANSURA/Python/HISTORY/Yearly/2022-11-13.xlsx
 !OLD_MANSURA/Python/HISTORY/Yearly/2022-12-03-dist.csv
 !OLD_MANSURA/Python/HISTORY/Yearly/2022-12-03.xlsx
+python/__pycache__/helpers.cpython-310.pyc
+.gitignore
+python/dbconnection.py

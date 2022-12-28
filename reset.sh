@@ -10,7 +10,6 @@ pip install -r requirements.txt
 
 cd python
 python DB_RESET.py
-
 cd ..
 
 # 2.

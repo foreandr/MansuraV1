@@ -322,12 +322,12 @@ def GET_NUM_FAVOURITES_BY_POST_ID(Post_id):
     return results
 
 def SEARCH_DETAILS(searcher, person_id="", page_no=1):
-    """
+    
     print("SEARCH DETAILS============")
     print("searcher      :", searcher)
     print("person_id     :", person_id)
     print("page_no       :", page_no)
-    """
+    
     pass
 def SEARCH_USER_HAS_LIKED(searcher_id):
     return f"""
