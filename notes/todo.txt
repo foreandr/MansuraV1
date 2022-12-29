@@ -1,3 +1,8 @@
+3 tiktoks per page is the limit
+seems like there is some weird issue where u have to put the embeddings in html beforte you give them to jinja, jinja can't dynamically render them all maybe?
+
+
+
 gdsaqlhggkishjng
 pytest
 TODO: should add more input checks in the frontend

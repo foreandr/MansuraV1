@@ -11,9 +11,7 @@
 {% endblock nav %}
 
 {%block main %}
-
-
-        {% if coming_from_tribunal == "true" %}
+{% if coming_from_tribunal == "true" %}
             {% if page_no == 1 %}
             <a href="/"><h1>WANT TO BE AN ADMIN? APPLY HERE!</h1></a>
             {% endif %}
@@ -33,7 +31,6 @@
             <div class="row gy-5" style="margin: auto">
             {% endif %}
         
-
         {% else %}
             {% if can_scroll == true %}
             <div class="row gy-5" style="margin: auto" hx-post="/{{person_id}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
@@ -45,10 +42,11 @@
         {% for i in range(0, num_posts) %}
         {% if posts[i][0] |length  == 0%} <!--DON'T print the empties-->
         {% else %}
-            <div class="col-sm" hx-post="/update_view/{{posts[i][6]}}" hx-trigger="click" hx-target="#view_location{{i}}" hx-swap="innerHTML">
+            <div class="col-sm" hx-post="/update_view/{{posts[i][6]}}" hx-trigger="click" hx-target="#view_location{{i}}" hx-swap="innerHTML" style="overflow:scroll"  onscroll="myFunction()">
                 <div class="card" id="videos">
                     <div class="card-header">
                         <h1>{{posts[i][0]}}</h1>
+                        <a href="{{posts[i][13]}}">{{posts[i][13]}}<h6></h6></a>
                         <!--<h1>{{[i]}}</h1>-->
                     </div>
 
@@ -59,11 +57,14 @@
                             </h3>
                         </a>
                         <h5>{{posts[i][1]}}</h5>
+                        
                     </div>
 
                     <div class="row no-gutters">
                         <!--VIDEO-->
                         <div class="col-md-4">
+                            
+                            {{posts[i][2]}}
                             {{posts[i][2] | safe}}
                         </div>
 
@@ -243,9 +244,6 @@
                                     
                                     {% endif %}
 
-                                
-                                
-
                                 {% endif %}
                             </span>
 
@@ -264,6 +262,22 @@
 
 
 <script>
+    function myFunction(){
+        console.log("hello world")
+    }
+    function isScrolledIntoView(el) {
+        console.log(el)
+        var rect = el.getBoundingClientRect();
+        var elemTop = rect.top;
+        var elemBottom = rect.bottom;
+    
+        // Only completely visible elements return true:
+        var isVisible = (elemTop >= 0) && (elemBottom <= window.innerHeight);
+        // Partially visible elements return true:
+        //isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+        return isVisible;
+    }
+
     function like_logic(value){
         console.log(value)
         if ( $(value).hasClass("btn btn-outline-danger")){

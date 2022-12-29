@@ -336,7 +336,7 @@ def SEARCH_USER_HAS_LIKED(searcher_id):
             FROM LIKES likes
             WHERE likes.Post_id = posts.Post_id
             AND '{searcher_id}' = likes.User_id
-        ),
+        )
     """
 
 def SEARCH_USER_HAS_SAVED(searcher_id):
@@ -394,8 +394,10 @@ def UNIVERSAL_FUNCTION(
     people.Person_id,
     posts.Post_id,
     {modules.GET_ALL_COUNTS()}
-    {modules.SEARCH_USER_HAS_LIKED(searcher_id)}
-    {modules.SEARCH_USER_HAS_SAVED(searcher_id)}
+    {modules.SEARCH_USER_HAS_LIKED(searcher_id)},
+    {modules.SEARCH_USER_HAS_SAVED(searcher_id)},
+    posts.Post_link 
+    
     
     FROM POSTS posts
     
@@ -437,6 +439,7 @@ def UNIVERSAL_FUNCTION(
             i[10], # count views 
             i[11], # has searcher liked post ( 0 == unliked)
             i[12], # has searcher SAVED post ( 0 == unliked)
+            i[13], # post link
         ])
         # print(i)
         
@@ -584,6 +587,7 @@ def GET_ALL_INTERACTIONS(User_id):
             i[7]  # BLOCKS
             ])
         
+    modules.close_conn(cursor, conn)
     results = results[0]
     # print(results)
     count = 0
@@ -595,7 +599,7 @@ def GET_ALL_INTERACTIONS(User_id):
         return False
     return True
     
-    modules.close_conn(cursor, conn)
+   
     
 if __name__ == "__main__": 
     # modules.GET_ALL_USERS()

@@ -3,7 +3,9 @@
     bottom: 0;
 }
 
-
+#adjust_nav_bar{
+  margin-right: 150px;
+}
 
 /*MODAL RELATED */
 .modal-content {

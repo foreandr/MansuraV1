@@ -30,6 +30,8 @@ def post_logic(person_id, page_no):
     
     offset_calc = int(int(page_no) * int(posts_per_page))
 
+    
+    
     return render_template('home.html',
         query=query,                   
                            

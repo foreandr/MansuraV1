@@ -76,88 +76,6 @@ def print_error(string):
 def print_warning(string):
     print(bcolors.WARNING + str(string) + bcolors.ENDC)     
     
-def translate_link_to_html(link):
-    # print("ORIGIN", link)
-    
-    if link == None:
-        return link
-    try:
-        if "tiktok" in link:
-            tiktok_template = '''                
-                <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME/video/LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID" data-video-id="LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID" style="max-width: 605px;min-width: 325px;"> 
-                    <section> 
-                        <a href="https://www.tiktok.com/@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME?refer=embed"></a>
-                    </section>
-                </blockquote>
-                <!--PROPERLY EMBEDDED HTML TAG-->
-                '''
-            #print("THIS IS A TIKTOK VIDEO")
-            
-            #A TYPICAL LINK LOOKS LIKE THIS https://www.tiktok.com/@lucciamv1/video/7173015261623225642?is_copy_url=1&is_from_webapp=v1
-            tiktok_list = link.split("https://www.tiktok.com/@")
-            #print("tiktok_list", tiktok_list)
-            
-            tiktok_base_url = tiktok_list[1]
-            #print("tiktok_base_url", tiktok_base_url)
-            
-            username_video_split = tiktok_list[1].split("/video/")
-            username = username_video_split[0]
-            #print("username", username)
-            
-            tiktok_video_file_id = username_video_split[1].split("?")[0] # this seems to be in the videos, i could imagine it leading to problems   
-            #print("tiktok_video_file_id", tiktok_video_file_id)
-            
-            # REPLACE THE TEMPLATE
-            tiktok_template = tiktok_template.replace("LOCATION_FOR_TIKTOK_UPLOADER_USERNAME", username)
-            tiktok_template = tiktok_template.replace("LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID", tiktok_video_file_id)
-            
-            link = tiktok_template
-            
-        elif "youtube" in link:
-            if "list" in link: # check if if it's a playlist or any other ways youtube can be fucked about with
-                return link
-            
-            #print("THIS IS A YOUTUBE VIDEO")
-            youtube_template = '''
-            <iframe class="youtube-player" width="500" height="315" src="https://www.youtube.com/embed/YOUTUBE_FILE_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-            </iframe>
-            <!--PROPERLY EMBEDDED HTML TAG-->
-            '''
-            
-            link_without_watch = link.split("watch?v=")
-            #print("link_without_watch", link_without_watch)
-            
-            youtube_file_id = link_without_watch[1]
-            #print("youtube_file_id", youtube_file_id)
-            
-            youtube_template = youtube_template.replace("YOUTUBE_FILE_ID", youtube_file_id)
-            link = youtube_template
-
-        elif "spotify" in link:
-            # print(link, "\n")
-                        
-            spotify_template = """
-                <iframe class="youtube-player" src="https://open.spotify.com/embed/episode/@SPOTIFY_EPISDE_ID?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-            """
-            # https://open.spotify.com/episode/4CESb99rKgkQ5MvNL4HaFJ?si=3e1ea553d7c14637
-            link_without_tail = link.split("?")[0]
-            id = link_without_tail.split("episode/")[1]
-            
-            #print("SPOTIFY ID", id, "\n")
-            
-            spotify_template = spotify_template.replace("@SPOTIFY_EPISDE_ID", id)
-            
-            #print(spotify_template)
-            link = spotify_template
-        
-        elif "rumble" in link:
-            link = link
-
-        return link
-    except Exception as e:
-        modules.log_function("error", str(e), function_name=F"{inspect.stack()[0][3]}")
-        return link  
-
 def remove_special_characters(string):
     return string
 
@@ -544,11 +462,96 @@ def CHECK_INJECTION(word):
         return False
     else:
         return True
-if __name__ == "__main__":
-    print_title(F"{inspect.stack()[0][3]}\n")
-    print(CHECK_INJECTION("--"))
-    # COUNT_HOW_MANY_CUSS_WORD()
+def translate_link_to_html(link):
+    #print("ORIGIN", link)
+    
+    if link == None:
+        return link
+    try:
+        if "tiktok" in link:
+            
+            tiktok_template = '''<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME/video/LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID" data-video-id="LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID" style="max-width: 605px;min-width: 325px;" > <section> <a target="_blank" title="@mazinosarchive" href="https://www.tiktok.com/@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME?refer=embed">@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME</a> <p>Impressive, very nice</p> <a target="_blank" title="♬ original sound - Mazino" href="https://www.tiktok.com/music/original-sound-LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID?refer=embed">♬ original sound - LOCATION_FOR_TIKTOK_UPLOADER_USERNAME</a> </section> </blockquote>
+                '''
+            #print("THIS IS A TIKTOK VIDEO")
+            
+            #A TYPICAL LINK LOOKS LIKE THIS https://www.tiktok.com/@lucciamv1/video/7173015261623225642?is_copy_url=1&is_from_webapp=v1
+            tiktok_list = link.split("https://www.tiktok.com/@")
+            #print("tiktok_list", tiktok_list)
+            
+            tiktok_base_url = tiktok_list[1]
+            #print("tiktok_base_url", tiktok_base_url)
+            
+            username_video_split = tiktok_list[1].split("/video/")
+            username = username_video_split[0]
+            #print("username", username)
+            
+            tiktok_video_file_id = username_video_split[1].split("?")[0] # this seems to be in the videos, i could imagine it leading to problems   
+            #print("tiktok_video_file_id", tiktok_video_file_id)
+            
+            # REPLACE THE TEMPLATE
+            tiktok_template = tiktok_template.replace("LOCATION_FOR_TIKTOK_UPLOADER_USERNAME", username)
+            tiktok_template = tiktok_template.replace("LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID", tiktok_video_file_id)
+            
+            link = tiktok_template
+            
+        elif "youtube" in link:
+            if "list" in link: # check if if it's a playlist or any other ways youtube can be fucked about with
+                return link
+            
+            #print("THIS IS A YOUTUBE VIDEO")
+            youtube_template = '''<iframe class="youtube-player" width="500" height="315" src="https://www.youtube.com/embed/YOUTUBE_FILE_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'''
+            
+            link_without_watch = link.split("watch?v=")
+            #print("link_without_watch", link_without_watch)
+            
+            youtube_file_id = link_without_watch[1].split("=")[0]
+            #print("youtube_file_id 1 ", youtube_file_id)
+            
+            youtube_file_id = youtube_file_id.split("&")[0]
+            #print("youtube_file_id 2 ", youtube_file_id)
+            
+            youtube_template = youtube_template.replace("YOUTUBE_FILE_ID", youtube_file_id)
+            link = youtube_template
 
+        elif "spotify" in link:
+            # print(link, "\n")
+                        
+            spotify_template = """
+                <iframe class="youtube-player" src="https://open.spotify.com/embed/episode/@SPOTIFY_EPISDE_ID?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            """
+            # https://open.spotify.com/episode/4CESb99rKgkQ5MvNL4HaFJ?si=3e1ea553d7c14637
+            link_without_tail = link.split("?")[0]
+            id = link_without_tail.split("episode/")[1]
+            
+            #print("SPOTIFY ID", id, "\n")
+            
+            spotify_template = spotify_template.replace("@SPOTIFY_EPISDE_ID", id)
+            
+            #print(spotify_template)
+            link = spotify_template
+        
+        elif "rumble" in link:
+            link = link
+        # print("NEW LINK:", link)
+        return link
+    except Exception as e:
+        modules.log_function("error", str(e), function_name=F"{inspect.stack()[0][3]}")
+        return link  
+if __name__ == "__main__":
+
+    
+    translation = translate_link_to_html("https://www.youtube.com/watch?v=aF9HeXg65AE&t=71s")
+    perfection = '''<iframe class="youtube-player" width="500" height="315" src="https://www.youtube.com/embed/aF9HeXg65AE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'''
+    
+    if translation == perfection:
+        print("got it")
+    else:
+        print("idiot")
+        #print("TRANSLATION:",translation)
+        #print("Perfection:" , perfection)
+        for i in range(len(translation)):
+            print(perfection[i], translation[i])
+        
 
 
 

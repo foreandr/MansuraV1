@@ -30,6 +30,7 @@ def INSERT_DEMO_PEOPLE():
 def INSERT_DEMO_POST():
     modules.print_title(f"{inspect.stack()[0][3]}")
     # CHOMSKY DEMO
+    
     modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK2", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", Post_live="True", User_id=1, Person="Noam Chomsky")
     modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK3", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=2IWkSTrfBdU", Post_live="True", User_id=1, Person="Noam Chomsky")
     modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK4", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=w_X5czMVKT8", Post_live="True", User_id=1, Person="Noam Chomsky")
