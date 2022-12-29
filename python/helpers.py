@@ -119,7 +119,7 @@ def translate_link_to_html(link):
             
             #print("THIS IS A YOUTUBE VIDEO")
             youtube_template = '''
-            <iframe width="500" height="315" src="https://www.youtube.com/embed/YOUTUBE_FILE_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+            <iframe class="youtube-player" width="500" height="315" src="https://www.youtube.com/embed/YOUTUBE_FILE_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
             </iframe>
             <!--PROPERLY EMBEDDED HTML TAG-->
             '''
@@ -137,7 +137,7 @@ def translate_link_to_html(link):
             # print(link, "\n")
                         
             spotify_template = """
-                <iframe src="https://open.spotify.com/embed/episode/@SPOTIFY_EPISDE_ID?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                <iframe class="youtube-player" src="https://open.spotify.com/embed/episode/@SPOTIFY_EPISDE_ID?utm_source=generator" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
             """
             # https://open.spotify.com/episode/4CESb99rKgkQ5MvNL4HaFJ?si=3e1ea553d7c14637
             link_without_tail = link.split("?")[0]
@@ -190,36 +190,36 @@ def USERNAME_PROFANITY_CHECK(word):
         if i != "" and i != " ":
             if i in word:
                 print(F"FOUND {i} in {word} {len(i)}")
-                return True
+                return False
             else:
                 pass
 
     # 1. my word check
     if word.lower() in bad_words:
         print("it is in list of bad words")
-        return True
+        return False
         
     # 2. simple profanity check
     if profanity.contains_profanity(word):
         print("DETECTED BY PROFTANITY LIBRARY")
-        return True
+        return False
         
     # 3. spaces check
     if ' ' in word:
         print("THERE IS A SPACE IN ", word)
-        return True
+        return False
         
     # 4: 20 CHARS
     if len(word) > 20:
         print(f"{word} TOO LONG: {len(word)}")
-        return True       
+        return False      
     
     #5 ALPHANUMERIC
     if any(not c.isalnum() for c in word):
         print(f"{word} has non alphanumeric chracters, cant in name")
-        return True
+        return False
     
-    return False
+    return True
 
 def triple_split(a, n):
     k, m = divmod(len(a), n)
@@ -540,6 +540,7 @@ def CHECK_INJECTION(word):
     array = modules.GET_INJECTION_TERMS()
     # print(array)
     if word.lower() in array:
+        print(f"{word} is in {array}, not logging in")
         return False
     else:
         return True

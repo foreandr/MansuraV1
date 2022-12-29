@@ -158,13 +158,15 @@ def request_form(request_type):
             person_name = request.form["chosen_name"]
             # print("person_name", person_name)
             
-            modules.INSERT_REQUEST(
-                User_id=session["id"],
-                Post_title=post_title,
-                Description=description,
-                Link=link,
-                Person_name=person_name
-                )  
+            # CHANGE TO POST
+
+            modules.INSERT_POST(Post_title=post_title, 
+                                Post_description=description, 
+                                Post_link=link, 
+                                Post_live="false", 
+                                Person=person_name, 
+                                User_id=session["id"]
+                                )
         elif request_type == "person":
             
             post_title = request.form["post_title"]
@@ -220,7 +222,10 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
+        print(email)
+        print(password)
         if modules.CHECK_INJECTION(email) and modules.CHECK_INJECTION(password):
+            print(1)
             signed_in = modules.validate_user_from_session(email, password)
             
             if signed_in[0]: # First element in dict is bool for success/failure
@@ -257,18 +262,13 @@ def register():
             password = my_dict['password'][0]
             email = my_dict['email'][0]
             
-            has_bad_words = modules.USERNAME_PROFANITY_CHECK(registering_username)
-            if not has_bad_words and modules.CHECK_INJECTION(password):
-                if modules.INSERT_USER(registering_username, password, email):
-                    return redirect(url_for('login'))
-                else:
-                    return render_template('register.html', 
-                    return_message="Name already exists"
-                )
+            if modules.INSERT_USER(registering_username, password, email):
+                return redirect(url_for('login'))
             else:
                 return render_template('register.html', 
-                    return_message="Mansura thinks you either have a bad word or other bad user input"
+                return_message="\nEither name already exists, has profanity, or looks like an injection."
                 )
+  
         except Exception as e:
             modules.log_function("error", e, function_name="register")
         return redirect(url_for("login"))

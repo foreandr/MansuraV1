@@ -1,6 +1,8 @@
 gdsaqlhggkishjng
 pytest
-
+TODO: should add more input checks in the frontend
+if on desktop, you have to click to the left of the palay button
+when registering do the injection check so i dont end up with a pass that cant be entered
 input vaidate search
 
 put a warning modal whensomeone goes to tribunal page

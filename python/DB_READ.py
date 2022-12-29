@@ -382,7 +382,7 @@ def UNIVERSAL_FUNCTION(
     person = modules.PERSON_SEARCH(person_id)
     searcher_id = GET_USER_ID_FROM_NAME(searcher) 
     fave_string, fave_inner_join = FAVOURITE_QUERY(favourites, searcher_id)
-    posts_per_page = 9
+    posts_per_page = 3
     
     query = f"""
     SELECT 
@@ -424,17 +424,17 @@ def UNIVERSAL_FUNCTION(
     
     for i in cursor.fetchall():
         posts.append([
-            i[0], #posts.Post_title, 
-            i[1], #posts.Post_description, 
-            i[2], #posts.Post_html, 
-            i[3], #posts.Date_time, 
-            i[4], #people.Person_name,
-            i[5], #people.Person_id,
+            i[0], # posts.Post_title, 
+            i[1], # posts.Post_description, 
+            i[2], # posts.Post_html, 
+            i[3], # posts.Date_time, 
+            i[4], # people.Person_name,
+            i[5], # people.Person_id,
             i[6], # post_id#
             i[7], # count likes
             i[8], # count comments
-            i[9], #count favourites 
-            i[10], #count views 
+            i[9], # count favourites 
+            i[10], # count views 
             i[11], # has searcher liked post ( 0 == unliked)
             i[12], # has searcher SAVED post ( 0 == unliked)
         ])
@@ -598,12 +598,7 @@ def GET_ALL_INTERACTIONS(User_id):
     modules.close_conn(cursor, conn)
     
 if __name__ == "__main__": 
-    #GET_ALL_INTERACTIONS(1)
-    # GET_N_COMMENTS(15, 10, "likes")
-    #print(GET_USER_ID_FROM_NAME("Andre"))
-    #GET_COUNT_COMMENTS_BY_ID(2)
-    GET_N_COMMENTS(1)
-    print(GET_POST_ID_BY_LINK_AND_USER_ID(1, "https://www.youtube.com/watch?v=J_jzFt8VLnk"))
-    GET_PERSON_ID_BY_NAME("Noam Chomsky")
+    # modules.GET_ALL_USERS()
+    print(modules.INSERT_USER("Foreman", "helloWorld!", "andrfore@gmail.com"))
     pass
 

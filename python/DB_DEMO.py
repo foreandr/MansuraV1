@@ -16,9 +16,9 @@ def INSERT_DEMO_COMMENT_VOTE():
 
 def INSERT_DEMO_USER():
     modules.print_title(f"{inspect.stack()[0][3]}")
-    modules.INSERT_USER("Andre", "password", "foreandr@gmail.com")
-    modules.INSERT_USER("Foreman", "password", "andrfore@gmail.com")
-    modules.INSERT_USER("David", "password", "david@gmail.com")
+    modules.INSERT_USER("Andre", "helloWorld!", "foreandr@gmail.com")
+    modules.INSERT_USER("Foreman", "helloWorld!", "andrfore@gmail.com")
+    modules.INSERT_USER("David", "helloWorld!", "david@gmail.com")
 
 def INSERT_DEMO_PEOPLE():
     modules.print_title(f"{inspect.stack()[0][3]}")
@@ -41,7 +41,7 @@ def INSERT_DEMO_POST():
     modules.INSERT_POST(Post_title="Peter Thiel X talk2", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=qYSnVR7d4VE",Post_live="True", User_id=1, Person="Peter Thiel")
     modules.INSERT_POST(Post_title="Peter Thiel X talk3", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=F3EBfS9IcB4&t=2518s",Post_live="True", User_id=1, Person="Peter Thiel")
     modules.INSERT_POST(Post_title="Peter Thiel X talk4", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=3Fx5Q8xGU8k&t=2553s",Post_live="True", User_id=1, Person="Peter Thiel") 
-    # modules.INSERT_POST(Post_title="SPOTIFY Peter Thiel X talk", Post_description="here is peter thiel philosopher talking about x", Post_link="https://open.spotify.com/episode/4CESb99rKgkQ5MvNL4HaFJ?si=3e1ea553d7c14637", User_id=1, Person="Peter Thiel") 
+    modules.INSERT_POST(Post_title="SPOTIFY Peter Thiel X talk", Post_description="here is peter thiel philosopher talking about x", Post_link="https://open.spotify.com/episode/4CESb99rKgkQ5MvNL4HaFJ?si=3e1ea553d7c14637", Post_live="True", User_id=1, Person="Peter Thiel") 
     modules.INSERT_POST(Post_title="tiktok Peter Thiel X talk", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7177147474233150726?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Peter Thiel")
     # modules.INSERT_POST(Post_title="rumble Peter Thiel X talk", Post_description="here is peter thiel philosopher talking about x", Post_link="https://rumble.com/v10648s-paypal-co-founder-peter-thiel-bitcoin-keynote-bitcoin-2022-conference.html", User_id=1, Person="Peter Thiel")    
     # 
@@ -64,6 +64,17 @@ def INSERT_DEMO_POST():
     modules.INSERT_POST(Post_title="John Vervaeke X talk9", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=rpivf1SoEdc",Post_live="True", User_id=1, Person="John Vervaeke") 
     modules.INSERT_POST(Post_title="John Vervaeke X talk10", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=hl2TE-mXPwM",Post_live="False", User_id=1, Person="John Vervaeke") 
 
+    # MORE TESTS
+    modules.INSERT_POST(Post_title="Balaji Srinivasan X talk1", Post_description="here is John VASDKJFHALSKDJFHervaeke philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7179325211559431429?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
+    modules.INSERT_POST(Post_title="Balaji Srinivasan X talk2", Post_description="here is John  VASDKJFHALSphilosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7180911568014576902?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
+    modules.INSERT_POST(Post_title="Balaji Srinivasan X talk3", Post_description="here is John Ve VASDKJFHALSe philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7181499250176478469?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
+    modules.INSERT_POST(Post_title="Balaji Srinivasan X talk4", Post_description="here is Jo VASDKJFHALSphilosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7181480403738430726?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
+    modules.INSERT_POST(Post_title="Balaji Srinivasan X talk5", Post_description="here is J VASDKJFHALSe philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7181480056470998278?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
+    modules.INSERT_POST(Post_title="Balaji Srinivasan X talk6", Post_description="here is Jo VASDKJFHALSe philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7181479698541628678?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
+    modules.INSERT_POST(Post_title="Balaji SrinivasanX talk7", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7181479209515158790?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
+    modules.INSERT_POST(Post_title="Balaji Srinivasan X talk8", Post_description="here is John VASDKJFHALSilosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7180909636139109638?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
+    modules.INSERT_POST(Post_title="Balaji Srinivasan X talk0", Post_description="here is Joh VASDKJFHALSlosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7180909285420010758?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
+    modules.INSERT_POST(Post_title="Balaji Srinivasan X talk6182", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7181154493080308998?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
 
 def INSERT_DEMO_SUBJECTS():
     modules.print_title(f"{inspect.stack()[0][3]}")

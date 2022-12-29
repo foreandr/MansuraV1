@@ -9,6 +9,13 @@ except:
 
 
 def INSERT_USER(username, password, Email):
+    check_profanity_user  = modules.USERNAME_PROFANITY_CHECK(username)
+    check_injection_pass = modules.CHECK_INJECTION(password)
+    check_injection_user = modules.CHECK_INJECTION(username)
+    
+    if not (check_profanity_user and check_injection_pass and check_injection_user):
+        return False
+    
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
