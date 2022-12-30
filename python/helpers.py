@@ -466,10 +466,10 @@ def CHECK_USER_IS_GLOBAL_ADMIN(user_id):
         admin_exists = i[0]
     modules.close_conn(cursor, conn)
     if admin_exists == 0:
-        print("USER IS NOT ADMIN")
+        # print("USER IS NOT ADMIN")
         return "false"
     else:
-        print("USER IS ADMIN")
+        # print("USER IS ADMIN")
         return "true"
 
     
@@ -568,20 +568,97 @@ def translate_RUBMLE_LINK(embed_link):
 def TRANSLATE_SEARCH_RESULTS_TO_STATIC_HTML(results):
     print(results)
 
-if __name__ == "__main__":
+def GETTING_POST_MAX_FROM_QUERY(query):
+    query = query.split("FROM POSTS posts")[1]
+    select_portion = "SELECT COUNT(*) FROM POSTS posts"
+    query = query.split("ORDER")[0]
+    new_full_query = select_portion + query
+    cursor, conn = modules.create_connection()
+    cursor.execute(new_full_query)
+    
+    num_total = 0
+    for i in cursor.fetchall():
+        num_total = i[0]
+    
+    modules.close_conn(cursor, conn)
+    return num_total
 
+if __name__ == "__main__":
+    GETTING_POST_MAX_FROM_QUERY("""
+        SELECT 
+    posts.Post_title, 
+    posts.Post_description, 
+    posts.Post_html, 
+    posts.Date_time, 
+    people.Person_name, 
+    people.Person_id,
+    posts.Post_id,
     
-    translation = translate_link_to_html("https://www.youtube.com/watch?v=aF9HeXg65AE&t=71s")
-    perfection = '''<iframe class="youtube-player" width="500" height="315" src="https://www.youtube.com/embed/aF9HeXg65AE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'''
     
-    if translation == perfection:
-        print("got it")
-    else:
-        print("idiot")
-        #print("TRANSLATION:",translation)
-        #print("Perfection:" , perfection)
-        for i in range(len(translation)):
-            print(perfection[i], translation[i])
+    (   
+        SELECT COUNT(*) 
+        FROM LIKES likes
+        WHERE likes.Post_id = posts.Post_id
+    ),
+    
+    (   
+        SELECT COUNT(*) 
+        FROM COMMENTS comments
+        WHERE comments.Post_id = posts.Post_id
+    ),
+    
+    (   
+        SELECT COUNT(*) 
+        FROM FAVOURITES favourites
+        WHERE favourites.Post_id = posts.Post_id
+    ),
+    (   
+        SELECT COUNT(*) 
+        FROM VIEWS views
+        WHERE views.Post_id = posts.Post_id
+    ), 
+    
+    
+    
+        (
+            SELECT COUNT(*)
+            FROM LIKES likes
+            WHERE likes.Post_id = posts.Post_id
+            AND '1' = likes.User_id
+        )
+    ,
+    
+        (
+            SELECT COUNT(*)
+            FROM FAVOURITES faves
+            WHERE faves.Post_id = posts.Post_id
+            AND '1' = faves.User_id
+        )
+    ,
+    posts.Post_link 
+    
+    
+    FROM POSTS posts
+    
+    INNER JOIN POST_PERSON post_person
+    ON post_person.Post_id = posts.Post_id
+    
+    INNER JOIN PEOPLE people
+    ON people.Person_id = post_person.Person_id
+    
+    
+
+    WHERE 1=1 
+    
+    
+    AND posts.Post_live != 'True'
+    
+    ORDER BY Person_name ASC
+    
+    OFFSET ( (1-1)  * 3 )
+    LIMIT 3;
+                                
+                                """)
         
 
 

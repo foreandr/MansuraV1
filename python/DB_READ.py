@@ -459,7 +459,7 @@ def UNIVERSAL_FUNCTION(
         # print(i)
         
     modules.close_conn(cursor, conn)
-    return query, posts, int(page_no), posts_per_page, CHECK_CAN_SCROLL(len(posts), GET_MAX_POSTS(person_id)), person_id
+    return query, posts, int(page_no), posts_per_page, modules.CHECK_CAN_SCROLL(len(posts), modules.GETTING_POST_MAX_FROM_QUERY(query)), person_id
 
 def GET_MAX_POSTS(person_id):
     #THIS COULD SERIOUSLY SLOW THINGS DOWN
