@@ -29,8 +29,6 @@ def post_logic(person_id, page_no):
         )
     
     offset_calc = int(int(page_no) * int(posts_per_page))
-
-    
     
     return render_template('home.html',
         query=query,                   
@@ -57,7 +55,7 @@ def post_tribunal(page_no):
     offset_calc = int(int(page_no) * int(posts_per_page))
     
     can_vote = modules.CHECK_USER_IS_GLOBAL_ADMIN(session["id"])
-    
+
     return render_template('home.html',
         query=query,                   
                            
@@ -340,8 +338,6 @@ def word_tribunal():
         blocked_words=blocked_words
     )
 
-
-
 @app.route("/update_like/<Post_id>", methods=['GET', 'POST'])
 def update_like(Post_id):
     modules.log_function("request", request)
@@ -380,6 +376,31 @@ def update_comment(Post_id):
     
     return redirect(url_for('comment_section', Post_id=Post_id,how_many=how_many, order="date"))
 
+@app.route("/update_post_html/<Post_id>", methods=['GET', 'POST'])
+def update_post_html(Post_id):
+    modules.log_function("request", request)
+    if request.method == 'POST':
+        # print("Post_id", Post_id)
+        post_link_embed = request.form.get("post_link_embed")
+        print("post_link_embed", post_link_embed)
+        modules.UPDATE_POST_HTML_BY_ID(Post_id, post_link_embed)
+
+    
+    return render_template(f"update_post.html",
+        updated_html=modules.GET_POST_HTML_BY_ID(Post_id)
+        )
+    
+@app.route("/update_post_tribunal/<Post_id>/<approval>", methods=['GET', 'POST'])
+def update_post_tribunal(Post_id, approval):
+    modules.log_function("request", request)
+    print("Post_id", Post_id)
+    print("approval type", approval)
+
+    
+    return render_template(f"update_post.html",
+        updated_html=modules.GET_POST_HTML_BY_ID(Post_id)
+        )
+
 @app.route("/comment_section/<Post_id>/<how_many>/<order>", methods=['GET', 'POST'])
 def comment_section(Post_id, how_many, order):
     modules.log_function("request", request)
@@ -388,6 +409,7 @@ def comment_section(Post_id, how_many, order):
     return render_template(f"update_comments.html",
         comments=transformed_comments,
         )
+
 
 @app.route("/contact", methods=['GET'])
 def contact():

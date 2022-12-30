@@ -65,7 +65,31 @@ def INSERT_PERSON(Person_name):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)  
-     
+    
+def INSERT_POST_ADMIN(User_id):
+    cursor, conn = modules.create_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            f"""
+            INSERT INTO MODERATION_ADMINS
+            (User_id)
+            VALUES
+            ('{User_id}')
+            ON CONFLICT DO NOTHING
+            """
+            )
+        conn.commit()
+
+        modules.print_green(F"{User_id} INSERT COMPLETED")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    
+    modules.close_conn(cursor, conn)  
+
+        
+    
 def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User_id=1):
     
     cursor, conn = modules.create_connection()

@@ -229,10 +229,14 @@ def SERVER_CHECK(server, function):
         elif function == "CREATE_TABLE_TRIBUNAL_WORD_VOTE":
             cursor.execute("""DROP TABLE IF EXISTS TRIBUNAL_WORD_VOTE CASCADE""")
             modules.print_segment()
+        
         elif function == "CREATE_TABLE_COMMENT_VOTES":
             cursor.execute("""DROP TABLE IF EXISTS COMMENT_VOTES CASCADE""")
             modules.print_segment()
             
+        elif function == "CREATE_TABLE_MODERATION_ADMINS":
+            cursor.execute("""DROP TABLE IF EXISTS MODERATION_ADMINS CASCADE""")
+            modules.print_segment()
              
         conn.commit()
         modules.print_green(F"CASCADE DROPPED TABLE {function}")
@@ -450,10 +454,26 @@ def GET_INJECTION_TERMS():
     return injection_terms
 
 def CHECK_USER_IS_GLOBAL_ADMIN(user_id):
-    if 1 == 1:
-        return "true" # because it's being funneled to javascript
-    else: 
+    cursor, conn = modules.create_connection()
+    
+    cursor.execute(f"""
+    SELECT COUNT(*)
+    FROM MODERATION_ADMINS
+    WHERE User_id = '{user_id}'
+    """)
+    admin_exists = 0
+    for i in cursor.fetchall():
+        admin_exists = i[0]
+    modules.close_conn(cursor, conn)
+    if admin_exists == 0:
+        print("USER IS NOT ADMIN")
         return "false"
+    else:
+        print("USER IS ADMIN")
+        return "true"
+
+    
+    
 def CHECK_INJECTION(word):
     array = modules.GET_INJECTION_TERMS()
     # print(array)
@@ -531,12 +551,23 @@ def translate_link_to_html(link):
             link = spotify_template
         
         elif "rumble" in link:
+            # TEMPLATE RUMBLE <iframe class="youtube-player" width="500" height="315" src="https://rumble.com/embed/v20cira/?pub=4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             link = link
         # print("NEW LINK:", link)
         return link
     except Exception as e:
         modules.log_function("error", str(e), function_name=F"{inspect.stack()[0][3]}")
         return link  
+
+def translate_RUBMLE_LINK(embed_link):
+    template = '''<iframe class="youtube-player" width="500" height="315" src="LINK_LOCATION" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'''
+    template = template.replace("LINK_LOCATION", embed_link)
+    return template
+
+
+def TRANSLATE_SEARCH_RESULTS_TO_STATIC_HTML(results):
+    print(results)
+
 if __name__ == "__main__":
 
     

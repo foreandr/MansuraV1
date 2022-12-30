@@ -42,3 +42,14 @@ def UPDATE_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type):
     modules.print_green(f"{inspect.stack()[0][3]} {word_id, voter_id, vote_Type} COMPLETED\n")
     modules.close_conn(cursor, conn)
  
+def UPDATE_POST_HTML_BY_ID(Post_id, embed_link):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        UPDATE POSTS
+        SET Post_html = '{modules.translate_RUBMLE_LINK(embed_link)}'
+        WHERE Post_id = '{Post_id}'
+    """)
+    conn.commit()
+    modules.print_green(f"{inspect.stack()[0][3]} {Post_id, embed_link} COMPLETED\n")
+    modules.close_conn(cursor, conn)
+

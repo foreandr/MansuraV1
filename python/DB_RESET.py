@@ -29,6 +29,7 @@ def CREATE_TABLES(server="false"):
     modules.CREATE_TABLE_1_TIME_PASSWORDS(server)
     modules.CREATE_TABLE_TRIBUNAL_WORD(server)
     modules.CREATE_TABLE_TRIBUNAL_WORD_VOTE(server)
+    modules.CREATE_TABLE_MODERATION_ADMINS(server)
     
     
     if server != "true":

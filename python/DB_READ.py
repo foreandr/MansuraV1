@@ -49,7 +49,22 @@ def GET_ALL_USERS():
         print(i)
         
     modules.close_conn(cursor, conn)
-      
+
+def GET_POST_HTML_BY_ID(Post_id):
+    cursor, conn = modules.create_connection()
+    query = f"""
+        SELECT Post_html 
+        FROM POSTS
+        WHERE Post_id = '{Post_id}'
+    """
+    cursor.execute(query)
+    results = ""
+    for i in cursor.fetchall():
+        results = i[0]
+        
+    modules.close_conn(cursor, conn)
+    return results
+
 def GET_COUNT_COMMENTS_BY_ID(Post_id):
     cursor, conn = modules.create_connection()
 

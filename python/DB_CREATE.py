@@ -32,6 +32,25 @@ def CREATE_TABLE_USER(server="false"):
     
     modules.close_conn(cursor, conn)    
     
+def CREATE_TABLE_MODERATION_ADMINS(server="false"):
+    cursor, conn = modules.create_connection()
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE MODERATION_ADMINS
+                (
+                User_id BIGINT,
+                FOREIGN KEY (User_id) REFERENCES USERS(User_id)
+                );
+                """)
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    
+    modules.close_conn(cursor, conn)   
     
 def CREATE_TABLE_PEOPLE(server="false"):
     cursor, conn = modules.create_connection()

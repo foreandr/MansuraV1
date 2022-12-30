@@ -11,8 +11,9 @@
 {% endblock nav %}
 
 {%block main %}
+
 {% if coming_from_tribunal == "true" %}
-            {% if page_no == 1 %}
+        {% if page_no == 1 %}
             <a href="/"><h1>WANT TO BE AN ADMIN? APPLY HERE!</h1></a>
             {% endif %}
         {% endif %}
@@ -26,7 +27,11 @@
 
         {% elif coming_from_tribunal == "true" %}
             {% if can_scroll == true %}
-            <div class="row gy-5" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+                {% if can_vote == "true"%}
+                <div class="row gy-5" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+                {% else %}
+                <div class="row gy-5" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend" hidden>
+                {% endif %}
             {% else %}
             <div class="row gy-5" style="margin: auto">
             {% endif %}
@@ -42,6 +47,10 @@
         {% for i in range(0, num_posts) %}
         {% if posts[i][0] |length  == 0%} <!--DON'T print the empties-->
         {% else %}
+
+        {% if can_vote == "true" and coming_from_tribunal == "true"%}
+
+        {% endif %}
             <div class="col-sm" hx-post="/update_view/{{posts[i][6]}}" hx-trigger="click" hx-target="#view_location{{i}}" hx-swap="innerHTML" style="overflow:scroll"  onscroll="myFunction()">
                 <div class="card" id="videos">
                     <div class="card-header">
@@ -62,10 +71,9 @@
 
                     <div class="row no-gutters">
                         <!--VIDEO-->
-                        <div class="col-md-4">
-                            
-                            {{posts[i][2]}}
+                        <div class="col-md-4" id="post_location{{i}}">
                             {{posts[i][2] | safe}}
+                            {{updated_html | safe}}
                         </div>
 
                         <div class="col-md-8 text-right">
@@ -211,44 +219,47 @@
                                     </span>
                                 </button>
                             </span>
+                            <!--UPLOAD DATE-->
+                            <span class="float-right">{{posts[i][3]}}</span>
+
                             <span style="text-align: center;">
                                 {% if coming_from_tribunal == "true" %}
                                     {% if can_vote == "true" %}
-                                    <button class="btn">
+                                    <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/approve" hx-trigger="click">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
                                             <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
                                         </svg>
                                         APPROVE
                                     </button>
             
-                                    <button class="btn">
+                                    <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/deny" hx-trigger="click">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                             <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
                                         </svg>
                                         DELETE
                                     </button>
+                                    <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/report" hx-trigger="click">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-diamond-fill" viewBox="0 0 16 16">
+                                            <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                          </svg>
+                                        REPORT 
+                                    </button>
+                                    <!--RUMBLE GET REAL LINK-->
+                                    <div>
+                                        <form method="POST" >
+                                            <input class="form-control" name="post_link_embed" type="text" placeholder="">
+                                            <button class="btn btn-primary btn-block" type="submit" hx-post="/update_post_html/{{posts[i][6]}}" hx-trigger="click" hx-target="#post_location{{i}}" hx-swap="innerHTML" >Direct Embed Link</button>
+                                        </form>
+                                    </div>
+
+                                    
                                     {% else %}
-                                    <button class="btn" disabled>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
-                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                        </svg>
-                                        APPROVE
-                                    </button>
-            
-                                    <button class="btn" disabled>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-                                        </svg>
-                                        DELETE
-                                    </button>
+
                                     
                                     {% endif %}
 
                                 {% endif %}
                             </span>
-
-                            <!--UPLOAD DATE-->
-                            <span class="float-right">{{posts[i][3]}}</span>
                         </small>
                     </div>
                 </div>   
