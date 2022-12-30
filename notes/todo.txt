@@ -2,8 +2,8 @@
 seems like there is some weird issue where u have to put the embeddings in html beforte you give them to jinja, jinja can't dynamically render them all maybe?
 check for the response of the youtube url when it is entered
 if tiktok or spotify, just give the link
-tags when inserting posts
-
+subject tags when inserting posts
+be able to tag a person in a post with a tag request
 change count all to reflect the constraints of the query
 
 gdsaqlhggkishjng

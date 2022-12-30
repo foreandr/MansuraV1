@@ -489,9 +489,8 @@ def translate_link_to_html(link):
         return link
     try:
         if "tiktok" in link:
-            
-            tiktok_template = '''<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME/video/LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID" data-video-id="LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID" style="max-width: 605px;min-width: 325px;" > <section> <a target="_blank" title="@mazinosarchive" href="https://www.tiktok.com/@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME?refer=embed">@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME</a> <p>Impressive, very nice</p> <a target="_blank" title="♬ original sound - Mazino" href="https://www.tiktok.com/music/original-sound-LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID?refer=embed">♬ original sound - LOCATION_FOR_TIKTOK_UPLOADER_USERNAME</a> </section> </blockquote>
-                '''
+            # print("TIKTOKING")
+            tiktok_template = '''<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME/video/LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID" data-video-id="LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID" style="max-width: 605px;min-width: 325px;" > <section> <a target="_blank" title="@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME" href="https://www.tiktok.com/@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME?refer=embed">@LOCATION_FOR_TIKTOK_UPLOADER_USERNAME</a></section></blockquote><script async src="https://www.tiktok.com/embed.js"></script>'''
             #print("THIS IS A TIKTOK VIDEO")
             
             #A TYPICAL LINK LOOKS LIKE THIS https://www.tiktok.com/@lucciamv1/video/7173015261623225642?is_copy_url=1&is_from_webapp=v1
@@ -584,82 +583,12 @@ def GETTING_POST_MAX_FROM_QUERY(query):
     return num_total
 
 if __name__ == "__main__":
-    GETTING_POST_MAX_FROM_QUERY("""
-        SELECT 
-    posts.Post_title, 
-    posts.Post_description, 
-    posts.Post_html, 
-    posts.Date_time, 
-    people.Person_name, 
-    people.Person_id,
-    posts.Post_id,
     
-    
-    (   
-        SELECT COUNT(*) 
-        FROM LIKES likes
-        WHERE likes.Post_id = posts.Post_id
-    ),
-    
-    (   
-        SELECT COUNT(*) 
-        FROM COMMENTS comments
-        WHERE comments.Post_id = posts.Post_id
-    ),
-    
-    (   
-        SELECT COUNT(*) 
-        FROM FAVOURITES favourites
-        WHERE favourites.Post_id = posts.Post_id
-    ),
-    (   
-        SELECT COUNT(*) 
-        FROM VIEWS views
-        WHERE views.Post_id = posts.Post_id
-    ), 
-    
-    
-    
-        (
-            SELECT COUNT(*)
-            FROM LIKES likes
-            WHERE likes.Post_id = posts.Post_id
-            AND '1' = likes.User_id
-        )
-    ,
-    
-        (
-            SELECT COUNT(*)
-            FROM FAVOURITES faves
-            WHERE faves.Post_id = posts.Post_id
-            AND '1' = faves.User_id
-        )
-    ,
-    posts.Post_link 
-    
-    
-    FROM POSTS posts
-    
-    INNER JOIN POST_PERSON post_person
-    ON post_person.Post_id = posts.Post_id
-    
-    INNER JOIN PEOPLE people
-    ON people.Person_id = post_person.Person_id
-    
-    
-
-    WHERE 1=1 
-    
-    
-    AND posts.Post_live != 'True'
-    
-    ORDER BY Person_name ASC
-    
-    OFFSET ( (1-1)  * 3 )
-    LIMIT 3;
-                                
-                                """)
-        
+    link = """https://www.tiktok.com/@mazinosarchive/video/7179324733018672390?is_copy_url=1&is_from_webapp=v1"""
+    new_link= translate_link_to_html(link)
+    perfect = """<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@mazinosarchive/video/7179324733018672390" data-video-id="7179324733018672390" style="max-width: 605px;min-width: 325px;"><section></section></blockquote><script async src="https://www.tiktok.com/embed.js"></script>"""
+    for i in range(len(perfect)):
+        print(i, perfect[i], new_link[i])
 
 
 

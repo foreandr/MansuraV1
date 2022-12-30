@@ -12,6 +12,8 @@
 
 {%block main %}
 
+
+
 {% if coming_from_tribunal == "true" %}
         {% if page_no == 1 %}
         <div style="margin: auto;
@@ -50,17 +52,27 @@
         {% endif %}
 
         {% for i in range(0, num_posts) %}
-        {% if posts[i][0] |length  == 0%} <!--DON'T print the empties-->
-        {% else %}
+            {% if posts[i][0] |length  == 0%} <!--DON'T print the empties-->
+            {% else %}
 
-        {% if can_vote == "true" and coming_from_tribunal == "true"%}
+            {% if can_vote == "true" and coming_from_tribunal == "true"%}
 
-        {% endif %}
-            <div class="col-sm" hx-post="/update_view/{{posts[i][6]}}" hx-trigger="click" hx-target="#view_location{{i}}" hx-swap="innerHTML" style="overflow:scroll"  onscroll="myFunction()">
+            {% endif %}
+            <div class="col" hx-post="/update_view/{{posts[i][6]}}" hx-trigger="click" hx-target="#view_location{{i}}" hx-swap="innerHTML" style="overflow:scroll"  onscroll="myFunction()">
                 <div class="card" id="videos">
                     <div class="card-header">
                         <h1>{{posts[i][0]}}</h1>
-                        <a href="{{posts[i][13]}}">{{posts[i][13]}}<h6></h6></a>
+                        <button type="button" class="btn" onclick="show_link({{i}})">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
+                                <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                                <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
+                            </svg>
+                        </button>
+                        <div id="link_location{{i}}" hidden>
+                            <a href="{{posts[i][13]}}">{{posts[i][13]}}<h6></h6></a>
+                        </div>
+
+                        
                         <!--<h1>{{[i]}}</h1>-->
                     </div>
 
@@ -268,8 +280,8 @@
                         </small>
                     </div>
                 </div>   
-        </div>
-        {% endif %}
+            </div>
+            {% endif %}
 
         {% endfor %}
     </div>
@@ -278,8 +290,16 @@
 
 
 <script>
-    function myFunction(){
-        console.log("hello world")
+    function show_link(iteraton){
+        // console.log("hello world", iteraton)
+        item =  document.getElementById("link_location" + iteraton)
+        if (item.hidden == true){
+            item.removeAttribute("hidden")
+        }
+        else{
+            item.setAttribute("hidden", "enabled")
+        }
+       
     }
     function isScrolledIntoView(el) {
         console.log(el)
