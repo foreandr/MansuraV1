@@ -52,6 +52,11 @@
         {% endif %}
 
         {% for i in range(0, num_posts) %}
+            <!--HOW MANY PER ROW-->
+            {% if i % 2  == 0 %}
+                <div class="w-100"></div>
+            {% endif %}
+            
             {% if posts[i][0] |length  == 0%} <!--DON'T print the empties-->
             {% else %}
 
