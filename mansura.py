@@ -424,13 +424,20 @@ def contact():
 
     )
 
-@app.route("/structure_search_by_phrase/<page_no>", methods=['GET', 'POST'])
-def structure_search_by_phrase(page_no):
+@app.route("/structure_search_by_phrase/<page_no>/<phrase_again>", methods=['GET', 'POST'])
+def structure_search_by_phrase(page_no, phrase_again):
     searched_value = ""
-    if request.method == "POST": 
-        searched_value = request.form["searched_value"]
-        print(searched_value)
-        #TODO: CHECK SEARCH FOR STUPID SHIT
+    if request.method == "POST":
+        try: 
+            ''' 
+            THIS TRY CATCH BASICALLY SAYS GET WHATS IN THE SEARCH BAR
+            IF YOU'RE GETTING NOTHING FROM THE FORM, BUT STILL AT THIS FUNCTION,
+            THEN YOU'RE DOING A SCROLL POST REQUEST
+            SO REPLACE IT WITH THE TEXT IN THE URL
+            '''
+            searched_value = request.form["searched_value"]
+        except Exception as e:
+            searched_value = phrase_again
 
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"],
@@ -440,7 +447,6 @@ def structure_search_by_phrase(page_no):
     
     offset_calc = int(int(page_no) * int(posts_per_page))
 
-    
     return render_template('home.html',
         query=query,                   
                            

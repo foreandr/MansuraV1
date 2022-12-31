@@ -11,6 +11,11 @@
 {% endblock nav %}
 
 {%block main %}
+<div>
+{{query}}
+</br>
+search_phrase:{{search_phrase}}
+</div>
 
 {% if coming_from_tribunal == "true" %}
         {% if page_no == 1 %}
@@ -32,13 +37,7 @@
 
 {% elif coming_from_search == "true" %}
         {% if can_scroll == true %}
-        <form class="form-inline my-2 my-lg-0" hx-post="/structure_search_by_phrase/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
-            <span style="text-align: center;">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched_value" value="{{search_phrase}}" hidden>
-            </span>
-        </form>
-
-        <!--<div class="row gy-5" style="margin: auto" hx-post="/structure_search_by_phrase/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">-->
+        <div class="row gy-5" style="margin: auto" hx-post="/structure_search_by_phrase/{{page_no}}/{{search_phrase}}" hx-trigger="revealed" hx-swap="afterend">
         {% else %}
         <div class="row gy-5" style="margin: auto">
         {% endif %}

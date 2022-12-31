@@ -385,7 +385,12 @@ def SEARCH_QUERY(search_phrase):
     if search_phrase == "":
         return ""
     else:
-        return F"AND LOWER(people.Person_name) LIKE LOWER('%{search_phrase}%') "
+        return F"""
+    AND (
+        LOWER(people.Person_name) LIKE LOWER('%{search_phrase}%') 
+        OR LOWER(posts.Post_description) LIKE LOWER('%{search_phrase}%')
+        OR LOWER(posts.Post_title) LIKE LOWER('%{search_phrase}%') 
+    )"""
     
 def UNIVERSAL_FUNCTION(
         searcher, 
@@ -396,14 +401,15 @@ def UNIVERSAL_FUNCTION(
         post_tribunal=False,
         search_phrase=""
         ):
-    
+    '''
     print("searcher",searcher) 
     print("searcher_id",searcher_id) 
     print("person_id",person_id) 
     print("page_no",page_no)  
     print("favourites",favourites) 
     print("post_tribunal",post_tribunal) 
-    print("search_phrase",search_phrase) 
+    print("search_phrase",search_phrase)
+    ''' 
     
     
     cursor, conn = modules.create_connection()

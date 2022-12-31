@@ -30,6 +30,7 @@ def INSERT_DEMO_PEOPLE():
     modules.INSERT_PERSON("Peter Thiel")
     modules.INSERT_PERSON("Michael Sugrue")
     modules.INSERT_PERSON("John Vervaeke")
+    modules.INSERT_PERSON("George Hotz")
 
 def INSERT_DEMO_POST():
     modules.print_title(f"{inspect.stack()[0][3]}")
@@ -87,6 +88,19 @@ def INSERT_DEMO_POST():
     modules.INSERT_POST(Post_title="Balaji Srinivasan X talk0", Post_description="here is Joh VASDKJFHALSlosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7180909285420010758?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
     modules.INSERT_POST(Post_title="Balaji Srinivasan X talk6182", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7181154493080308998?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
     """
+    
+    modules.INSERT_POST(Post_title="George Hotz title post1", Post_description="here is George Hotz philosopher talking about x", Post_link="https://www.youtube.com/watch?v=hDkLoRyiIeI&t=65s",Post_live="True", User_id=1, Person="George Hotz") 
+    modules.INSERT_POST(Post_title="George Hotz title post2", Post_description="here is George Hotz philosopher talking about x", Post_link="https://www.youtube.com/watch?v=mBnBH8Ga9-w",Post_live="True", User_id=1, Person="George Hotz") 
+    modules.INSERT_POST(Post_title="George Hotz title post3", Post_description="here is George Hotz philosopher talking about x", Post_link="https://www.youtube.com/watch?v=-NleKOVsl28",Post_live="True", User_id=1, Person="George Hotz") 
+    modules.INSERT_POST(Post_title="George Hotz title post4", Post_description="here is George Hotz philosopher talking about x", Post_link="https://www.youtube.com/watch?v=nvtoOxNfDQo",Post_live="True", User_id=1, Person="George Hotz") 
+    modules.INSERT_POST(Post_title="George Hotz title post5", Post_description="here is George Hotz philosopher talking about x", Post_link="https://www.youtube.com/watch?v=KF7X7s48jRc",Post_live="True", User_id=1, Person="George Hotz") 
+    modules.INSERT_POST(Post_title="George Hotz title post6", Post_description="here is George Hotz philosopher talking about x", Post_link="https://www.youtube.com/watch?v=z6xslDMimME",Post_live="True", User_id=1, Person="George Hotz") 
+    modules.INSERT_POST(Post_title="George Hotz title post7", Post_description="here is George Hotz philosopher talking about x", Post_link="https://www.youtube.com/watch?v=_CP8d4nCnlw&t=5434s",Post_live="True", User_id=1, Person="George Hotz") 
+    modules.INSERT_POST(Post_title="George Hotz title post8", Post_description="here is George Hotz philosopher talking about x", Post_link="https://www.youtube.com/watch?v=9wQDMh3Lbjc&t=1773s",Post_live="True", User_id=1, Person="George Hotz") 
+    modules.INSERT_POST(Post_title="George Hotz title post9", Post_description="here is George Hotz philosopher talking about x", Post_link="https://www.youtube.com/watch?v=4V9VHt_YwFQ&t=4646s",Post_live="True", User_id=1, Person="George Hotz") 
+    modules.INSERT_POST(Post_title="George Hotz title post10", Post_description="here is George Hotz philosopher talking about x", Post_link="https://www.youtube.com/watch?v=-rYKtRI_sDQ",Post_live="True", User_id=1, Person="George Hotz") 
+    modules.INSERT_POST(Post_title="George Hotz title post11", Post_description="here is George Hotz philosopher talking about x", Post_link="https://www.youtube.com/watch?v=FUMNRJfOQPc&t=2240s",Post_live="True", User_id=1, Person="George Hotz") 
+
 def INSERT_DEMO_SUBJECTS():
     modules.print_title(f"{inspect.stack()[0][3]}")
     modules.INSERT_SUBJECTS(Subject_name="philosophy", Subject_type="HARD", Post_id=1)
