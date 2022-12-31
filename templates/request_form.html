@@ -1,6 +1,20 @@
 {% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
 {%block main %}
-
+<div class = "container">
+    OPTIONS
+    <ul class = "list-group">
+            <li class = "list-group-item"> YOUTUBE <span class = "badge"> 12 </span> </li>
+            <li class = "list-group-item"> RUMBLE <span class = "badge"> 5 </span> </li>
+            <li class = "list-group-item"> TIKTOK <span class = "badge"> 3 </span> </li>
+            <li class = "list-group-item"> VIMEO <span class = "badge"> 3 </span> </li>
+            <li class = "list-group-item"> REDDIT.COM <span class = "badge"> 3 </span> </li>
+            <li class = "list-group-item"> ARCHIVE.ORG <span class = "badge"> 3 </span> </li>
+            <li class = "list-group-item"> BANNED.VIDEO <span class = "badge"> 3 </span> </li>
+            <li class = "list-group-item"> ODYSEE <span class = "badge"> 3 </span> </li>
+            <li class = "list-group-item"> DTUBE <span class = "badge"> 3 </span> </li>
+            <li class = "list-group-item"> DAILYMOTION <span class = "badge"> 3 </span> </li>
+    </ul>
+</div>
 {% if request_type == "person" %}
 <form action="/request_form/{{request_type}}" method="POST" enctype="multipart/form-data">
     <div>
@@ -39,8 +53,8 @@
     <div id="search-results" ></div>
     
 
-    <div id="selected_users">
-
+    <div >
+        <input class="form-control" name="chosen_name" placeholder="" value="" id="selected_users">
     </div>
     <div>
         <a href="/request_form/person">
@@ -68,11 +82,7 @@
     function choose_selected_user(user){
         if (count <= 5)
             // turn into += when i figure out hwo to do multiple
-            document.getElementById("selected_users").innerHTML = `
-            <div>
-                <input class="form-control" name="chosen_name" placeholder="${user}" value="${user}">
-            </div>
-            `
+            document.getElementById("selected_users").value += `${user},`
             count +=1
     }
 </script>

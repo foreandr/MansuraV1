@@ -5,6 +5,9 @@ if tiktok or spotify, just give the link
 subject tags when inserting posts
 be able to tag a person in a post with a tag request
 change count all to reflect the constraints of the query
+lederboards
+no mandatory login 
+
 
 gdsaqlhggkishjng
 pytest

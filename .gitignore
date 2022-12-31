@@ -326,3 +326,4 @@ python/dbconnection.py
 python/__pycache__/helpers.cpython-310.pyc
 .gitignore
 python/dbconnection.py
+logs/errors/2022-12-30.txt

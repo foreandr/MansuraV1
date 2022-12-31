@@ -47,11 +47,13 @@ def INSERT_DEMO_POST():
     modules.INSERT_POST(Post_title="Peter Thiel X talk3", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=F3EBfS9IcB4&t=2518s",Post_live="True", User_id=1, Person="Peter Thiel")
     modules.INSERT_POST(Post_title="Peter Thiel X talk4", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=3Fx5Q8xGU8k&t=2553s",Post_live="True", User_id=1, Person="Peter Thiel") 
     modules.INSERT_POST(Post_title="SPOTIFY Peter Thiel X talk", Post_description="here is peter thiel philosopher talking about x", Post_link="https://open.spotify.com/episode/4CESb99rKgkQ5MvNL4HaFJ?si=3e1ea553d7c14637", Post_live="True", User_id=1, Person="Peter Thiel") 
+    
+    """
     modules.INSERT_POST(Post_title="tiktok Peter Thiel X talk", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7177147474233150726?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Peter Thiel")
     
     modules.INSERT_POST(Post_title="rumble Peter Thiel X talk1", Post_description="here is peter thiel philosopher talking about x", Post_link="https://rumble.com/v10648s-paypal-co-founder-peter-thiel-bitcoin-keynote-bitcoin-2022-conference.html",Post_live="False", User_id=1, Person="Peter Thiel")
     modules.INSERT_POST(Post_title="rumble Peter Thiel X talk2", Post_description="here is peter thiel philosopher talking about x", Post_link="https://rumble.com/v1lr7qn-peter-thiel-3-.html",Post_live="False", User_id=1, Person="Peter Thiel")
-    
+    """
     
     
     # MICHAEL SUGRUE DEMO
@@ -73,6 +75,7 @@ def INSERT_DEMO_POST():
     modules.INSERT_POST(Post_title="John Vervaeke X talk10", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=hl2TE-mXPwM",Post_live="False", User_id=1, Person="John Vervaeke") 
 
     # MORE TESTS
+    """
     modules.INSERT_POST(Post_title="Balaji Srinivasan X talk1", Post_description="here is John VASDKJFHALSKDJFHervaeke philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7179325211559431429?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
     modules.INSERT_POST(Post_title="Balaji Srinivasan X talk2", Post_description="here is John  VASDKJFHALSphilosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7180911568014576902?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
     modules.INSERT_POST(Post_title="Balaji Srinivasan X talk3", Post_description="here is John Ve VASDKJFHALSe philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7181499250176478469?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
@@ -83,7 +86,7 @@ def INSERT_DEMO_POST():
     modules.INSERT_POST(Post_title="Balaji Srinivasan X talk8", Post_description="here is John VASDKJFHALSilosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7180909636139109638?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
     modules.INSERT_POST(Post_title="Balaji Srinivasan X talk0", Post_description="here is Joh VASDKJFHALSlosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7180909285420010758?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
     modules.INSERT_POST(Post_title="Balaji Srinivasan X talk6182", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7181154493080308998?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Balaji Srinivasan") 
-
+    """
 def INSERT_DEMO_SUBJECTS():
     modules.print_title(f"{inspect.stack()[0][3]}")
     modules.INSERT_SUBJECTS(Subject_name="philosophy", Subject_type="HARD", Post_id=1)

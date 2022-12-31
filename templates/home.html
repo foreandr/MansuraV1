@@ -12,27 +12,25 @@
 
 {%block main %}
 
-
-
 {% if coming_from_tribunal == "true" %}
         {% if page_no == 1 %}
-        <div style="margin: auto;
-        width: 50%;
-        padding: 10px;">
-            <a href="/"><h1>WANT TO BE AN ADMIN? APPLY HERE!</h1></a>
-        </div>
+            <div style="margin: auto;
+            width: 50%;
+            padding: 10px;">
+                <a href="/"><h1>WANT TO BE AN ADMIN? APPLY HERE!</h1></a>
+            </div>
 
-            {% endif %}
         {% endif %}
+{% endif %}
 
-        {% if coming_from_favourites == "true" %}
+{% if coming_from_favourites == "true" %}
             {% if can_scroll == true %}
             <div class="row gy-5" style="margin: auto" hx-post="/favourites/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
             {% else %}
             <div class="row gy-5" style="margin: auto">
-            {% endif %}
+        {% endif %}
 
-        {% elif coming_from_tribunal == "true" %}
+{% elif coming_from_tribunal == "true" %}
             {% if can_scroll == true %}
                 {% if can_vote == "true"%}
                 <div class="row gy-5" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
@@ -43,17 +41,18 @@
             <div class="row gy-5" style="margin: auto">
             {% endif %}
         
-        {% else %}
+{% else %}
             {% if can_scroll == true %}
             <div class="row gy-5" style="margin: auto" hx-post="/{{person_id}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
             {% else %}
             <div class="row gy-5" style="margin: auto">
             {% endif %}
-        {% endif %}
+{% endif %}
 
-        {% for i in range(0, num_posts) %}
+
+{% for i in range(0, num_posts) %}
             <!--HOW MANY PER ROW-->
-            {% if i % 2  == 0 %}
+            {% if i % 1  == 0 %}
                 <div class="w-100"></div>
             {% endif %}
             
@@ -83,25 +82,50 @@
 
                     <div>
                         <a href="/{{posts[i][5]}}/0">
-                            <h3 class=" text-center">
+                            <h3 class="text-center">
                             {{posts[i][4]}}
                             </h3>
                         </a>
-                        <h5>{{posts[i][1]}}</h5>
+                        
+
                         
                     </div>
 
                     <div class="row no-gutters">
                         <!--VIDEO-->
-                        <div class="col-md-4" id="post_location{{i}}">
+                        <!--DESCRIPTION-->
+                        <div class="col-sm">
+                            <h5>{{posts[i][1]}}</h5>
+                        </div>
+
+                        <div class="col d-flex justify-content-center" id="post_location{{i}}">
                             {{posts[i][2] | safe}}
                             {{updated_html | safe}}
                         </div>
-
-                        <div class="col-md-8 text-right">
-                            <div class="card-body">
+                        
+                        <div class="col-sm">
+                            location for ad
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            <span class="col d-flex justify-content-center"> 
+                                <!--VIEWS-->
+                                <span>
+                                    <button class="btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                                        </svg>
+                                        <span id="view_location{{i}}">
+                                            {{posts[i][10]}}
+                                            {{views}}
+                                        </span>
+                                    </button>
+                                </span>
                                 <!--LIKES-->
-                                <div>
+                                <span>
                                     {% if posts[i][11] == 0%}
                                     <button class="btn btn-outline-dark" hx-post="/update_like/{{posts[i][6]}}" hx-trigger="click" hx-target="#like_location{{i}}" hx-swap="innerHTML" onclick="like_logic(this)">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
@@ -113,7 +137,6 @@
                                         </div>
                                     </button>
                                     {% else %}
-
                                     <button class="btn btn-outline-danger" hx-post="/update_like/{{posts[i][6]}}" hx-trigger="click" hx-target="#like_location{{i}}" hx-swap="innerHTML" onclick="like_logic(this)">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                                             <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
@@ -124,11 +147,9 @@
                                         </div>
                                     </button>
                                     {% endif %}
-                                </div>
-                                </br>
-
-                                <!-- COMMENTS-->
-                                <div>
+                                </span>
+                                <!--COMMENTS-->
+                                <span>
                                     <!-- Button trigger modal -->
                                     <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalLong{{posts[i][6]}}" hx-post="/comment_section/{{posts[i][6]}}/10/likes" hx-trigger="click" hx-target="#comment_section{{posts[i][6]}}" hx-swap="innerHTML">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
@@ -142,7 +163,7 @@
                                         <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Comment Section</h5>
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
@@ -180,11 +201,9 @@
                                         </div>
                                         </div>
                                     </div>
-                                </div>
-                                </br>
+                                </span>
 
-                                <!-- FAVOURITE-->
-                                <div>
+                                <span>
                                     {% if posts[i][12] == 0%}
                                     <button class="btn btn-outline-dark" hx-post="/update_fave/{{posts[i][6]}}" hx-trigger="click" hx-target="#fave_location{{i}}" hx-swap="innerHTML" onclick="fave_logic(this)">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
@@ -208,39 +227,18 @@
                                         </div>
                                     </button>
                                     {% endif %}
-                                </div>
-                                </br>
-
+                                </span>
                                 <!-- SEND-->
-                                <div>
+                                <span>
                                     <button class="btn btn-outline-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-plus" viewBox="0 0 16 16">
                                             <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z"/>
                                             <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z"/>
                                         </svg>
                                     </button>
-                                </div>
-                                </br>
-
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="card-footer">
-                        <small class="text-muted">
-                            <!--VIEWS-->
-                            <span>
-                                <button class="btn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
-                                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                        <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                    </svg>
-                                    <span id="view_location{{i}}">
-                                        {{posts[i][10]}}
-                                        {{views}}
-                                    </span>
-                                </button>
+                                </span>
                             </span>
+
                             <!--UPLOAD DATE-->
                             <span class="float-right">{{posts[i][3]}}</span>
 
@@ -266,6 +264,8 @@
                                           </svg>
                                         REPORT 
                                     </button>
+
+                                    
                                     <!--RUMBLE GET REAL LINK-->
                                     <div>
                                         <form method="POST" >

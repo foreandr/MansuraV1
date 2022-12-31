@@ -471,9 +471,7 @@ def CHECK_USER_IS_GLOBAL_ADMIN(user_id):
     else:
         # print("USER IS ADMIN")
         return "true"
-
-    
-    
+ 
 def CHECK_INJECTION(word):
     array = modules.GET_INJECTION_TERMS()
     # print(array)
@@ -482,6 +480,7 @@ def CHECK_INJECTION(word):
         return False
     else:
         return True
+       
 def translate_link_to_html(link):
     #print("ORIGIN", link)
     
@@ -518,7 +517,7 @@ def translate_link_to_html(link):
                 return link
             
             #print("THIS IS A YOUTUBE VIDEO")
-            youtube_template = '''<iframe class="youtube-player" width="500" height="315" src="https://www.youtube.com/embed/YOUTUBE_FILE_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'''
+            youtube_template = '''<iframe class="youtube-player" width="480" height="315" src="https://www.youtube.com/embed/YOUTUBE_FILE_ID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'''
             
             link_without_watch = link.split("watch?v=")
             #print("link_without_watch", link_without_watch)
@@ -562,7 +561,6 @@ def translate_RUBMLE_LINK(embed_link):
     template = '''<iframe class="youtube-player" width="500" height="315" src="LINK_LOCATION" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'''
     template = template.replace("LINK_LOCATION", embed_link)
     return template
-
 
 def TRANSLATE_SEARCH_RESULTS_TO_STATIC_HTML(results):
     print(results)

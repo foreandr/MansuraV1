@@ -74,7 +74,6 @@ def post_tribunal(page_no):
         #fucking hate javascript
     ) 
  
-   
 @app.route("/favourites/<page_no>", methods=['GET', 'POST'])
 def favourites(page_no):
     modules.log_function("request", request)
@@ -158,7 +157,8 @@ def request_form(request_type):
             #print("link", link)
             
             person_name = request.form["chosen_name"]
-            # print("person_name", person_name)
+            people = person_name.split(",")
+            print("person_name", person_name)
             
             # CHANGE TO POST
 

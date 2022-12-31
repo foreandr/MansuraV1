@@ -83,7 +83,7 @@ def CREATE_TABLE_POST(server="false"):
             CREATE TABLE POSTS
             (
             Post_id SERIAL PRIMARY KEY, 
-            Post_title varchar UNIQUE, 
+            Post_title varchar, 
             Post_description varchar,
             Post_link varchar UNIQUE, 
             Post_html varchar,
