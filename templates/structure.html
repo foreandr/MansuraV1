@@ -34,22 +34,26 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light" >
             <a class="navbar-brand" href="/"><h1>Mansura</h1></a>
             
-            <form class="form-inline my-2 my-lg-0" >
+            <form class="form-inline my-2 my-lg-0" method="POST" action="/structure_search_by_phrase/0">
                 <span style="text-align: center;">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <span class="dropdown" id="nav_dropdown">
-                        <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
-                            SEARCH
-                        </button>
-                        <span class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
-                            <a href="/search_create" class="dropdown-item">SEARCH</a>
-                            <a href="/search_create" class="dropdown-item">CREATE ALGORITHMS</a>
-                            <a href="/search_community_page" class="dropdown-item">COMMUNITY ALGORITHMS</a>
-                            <a href="/search_community_page" class="dropdown-item">CURRENT ALGORITHM</a><!--OPEN MODAL ALGO-->
-                        </span>
-                    </span>
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched_value">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" value="submit">Search</button>
                 </span>
             </form>
+
+            <span class="dropdown" id="nav_dropdown">
+                <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </button>
+                <span class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
+                    <a href="/search_create" class="dropdown-item">SEARCH</a>
+                    <a href="/search_create" class="dropdown-item">CREATE ALGORITHMS</a>
+                    <a href="/search_community_page" class="dropdown-item">COMMUNITY ALGORITHMS</a>
+                    <a href="/search_community_page" class="dropdown-item">CURRENT ALGORITHM</a><!--OPEN MODAL ALGO-->
+                </span>
+            </span>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon lg"></span>
@@ -61,6 +65,10 @@
                     <div>
                         <form action="/">
                             <input class="btn btn-link" type="submit" value="HOME" style="text-decoration: none; color: black; ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+                                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
+                                <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
+                            </svg>
                         </form>
                     </div>
                 </li>
@@ -101,7 +109,10 @@
                 <li>
                     <div class="dropdown" id="nav_dropdown">
                         <button class="btn btn-link dropdown-toggle" type="button" id="user_name_location" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
-                            USER
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
+                                <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
+                                <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
+                            </svg>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
                                <a  class="dropdown-item" id="username_location" href="/user_profile" disabled>Profile</a>
@@ -117,7 +128,10 @@
                 <li>
                     <div class="dropdown" id="nav_dropdown">
                         <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
-                            HELP
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                            </svg>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
                             <a href="/settings" class="dropdown-item disabled" >Settings</a>

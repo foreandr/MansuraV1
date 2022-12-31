@@ -22,6 +22,7 @@ def post_logic(person_id, page_no):
     modules.log_function("request", request)
     if "email" not in session: 
         return redirect(url_for("login"))
+    
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"],
         page_no=int(page_no)+1,
@@ -285,7 +286,7 @@ def password_recovery():
     return render_template(f"password_recovery.html")
 
 @app.route("/password_reset", methods=['GET', 'POST'])
-def password_reset():#TODO: GET THIS WORKING, CHECK IF OEN TIME PASS IS THE SMAE
+def password_reset():
     modules.log_function("request", request)
     if request.method == "POST":
         email = request.form["email"]
@@ -412,7 +413,6 @@ def comment_section(Post_id, how_many, order):
         comments=transformed_comments,
         )
 
-
 @app.route("/contact", methods=['GET'])
 def contact():
     if "email" not in session:
@@ -423,6 +423,39 @@ def contact():
 
 
     )
+
+@app.route("/structure_search_by_phrase/<page_no>", methods=['GET', 'POST'])
+def structure_search_by_phrase(page_no):
+    searched_value = ""
+    if request.method == "POST": 
+        searched_value = request.form["searched_value"]
+        print(searched_value)
+        #TODO: CHECK SEARCH FOR STUPID SHIT
+
+    query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
+        searcher=session["user"],
+        page_no=int(page_no)+1,
+        search_phrase=searched_value
+        )
+    
+    offset_calc = int(int(page_no) * int(posts_per_page))
+
+    
+    return render_template('home.html',
+        query=query,                   
+                           
+        posts=posts,
+        num_posts=len(posts),
+        
+        person_id=person_id,
+        page_no=new_page_no,
+        offset_calc=offset_calc,
+        can_scroll=can_scroll,
+        posts_per_page=posts_per_page,
+        coming_from_search="true",
+        
+        search_phrase=searched_value
+    )        
 
 if __name__ == '__main__':
     host = "0.0.0.0" 

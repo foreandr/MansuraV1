@@ -61,8 +61,8 @@ def CREATE_TABLE_PEOPLE(server="false"):
             CREATE TABLE PEOPLE
             (
             Person_id SERIAL PRIMARY KEY,       
-            Person_name varchar UNIQUE
-            
+            Person_name varchar UNIQUE,
+            Person_description varchar
             );
             """)
         conn.commit()

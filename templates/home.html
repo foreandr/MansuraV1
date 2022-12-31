@@ -21,13 +21,26 @@
             </div>
 
         {% endif %}
-{% endif %}
 
-{% if coming_from_favourites == "true" %}
+
+{% elif coming_from_favourites == "true" %}
             {% if can_scroll == true %}
             <div class="row gy-5" style="margin: auto" hx-post="/favourites/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
             {% else %}
             <div class="row gy-5" style="margin: auto">
+        {% endif %}
+
+{% elif coming_from_search == "true" %}
+        {% if can_scroll == true %}
+        <form class="form-inline my-2 my-lg-0" hx-post="/structure_search_by_phrase/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+            <span style="text-align: center;">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched_value" value="{{search_phrase}}" hidden>
+            </span>
+        </form>
+
+        <!--<div class="row gy-5" style="margin: auto" hx-post="/structure_search_by_phrase/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">-->
+        {% else %}
+        <div class="row gy-5" style="margin: auto">
         {% endif %}
 
 {% elif coming_from_tribunal == "true" %}
@@ -72,9 +85,9 @@
                                 <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
                             </svg>
                         </button>
-                        <div id="link_location{{i}}" hidden>
+                        <span id="link_location{{i}}" hidden>
                             <a href="{{posts[i][13]}}">{{posts[i][13]}}<h6></h6></a>
-                        </div>
+                        </span>
 
                         
                         <!--<h1>{{[i]}}</h1>-->
@@ -90,30 +103,30 @@
 
                         
                     </div>
-
-                    <div class="row no-gutters">
-                        <!--VIDEO-->
-                        <!--DESCRIPTION-->
-                        <div class="col-sm">
-                            <h5>{{posts[i][1]}}</h5>
-                        </div>
-
-                        <div class="col d-flex justify-content-center" id="post_location{{i}}">
-                            {{posts[i][2] | safe}}
-                            {{updated_html | safe}}
-                        </div>
-                        
-                        <div class="col-sm">
-                            location for ad
-                        </div>
-                    </div>
                     
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5>{{posts[i][1]}}</h5>
+                            </div>
+                            <div class="col-md-4 d-flex justify-content-center" id="post_location{{i}}">
+                                {{posts[i][2] | safe}}
+                                {{updated_html | safe}}
+                            </div>
+                            <div class="col-md-4">
+                                ads
+                            </div>
+                        </div>
+                      </div>
+                                           
                     <div class="card-footer">
                         <small class="text-muted">
                             <span class="col d-flex justify-content-center"> 
                                 <!--VIEWS-->
                                 <span>
-                                    <button class="btn">
+                                    <button class="btn btn-lg no-click" style="pointer-events: none">
+                                        
+                                    
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
                                             <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
                                             <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
@@ -127,31 +140,31 @@
                                 <!--LIKES-->
                                 <span>
                                     {% if posts[i][11] == 0%}
-                                    <button class="btn btn-outline-dark" hx-post="/update_like/{{posts[i][6]}}" hx-trigger="click" hx-target="#like_location{{i}}" hx-swap="innerHTML" onclick="like_logic(this)">
+                                    <button class="btn btn-outline-dark btn-lg" hx-post="/update_like/{{posts[i][6]}}" hx-trigger="click" hx-target="#like_location{{i}}" hx-swap="innerHTML" onclick="like_logic(this)">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                                             <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
                                         </svg>
-                                        <div id="like_location{{i}}">
+                                        <span id="like_location{{i}}">
                                             {{posts[i][7]}}
                                             {{likes}}
-                                        </div>
+                                        </span>
                                     </button>
                                     {% else %}
-                                    <button class="btn btn-outline-danger" hx-post="/update_like/{{posts[i][6]}}" hx-trigger="click" hx-target="#like_location{{i}}" hx-swap="innerHTML" onclick="like_logic(this)">
+                                    <button class="btn btn-outline-danger btn-lg" hx-post="/update_like/{{posts[i][6]}}" hx-trigger="click" hx-target="#like_location{{i}}" hx-swap="innerHTML" onclick="like_logic(this)">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
                                             <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
                                         </svg>
-                                        <div id="like_location{{i}}">
+                                        <span id="like_location{{i}}">
                                             {{posts[i][7]}}
                                             {{likes}}
-                                        </div>
+                                        </span>
                                     </button>
                                     {% endif %}
                                 </span>
                                 <!--COMMENTS-->
                                 <span>
                                     <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#exampleModalLong{{posts[i][6]}}" hx-post="/comment_section/{{posts[i][6]}}/10/likes" hx-trigger="click" hx-target="#comment_section{{posts[i][6]}}" hx-swap="innerHTML">
+                                    <button type="button" class="btn btn-outline-dark btn-lg" data-toggle="modal" data-target="#exampleModalLong{{posts[i][6]}}" hx-post="/comment_section/{{posts[i][6]}}/10/likes" hx-trigger="click" hx-target="#comment_section{{posts[i][6]}}" hx-swap="innerHTML">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
                                             <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                                         </svg>
@@ -203,34 +216,35 @@
                                     </div>
                                 </span>
 
+                                <!--FAVES-->
                                 <span>
                                     {% if posts[i][12] == 0%}
-                                    <button class="btn btn-outline-dark" hx-post="/update_fave/{{posts[i][6]}}" hx-trigger="click" hx-target="#fave_location{{i}}" hx-swap="innerHTML" onclick="fave_logic(this)">
+                                    <button class="btn btn-outline-dark btn-lg" hx-post="/update_fave/{{posts[i][6]}}" hx-trigger="click" hx-target="#fave_location{{i}}" hx-swap="innerHTML" onclick="fave_logic(this)">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
                                             <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
                                         </svg>
                                         
-                                        <div id="fave_location{{i}}">
+                                        <span id="fave_location{{i}}">
                                             {{posts[i][9]}}
                                             {{faves}}
-                                        </div>
+                                        </span>
                                     </button>
                                     {% else %}
 
-                                    <button class="btn btn-outline-danger" hx-post="/update_fave/{{posts[i][6]}}" hx-trigger="click" hx-target="#fave_location{{i}}" hx-swap="innerHTML"  onclick="fave_logic(this)">
+                                    <button class="btn btn-outline-danger btn-lg" hx-post="/update_fave/{{posts[i][6]}}" hx-trigger="click" hx-target="#fave_location{{i}}" hx-swap="innerHTML"  onclick="fave_logic(this)">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
                                             <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
                                         </svg>
-                                        <div id="fave_location{{i}}">
+                                        <span id="fave_location{{i}}">
                                             {{posts[i][9]}}
                                             {{faves}}
-                                        </div>
+                                        </span>
                                     </button>
                                     {% endif %}
                                 </span>
                                 <!-- SEND-->
                                 <span>
-                                    <button class="btn btn-outline-primary">
+                                    <button class="btn btn-outline-primary btn-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-plus" viewBox="0 0 16 16">
                                             <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z"/>
                                             <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z"/>

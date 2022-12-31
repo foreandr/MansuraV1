@@ -381,17 +381,31 @@ def IN_POST_TRIBUNAL(post_tribunal):
     else:
         return "AND posts.Post_live != 'True'"
         
-
-def UNIVERSAL_FUNCTION(
-    searcher, 
-    searcher_id="", 
-    person_id="",
-    page_no=1, 
-    favourites=False,
-    post_tribunal=False
-    ):
+def SEARCH_QUERY(search_phrase):
+    if search_phrase == "":
+        return ""
+    else:
+        return F"AND LOWER(people.Person_name) LIKE LOWER('%{search_phrase}%') "
     
-    SEARCH_DETAILS(searcher=searcher, person_id=person_id, page_no=page_no)
+def UNIVERSAL_FUNCTION(
+        searcher, 
+        searcher_id="", 
+        person_id="",
+        page_no=1, 
+        favourites=False,
+        post_tribunal=False,
+        search_phrase=""
+        ):
+    
+    print("searcher",searcher) 
+    print("searcher_id",searcher_id) 
+    print("person_id",person_id) 
+    print("page_no",page_no)  
+    print("favourites",favourites) 
+    print("post_tribunal",post_tribunal) 
+    print("search_phrase",search_phrase) 
+    
+    
     cursor, conn = modules.create_connection()
     
     person = modules.PERSON_SEARCH(person_id)
@@ -428,6 +442,7 @@ def UNIVERSAL_FUNCTION(
     {person}
     {fave_string}
     {IN_POST_TRIBUNAL(post_tribunal)}
+    {SEARCH_QUERY(search_phrase)}
     
     ORDER BY Person_name ASC
     
