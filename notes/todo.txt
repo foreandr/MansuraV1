@@ -1,4 +1,7 @@
 #TODO:
+
+make search algo page scrollable
+
 DONE. insert into db algo
 1. add search modal on homepage and
 2. search algo page

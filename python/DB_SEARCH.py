@@ -121,7 +121,7 @@ def TRANSLATE_DATE_CLAUSES(date_clause):
     elif date_clause.lower() == "This Year".lower():
         date_needed = 365
 
-    return f"(posts.Date_Time > current_date - interval '{date_needed}' day)" 
+    return f"(posts.Date_Time > current_date - interval ''{date_needed}'' day)" 
 
 def TRANSLATE_CONDITIONAL(conditional):
     if conditional.lower() == "Greater Than".lower():

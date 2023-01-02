@@ -229,6 +229,32 @@ def CREATE_TABLE_SEARCH_ALGORITM_VOTES(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     modules.close_conn(cursor, conn)
+    
+def CREATE_TABLE_SEARCH_ALGORITM_SAVE(server="false"):
+    cursor, conn = modules.create_connection()
+
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE SEARCH_ALGORITM_SAVE(
+                    Search_save_id SERIAL PRIMARY KEY,
+                    Search_algorithm_id BIGINT,
+                    User_id BIGINT,
+                    Date_time timestamp, 
+                    FOREIGN KEY (Search_algorithm_id) REFERENCES SEARCH_ALGORITHMS(Search_algorithm_id),
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
+                    UNIQUE (User_id, Search_algorithm_id)
+                );
+                """)
+        conn.commit()
+
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
+    modules.close_conn(cursor, conn)
 
 def CREATE_TABLE_CURRENT_USER_SEARCH_ALGORITHM(server="false"):
     cursor, conn = modules.create_connection()

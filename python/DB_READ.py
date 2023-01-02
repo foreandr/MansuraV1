@@ -37,6 +37,21 @@ def GET_USER_ID_FROM_NAME(username):
         modules.close_conn(cursor, conn)
         return i[0]
     return "NO NAME"
+
+def GET_USER_NAME_FROM_ID(User_id):
+    cursor, conn = modules.create_connection()
+    
+    cursor.execute(f"""
+        SELECT Username
+        FROM USERS
+        WHERE User_id = %(User_id)s
+    """, {'User_id': User_id}
+    )
+    
+    for i in cursor.fetchall():
+        modules.close_conn(cursor, conn)
+        return i[0]
+    return "NO NAME"
             
 def GET_ALL_USERS():
     cursor, conn = modules.create_connection()
@@ -293,6 +308,20 @@ def GET_NUM_FAVES_BY_POST_ID(Post_id):
     modules.close_conn(cursor, conn)
     return results
 
+def GET_NUM_SEARCH_FAVES_BY_SEARCH_ID(Search_algorithm_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT COUNT(*) 
+        FROM SEARCH_ALGORITM_SAVE search_fave
+        WHERE search_fave.Search_algorithm_id = %(Search_algorithm_id)s
+    """, {'Search_algorithm_id': Search_algorithm_id}
+    )
+    results = 0
+    for i in cursor.fetchall():
+        results = i[0]
+    modules.close_conn(cursor, conn)
+    return results
+
 def GET_NUM_VIEWS_BY_POST_ID(Post_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
@@ -437,7 +466,7 @@ def GET_WHERE_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id):
         
     results = 1
     for i in cursor.fetchall():
-        print("search algo was not empty, returning:", i[0])
+        # print("search algo was not empty, returning:", i[0])
         results = i[0]
         
     modules.close_conn(cursor, conn)
@@ -707,9 +736,105 @@ def GET_USER_CURRENT_SEARCH_ALGO_BY_ID(User_id):
         
     modules.close_conn(cursor, conn)
     return results
+
+def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type):
+    cursor, conn = modules.create_connection()
     
+    if search_type == "user":
+        personal_or_global = f"AND ((search.User_id = '{user_id}') OR (SELECT COUNT(*) FROM SEARCH_ALGORITM_SAVE saved WHERE saved.Search_algorithm_id = search.Search_algorithm_id  AND  saved.User_id = '{user_id}') != 0)" 
+    else:
+        personal_or_global = ""
+        
+    cursor.execute(f"""
+        SELECT search.Search_algorithm_id, 
+        search.Search_algorithm_name, 
+        search.Search_where_clause, 
+        search.Search_order_clause, 
+        search.Date_time,
+        (
+            SELECT Username
+            FROM Users users
+            WHERE users.User_id = search.User_id
+        ), 
+        (
+            SELECT COUNT(*)
+            FROM SEARCH_ALGORITM_VOTES votes
+            WHERE search.Search_algorithm_id = votes.Search_algorithm_id
+        ),
+        (
+            SELECT COUNT(*)
+            FROM SEARCH_ALGORITM_SAVE saved
+            WHERE saved.Search_algorithm_id = search.Search_algorithm_id
+            AND  saved.User_id = '{user_id}' 
+        ),
+        (
+            SELECT COUNT(*)
+            FROM SEARCH_ALGORITM_SAVE saved
+            WHERE saved.Search_algorithm_id = search.Search_algorithm_id
+        )
+        
+        FROM SEARCH_ALGORITHMS search
+        
+        WHERE 1=1
+        {personal_or_global}
+
+        ORDER BY (
+            SELECT COUNT(*)
+            FROM SEARCH_ALGORITM_VOTES votes
+            WHERE search.Search_algorithm_id = votes.Search_algorithm_id
+        )
+    
+    """)
+    break_counter = 0
+    break_number = 1000
+    results = []
+    for i in cursor.fetchall():
+        if break_number < break_counter:
+            break 
+        results.append([
+            i[0], # search_id
+            i[1], # name
+            i[2], # where
+            i[3], # order
+            i[4], # date
+            i[5], # GET_USER_NAME_FROM_ID(user_id),
+            i[6], # count votes
+            i[7], # has saved
+            i[8]  # count saved
+        ])
+        break_number =+1
+    for i in results:
+        print(i)
+    modules.close_conn(cursor, conn)
+    return results
+
+def GET_ALL_SEARCH_ALGOS():
+    cursor, conn = modules.create_connection()
+    cursor.execute("""
+    SELECT * 
+    FROM SEARCH_ALGORITHMS
+    """)
+
+    for i in cursor.fetchall():
+        print(i)
+        
+    modules.close_conn(cursor, conn)
+    
+def GET_SEARCH_FAVES():
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT *
+        FROM SEARCH_ALGORITM_SAVE search_fave
+        """
+    )
+    results = 0
+    for i in cursor.fetchall():
+        print(i)
+    modules.close_conn(cursor, conn)
+    return results
+
 if __name__ == "__main__": 
-    # modules.GET_ALL_USERS()
-    print(modules.INSERT_USER("Foreman", "helloWorld!", "andrfore@gmail.com"))
+
+    GET_SEARCH_ALGORITHM_DETAILS(user_id=3, search_type="user")
     pass
 

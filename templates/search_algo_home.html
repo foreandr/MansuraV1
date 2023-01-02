@@ -1,7 +1,125 @@
 {% extends "structure.html" %}
 
 {%block main %}
-SEARCH HOME
 
+{% if 1 == 0%}
+1
+{% else %}
+2
+{% endif %}
 
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Search Votes</th>
+                <th scope="col">Name</th>
+                <th scope="col">Creator</th>
+                <th scope="col">Creation Date</th>
+				<th scope="col">Where</th>
+                <th scope="col">Order By</th>
+				<th scope="col">Saved</th>
+                <th scope="col">Create Fork</th>
+            </tr>
+        </thead>
+        <tbody>
+			{%for i in range(algos |length )%}
+			<tr>
+                <td>{{algos[i][6]}}</td>
+                <td>{{algos[i][1]}}</td>
+                <td>{{algos[i][5]}}</td>
+                <td>{{algos[i][4]}}</td>
+                <td>
+                    <button class="btn btn-dark" type="button" onclick="show_where({{i}})">
+                        SHOW
+                    </button>
+                    <div id="show_where_{{i}}" hidden>
+                        {{algos[i][2]}}
+                    </div>
+                </td>
+                <td>
+                    <button class="btn btn-dark" type="button" onclick="show_order({{i}})">
+                        SHOW
+                    </button>
+                    <div id="show_order_{{i}}" hidden>
+                        {{algos[i][3]}}
+                    </div>
+
+                </td>
+                <td>
+                    {% if algos[i][7] == 0%}
+                    <button class="btn btn-outline-dark btn-lg" hx-post="/update_search_fave/{{algos[i][0]}}" hx-trigger="click" hx-target="#search_fave_location{{i}}" hx-swap="innerHTML"  onclick="fave_logic(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
+                            <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                        </svg>
+                        <span id="search_fave_location{{i}}">
+                            {{algos[i][8]}}
+                            {{search_faves}}
+                        </span>
+                    </button>
+                    {% else %}
+                    <button class="btn btn-outline-danger btn-lg" hx-post="/update_search_fave/{{algos[i][0]}}" hx-trigger="click" hx-target="#search_fave_location{{i}}" hx-swap="innerHTML"  onclick="fave_logic(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
+                            <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                        </svg>
+                        <span id="search_fave_location{{i}}">
+                            {{algos[i][8]}}
+                            {{search_faves}}
+                        </span>
+                    </button>
+                    {% endif %}
+
+                </td>
+                
+                <td>
+                    <button class="btn btn-dark" type="button" disabled>
+                        FORK
+                    </button>
+                </td>
+
+            </tr>
+			{%endfor%}
+      </tbody>
+    </table>
+</div>
+
+<div id="search_show_modal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content" id="showing_modal_inside">
+    </div>
+</div>
+
+<script>
+    function show_where(iter){
+        where = document.getElementById(`show_where_${iter}`)
+        if (where.hidden == true){
+            where.removeAttribute("hidden")
+        }
+        else{
+            where.setAttribute("hidden", "enabled")
+        }
+    }
+    function show_order(iter){
+        order = document.getElementById(`show_order_${iter}`)
+        if (order.hidden == true){
+            order.removeAttribute("hidden")
+        }
+        else{
+            order.setAttribute("hidden", "enabled")
+        }
+    }
+    function fave_logic(value){
+        console.log(value)
+        if ( $(value).hasClass("btn btn-outline-danger")){
+            $(value).removeClass("btn btn-outline-danger");
+            $(value).addClass("btn btn-outline-dark");  
+        }
+        else{
+            $(value).removeClass("btn btn-outline-dark");
+            $(value).addClass("btn btn-outline-danger");  
+        }
+    }
+
+	
+</script>
 {% endblock main %}

@@ -347,6 +347,15 @@ def update_like(Post_id):
     return render_template(f"update_like.html",
         likes=modules.GET_NUM_LIKES_BY_POST_ID(Post_id))
 
+@app.route("/update_search_fave/<algo_id>", methods=['GET', 'POST'])
+def update_search_fave(algo_id):
+    print(algo_id)
+    modules.log_function("request", request)
+    modules.SEARCH_FAVE_LOGIC(algo_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
+    return render_template(f"update_fave_search.html",
+        search_faves=modules.GET_NUM_SEARCH_FAVES_BY_SEARCH_ID(algo_id)
+        )
+
 @app.route("/update_fave/<Post_id>", methods=['GET', 'POST'])
 def update_fave(Post_id):
     modules.log_function("request", request)
@@ -485,6 +494,7 @@ def search_algo_create():
         full_order_by = modules.TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses)
         full_where = modules.TRANSFER_SEARCH_WHERE_TO_QUERY(array_of_where_clauses)
         algorithm = modules.CHECK_ALGO_FUNCTION(algo_name, session["user"])
+
         
         if algorithm.lower() == "False".lower():
             return render_template(f"search_algo_create.html",
@@ -495,20 +505,21 @@ def search_algo_create():
         #print("full_order_by :", full_order_by)
         #print("full_where", full_where)
         modules.INSERT_SEARCH_ALGORITHM(Search_algorithm_name=algo_name, Search_where_clause=full_where, Search_order_clause=full_order_by, User_id=session["id"])
-        
-        
-        return render_template(f"search_algo_home.html",
-        )
+        return redirect(url_for('search_algo_home', search_type="home"))
                 
     return render_template(f"search_algo_create.html",
     )
     
-@app.route("/search_algo_home", methods=['GET', 'POST'])
-def search_algo_home():
+@app.route("/search_algo_home/<search_type>", methods=['GET', 'POST'])
+def search_algo_home(search_type):
+    print(search_type)
     modules.log_function("request", request, session_user=session['user'])
-    print("HOME SEARCH ALGO")
-    
+    algos = modules.GET_SEARCH_ALGORITHM_DETAILS(user_id=session['id'], search_type=search_type)
+    for i in algos:
+        print(i[0])
     return render_template(f"search_algo_home.html",
+        algos=algos,
+        search_type=search_type
     )
 
 

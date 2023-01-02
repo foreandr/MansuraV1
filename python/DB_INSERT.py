@@ -189,6 +189,15 @@ def FAVE_LOGIC(Post_id, User_id):
         modules.DELETE_FAVOURITE(Post_id, User_id)
     else:
         modules.INSERT_FAVOURITES(Post_id, User_id)
+    
+def SEARCH_FAVE_LOGIC(Search_algorithm_id, User_id):
+    already_saved = modules.CHECK_SEARCH_FAVE_EXISTS(Search_algorithm_id, User_id)
+    print(already_saved)
+    if already_saved:
+        #print( User_id, "has already faved",Post_id)
+        modules.DELETE_SEARCH_FAVOURITE(Search_algorithm_id, User_id)
+    else:
+        modules.INSERT_SEARCH_FAVOURITES(Search_algorithm_id, User_id)
 
 
 def INSERT_LIKE(Post_id, User_id):
@@ -278,6 +287,31 @@ def INSERT_FAVOURITES(Post_id, User_id):
             (%(Post_id)s, %(User_id)s, NOW())
             ON CONFLICT DO NOTHING
             """, {'Post_id': Post_id,
+                  'User_id': User_id
+                  }
+            
+            )
+        conn.commit()
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    
+    modules.close_conn(cursor, conn) 
+    
+def INSERT_SEARCH_FAVOURITES(Search_algorithm_id, User_id):
+    # print(Search_algorithm_id, User_id)
+    cursor, conn =modules. create_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            f"""
+            INSERT INTO SEARCH_ALGORITM_SAVE
+            (Search_algorithm_id, User_id, Date_time)
+            VALUES
+            (%(Search_algorithm_id)s, %(User_id)s, NOW())
+            ON CONFLICT DO NOTHING
+            """, {'Search_algorithm_id': Search_algorithm_id,
                   'User_id': User_id
                   }
             
@@ -666,17 +700,35 @@ def INSERT_DEMO_PEOPLE():
     for i in range(len(word_list)):
         INSERT_PERSON(word_list[i])
         
+def brute_force_replace(string):
+    new_string = ""
+    for i in string:
+        if i  == "'":
+            # print("found apostrophe") 
+            new_string += "\\'"
+        else:
+            new_string +=i    
+    return new_string
+            
 def INSERT_SEARCH_ALGORITHM(Search_algorithm_name, Search_where_clause, Search_order_clause, User_id):
-    cursor, conn = modules.create_connection()
-    cursor.execute(f"""
-        INSERT INTO SEARCH_ALGORITHMS(Search_algorithm_name, Search_where_clause, Search_order_clause, User_id, Date_time)
-        VALUES ('{Search_algorithm_name}', '{Search_where_clause}', '{Search_order_clause}', '{User_id}', NOW() )  
-        ON CONFLICT DO NOTHING 
-    """)
-   
-    conn.commit()
-    modules.print_green(f"{inspect.stack()[0][3]} {Search_algorithm_name, Search_where_clause, Search_order_clause, User_id} COMPLETED")
-    modules.close_conn(cursor, conn) 
+    #Search_where_clause = Search_where_clause.replace("'", "\'")
+    #Search_order_clause = Search_order_clause.replace("'", "sadhgfajhsdgfkjahdfsgkjdfahsg")
+    # Search_where_clause= brute_force_replace(Search_where_clause)
+    Search_algorithm_name = f"{modules.GET_USER_NAME_FROM_ID(User_id)}-{Search_algorithm_name}"
+    modules.GET_USER_ID_FROM_NAME
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            INSERT INTO SEARCH_ALGORITHMS(Search_algorithm_name, Search_where_clause, Search_order_clause, User_id, Date_time)
+            VALUES ('{Search_algorithm_name}', '{Search_where_clause}', '{Search_order_clause}', '{User_id}', NOW() )  
+            ON CONFLICT DO NOTHING 
+        """)
+    
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} {Search_algorithm_name, Search_where_clause, Search_order_clause, User_id} COMPLETED")
+        modules.close_conn(cursor, conn) 
+    except Exception as e:
+        print(e)
 
 def INSERT_SEARCH_VOTE(Search_algorithm_id, User_id):
     cursor, conn = modules.create_connection()

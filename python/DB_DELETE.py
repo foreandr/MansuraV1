@@ -38,6 +38,22 @@ def DELETE_FAVOURITE(Post_id, User_id):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
     
     modules.close_conn(cursor, conn) 
+    
+def DELETE_SEARCH_FAVOURITE(Search_algorithm_id, User_id):
+    cursor, conn = modules.create_connection()
+    try:
+        cursor.execute(
+            f"""
+                DELETE FROM SEARCH_ALGORITM_SAVE
+                WHERE Search_algorithm_id = '{Search_algorithm_id}' AND User_id = '{User_id}'
+            """)
+        conn.commit()
+        modules.print_green(f"REMOVED SEARCH FAVOURITE {User_id} from post {Search_algorithm_id}")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+    
+    modules.close_conn(cursor, conn) 
 
 def DELETE_CONNECTION(user_id1, user_id2):
     # DELETE FROM films USING producers

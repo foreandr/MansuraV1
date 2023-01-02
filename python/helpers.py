@@ -249,7 +249,12 @@ def SERVER_CHECK(server, function):
         elif function == "CREATE_TABLE_CURRENT_USER_SEARCH_ALGORITHM":
             cursor.execute("""DROP TABLE IF EXISTS CURRENT_USER_SEARCH_ALGORITHM CASCADE""")
             modules.print_segment()
-             
+            
+        elif function == "CREATE_TABLE_SEARCH_ALGORITM_SAVE":
+            cursor.execute("""DROP TABLE IF EXISTS SEARCH_ALGORITM_SAVE CASCADE""")
+            modules.print_segment()             
+
+
         conn.commit()
         modules.print_green(F"CASCADE DROPPED TABLE {function}")
        
@@ -300,6 +305,28 @@ def CHECK_FAVE_EXISTS(Post_id, User_id):
         })
     result = 0
     for i in cursor.fetchall():
+        result = i[0]
+    
+    modules.close_conn(cursor, conn) 
+    if result > 0:
+        return True
+    else: 
+        return False
+    
+def CHECK_SEARCH_FAVE_EXISTS(Search_algorithm_id, User_id):
+    cursor, conn = modules.create_connection()
+    
+    cursor.execute(f"""
+        SELECT COUNT(*)
+        FROM SEARCH_ALGORITM_SAVE
+        WHERE Search_algorithm_id = %(Search_algorithm_id)s
+        AND User_id = %(User_id)s            
+    """, {'Search_algorithm_id': Search_algorithm_id,
+          'User_id': User_id
+        })
+    result = 0
+    for i in cursor.fetchall():
+        print(Search_algorithm_id, User_id, i[0])
         result = i[0]
     
     modules.close_conn(cursor, conn) 
@@ -621,12 +648,28 @@ def CHECK_ALGO_FUNCTION(algo_name, user):
         
 
 if __name__ == "__main__":
-    
-    link = """https://www.tiktok.com/@mazinosarchive/video/7179324733018672390?is_copy_url=1&is_from_webapp=v1"""
-    new_link= translate_link_to_html(link)
-    perfect = """<blockquote class="tiktok-embed" cite="https://www.tiktok.com/@mazinosarchive/video/7179324733018672390" data-video-id="7179324733018672390" style="max-width: 605px;min-width: 325px;"><section></section></blockquote><script async src="https://www.tiktok.com/embed.js"></script>"""
-    for i in range(len(perfect)):
-        print(i, perfect[i], new_link[i])
+    CHECK_SEARCH_FAVE_EXISTS(1, 3)
+    CHECK_SEARCH_FAVE_EXISTS(2, 3)
+    CHECK_SEARCH_FAVE_EXISTS(3, 3)
+    CHECK_SEARCH_FAVE_EXISTS(4, 3)
+    CHECK_SEARCH_FAVE_EXISTS(5, 3)
+    CHECK_SEARCH_FAVE_EXISTS(6, 3)
+    CHECK_SEARCH_FAVE_EXISTS(7, 3)
+    CHECK_SEARCH_FAVE_EXISTS(8, 3)
+    CHECK_SEARCH_FAVE_EXISTS(9, 3)
+    CHECK_SEARCH_FAVE_EXISTS(10, 3)
+    CHECK_SEARCH_FAVE_EXISTS(11, 3)
+    CHECK_SEARCH_FAVE_EXISTS(12, 3)
+    CHECK_SEARCH_FAVE_EXISTS(13, 3)
+    CHECK_SEARCH_FAVE_EXISTS(14, 3)
+    CHECK_SEARCH_FAVE_EXISTS(15, 3)
+    CHECK_SEARCH_FAVE_EXISTS(16, 3)
+    CHECK_SEARCH_FAVE_EXISTS(17, 3)
+    CHECK_SEARCH_FAVE_EXISTS(18, 3)
+    CHECK_SEARCH_FAVE_EXISTS(19, 3)
+    CHECK_SEARCH_FAVE_EXISTS(20, 3)
+    CHECK_SEARCH_FAVE_EXISTS(21, 3)
+    CHECK_SEARCH_FAVE_EXISTS(22, 3)
 
 
 
