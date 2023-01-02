@@ -1,5 +1,5 @@
 #TODO:
-
+put billboard at the top
 make search algo page scrollable
 
 DONE. insert into db algo

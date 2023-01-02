@@ -12,11 +12,23 @@
 
 {%block main %}
 
+{% if posts | length == 0 %}
 
 
 <div>
-    {{query}}
+    
+
+<div class="container">
+    <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+        <h1><ul>BAD QUERY!</ul></h1>
+        <p class="lead" >NO POSTS MEET THIS QUERY CRITERIA.</p>
+    </div>
+    <small>
+        {{query}}
+    </small>
 </div>
+{% endif %}
+
 
 {% if coming_from_tribunal == "true" %}
         {% if page_no == 1 %}

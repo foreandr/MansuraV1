@@ -200,6 +200,10 @@ def SEARCH_FAVE_LOGIC(Search_algorithm_id, User_id):
         modules.INSERT_SEARCH_FAVOURITES(Search_algorithm_id, User_id)
 
 
+
+
+
+
 def INSERT_LIKE(Post_id, User_id):
     cursor, conn = modules.create_connection()
     try:

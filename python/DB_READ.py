@@ -1,10 +1,12 @@
 import io
 from PIL import Image
+import inspect
 
 try:    
     import python.MODULES as modules
 except:
     import MODULES as modules
+
 
 
 def GET_USERS_BY_TEXT(text):
@@ -449,7 +451,7 @@ def GET_ORDER_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id):
         
     results = 1
     for i in cursor.fetchall():
-        print("search algo was not empty, returning:", i[0])
+        # print("search algo was not empty, returning:", i[0])
         results = i[0]
         
     modules.close_conn(cursor, conn)
@@ -496,7 +498,7 @@ def UNIVERSAL_FUNCTION(
     person = modules.PERSON_SEARCH(person_id)
     searcher_id = modules.GET_USER_ID_FROM_NAME(searcher) 
     fave_string, fave_inner_join = modules.FAVOURITE_QUERY(favourites, searcher_id)
-    search_algo_id = modules.GET_USER_CURRENT_SEARCH_ALGO_BY_ID(searcher_id)
+    search_algo_id, _ = modules.GET_USER_CURRENT_SEARCH_ALGO_BY_ID(searcher_id)
     
     # ORDER PARAMETERS
     order_clause = modules.GET_ORDER_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
@@ -540,6 +542,10 @@ def UNIVERSAL_FUNCTION(
     OFFSET ( ({page_no}-1)  * {posts_per_page} )
     LIMIT {posts_per_page};
     """
+    
+    #LOG THE QUERY [ERROR CHECKING]
+    # modules.log_function(msg_type="test", log_string=query, function_name=f"{inspect.stack()[0][3]}")
+
     cursor.execute(query)
     posts = []
     for i in range((page_no-1) * posts_per_page):
@@ -724,18 +730,23 @@ def GET_USER_CURRENT_SEARCH_ALGO_BY_ID(User_id):
     cursor, conn = modules.create_connection()
 
     cursor.execute(f"""
-        SELECT Search_algorithm_id
-        FROM CURRENT_USER_SEARCH_ALGORITHM
-        WHERE User_id = '{User_id}'
+        SELECT current.Search_algorithm_id,(
+            SELECT Search_algorithm_name
+            FROM SEARCH_ALGORITHMS search
+            WHERE search.Search_algorithm_id = current.Search_algorithm_id
+        )
+        
+        FROM CURRENT_USER_SEARCH_ALGORITHM current
+        WHERE current.User_id = '{User_id}'
     """)
         
-    results = 1
+    results = [1, "Default"]
     for i in cursor.fetchall():
         # print("search algo was not empty, returning:", i[0])
-        results = i[0]
+        results = [i[0], i[1]]
         
     modules.close_conn(cursor, conn)
-    return results
+    return results[0], results[1]
 
 def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type):
     cursor, conn = modules.create_connection()

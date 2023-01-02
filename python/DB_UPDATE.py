@@ -53,3 +53,22 @@ def UPDATE_POST_HTML_BY_ID(Post_id, embed_link):
     modules.print_green(f"{inspect.stack()[0][3]} {Post_id, embed_link} COMPLETED\n")
     modules.close_conn(cursor, conn)
 
+def UPDATE_CURRENT_SEARCH_BY_USER_ID(Search_algorithm_id, User_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+    INSERT INTO CURRENT_USER_SEARCH_ALGORITHM AS algo
+    (Search_algorithm_id, User_id) 
+    VALUES 
+    ('{Search_algorithm_id}', '{User_id}')
+    
+    ON CONFLICT (User_id) DO 
+    
+    UPDATE 
+    SET Search_algorithm_id = '{Search_algorithm_id}'
+    WHERE algo.User_id = '{User_id}'
+    
+    """)
+    conn.commit()
+    modules.print_green(f"{inspect.stack()[0][3]} {Search_algorithm_id, User_id} COMPLETED\n")
+    modules.close_conn(cursor, conn)
+

@@ -56,7 +56,7 @@ def STRING_SIMILARITY_CHECK(a, b):
 
 def check_and_save_dir(path):
     # Create a new directory because it does not exist
-    print("RUNNING CHECK AND SAVE DIR")
+    # print("RUNNING CHECK AND SAVE DIR")
     isExist = os.path.exists(path)
     if not isExist:
         os.makedirs(path)

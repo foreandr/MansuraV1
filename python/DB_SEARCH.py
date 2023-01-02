@@ -146,7 +146,7 @@ def WHERE_CLAUSE_SECTIONS(clause):
 
     date_clauses = ["All Time","This Week","This Month","This Year", "Today"]
     conditional_clauses = ["AND", "OR"]
-    properties = ["Likes", "Views", "Favourites"]
+    properties = ["Likes", "Views", "Favourites", "Comments"]
     comparison = ["Less Than", "Equal", "Greater Than"]
     numbers = ["10", "100", "1000", "10000","100000", "1000000","10000000"]
     

@@ -2,6 +2,13 @@
 
 {%block main %}
 
+<div class="container">
+    <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+        <h1><ul>CREATE CUSTOM SEARCH ALGORITHM</ul></h1>
+        <p class="lead">Compose your own feed to your heart's content!</p>
+    </div>
+</div>
+
 <form action="/search_algo_create" method="POST" enctype="multipart/form-data">
     <div class="container-lg">
         <div class="row">
@@ -150,9 +157,9 @@
         document.getElementById(`${element_id}`).remove();
     }
     function remove_another_where_by_section(section_element){
-        //console.log(section_element)
+        console.log(section_element)
         element_id = (section_element.parentNode.parentNode.id)
-        //console.log(element_id)
+        console.log(element_id)
         document.getElementById(`${element_id}`).remove();
     }
     function add_another_where_section(){
@@ -183,7 +190,7 @@
         full_string = `${ANDORvalue},${value},${comparison_value},${count_value}`
         // console.log(full_string)
         where_by_string = `
-          <div class="input-group mb-3" id="additional_where_clause_${count_value}">
+          <div class="input-group mb-3" id="additional_where_clause_${where_count}">
             <input type="text" style="width: 35ch;" class="form-control" id="where_clauses_${where_count}" name="where_clauses_${where_count}" value="${full_string}" placeholder="${full_string}" readonly>
             <div class="input-group-append">
                 <button class="btn btn-lg" type="button" onclick="remove_another_where_by_section(this)">

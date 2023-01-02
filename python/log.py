@@ -50,7 +50,7 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None", ses
         with open(f'{my_path}/{current_date}.txt', 'a') as f:
                 f.write(err_string + ",\n")
     elif msg_type == 'test':
-        my_path = f"/root/mansura/Python/logs/test"
+        my_path = f"/root/mansura/logs/test"
         modules.check_and_save_dir(my_path)
         with open(f'{my_path}/{current_date}.txt', 'a') as f:
                 f.write(err_string + ",\n")

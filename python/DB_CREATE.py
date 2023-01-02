@@ -265,7 +265,7 @@ def CREATE_TABLE_CURRENT_USER_SEARCH_ALGORITHM(server="false"):
                 f"""
                 CREATE TABLE CURRENT_USER_SEARCH_ALGORITHM(
                     Search_algorithm_id BIGINT,
-                    User_id BIGINT,
+                    User_id BIGINT UNIQUE,
                     FOREIGN KEY (Search_algorithm_id) REFERENCES SEARCH_ALGORITHMS(Search_algorithm_id),
                     FOREIGN KEY (User_id) REFERENCES USERS(User_id)
                 );

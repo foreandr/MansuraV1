@@ -512,18 +512,29 @@ def search_algo_create():
     
 @app.route("/search_algo_home/<search_type>", methods=['GET', 'POST'])
 def search_algo_home(search_type):
-    print(search_type)
     modules.log_function("request", request, session_user=session['user'])
     algos = modules.GET_SEARCH_ALGORITHM_DETAILS(user_id=session['id'], search_type=search_type)
-    for i in algos:
-        print(i[0])
+    search_id, search_name = modules.GET_USER_CURRENT_SEARCH_ALGO_BY_ID(User_id=session['id'])
     return render_template(f"search_algo_home.html",
         algos=algos,
-        search_type=search_type
+        search_type=search_type,
+        search_id=search_id, 
+        search_name=search_name
+    )
+
+@app.route("/update_search_algo_choice/<search_algo_id>", methods=['GET', 'POST'])
+def update_search_algo_choice(search_algo_id):
+    print("search_algo_id:", search_algo_id)
+    print("user id       :", session["id"])
+    modules.UPDATE_CURRENT_SEARCH_BY_USER_ID(search_algo_id, session["id"])
+    
+    return render_template(f"update_chosen_algorithm.html"
     )
 
 
     
+    
+
     
 if __name__ == '__main__':
     host = "0.0.0.0" 
