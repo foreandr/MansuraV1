@@ -14,7 +14,6 @@ app.secret_key = 'demokey'
 
 @app.route('/', methods=['GET', 'POST'])  # homepage
 def home():
-    print("test================")
     return redirect(url_for('post_logic', person_id=0,page_no=0 ))
     
 @app.route("/<person_id>/<page_no>", methods=['GET', 'POST'])
@@ -26,7 +25,7 @@ def post_logic(person_id, page_no):
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"],
         page_no=int(page_no)+1,
-        person_id=person_id
+        person_id=person_id,
         )
     
     offset_calc = int(int(page_no) * int(posts_per_page))
@@ -51,7 +50,6 @@ def post_tribunal(page_no):
     modules.log_function("request", request)
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"], 
-        searcher_id=session["id"],
         page_no=int(page_no)+1,
         post_tribunal=True
     )
@@ -80,7 +78,6 @@ def favourites(page_no):
     modules.log_function("request", request)
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"], 
-        searcher_id=session["id"],
         page_no=int(page_no)+1,
         favourites=True
     )
@@ -172,46 +169,48 @@ def request_form(request_type):
                                 )
         elif request_type == "person":
             
-            post_title = request.form["post_title"]
-            post_title = modules.clean_title(post_title)
+            #post_title = request.form["post_title"]
+            #post_title = modules.clean_title(post_title)
             #print("post_title", post_title)
             
-            description = request.form["description"]
-            description = modules.COMMENT_TEXT_CHECK(description)
+            #description = request.form["description"]
+            #description = modules.COMMENT_TEXT_CHECK(description)
             #print("description", description)
             
-            link = request.form["post_link"]
+            #link = request.form["post_link"]
             # print("link", link)
 
             person_name = request.form["person_name"]
-            
-            modules.INSERT_REQUEST(
-                User_id=session["id"],
-                Post_title=post_title,
-                Description=description,
-                Link=link,
-                Person_name=person_name
-                )  
-
-            
+            print("person_name:", person_name)
+            '''TODO:
+            CREATE PERSON REQUEST LOCATION
+            '''  
     return render_template(f'request_form.html',
         request_type=request_type
     )
 
-@app.route("/search_users_by_text", methods=['GET'])
-def search_users_by_text():
+@app.route("/search_text_by_category/<type>", methods=['GET'])
+def search_text_by_category(type):
     # GOTTA BE A BETTER WAY to get the query
-    print(request.url)
-    query_text = str(request.url).split("person_name=")[1]
-
-    if modules.CHECK_INJECTION(query_text):
-        users = modules.GET_USERS_BY_TEXT(query_text)
-    else:
-        users = ["None"]
-    return render_template(f'update_user_search.html',
-        users=users
-    )
-    
+    # print(request.url)
+    query_text = str(request.url).split("name=")[1]
+    if type == "user":
+        if modules.CHECK_INJECTION(query_text):
+            users = modules.GET_USERS_BY_TEXT(query_text)
+        else:
+            users = ["None"]
+        return render_template(f'update_user_search.html',
+            users=users,
+            message="None"
+        )
+    elif type == "algorithm":
+        algorithm = modules.CHECK_ALGO_FUNCTION(query_text, session["user"])
+        return render_template(f'update_user_search.html',
+            users="None",
+            algorithm=algorithm
+            
+        )
+        
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     modules.log_function("request", request)
@@ -225,8 +224,8 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-        print(email)
-        print(password)
+        #print(email)
+        #print(password)
         if modules.CHECK_INJECTION(email) and modules.CHECK_INJECTION(password):
             print(1)
             signed_in = modules.validate_user_from_session(email, password)
@@ -420,12 +419,11 @@ def contact():
     modules.log_function("request", request, session_user=session['user'])
     
     return render_template(f"contact.html",
-
-
     )
 
 @app.route("/structure_search_by_phrase/<page_no>/<phrase_again>", methods=['GET', 'POST'])
 def structure_search_by_phrase(page_no, phrase_again):
+    modules.log_function("request", request, session_user=session['user'])
     searched_value = ""
     if request.method == "POST":
         try: 
@@ -439,6 +437,9 @@ def structure_search_by_phrase(page_no, phrase_again):
         except Exception as e:
             searched_value = phrase_again
 
+    if len(searched_value) == 0 :
+        return redirect(url_for('post_logic', person_id=0,page_no=0 ))
+    
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"],
         page_no=int(page_no)+1,
@@ -463,6 +464,56 @@ def structure_search_by_phrase(page_no, phrase_again):
         search_phrase=searched_value
     )        
 
+@app.route("/search_algo_create", methods=['GET', 'POST'])
+def search_algo_create():
+    modules.log_function("request", request, session_user=session['user'])
+    
+    array_of_order_clauses = []
+    array_of_where_clauses = []
+
+    if request.method == "POST":
+        for key,value in request.form.items():
+            # print(key, value)
+            if "order_clauses" in key:
+                array_of_order_clauses.append(value)
+            elif "where_clauses" in key:
+                array_of_where_clauses.append(value)
+            elif key == "algo_name":
+                algo_name = value
+                
+
+        full_order_by = modules.TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses)
+        full_where = modules.TRANSFER_SEARCH_WHERE_TO_QUERY(array_of_where_clauses)
+        algorithm = modules.CHECK_ALGO_FUNCTION(algo_name, session["user"])
+        
+        if algorithm.lower() == "False".lower():
+            return render_template(f"search_algo_create.html",
+                message="""<div class="text-danger">Algorithm Name Unavailable</div>"""  
+            ) 
+        
+        #print("algo_name     :", algo_name)
+        #print("full_order_by :", full_order_by)
+        #print("full_where", full_where)
+        modules.INSERT_SEARCH_ALGORITHM(Search_algorithm_name=algo_name, Search_where_clause=full_where, Search_order_clause=full_order_by, User_id=session["id"])
+        
+        
+        return render_template(f"search_algo_home.html",
+        )
+                
+    return render_template(f"search_algo_create.html",
+    )
+    
+@app.route("/search_algo_home", methods=['GET', 'POST'])
+def search_algo_home():
+    modules.log_function("request", request, session_user=session['user'])
+    print("HOME SEARCH ALGO")
+    
+    return render_template(f"search_algo_home.html",
+    )
+
+
+    
+    
 if __name__ == '__main__':
     host = "0.0.0.0" 
     # http://165.227.35.71:8088/

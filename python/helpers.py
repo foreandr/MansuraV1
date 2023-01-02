@@ -237,6 +237,18 @@ def SERVER_CHECK(server, function):
         elif function == "CREATE_TABLE_MODERATION_ADMINS":
             cursor.execute("""DROP TABLE IF EXISTS MODERATION_ADMINS CASCADE""")
             modules.print_segment()
+        
+        elif function == "CREATE_TABLE_SEARCH_ALGORITHMS":
+            cursor.execute("""DROP TABLE IF EXISTS SEARCH_ALGORITHMS CASCADE""")
+            modules.print_segment()
+            
+        elif function == "CREATE_TABLE_SEARCH_ALGORITM_VOTES":
+            cursor.execute("""DROP TABLE IF EXISTS SEARCH_ALGORITM_VOTES CASCADE""")
+            modules.print_segment()
+            
+        elif function == "CREATE_TABLE_CURRENT_USER_SEARCH_ALGORITHM":
+            cursor.execute("""DROP TABLE IF EXISTS CURRENT_USER_SEARCH_ALGORITHM CASCADE""")
+            modules.print_segment()
              
         conn.commit()
         modules.print_green(F"CASCADE DROPPED TABLE {function}")
@@ -579,6 +591,34 @@ def GETTING_POST_MAX_FROM_QUERY(query):
     
     modules.close_conn(cursor, conn)
     return num_total
+
+
+def CHECK_ALGO_FUNCTION(algo_name, user):
+    #print("checking", algo_name)
+    #print(algo_name, user)
+    
+    # 0  INJECTION CHECK
+    if not modules.CHECK_INJECTION(algo_name):
+        return "False"
+    
+    # 2. SPECIAL CHARACTERS  
+    if any(not c.isalnum() for c in algo_name):
+        # print(f"{algo_name} has non alphanumeric chracters, cant in name")
+        return "False"  
+     
+    # 3. CHECK LENGTH
+    if len(algo_name) > 20:
+        # print(f"{algo_name} TOO LONG: {len(algo_name)}")
+        return "False"    
+    
+    # 4 CHECK IF ALGO NAME EXISTS (should be last so i don't have to send queries)
+    algo_with_append = f"{user}-{algo_name}"
+    if modules.GET_SEARCH_ALGO_BY_NAME(algo_with_append) != "":
+        return "False"
+        
+        
+    return "True"
+        
 
 if __name__ == "__main__":
     

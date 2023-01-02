@@ -177,7 +177,82 @@ def CREATE_TABLE_LIKES(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     modules.close_conn(cursor, conn)
-      
+    
+
+def CREATE_TABLE_SEARCH_ALGORITHMS(server="false"):
+    cursor, conn = modules.create_connection()
+
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE SEARCH_ALGORITHMS(
+                    Search_algorithm_id SERIAL PRIMARY KEY,
+                    Search_algorithm_name varchar UNIQUE,
+                    Search_where_clause varchar,
+                    Search_order_clause varchar,
+                    User_id BIGINT,
+                    Date_time timestamp, 
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id)
+                );
+                """)
+        conn.commit()
+
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
+    modules.close_conn(cursor, conn)    
+    
+def CREATE_TABLE_SEARCH_ALGORITM_VOTES(server="false"):
+    cursor, conn = modules.create_connection()
+
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE SEARCH_ALGORITM_VOTES(
+                    Search_vote_id SERIAL PRIMARY KEY,
+                    Search_algorithm_id BIGINT,
+                    User_id BIGINT,
+                    Date_time timestamp, 
+                    FOREIGN KEY (Search_algorithm_id) REFERENCES SEARCH_ALGORITHMS(Search_algorithm_id),
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id)
+                );
+                """)
+        conn.commit()
+
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
+    modules.close_conn(cursor, conn)
+
+def CREATE_TABLE_CURRENT_USER_SEARCH_ALGORITHM(server="false"):
+    cursor, conn = modules.create_connection()
+
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE CURRENT_USER_SEARCH_ALGORITHM(
+                    Search_algorithm_id BIGINT,
+                    User_id BIGINT,
+                    FOREIGN KEY (Search_algorithm_id) REFERENCES SEARCH_ALGORITHMS(Search_algorithm_id),
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id)
+                );
+                """)
+        conn.commit()
+
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
+    modules.close_conn(cursor, conn)
+          
 '''
 def CREATE_TABLE_DISLIKES(server="false"):
     cursor, conn = modules.create_connection()

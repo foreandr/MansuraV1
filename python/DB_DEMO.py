@@ -220,7 +220,17 @@ def INSERT_DEMO_CHAT_ROOMS_ADMIN():
 def INSERT_DEMO_REQUEST():
     modules.print_title(f"{inspect.stack()[0][3]}")
     # modules.INSERT_REQUEST(User_id=1, Request_type="PERSON", Request_content="Steve Jobs")  
+
+def INSERT_DEMO_SEARCH_ALGO():
+    modules.print_title(f"{inspect.stack()[0][3]}")
+    modules.INSERT_SEARCH_ALGORITHM(Search_algorithm_name="Andre-Default", Search_where_clause="AND 1=1", Search_order_clause="""(SELECT COUNT(*) FROM FAVOURITES favourites WHERE favourites.Post_id = posts.Post_id)DESC,(SELECT COUNT(*) FROM FAVOURITES favourites WHERE favourites.Post_id = posts.Post_id )DESC,(SELECT COUNT(*) FROM VIEWS views WHERE views.Post_id = posts.Post_id) DESC, posts.Post_title""", User_id=1)
     
+def INSERT_DEMO_SEARCH_VOTE():
+    modules.print_title(f"{inspect.stack()[0][3]}")
+    modules.INSERT_SEARCH_VOTE(Search_algorithm_id=0, User_id=1)
+
+
+   
 def FULL_DEMO_INSERT():
     INSERT_DEMO_USER()
     INSERT_DEMO_ADMIN()
@@ -241,6 +251,7 @@ def FULL_DEMO_INSERT():
     INSERT_DEMO_CHAT_ROOMS_ADMIN()
     INSERT_DEMO_REQUEST()
     INSERT_DEMO_TRIBUNAL_WORD_VOTE()
+    INSERT_DEMO_SEARCH_ALGO()
     
     
 if __name__ == "__main__":

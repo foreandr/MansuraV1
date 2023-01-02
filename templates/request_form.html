@@ -1,5 +1,32 @@
 {% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
 {%block main %}
+
+{% if request_type == "person" %}
+<form action="/request_form/{{request_type}}" method="POST" enctype="multipart/form-data">
+
+    <div>
+        <label><b><u><h2>Person Name<h4>(alias works, but less likely to be accepted).</h4></h2></u></b></label>
+        <input class="form-control" id="name" name="person_name" placeholder="Name"required>
+    </div>
+
+    <!--
+    <div>
+        <label><b><u><h2>Post Title:</h2></u></b></label>
+        <input class="form-control" id="name" name="post_title" placeholder="Post Title" required>
+    </div>
+    <div>
+        <label><b><u><h2>Description:</h2></u></b></label>
+        <textarea class="form-control" id="textbox" name="description" rows="4" cols="50" maxlength="400" required></textarea>
+    </div>
+    <div>
+        <label><b><u><h2>Example link of their work:</h2></u></b></label>
+        <input class="form-control"id="link" name="post_link" type="url" placeholder="Video Link" required>
+    </div> 
+    -->
+    
+    <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
+</form>
+{% elif request_type == "post" %}
 <div class = "container">
     OPTIONS
     <ul class = "list-group">
@@ -15,28 +42,6 @@
             <li class = "list-group-item"> DAILYMOTION <span class = "badge"> 3 </span> </li>
     </ul>
 </div>
-{% if request_type == "person" %}
-<form action="/request_form/{{request_type}}" method="POST" enctype="multipart/form-data">
-    <div>
-        <label><b><u><h2>Post Title:</h2></u></b></label>
-        <input class="form-control" id="name" name="post_title" placeholder="Post Title" required>
-    </div>
-    <div>
-        <label><b><u><h2>Person Name<h4>(alias works, but less likely to be accepted).</h4></h2></u></b></label>
-        <input class="form-control" id="name" name="person_name" placeholder="Name"required>
-    </div>
-    <div>
-        <label><b><u><h2>Example link of their work:</h2></u></b></label>
-        <input class="form-control"id="link" name="post_link" type="url" placeholder="Video Link" required>
-    </div> 
-    <div>
-        <label><b><u><h2>Description:</h2></u></b></label>
-        <textarea class="form-control" id="textbox" name="description" rows="4" cols="50" maxlength="400" required></textarea>
-    </div>
-    
-    <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
-</form>
-{% elif request_type == "post" %}
 <form action="/request_form/{{request_type}}" method="POST" enctype="multipart/form-data">
     <div>
         <label><b><u><h2>Post Title:</h2></u></b></label>
@@ -45,12 +50,13 @@
     <div>
         <label><b><u><h2>Who is in this video?</h2></u></b></label>
         <div>
-            <input class="form-control" id="link" type="text" hx-get="/search_users_by_text" name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search...">
+            <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search...">
         </div>
         </br>
     </div> 
 
-    <div id="search-results" ></div>
+    <div id="search-results">
+    </div>
     
 
     <div >

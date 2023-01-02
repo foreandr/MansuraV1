@@ -1,0 +1,224 @@
+{% extends "structure.html" %}
+
+{%block main %}
+
+<form action="/search_algo_create" method="POST" enctype="multipart/form-data">
+    <div class="container-lg">
+        <div class="row">
+                <!-- LEFT SECTION -->
+                <div class="col-5" >
+                    <div id="order_by_title">
+                        <b>ORDER BY CLAUSES (in order)</b>
+                        <button class="btn btn-lg" type="button" onclick="add_another_order_by_section()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </br>
+                    <div id="order_by_clauses">
+
+                    </div>
+
+                </div>
+
+                <!-- MIDDLE SECTION -->
+                <div class="col-2">
+                    
+                    <div>
+                        <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/algorithm" name="algo_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Name" required>
+                    </div>
+
+                    
+                    <button type="submit" class="btn btn-primary btn-lg btn-block" id="search_algo_button" disabled>Create</button>
+                    <div id="search-results"></div>
+                    {{message}}
+                    </br>
+                    
+                    <div>
+                        <h3>COMING SOON..</h3>
+                        <p>Weight of Likes</p>
+                        <input type="range" class="custom-range" id="customRange1" disabled>
+                        <p>Weight of Views</p>
+                        <input type="range" class="custom-range" id="customRange1" disabled>
+                        <p>Weight of Favourites</p>
+                        <input type="range" class="custom-range" id="customRange1" disabled>
+                        <p>Weight of Comments</p>
+                        <input type="range" class="custom-range" id="customRange1" disabled>
+                        <p>Weight of Friends</p>
+                        <input type="range" class="custom-range" id="customRange1" disabled>
+                        <p>Weight of Following</p>
+                        <input type="range" class="custom-range" id="customRange1" disabled>
+                    </div>
+                    
+                </div>
+
+                <!-- RIGHT SECTION -->
+                <div class="col-5" id="where_clause">
+                    <div id="where_title">
+                        <b>WHERE CLAUSES</b>
+                    
+                        <button class="btn btn-lg" type="button" onclick="add_another_where_section()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-plus" viewBox="0 0 16 16">
+                                <path d="M8.5 6a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V10a.5.5 0 0 0 1 0V8.5H10a.5.5 0 0 0 0-1H8.5V6z"/>
+                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1z"/>
+                            </svg>
+                        </button>
+                    </br>
+                        <select class="form-select" name="where_select_type_and_or" id="where_select_type_and_or">
+                            <option value="AND"selected>AND</option>
+                            <option value="OR">OR</option>
+                        </select>
+                        <select class="form-select" name="where_select_type" id="where_select_type" onchange="check_select_type_comparison()">
+                            <option value="Today">Today</option>
+                            <option value="This Week">This Week</option>
+                            <option value="This Month">This Month</option>
+                            <option value="This Year">This Year</option>
+                            <option value="All Time"selected>All Time</option>
+                            <option value="Likes">Likes</option>
+                            <option value="Views">Views</option>
+                            <option value="Favourites">Favourites</option>
+                            <option value="Comments">Comments</option>
+                            <option value="more coming" disabled>More Coming Soon..</option>
+                        </select>
+                        <select class="form-select" name="where_select_comparison" id="where_select_comparison" disabled>
+                            <option value="Greater Than"selected>>=</option>
+                            <option value="equal" disabled>==</option>
+                            <option value="Less Than"><=</option>
+                        </select>
+                        <select class="form-select" name="where_select_count" id="where_select_count" disabled>
+                            <option value="10"selected>10</option>
+                            <option value="100">100</option>
+                            <option value="1000">1000</option>
+                            <option value="10000">10000</option>
+                            <option value="100000">100000</option>
+                            <option value="100000">1000000</option>
+                        </select>
+                    
+                    </div>
+
+                    <div id="where_clauses">
+
+                    </div>
+                    
+                    
+                </div>
+            
+        </div>
+    </div>
+</form>
+
+
+<script>
+    order_count = 0
+    where_count = 0
+    array_of_time_checkers = ["Today","This Week","This Month","This Year","All Time"]
+    // document.getElementById("order_by_clauses").innerHTML = order_by_string
+    function add_another_order_by_section(){
+        order_by_string = `
+        <div id=order_by_clause_${order_count}>
+            <select class="form-select" aria-label="Default select example" name="order_clauses_${order_count}">
+                <option value="Date"selected>Date</option>
+                <option value="Likes">Likes</option>
+                <option value="Favourites">Favourites</option>
+                <option value="Comments">Comments</option>
+                <option value="Views">Views</option>
+                <option value="Likes_Views">Likes+Views</option>
+                <option value="Likes_Favourites">Likes+Favourites</option>
+                <option value="Likes_Favourites_Comments">Likes+Favourites+Comments</option>
+                <option value="Likes_Favourites_Comments_Views">Likes+Favourites+Comments+Views</option>
+                <option value="Alpha_Title">Alpha_Title</option>
+                <option value="Alpha_Person" disabled>Alpha_Person</option>
+                <option value="AI" disabled>AI</option>
+                <option value="AI" disabled>More coming soon..</option>
+              </select>
+            <button class="btn btn-lg" type="button" onclick="remove_another_order_by_section(this)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
+                    <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                  </svg>
+            </button>
+        </div>
+        `
+        document.getElementById("order_by_clauses").innerHTML += order_by_string
+        order_count += 1 
+
+    }
+    function remove_another_order_by_section(section_element){
+        element_id = (section_element.parentNode.id)
+        document.getElementById(`${element_id}`).remove();
+    }
+    function remove_another_where_by_section(section_element){
+        //console.log(section_element)
+        element_id = (section_element.parentNode.parentNode.id)
+        //console.log(element_id)
+        document.getElementById(`${element_id}`).remove();
+    }
+    function add_another_where_section(){
+        var comparison_value = ""
+        var count_value = ""
+        var e = document.getElementById("where_select_type");
+        var value = e.value;
+        //var text = e.options[e.selectedIndex].text;
+        //console.log("value",value)
+
+
+        var ANDORe = document.getElementById("where_select_type_and_or");
+        var ANDORvalue = ANDORe.value;
+        //console.log("ANDOR value",ANDORvalue)
+
+        // IF IT IS NOT A TIME CHECK
+        if (!(array_of_time_checkers.includes(value))){
+            var comparison =  document.getElementById("where_select_comparison");
+            comparison_value = comparison.value;
+            //console.log("comparison", comparison_value)
+    
+            var count =  document.getElementById("where_select_count");
+            count_value = count.value;
+            //console.log("count_value", count_value)
+        }
+
+        // put in input value
+        full_string = `${ANDORvalue},${value},${comparison_value},${count_value}`
+        // console.log(full_string)
+        where_by_string = `
+          <div class="input-group mb-3" id="additional_where_clause_${count_value}">
+            <input type="text" style="width: 35ch;" class="form-control" id="where_clauses_${where_count}" name="where_clauses_${where_count}" value="${full_string}" placeholder="${full_string}" readonly>
+            <div class="input-group-append">
+                <button class="btn btn-lg" type="button" onclick="remove_another_where_by_section(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
+                        <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                      </svg>
+                </button>
+            </div>
+          </div>
+        `
+        document.getElementById("where_clauses").innerHTML += where_by_string
+        where_count += 1 
+    }
+    function check_select_type_comparison(){
+        e = document.getElementById("where_select_type")
+        var value = e.value;
+        console.log(value)
+        
+        
+        /*ENABLE OR DISABLE BASED ON THE TYPE OF WHERE CLAUSE*/
+        if (array_of_time_checkers.includes(value)){
+            console.log("disabling")
+            document.getElementById("where_select_comparison").disabled = true;
+            document.getElementById("where_select_count").disabled = true;
+        }
+        else{
+            document.getElementById("where_select_comparison").disabled = false;
+            document.getElementById("where_select_count").disabled = false;
+        }
+    }
+    //add_another_order_by_section()
+
+
+
+
+</script>
+{% endblock main %}

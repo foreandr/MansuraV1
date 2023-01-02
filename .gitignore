@@ -25,7 +25,7 @@ python/token.pickle
 python/AI/code/local_nsfw_detector.py
 python/AI/code/local_nudenet.py
 python/AI/code/local_tensorflow.py
-
+/root/mansura/logs
 static/#UserData
 venv/
 python/all_dates.csv
@@ -327,3 +327,6 @@ python/__pycache__/helpers.cpython-310.pyc
 .gitignore
 python/dbconnection.py
 logs/errors/2022-12-30.txt
+logs/
+logs/
+logs/

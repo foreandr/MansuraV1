@@ -321,6 +321,22 @@ def GET_NUM_COMMENTS_BY_POST_ID(Post_id):
     modules.close_conn(cursor, conn)
     return results
 
+def GET_SEARCH_ALGO_BY_NAME(algo_name):
+    cursor, conn = modules.create_connection()
+    cursor.execute(F"""
+    SELECT Search_algorithm_id, Search_algorithm_name
+    FROM SEARCH_ALGORITHMS
+    WHERE Search_algorithm_name = '{algo_name}'
+    """
+    )
+    results = ""
+    for i in cursor.fetchall():
+        results = i[0]
+        
+    modules.close_conn(cursor, conn)
+    return results
+    
+
 def GET_NUM_FAVOURITES_BY_POST_ID(Post_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
@@ -391,7 +407,43 @@ def SEARCH_QUERY(search_phrase):
         OR LOWER(posts.Post_description) LIKE LOWER('%{search_phrase}%')
         OR LOWER(posts.Post_title) LIKE LOWER('%{search_phrase}%') 
     )"""
-    
+
+def GET_ORDER_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id):
+    cursor, conn = modules.create_connection()
+
+    cursor.execute(f"""
+        SELECT Search_order_clause
+        FROM SEARCH_ALGORITHMS
+        
+        WHERE Search_algorithm_id = '{search_algo_id}'
+    """)
+        
+    results = 1
+    for i in cursor.fetchall():
+        print("search algo was not empty, returning:", i[0])
+        results = i[0]
+        
+    modules.close_conn(cursor, conn)
+    return results
+
+def GET_WHERE_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id):
+    cursor, conn = modules.create_connection()
+
+    cursor.execute(f"""
+        SELECT Search_where_clause
+        FROM SEARCH_ALGORITHMS
+        WHERE Search_algorithm_id = '{search_algo_id}'
+    """)
+        
+    results = 1
+    for i in cursor.fetchall():
+        print("search algo was not empty, returning:", i[0])
+        results = i[0]
+        
+    modules.close_conn(cursor, conn)
+    return results
+
+  
 def UNIVERSAL_FUNCTION(
         searcher, 
         searcher_id="", 
@@ -399,7 +451,7 @@ def UNIVERSAL_FUNCTION(
         page_no=1, 
         favourites=False,
         post_tribunal=False,
-        search_phrase=""
+        search_phrase="",
         ):
     '''
     print("searcher",searcher) 
@@ -411,12 +463,16 @@ def UNIVERSAL_FUNCTION(
     print("search_phrase",search_phrase)
     ''' 
     
-    
     cursor, conn = modules.create_connection()
-    
     person = modules.PERSON_SEARCH(person_id)
-    searcher_id = GET_USER_ID_FROM_NAME(searcher) 
-    fave_string, fave_inner_join = FAVOURITE_QUERY(favourites, searcher_id)
+    searcher_id = modules.GET_USER_ID_FROM_NAME(searcher) 
+    fave_string, fave_inner_join = modules.FAVOURITE_QUERY(favourites, searcher_id)
+    search_algo_id = modules.GET_USER_CURRENT_SEARCH_ALGO_BY_ID(searcher_id)
+    
+    # ORDER PARAMETERS
+    order_clause = modules.GET_ORDER_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
+    where_clause = modules.GET_WHERE_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
+    
     posts_per_page = 3
     
     query = f"""
@@ -433,7 +489,6 @@ def UNIVERSAL_FUNCTION(
     {modules.SEARCH_USER_HAS_SAVED(searcher_id)},
     posts.Post_link 
     
-    
     FROM POSTS posts
     
     INNER JOIN POST_PERSON post_person
@@ -449,8 +504,9 @@ def UNIVERSAL_FUNCTION(
     {fave_string}
     {IN_POST_TRIBUNAL(post_tribunal)}
     {SEARCH_QUERY(search_phrase)}
+    {where_clause}
     
-    ORDER BY Person_name ASC
+    ORDER BY {order_clause}
     
     OFFSET ( ({page_no}-1)  * {posts_per_page} )
     LIMIT {posts_per_page};
@@ -635,7 +691,22 @@ def GET_ALL_INTERACTIONS(User_id):
         return False
     return True
     
-   
+def GET_USER_CURRENT_SEARCH_ALGO_BY_ID(User_id):
+    cursor, conn = modules.create_connection()
+
+    cursor.execute(f"""
+        SELECT Search_algorithm_id
+        FROM CURRENT_USER_SEARCH_ALGORITHM
+        WHERE User_id = '{User_id}'
+    """)
+        
+    results = 1
+    for i in cursor.fetchall():
+        # print("search algo was not empty, returning:", i[0])
+        results = i[0]
+        
+    modules.close_conn(cursor, conn)
+    return results
     
 if __name__ == "__main__": 
     # modules.GET_ALL_USERS()

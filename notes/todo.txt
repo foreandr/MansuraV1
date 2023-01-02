@@ -1,3 +1,9 @@
+#TODO:
+DONE. insert into db algo
+1. add search modal on homepage and
+2. search algo page
+    modal on that page
+
 3 tiktoks per page is the limit
 seems like there is some weird issue where u have to put the embeddings in html beforte you give them to jinja, jinja can't dynamically render them all maybe?
 check for the response of the youtube url when it is entered
@@ -7,7 +13,7 @@ be able to tag a person in a post with a tag request
 change count all to reflect the constraints of the query
 lederboards
 no mandatory login 
-
+only get to save 1 search a day
 
 gdsaqlhggkishjng
 pytest

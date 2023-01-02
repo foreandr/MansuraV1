@@ -1,10 +1,35 @@
 
+{% if users != "None"%}
 <div class="col-sm-3 selectdiv">
     <select class="selectpicker form-control" onchange="choose_selected_user(this.value)">
+        <option disabled selected="None">List</option>
         {% for i in range(0, users | length) %}
         <option>{{users[i]}}</option>
         {% endfor %}
     </select>
 </div>
+
+<!--ALGO UPDATE-->
+{% elif algorithm != "None" %}
+    {% if algorithm == "True"%}
+    <div class="text-success">
+        Algorithm Name Available
+    </div>
+    <script>
+        //console.log("CAN I DO THIS?") 
+        document.getElementById("search_algo_button").disabled = false;
+    </script>
+
+    {% else %}
+    <div class="text-danger">
+        Algorithm Name Unavailable
+    </div>
+    <script>
+        //console.log("CAN I DO THIS?222") 
+        document.getElementById("search_algo_button").disabled = true;
+    </script>
+    {% endif %}
+
+{% endif %}
 
 

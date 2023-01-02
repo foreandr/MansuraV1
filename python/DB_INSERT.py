@@ -665,10 +665,35 @@ def INSERT_DEMO_PEOPLE():
     word_list = modules.GET_ORIGINAL_PEOPLE_LIST()
     for i in range(len(word_list)):
         INSERT_PERSON(word_list[i])
+        
+def INSERT_SEARCH_ALGORITHM(Search_algorithm_name, Search_where_clause, Search_order_clause, User_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        INSERT INTO SEARCH_ALGORITHMS(Search_algorithm_name, Search_where_clause, Search_order_clause, User_id, Date_time)
+        VALUES ('{Search_algorithm_name}', '{Search_where_clause}', '{Search_order_clause}', '{User_id}', NOW() )  
+        ON CONFLICT DO NOTHING 
+    """)
+   
+    conn.commit()
+    modules.print_green(f"{inspect.stack()[0][3]} {Search_algorithm_name, Search_where_clause, Search_order_clause, User_id} COMPLETED")
+    modules.close_conn(cursor, conn) 
 
+def INSERT_SEARCH_VOTE(Search_algorithm_id, User_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        INSERT INTO SEARCH_ALGORITM_VOTES(Search_algorithm_id, User_id, Date_time)
+        VALUES ('{Search_algorithm_id}', '{User_id}',  NOW())  
+        ON CONFLICT DO NOTHING 
+    """)
+    
+    conn.commit()
+    modules.print_green(f"{inspect.stack()[0][3]} {User_id, Search_algorithm_id} COMPLETED")
+    modules.close_conn(cursor, conn) 
+    
 if __name__ == "__main__":
-    #INSERT_USER("coomerdoomer", "password", "coomerdoomer@gmail.com")
-    #INSERT_CONNECTION(1, 2)
-    INSERT_DEMO_PEOPLE()
-    #modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK2", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", Post_live="True", User_id=1, Person="Noam Chomsky")
+    # INSERT_USER("coomerdoomer", "password", "coomerdoomer@gmail.com")
+    # INSERT_CONNECTION(1, 2)
+    # INSERT_DEMO_PEOPLE()
+    # modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK2", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", Post_live="True", User_id=1, Person="Noam Chomsky")
     # INSERT_TRIBUNAL_WORD("faggotere")
+    pass

@@ -37,23 +37,27 @@
             <form class="form-inline my-2 my-lg-0" method="POST" action="/structure_search_by_phrase/0/None">
                 <span style="text-align: center;">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched_value">
-                    <button class="btn btn-lg btn-primary btn-block" type="submit" value="submit">Search</button>
+                    <button class="btn btn-lg btn-primary" type="submit" value="submit">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                        </svg>
+                    </button>
+                    <span class="dropdown" id="nav_dropdown" style="text-align: center;">
+                        <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-lg" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.475 5.458c-.284 0-.514-.237-.47-.517C4.28 3.24 5.576 2 7.825 2c2.25 0 3.767 1.36 3.767 3.215 0 1.344-.665 2.288-1.79 2.973-1.1.659-1.414 1.118-1.414 2.01v.03a.5.5 0 0 1-.5.5h-.77a.5.5 0 0 1-.5-.495l-.003-.2c-.043-1.221.477-2.001 1.645-2.712 1.03-.632 1.397-1.135 1.397-2.028 0-.979-.758-1.698-1.926-1.698-1.009 0-1.71.529-1.938 1.402-.066.254-.278.461-.54.461h-.777ZM7.496 14c.622 0 1.095-.474 1.095-1.09 0-.618-.473-1.092-1.095-1.092-.606 0-1.087.474-1.087 1.091S6.89 14 7.496 14Z"/>
+                              </svg>
+                        </button>
+                        <span class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
+                            <a href="/search_algo_create" class="dropdown-item">CREATE ALGORITHMS</a>
+                            <a href="/search_algo_home" class="dropdown-item">COMMUNITY ALGORITHMS</a>
+                            <a href="/search_community_page" class="dropdown-item">CURRENT ALGORITHM</a><!--OPEN MODAL ALGO-->
+                        </span>
+                    </span>
                 </span>
             </form>
 
-            <span class="dropdown" id="nav_dropdown">
-                <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                    </svg>
-                </button>
-                <span class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
-                    <a href="/search_create" class="dropdown-item">SEARCH</a>
-                    <a href="/search_create" class="dropdown-item">CREATE ALGORITHMS</a>
-                    <a href="/search_community_page" class="dropdown-item">COMMUNITY ALGORITHMS</a>
-                    <a href="/search_community_page" class="dropdown-item">CURRENT ALGORITHM</a><!--OPEN MODAL ALGO-->
-                </span>
-            </span>
+
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon lg"></span>
@@ -89,7 +93,7 @@
                 <li>
                     <div class="dropdown" id="nav_dropdown">
                         <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
-                            REQUEST
+                            UPLOAD
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
                             <a href="/request_form/person" class="dropdown-item">Person</a>

@@ -30,6 +30,9 @@ def CREATE_TABLES(server="false"):
     modules.CREATE_TABLE_TRIBUNAL_WORD(server)
     modules.CREATE_TABLE_TRIBUNAL_WORD_VOTE(server)
     modules.CREATE_TABLE_MODERATION_ADMINS(server)
+    modules.CREATE_TABLE_SEARCH_ALGORITHMS(server)
+    modules.CREATE_TABLE_SEARCH_ALGORITM_VOTES(server)
+    modules.CREATE_TABLE_CURRENT_USER_SEARCH_ALGORITHM(server)
     
     
     if server != "true":
