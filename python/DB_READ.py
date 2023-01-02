@@ -504,6 +504,9 @@ def UNIVERSAL_FUNCTION(
     order_clause = modules.GET_ORDER_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
     where_clause = modules.GET_WHERE_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
     
+    # CAST VOTE FOR SEARCH
+    modules.INSERT_SEARCH_VOTE(search_algo_id, searcher_id)
+    
     posts_per_page = 3
     
     query = f"""
@@ -748,14 +751,21 @@ def GET_USER_CURRENT_SEARCH_ALGO_BY_ID(User_id):
     modules.close_conn(cursor, conn)
     return results[0], results[1]
 
-def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type):
+def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type, limit_search=""):
     cursor, conn = modules.create_connection()
-    
+    # print("limit search", limit_search)
     if search_type == "user":
         personal_or_global = f"AND ((search.User_id = '{user_id}') OR (SELECT COUNT(*) FROM SEARCH_ALGORITM_SAVE saved WHERE saved.Search_algorithm_id = search.Search_algorithm_id  AND  saved.User_id = '{user_id}') != 0)" 
     else:
         personal_or_global = ""
         
+    if limit_search != "":
+        constrain_algos = F"AND LOWER(search.Search_algorithm_name) LIKE LOWER('%{limit_search}%')"
+    else:
+        constrain_algos = ""
+        
+    print(" constrain_algos:",constrain_algos)    
+    
     cursor.execute(f"""
         SELECT search.Search_algorithm_id, 
         search.Search_algorithm_name, 
@@ -788,6 +798,7 @@ def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type):
         
         WHERE 1=1
         {personal_or_global}
+        {constrain_algos}
 
         ORDER BY (
             SELECT COUNT(*)
@@ -796,12 +807,12 @@ def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type):
         )
     
     """)
-    break_counter = 0
-    break_number = 1000
+    #break_counter = 0
+    #break_number = 1000
     results = []
     for i in cursor.fetchall():
-        if break_number < break_counter:
-            break 
+        #if break_number < break_counter:
+        #    break 
         results.append([
             i[0], # search_id
             i[1], # name
@@ -814,8 +825,10 @@ def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type):
             i[8]  # count saved
         ])
         break_number =+1
-    for i in results:
-        print(i)
+        
+    #for i in results:
+    #    print(i)
+    
     modules.close_conn(cursor, conn)
     return results
 

@@ -192,8 +192,9 @@ def request_form(request_type):
 @app.route("/search_text_by_category/<type>", methods=['GET'])
 def search_text_by_category(type):
     # GOTTA BE A BETTER WAY to get the query
-    # print(request.url)
+    print("request.url", request.url)
     query_text = str(request.url).split("name=")[1]
+    
     if type == "user":
         if modules.CHECK_INJECTION(query_text):
             users = modules.GET_USERS_BY_TEXT(query_text)
@@ -210,6 +211,17 @@ def search_text_by_category(type):
             algorithm=algorithm
             
         )
+    elif type == "search_homepage":
+        if modules.CHECK_INJECTION(query_text):
+            new_algos = modules.GET_SEARCH_ALGORITHM_DETAILS(user_id=session['id'], search_type="home", limit_search=query_text)
+        else:
+            new_algos = modules.GET_SEARCH_ALGORITHM_DETAILS(user_id=session['id'], search_type="home")
+        # print(new_algos)
+        return render_template(f"update_search_homepage.html",
+            algos=new_algos
+        )
+        
+        
         
 @app.route('/login', methods=['GET', 'POST'])
 def login():

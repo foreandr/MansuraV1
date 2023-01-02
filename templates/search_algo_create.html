@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
-        <h1><ul>CREATE CUSTOM SEARCH ALGORITHM</ul></h1>
+        <h1><u>CREATE CUSTOM SEARCH ALGORITHM</u></h1>
         <p class="lead">Compose your own feed to your heart's content!</p>
     </div>
 </div>
@@ -36,10 +36,11 @@
                     <div>
                         <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/algorithm" name="algo_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Name" required>
                     </div>
-
-                    
                     <button type="submit" class="btn btn-primary btn-lg btn-block" id="search_algo_button" disabled>Create</button>
                     <div id="search-results"></div>
+                    <small>
+                        No spaces, no swearing, no hacking pls
+                    </small>
                     {{message}}
                     </br>
                     
@@ -87,7 +88,7 @@
                             <option value="Views">Views</option>
                             <option value="Favourites">Favourites</option>
                             <option value="Comments">Comments</option>
-                            <option value="more coming" disabled>More Coming Soon..</option>
+                            <option value="more coming" disabled>More Coming..</option>
                         </select>
                         <select class="form-select" name="where_select_comparison" id="where_select_comparison" disabled>
                             <option value="Greater Than"selected>>=</option>

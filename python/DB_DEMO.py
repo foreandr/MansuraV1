@@ -227,7 +227,7 @@ def INSERT_DEMO_SEARCH_ALGO():
     
 def INSERT_DEMO_SEARCH_VOTE():
     modules.print_title(f"{inspect.stack()[0][3]}")
-    modules.INSERT_SEARCH_VOTE(Search_algorithm_id=0, User_id=1)
+    modules.INSERT_SEARCH_VOTE(Search_algorithm_id=1, User_id=1)
 
 
    
@@ -252,6 +252,7 @@ def FULL_DEMO_INSERT():
     INSERT_DEMO_REQUEST()
     INSERT_DEMO_TRIBUNAL_WORD_VOTE()
     INSERT_DEMO_SEARCH_ALGO()
+    INSERT_DEMO_SEARCH_VOTE()
     
     
 if __name__ == "__main__":
