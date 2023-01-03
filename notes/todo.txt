@@ -2,7 +2,8 @@
 put billboard at the top
 make search algo page scrollable
 #SCROLL search page, 
-search search algos
+search search algos,
+injection check the page numbers
 
 DONE. insert into db algo
 1. add search modal on homepage and

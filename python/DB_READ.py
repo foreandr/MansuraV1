@@ -751,7 +751,7 @@ def GET_USER_CURRENT_SEARCH_ALGO_BY_ID(User_id):
     modules.close_conn(cursor, conn)
     return results[0], results[1]
 
-def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type, limit_search=""):
+def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type, limit_search="", page_no=1):
     cursor, conn = modules.create_connection()
     # print("limit search", limit_search)
     if search_type == "user":
@@ -764,7 +764,9 @@ def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type, limit_search=""):
     else:
         constrain_algos = ""
         
-    print(" constrain_algos:",constrain_algos)    
+    posts_per_page = 10
+    
+    # print(" constrain_algos:",constrain_algos)    
     
     cursor.execute(f"""
         SELECT search.Search_algorithm_id, 
@@ -805,11 +807,17 @@ def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type, limit_search=""):
             FROM SEARCH_ALGORITM_VOTES votes
             WHERE search.Search_algorithm_id = votes.Search_algorithm_id
         )
+        
+        OFFSET ( ({page_no}-1)  * {posts_per_page} )
+        LIMIT {posts_per_page};
     
     """)
     #break_counter = 0
     #break_number = 1000
     results = []
+    for i in range((page_no-1) * posts_per_page):
+        results.append([])
+    
     for i in cursor.fetchall():
         #if break_number < break_counter:
         #    break 
@@ -830,12 +838,34 @@ def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type, limit_search=""):
     #    print(i)
     
     modules.close_conn(cursor, conn)
+    return results, CAN_SCROLL_SEARCH(page_no, posts_per_page), page_no
+
+def GET_TOTAL_POSTS_FOR_SEARCH():
+    cursor, conn = modules.create_connection()
+    cursor.execute("""
+    SELECT COUNT(*) 
+    FROM SEARCH_ALGORITHMS
+    """)
+    results = 0
+    for i in cursor.fetchall():
+        print("TOTAL SEARCH ALGORITHMS", i[0])
+        results = i[0]
+        
+    modules.close_conn(cursor, conn)
     return results
+        
+    
+def CAN_SCROLL_SEARCH(page_no, posts_per_page):
+    total_posts_this_far = int(page_no) * posts_per_page
+    if total_posts_this_far >= modules.GET_TOTAL_POSTS_FOR_SEARCH():
+        return "False"
+    else:
+        return "True"
 
 def GET_ALL_SEARCH_ALGOS():
     cursor, conn = modules.create_connection()
     cursor.execute("""
-    SELECT * 
+    SELECT Search_algorithm_name 
     FROM SEARCH_ALGORITHMS
     """)
 
@@ -858,7 +888,6 @@ def GET_SEARCH_FAVES():
     return results
 
 if __name__ == "__main__": 
-
-    GET_SEARCH_ALGORITHM_DETAILS(user_id=3, search_type="user")
+    GET_ALL_SEARCH_ALGOS()
     pass
 

@@ -608,6 +608,8 @@ def GETTING_POST_MAX_FROM_QUERY(query):
     query = query.split("FROM POSTS posts")[1]
     select_portion = "SELECT COUNT(*) FROM POSTS posts"
     query = query.split("ORDER")[0]
+    
+    
     new_full_query = select_portion + query
     cursor, conn = modules.create_connection()
     cursor.execute(new_full_query)

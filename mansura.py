@@ -212,16 +212,23 @@ def search_text_by_category(type):
             
         )
     elif type == "search_homepage":
+        # query_text = request.form["person_name"]
+        print("query_text",query_text)
         if modules.CHECK_INJECTION(query_text):
-            new_algos = modules.GET_SEARCH_ALGORITHM_DETAILS(user_id=session['id'], search_type="home", limit_search=query_text)
+            new_algos, can_scroll, page_no = modules.GET_SEARCH_ALGORITHM_DETAILS(user_id=session['id'], search_type="home", limit_search=query_text)
         else:
-            new_algos = modules.GET_SEARCH_ALGORITHM_DETAILS(user_id=session['id'], search_type="home")
+            new_algos, can_scroll, page_no = modules.GET_SEARCH_ALGORITHM_DETAILS(user_id=session['id'], search_type="home")
         # print(new_algos)
-        return render_template(f"update_search_homepage.html",
-            algos=new_algos
+        search_id, search_name = modules.GET_USER_CURRENT_SEARCH_ALGO_BY_ID(User_id=session['id'])
+        return render_template(f"search_algo_home.html",
+            algos=new_algos,
+            search_type="home",
+            search_id=search_id, 
+            search_name=search_name,
+            
+            can_scroll=can_scroll,
+            page_no=int(page_no)+1
         )
-        
-        
         
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -517,21 +524,26 @@ def search_algo_create():
         #print("full_order_by :", full_order_by)
         #print("full_where", full_where)
         modules.INSERT_SEARCH_ALGORITHM(Search_algorithm_name=algo_name, Search_where_clause=full_where, Search_order_clause=full_order_by, User_id=session["id"])
-        return redirect(url_for('search_algo_home', search_type="home"))
+        return redirect(url_for('search_algo_home', search_type="home", page_no="0"))
                 
     return render_template(f"search_algo_create.html",
     )
     
-@app.route("/search_algo_home/<search_type>", methods=['GET', 'POST'])
-def search_algo_home(search_type):
+@app.route("/search_algo_home/<search_type>/<page_no>", methods=['GET', 'POST'])
+def search_algo_home(search_type, page_no):
+    print(page_no, "HERE")
+    
     modules.log_function("request", request, session_user=session['user'])
-    algos = modules.GET_SEARCH_ALGORITHM_DETAILS(user_id=session['id'], search_type=search_type)
+    algos, can_scroll, new_page_no = modules.GET_SEARCH_ALGORITHM_DETAILS(user_id=session['id'], search_type=search_type, page_no=int(page_no)+1)
     search_id, search_name = modules.GET_USER_CURRENT_SEARCH_ALGO_BY_ID(User_id=session['id'])
     return render_template(f"search_algo_home.html",
         algos=algos,
         search_type=search_type,
         search_id=search_id, 
-        search_name=search_name
+        search_name=search_name,
+        
+        can_scroll=can_scroll,
+        page_no=int(new_page_no)
     )
 
 @app.route("/update_search_algo_choice/<search_algo_id>", methods=['GET', 'POST'])

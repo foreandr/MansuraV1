@@ -1,6 +1,5 @@
 {% extends "structure.html" %}
 
-
 {% block nav %}
 {% if page_no == 1 %}
 {% block nav_location %}
@@ -87,7 +86,7 @@
             {% if can_vote == "true" and coming_from_tribunal == "true"%}
 
             {% endif %}
-            <div class="col" hx-post="/update_view/{{posts[i][6]}}" hx-trigger="click" hx-target="#view_location{{i}}" hx-swap="innerHTML" style="overflow:scroll"  onscroll="myFunction()">
+            <div class="col" hx-post="/update_view/{{posts[i][6]}}" hx-trigger="click" hx-target="#view_location{{i}}" hx-swap="innerHTML" style="overflow:scroll">
                 <div class="card" id="videos">
                     <div class="card-header">
                         <h1>{{posts[i][0]}}</h1>
@@ -389,8 +388,8 @@
     }
 
     function modal_toggle(post_id){
-        console.log('hello')
-        console.log('post id', post_id)
+        //console.log('hello')
+        //console.log('post id', post_id)
         document.getElementById("comment_modal").style.display = "block"
     }
 
