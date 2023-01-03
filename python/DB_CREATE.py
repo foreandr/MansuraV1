@@ -31,7 +31,31 @@ def CREATE_TABLE_USER(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)    
+   
+def CREATE_TABLE_USER_STATUS(server="false"):
+    cursor, conn = modules.create_connection()
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE USER_STATUS
+                (
+                    User_id BIGINT,
+                    User_Strikes INT,
+                    User_mute_status varchar, 
+                    User_timeout_status varchar,
+                    User_ban_status varchar
+                );
+                """)
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
+    modules.close_conn(cursor, conn)  
+
+ 
 def CREATE_TABLE_MODERATION_ADMINS(server="false"):
     cursor, conn = modules.create_connection()
     try:
@@ -133,14 +157,7 @@ def CREATE_TABLE_SUBJECTS(server="false"):
             CREATE TABLE SUBJECTS
             (
             Subject_id SERIAL PRIMARY KEY,       
-            Subject_name varchar,
-            Subject_type varchar,
-            Post_id BIGINT, 
-            FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
-            
-            CHECK( Subject_type = 'HARD' OR Subject_type = 'SOFT'), 
- 
-            UNIQUE (Subject_name, Subject_type)
+            Subject_name varchar UNIQUE 
             );
             """)
         conn.commit()
@@ -150,7 +167,26 @@ def CREATE_TABLE_SUBJECTS(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)
+
+def CREATE_TABLE_POST_SUBJECTS(server="false"):
+    cursor, conn = modules.create_connection()
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+            f"""
+            CREATE TABLE POST_SUBJECTS
+            (
+            Subject_id BIGINT,       
+            Post_id BIGINT, 
+            );
+            """)
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
+    modules.close_conn(cursor, conn)  
 
 def CREATE_TABLE_LIKES(server="false"):
     cursor, conn = modules.create_connection()
@@ -472,9 +508,6 @@ def CREATE_TABLE_BLOCKS(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
         
     modules.close_conn(cursor, conn)
-
-
-
 
 def CREATE_TABLE_IP_ADRESSES(server="false"):
     cursor, conn = modules.create_connection()

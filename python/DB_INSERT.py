@@ -91,13 +91,12 @@ def INSERT_POST_ADMIN(User_id):
         
     
 def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User_id=1):
-    
+    print(Person)
     cursor, conn = modules.create_connection()
     try:
         Post_html = modules.translate_link_to_html(Post_link)
         Post_title = modules.clean_title(Post_title)
         Post_description = modules.clean_description(Post_description)
-        
         Person_id = modules.GET_PERSON_ID_BY_NAME(Person)
         
         cursor = conn.cursor()
@@ -149,19 +148,18 @@ def INSERT_POST_PERSON(Post_id, Person_id):
     
     modules.close_conn(cursor, conn) 
    
-def INSERT_SUBJECTS(Subject_name, Subject_type, Post_id):
+def INSERT_SUBJECTS(Subject_name):
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
             f"""
             INSERT INTO SUBJECTS
-            (Subject_name, Subject_type, Post_id)
+            (Subject_name)
             VALUES
-            (%(Subject_name)s, %(Subject_type)s, %(Post_id)s)
+            (%(Subject_name)s)
             """, {
-                'Post_id': Post_id,
-                'Subject_type': Subject_type,
+
                 'Subject_name': Subject_name
                 }
             )
@@ -173,6 +171,25 @@ def INSERT_SUBJECTS(Subject_name, Subject_type, Post_id):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn) 
+
+def INSERT_POST_SUBJECTS(Subject_id, Post_id):
+    cursor, conn = modules.create_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            f"""
+            INSERT INTO POST_SUBJECTS
+            (Subject_id, Post_id)
+            VALUES 
+            ('{Subject_id}', '{Post_id}')
+            """)
+        conn.commit()
+
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
 
 def LIKE_LOGIC(Post_id, User_id):
     already_liked = modules.CHECK_LIKE_EXISTS(Post_id, User_id)
@@ -192,7 +209,7 @@ def FAVE_LOGIC(Post_id, User_id):
     
 def SEARCH_FAVE_LOGIC(Search_algorithm_id, User_id):
     already_saved = modules.CHECK_SEARCH_FAVE_EXISTS(Search_algorithm_id, User_id)
-    print(already_saved)
+    # print(already_saved)
     if already_saved:
         #print( User_id, "has already faved",Post_id)
         modules.DELETE_SEARCH_FAVOURITE(Search_algorithm_id, User_id)
@@ -415,10 +432,15 @@ def CHECK_IF_BEEN_30s_SINCE_LAST_VIEW(Post_id, User_id):
 def INSERT_VIEWS(Post_id, User_id):
     #TODO: i would like to put some kind of sleep functionality here os people cant see thier view right away
     
+    if not modules.CHECK_POST_IS_LIVE(Post_id):
+        return False
+        
+    
     cursor, conn = modules.create_connection()
     can_view = CHECK_IF_BEEN_30s_SINCE_LAST_VIEW(Post_id, User_id)
     if not can_view:
         modules.close_conn(cursor, conn)
+        return False
         # print("TIME BETWEEN VIEWS TOO SHORT") 
     else:
         try:

@@ -75,7 +75,6 @@ def DELETE_CONNECTION(user_id1, user_id2):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
     
     modules.close_conn(cursor, conn) 
-    
 
 def DELETE_COMMENT(Post_id, User_id):
     # JUST REMOVE THE TEXT
@@ -91,11 +90,9 @@ def DELETE_USER_FROM_CHAT_ROOM(Creator_id, Admin_id, Room_name):
 
     pass
 
-
 def DELETE_ADMIN_PRIVILAGE(Creator_id, Admin_id, Room_name):
 
     pass
-
 
 def DELETE_ADMIN_PRIVILAGE(Creator_id, Admin_id, Room_name):
 
@@ -113,6 +110,119 @@ def DELETE_TRIBUNAL_WORD_VOTE(word_id, voter_id):
     )
     conn.commit()
     modules.close_conn(cursor, conn) 
+    
+def DELETE_FROM_POST_PERSON(post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        DELETE FROM POST_PERSON
+        WHERE Post_id = %(post_id)s
+    """, {'post_id': post_id
+        }
+    )
+    conn.commit()
+    modules.close_conn(cursor, conn)
+    modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n") 
+    
+def  DELETE_FROM_VIEWS(post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        DELETE FROM VIEWS
+        WHERE Post_id = %(post_id)s
+    """, {'post_id': post_id
+        }
+    )
+    conn.commit()
+    modules.close_conn(cursor, conn)  
+    modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+
+def  DELETE_FROM_COMMENTS(post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        DELETE FROM COMMENTS
+        WHERE Post_id = %(post_id)s
+    """, {'post_id': post_id
+        }
+    )
+    conn.commit() 
+    modules.close_conn(cursor, conn) 
+    modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+
+def  DELETE_FROM_LIKES(post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        DELETE FROM LIKES
+        WHERE Post_id = %(post_id)s
+    """, {'post_id': post_id
+        }
+    )
+    conn.commit() 
+    modules.close_conn(cursor, conn) 
+    modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    
+def DELETE_FROM_POSTS(post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        DELETE FROM POSTS
+        WHERE Post_id = %(post_id)s
+    """, {'post_id': post_id
+        }
+    )
+    conn.commit() 
+    modules.close_conn(cursor, conn) 
+    modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+
+
+def DELETE_POST(post_id):
+    DELETE_FROM_VIEWS(post_id)
+    DELETE_FROM_POST_PERSON(post_id)
+    DELETE_FROM_POSTS(post_id)
+    
+    
+def DELETE_USER(User_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        DELETE FROM USERS
+        WHERE User_id = %(User_id)s
+    """, {'User_id': User_id
+        }
+    )
+    conn.commit()
+    modules.close_conn(cursor, conn) 
+
+
+def GET_ALL_POST_IDS_BY_PERSON_ID(Person_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT posts.Post_id
+        FROM POSTS posts
+        
+        INNER JOIN POST_PERSON post_person
+        ON posts.Post_id = post_person.Post_id
+        
+        WHERE post_person.Person_id = '{Person_id}'
+    """)
+    results = [] 
+    for i in cursor.fetchall():
+        results.append(i[0])
+    modules.close_conn(cursor, conn)
+    return results
+     
+def DELETE_PERSON(Person_id):
+    
+    post_ids = modules.GET_ALL_POST_IDS_BY_PERSON_ID(Person_id)
+    for i in post_ids:
+        DELETE_POST(i)
+        
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        DELETE FROM PEOPLE people
+        WHERE people.Person_id = %(Person_id)s
+    """, {'Person_id':Person_id
+        }
+    )
+    conn.commit()
+    modules.close_conn(cursor, conn) 
+    
     
 if __name__ == "__main__":
     DELETE_CONNECTION(1, 2)

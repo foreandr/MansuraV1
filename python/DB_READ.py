@@ -262,7 +262,27 @@ def GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link):
     modules.close_conn(cursor, conn)
     return post_link
 
+def CHECK_PERSON_EXISTS(Person):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+    SELECT COUNT(*)
+    FROM PEOPLE
+    WHERE Person_name = '{Person}'
+    """)
+    person_exists = 0
+    for i in cursor.fetchall():
+        person_exists = i[0]
+    modules.close_conn(cursor, conn)
+    if person_exists == 0:
+        return False
+    else:
+        return True
+    
 def GET_PERSON_ID_BY_NAME(Person):
+    # CHECK IF PERSON EXISTS
+    if not modules.CHECK_PERSON_EXISTS(Person):
+        modules.INSERT_PERSON(Person)
+        
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
         SELECT Person_id 
@@ -275,6 +295,26 @@ def GET_PERSON_ID_BY_NAME(Person):
     
     modules.close_conn(cursor, conn)
     return person
+
+def GET_PERSON_ID_BY_POST_ID(Post_id):
+ 
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT peeps.Person_id 
+        FROM PEOPLE peeps
+        
+        INNER JOIN POST_PERSON post_person
+        ON post_person.Person_id = peeps.Person_id
+        
+        WHERE post_person.Post_id = %(Post_id)s
+    """, {'Post_id': Post_id})
+    
+    for i in cursor.fetchall():
+        person = i[0]
+    
+    modules.close_conn(cursor, conn)
+    return person
+
 
 def GET_POSTS_BY_PERSON(Person):
     return 1 
@@ -501,6 +541,7 @@ def UNIVERSAL_FUNCTION(
     fave_string, fave_inner_join = modules.FAVOURITE_QUERY(favourites, searcher_id)
     search_algo_id, _ = modules.GET_USER_CURRENT_SEARCH_ALGO_BY_ID(searcher_id)
     
+
     # SPECIFIC TO USER
     if profile_id != "":
         user_profile = f"AND posts.User_id = '{profile_id}'"
@@ -530,8 +571,10 @@ def UNIVERSAL_FUNCTION(
     {modules.GET_ALL_COUNTS()}
     {modules.SEARCH_USER_HAS_LIKED(searcher_id)},
     {modules.SEARCH_USER_HAS_SAVED(searcher_id)},
-    posts.Post_link 
-    
+    posts.Post_link,
+    (SELECT Username FROM USERS users WHERE posts.User_id = users.User_id),
+    posts.User_id
+        
     FROM POSTS posts
     
     INNER JOIN POST_PERSON post_person
@@ -580,6 +623,8 @@ def UNIVERSAL_FUNCTION(
             i[11], # has searcher liked post ( 0 == unliked)
             i[12], # has searcher SAVED post ( 0 == unliked)
             i[13], # post link
+            i[14], # UPLOADER name
+            i[15], # UPLOADER id
         ])
         # print(i)
         
@@ -639,6 +684,23 @@ def GET_FOLLOWERS_BY_USER_ID(User_id):
         
     modules.close_conn(cursor, conn)
     return followers
+
+def GET_FOLLOWING_BY_USER_ID(User_id):
+    cursor, conn = modules.create_connection()
+
+    cursor.execute(f"""
+        SELECT User_id2 
+        FROM CONNECTIONS
+        WHERE User_id1 = %(User_id)s
+        """, {'User_id': User_id}
+        )
+    following = []
+    for i in cursor.fetchall():
+        # print(i)
+        following.append(i[0])
+        
+    modules.close_conn(cursor, conn)
+    return following
 
 def CHECK_IF_WORD_VOTE_EXISTS(word_id, user_id):
     cursor, _ = modules.create_connection()
@@ -898,6 +960,6 @@ def GET_SEARCH_FAVES():
     return results
 
 if __name__ == "__main__": 
-    GET_ALL_SEARCH_ALGOS()
+
     pass
 

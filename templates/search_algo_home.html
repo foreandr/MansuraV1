@@ -22,19 +22,26 @@
 {% endif %}
 <div class="container">
 <form action="/search_text_by_category/search_homepage">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <button class="btn" type="submit">SEARCH</button>
+        </div>
+        <input class="form-control" id="link" type="text" name="person_name" placeholder="Algorithm Name..">
+    </div>
+      
     <div>
-        <input class="form-control" id="link" type="text" name="person_name" placeholder="Search For Algo...">
+        
     </div> 
-    <button class="btn" type="submit">SEARCH FOR ALGO</button>
+    
 </form>
 </div>
 <div id="search_list" >
         <table class="table table-striped table-sm">
-            {% if page_no == 1 %}
+            
             <thead>
                 <tr>
                     <th scope="col">Choose to use</th>
-                    <th scope="col">Search Votes</th>
+                    <th scope="col">Searches</th>
                     <th scope="col">Name</th>
                     <th scope="col">Creator</th>
                     <th scope="col">Creation Date</th>
@@ -44,7 +51,7 @@
                     <th scope="col">Fork</th>
                 </tr>
             </thead>
-            {% endif %}
+            
                 <tbody>
                     {%for i in range(algos |length )%}
                         {% if algos[i] |length == 0%} <!--DON'T print the empties-->

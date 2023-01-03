@@ -27,11 +27,18 @@
 
 {% if coming_from_tribunal == "true" %}
         {% if page_no == 1 %}
-            <div style="margin: auto;
-            width: 50%;
-            padding: 10px;">
-                <a href="/"><h1>WANT TO BE AN ADMIN? APPLY HERE!</h1></a>
+            <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+                <div style="margin: auto; width: 50%; padding: 10px;">
+                    <h1><u>ONLY ADMINS WILL SEE CONTENT HERE!</u></h1>
+                </div>
+                
+                <div style="margin: auto;
+                width: 50%;
+                padding: 10px;">
+                    <a href="/apply_for_admin/{{user_profile_id}}"><h1>WANT TO BE AN ADMIN? APPLY HERE!</h1></a>
+                </div>
             </div>
+
 
         {% endif %}
 
@@ -65,10 +72,10 @@
     {% if page_no == 1 %}
     <div class="container">
         <div class="jumbotron" style="  padding-top: 10px !important;padding-bottom: 10px !important;">
-            <h1><u>PROFILE</u></h1>
-            <p>FOLLOWERS</p>
-            <p>FOLLOWING</p>
-        </div>
+            <h1><u>{{username}}</u></h1>
+            <p>FOLLOWERS: {{followers |length}}</p>
+            <p>FOLLOWING: {{following |length}}</p>
+        </div> 
     </div>
     {% endif %}
 
@@ -132,7 +139,9 @@
                     <div class="card-footer">
                         <small class="text-muted">
                             <!--UPLOAD DATE-->
+                            
                             <span class="float-right">{{posts[i][3]}}</span>
+                            <span class="float-right"><a href="/user_profile/{{posts[i][14]}}/0">{{posts[i][14]}}&nbsp;&nbsp;</a></span>
 
                             <span class="col d-flex justify-content-center"> 
                                 <!--VIEWS-->
@@ -264,6 +273,7 @@
                                         </svg>
                                     </button>
                                 </span>
+                                <!--TAGGING
                                 <span>
                                     <button class="btn btn-lg" type="button">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
@@ -281,6 +291,7 @@
                                     </button>
                                     TAG POST
                                 </span>
+                                -->
 
                                 <span>
                                     <button class="btn btn-lg" type="button" onclick="show_link({{i}})">
@@ -296,8 +307,6 @@
 
                             </span>
 
-
-
                             <span style="text-align: center;">
                                 {% if coming_from_tribunal == "true" %}
                                     {% if can_vote == "true" %}
@@ -305,28 +314,37 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
                                             <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
                                         </svg>
-                                        APPROVE
+                                        APPROVE POST
                                     </button>
             
                                     <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/deny" hx-trigger="click">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                             <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
                                         </svg>
-                                        DELETE
+                                        DELETE POST
                                     </button>
-                                    <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/report" hx-trigger="click">
+                                    <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/report_uploader" hx-trigger="click">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-diamond-fill" viewBox="0 0 16 16">
                                             <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                                           </svg>
                                         REPORT 
                                     </button>
 
+                                    {% if ADMINISTRATOR == "True" %}
+                                    <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/delete_person" hx-trigger="click">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-diamond-fill" viewBox="0 0 16 16">
+                                            <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                          </svg>
+                                        DELETE PERSON
+                                    </button>
+                                    {% endif %}
+
                                     
-                                    <!--RUMBLE GET REAL LINK-->
+                                    <!--GET REAL LINK-->
                                     <div>
                                         <form method="POST" >
                                             <input class="form-control" name="post_link_embed" type="text" placeholder="">
-                                            <button class="btn btn-primary btn-block" type="submit" hx-post="/update_post_html/{{posts[i][6]}}" hx-trigger="click" hx-target="#post_location{{i}}" hx-swap="innerHTML" >Direct Embed Link</button>
+                                            <button class="btn btn-primary btn-block" type="submit" hx-post="/update_post_html/{{posts[i][6]}}" hx-trigger="click" hx-target="#post_location{{i}}" hx-swap="innerHTML">Direct Embed Link (go to to the literally link and grab the mbedding)</button>
                                         </form>
                                     </div>
 

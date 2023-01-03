@@ -253,11 +253,24 @@ def SERVER_CHECK(server, function):
         elif function == "CREATE_TABLE_SEARCH_ALGORITM_SAVE":
             cursor.execute("""DROP TABLE IF EXISTS SEARCH_ALGORITM_SAVE CASCADE""")
             modules.print_segment()             
+    
+        elif function == "CREATE_TABLE_POST_SUBJECTS":
+            cursor.execute("""DROP TABLE IF EXISTS POST_SUBJECTS CASCADE""")
+            modules.print_segment()    
+            
+        elif function == "CREATE_TABLE_USER_STATUS":
+            cursor.execute("""DROP TABLE IF EXISTS USER_STATUS CASCADE""")
+            modules.print_segment()  
 
 
         conn.commit()
         modules.print_green(F"CASCADE DROPPED TABLE {function}")
-       
+
+def CHECK_IF_IT_IS_ME(id):
+    if str(id) == "1":
+        return "True"
+    else:
+        return "False"     
 def CHECK_IF_MOBILE(request):
     devices = ["Android", "webOS", "iPhone", "iPad", "iPod", "BlackBerry", "IEMobile", "Opera Mini"]
     result = False
@@ -326,7 +339,7 @@ def CHECK_SEARCH_FAVE_EXISTS(Search_algorithm_id, User_id):
         })
     result = 0
     for i in cursor.fetchall():
-        print(Search_algorithm_id, User_id, i[0])
+        # print(Search_algorithm_id, User_id, i[0])
         result = i[0]
     
     modules.close_conn(cursor, conn) 
@@ -486,6 +499,22 @@ def COUNT_HOW_MANY_CUSS_WORD():
         print(i)
     modules.close_conn(cursor, conn)
     
+def CHECK_POST_IS_LIVE(Post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+    SELECT Post_live
+    FROM POSTS    
+    WHERE Post_id = '{Post_id}'
+    """)
+    results = ""
+    for i in cursor.fetchall():
+        results = i[0]
+    modules.close_conn(cursor, conn)
+    if results.lower() == "True".lower():
+        return True
+    else:
+        return False
+
 def GET_INJECTION_TERMS():
     f = open("/root/mansura/files/bad_words_username.txt", "r")
     injection_terms = f.read().split(",")

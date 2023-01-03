@@ -29,8 +29,6 @@ def post_logic(person_id, page_no):
         )
     
     offset_calc = int(int(page_no) * int(posts_per_page))
-
-    
     return render_template('home.html',
         query=query,                   
                            
@@ -42,12 +40,16 @@ def post_logic(person_id, page_no):
         offset_calc=offset_calc,
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
+        
 
     )
     
 @app.route("/post_tribunal/<page_no>", methods=['GET', "POST"])
 def post_tribunal(page_no):
     modules.log_function("request", request)
+    if "email" not in session: 
+        return redirect(url_for("login"))
+    
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"], 
         page_no=int(page_no)+1,
@@ -69,13 +71,17 @@ def post_tribunal(page_no):
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
         coming_from_tribunal="true",
-        can_vote=can_vote
+        can_vote=can_vote,
+        ADMINISTRATOR=modules.CHECK_IF_IT_IS_ME(session["id"])
         #fucking hate javascript
     ) 
  
 @app.route("/favourites/<page_no>", methods=['GET', 'POST'])
 def favourites(page_no):
     modules.log_function("request", request)
+    if "email" not in session: 
+        return redirect(url_for("login"))
+    
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"], 
         page_no=int(page_no)+1,
@@ -97,12 +103,15 @@ def favourites(page_no):
         coming_from_favourites= "true" #fucking hate javascript
     )    
     
-@app.route("/user_profile/<user_profile_id>/<page_no>", methods=['GET', 'POST'])
-def user_profile(user_profile_id, page_no):
+@app.route("/user_profile/<user_profile_name>/<page_no>", methods=['GET', 'POST'])
+def user_profile(user_profile_name, page_no):
     modules.log_function("request", request)
-    
-    if user_profile_id == "home_profile":
+    if "email" not in session: 
+        return redirect(url_for("login"))    
+    if user_profile_name == "home_profile":
         user_profile_id = session["id"]
+    else:
+        user_profile_id = modules.GET_USER_ID_FROM_NAME(user_profile_name)
     
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"], 
@@ -123,23 +132,32 @@ def user_profile(user_profile_id, page_no):
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
         coming_from_profile= "True", #fucking hate javascript
-        user_profile_id=user_profile_id
+        user_profile_id=user_profile_id,
+        
+        username=modules.GET_USER_NAME_FROM_ID(user_profile_id),
+        followers=modules.GET_FOLLOWERS_BY_USER_ID(user_profile_id),
+        following=modules.GET_FOLLOWING_BY_USER_ID(user_profile_id)
     )
     
 @app.route("/person/<person_id>", methods=['GET', 'POST'])
 def person(person_id):
     modules.log_function("request", request)
+    if "email" not in session: 
+        return redirect(url_for("login"))
+        
     posts = modules.UNIVERSAL_FUNCTION(searcher=session["user"], person_id=person_id)
     
     return render_template('home.html',
         posts=posts,
+        
     )
     
 @app.route("/add_connection/<User_id>", methods=['POST'])
 def add_connection(User_id):
     modules.log_function("request", request)
-    
-    modules.INSERT_CONNECTION(1, User_id) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
+    if "email" not in session: 
+        return redirect(url_for("login"))    
+    modules.INSERT_CONNECTION(session["id"], User_id) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     followers = modules.GET_FOLLOWERS_BY_USER_ID(3)
     return render_template("connection_change.html",
         followers=followers)
@@ -147,14 +165,20 @@ def add_connection(User_id):
 @app.route("/remove_connection/<User_id>", methods=['POST'])
 def remove_connection(User_id):
     modules.log_function("request", request)
-    modules.DELETE_CONNECTION(1, User_id)
+    if "email" not in session: 
+        return redirect(url_for("login"))
+    
+    modules.DELETE_CONNECTION(session["id"], User_id)
     followers = modules.GET_FOLLOWERS_BY_USER_ID(3)
     return render_template("update_connection.html",
         followers=followers)
     
 @app.route("/people/<sort_method>/<letter>", methods=['GET', 'POST'])
 def people(sort_method, letter):
+    if "email" not in session: 
+        return redirect(url_for("login"))
     modules.log_function("request", request)
+    
     people = modules.GET_ALL_PEOPLE(sort_method=sort_method, letter=letter) #TODO: By letter
     people = list(modules.triple_split(people, 3))
 
@@ -167,6 +191,8 @@ def people(sort_method, letter):
 
 @app.route("/request_form/<request_type>", methods=['GET', 'POST'])
 def request_form(request_type):
+    if "email" not in session: 
+        return redirect(url_for("login"))
     modules.log_function("request", request)
     #print("request_type", request_type)
     if request.method == "POST":     
@@ -184,42 +210,49 @@ def request_form(request_type):
             #print("link", link)
             
             person_name = request.form["chosen_name"]
-            people = person_name.split(",")
-            print("person_name", person_name)
+            people = person_name.split(",")[0]
+            # print("person_name", people)
             
             # CHANGE TO POST
-
+            print("i got here")
             modules.INSERT_POST(Post_title=post_title, 
                                 Post_description=description, 
                                 Post_link=link, 
                                 Post_live="false", 
-                                Person=person_name, 
+                                Person=people, 
                                 User_id=session["id"]
                                 )
         elif request_type == "person":
             
-            #post_title = request.form["post_title"]
+            person_post_title = request.form["post_title"]
             #post_title = modules.clean_title(post_title)
             #print("post_title", post_title)
             
-            #description = request.form["description"]
-            #description = modules.COMMENT_TEXT_CHECK(description)
+            person_description = request.form["description"]
+            person_description = modules.COMMENT_TEXT_CHECK(person_description)
             #print("description", description)
             
-            #link = request.form["post_link"]
+            person_link = request.form["post_link"]
             # print("link", link)
 
-            person_name = request.form["person_name"]
-            print("person_name:", person_name)
-            '''TODO:
-            CREATE PERSON REQUEST LOCATION
-            '''  
+            person_person_name = request.form["person_name"]
+            print("person_name:", person_person_name)
+            modules.INSERT_POST(Post_title=person_post_title, 
+                                Post_description=person_description, 
+                                Post_link=person_link, 
+                                Post_live="false", 
+                                Person=person_person_name, 
+                                User_id=session["id"]
+                )
+            
     return render_template(f'request_form.html',
         request_type=request_type
     )
 
 @app.route("/search_text_by_category/<type>", methods=['GET'])
 def search_text_by_category(type):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
     # GOTTA BE A BETTER WAY to get the query
     print("request.url", request.url)
     query_text = str(request.url).split("name=")[1]
@@ -390,6 +423,8 @@ def word_tribunal():
 
 @app.route("/update_like/<Post_id>", methods=['GET', 'POST'])
 def update_like(Post_id):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
     modules.log_function("request", request)
     modules.LIKE_LOGIC(Post_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     return render_template(f"update_like.html",
@@ -397,7 +432,9 @@ def update_like(Post_id):
 
 @app.route("/update_search_fave/<algo_id>", methods=['GET', 'POST'])
 def update_search_fave(algo_id):
-    print(algo_id)
+    if "email" not in session: 
+        return redirect(url_for("login"))
+    # print(algo_id)
     modules.log_function("request", request)
     modules.SEARCH_FAVE_LOGIC(algo_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     return render_template(f"update_fave_search.html",
@@ -406,6 +443,8 @@ def update_search_fave(algo_id):
 
 @app.route("/update_fave/<Post_id>", methods=['GET', 'POST'])
 def update_fave(Post_id):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
     modules.log_function("request", request)
     modules.FAVE_LOGIC(Post_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     return render_template(f"update_fave.html",
@@ -414,6 +453,8 @@ def update_fave(Post_id):
     
 @app.route("/update_view/<Post_id>", methods=['GET', 'POST'])
 def update_view(Post_id):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
     modules.log_function("request", request)
     modules.INSERT_VIEWS(Post_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     return render_template(f"update_view.html",
@@ -422,6 +463,8 @@ def update_view(Post_id):
     
 @app.route("/update_comment/<Post_id>", methods=['GET', 'POST'])
 def update_comment(Post_id):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
     modules.log_function("request", request)
     input_field = request.form.get("input_field")
     how_many = 11
@@ -437,6 +480,8 @@ def update_comment(Post_id):
 
 @app.route("/update_post_html/<Post_id>", methods=['GET', 'POST'])
 def update_post_html(Post_id):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
     modules.log_function("request", request)
     if request.method == 'POST':
         # print("Post_id", Post_id)
@@ -451,10 +496,28 @@ def update_post_html(Post_id):
     
 @app.route("/update_post_tribunal/<Post_id>/<approval>", methods=['GET', 'POST'])
 def update_post_tribunal(Post_id, approval):
+    if "email" not in session: 
+        return redirect(url_for("login"))
     modules.log_function("request", request)
     print("Post_id", Post_id)
     print("approval type", approval)
 
+    if modules.CHECK_IF_IT_IS_ME(session["id"]):
+        if approval == "approve":
+            modules.UPDATE_POST_TO_LIVE(Post_id)
+        elif approval == "deny":
+            modules.DELETE_POST(Post_id)
+        elif approval == "report_uploader":
+            modules.UPDATE_USER_STRIKES(session["id"])
+        elif approval == "delete_person":
+            person_id = modules.GET_PERSON_ID_BY_POST_ID(Post_id)
+            modules.DELETE_PERSON(person_id)
+
+        
+    if modules.CHECK_IF_IT_IS_ME(session["id"]) and approval == "deny":
+        modules.UPDATE_POST_TO_LIVE(Post_id)
+    
+    
     
     return render_template(f"update_post.html",
         updated_html=modules.GET_POST_HTML_BY_ID(Post_id)
@@ -462,6 +525,8 @@ def update_post_tribunal(Post_id, approval):
 
 @app.route("/comment_section/<Post_id>/<how_many>/<order>", methods=['GET', 'POST'])
 def comment_section(Post_id, how_many, order):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
     modules.log_function("request", request)
     transformed_comments = modules.TRANSFRM_COMMENT_ARRAY_INTO_HTML(modules.GET_N_COMMENTS(Post_id=Post_id, N=how_many, new_comment=modules.JANKY_COMMENT_CHECK(how_many), check_order=order))
     
@@ -480,6 +545,8 @@ def contact():
 
 @app.route("/structure_search_by_phrase/<page_no>/<phrase_again>", methods=['GET', 'POST'])
 def structure_search_by_phrase(page_no, phrase_again):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
     modules.log_function("request", request, session_user=session['user'])
     searched_value = ""
     if request.method == "POST":
@@ -523,6 +590,8 @@ def structure_search_by_phrase(page_no, phrase_again):
 
 @app.route("/search_algo_create", methods=['GET', 'POST'])
 def search_algo_create():
+    if "email" not in session: 
+        return redirect(url_for("login"))    
     modules.log_function("request", request, session_user=session['user'])
     
     array_of_order_clauses = []
@@ -560,6 +629,8 @@ def search_algo_create():
     
 @app.route("/search_algo_home/<search_type>/<page_no>", methods=['GET', 'POST'])
 def search_algo_home(search_type, page_no):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
     print(page_no, "HERE")
     
     modules.log_function("request", request, session_user=session['user'])
@@ -577,8 +648,12 @@ def search_algo_home(search_type, page_no):
 
 @app.route("/update_search_algo_choice/<search_algo_id>", methods=['GET', 'POST'])
 def update_search_algo_choice(search_algo_id):
-    print("search_algo_id:", search_algo_id)
-    print("user id       :", session["id"])
+    if "email" not in session: 
+        return redirect(url_for("login"))
+        
+    #print("search_algo_id:", search_algo_id)
+    #print("user id       :", session["id"])
+    modules.SEARCH_FAVE_LOGIC(search_algo_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     modules.UPDATE_CURRENT_SEARCH_BY_USER_ID(search_algo_id, session["id"])
     
     return render_template(f"update_chosen_algorithm.html"

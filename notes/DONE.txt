@@ -1,0 +1,37 @@
+DONE.put billboard at the top
+DONE.make search algo page scrollable
+DONE.#SCROLL search page, 
+DONE.search search algos,
+DONE.change profile to be names not ids
+DONE. insert into db algo
+
+
+NOT DOING.injection check the page numbers
+NOT. add search modal on homepage and
+
+NOT DOING
+search algo page
+    modal on that page
+
+DONE.liimit number user interactions per minute
+DONE.goiogle popular linux hack commands
+DONE.put input validation in any location there is user input
+DONE. fix navbar
+DONE.make the cards narrower, less whitespace
+DONE. put in larger descriptions to test size
+
+tribunal video list
+    - if not a moderator, show (apply to be a content moderator)
+COMMENT
+===========
+DONE.COMMENT VOTES TABLE
+DONE. comment validation
+NOT DOING. DOESNT REFRESH, NOT SURE, VOTES 
+NOT DOING. just do scroll functionality, replies to hard rn
+
+DONE.remove spaces from entered tribunal words 
+DONE.save AND VIEWS MISSING
+
+NOT DONE. subject tags when inserting posts be able to tag a person in a post with a tag request
+DONE. change count all to reflect the constraints of the query
+DONE.no mandatory login 

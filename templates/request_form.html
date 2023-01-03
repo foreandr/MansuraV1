@@ -1,5 +1,22 @@
 {% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
 {%block main %}
+<div class="container">
+    <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+        <h1><u>SUPPORTED SITES</u></h1>
+    </div>
+    <ul class="d-flex flex-wrap list-group-horizontal">
+        <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/youtube.png') }} width="50" height="50"></li>
+        <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/archive.png') }} width="50" height="50"></li>
+        <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/dailymotion.png') }} width="50" height="50"></li>
+        <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/dtube.png') }} width="50" height="50"></li>
+        <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/infowars.png') }} width="50" height="50"></li>
+        <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/odysee.png') }} width="50" height="50"></li>
+        <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/reddit.png') }} width="50" height="50"></li>
+        <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/rumble.png') }} width="50" height="50"></li>
+        <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/tiktok.png') }} width="50" height="50"></li>
+        <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/vimeo.png') }} width="50" height="50"></li>
+    </ul>
+</div>
 
 {% if request_type == "person" %}
 <form action="/request_form/{{request_type}}" method="POST" enctype="multipart/form-data">
@@ -8,59 +25,45 @@
         <label><b><u><h2>Person Name<h4>(alias works, but less likely to be accepted).</h4></h2></u></b></label>
         <input class="form-control" id="name" name="person_name" placeholder="Name"required>
     </div>
-
-    <!--
     <div>
         <label><b><u><h2>Post Title:</h2></u></b></label>
         <input class="form-control" id="name" name="post_title" placeholder="Post Title" required>
     </div>
     <div>
         <label><b><u><h2>Description:</h2></u></b></label>
-        <textarea class="form-control" id="textbox" name="description" rows="4" cols="50" maxlength="400" required></textarea>
+        <textarea class="form-control" id="textbox" name="description" rows="2" cols="50" maxlength="400" required></textarea>
     </div>
     <div>
         <label><b><u><h2>Example link of their work:</h2></u></b></label>
         <input class="form-control"id="link" name="post_link" type="url" placeholder="Video Link" required>
     </div> 
-    -->
+    
     
     <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
 </form>
 {% elif request_type == "post" %}
-<div class = "container">
-    OPTIONS
-    <ul class = "list-group">
-            <li class = "list-group-item"> YOUTUBE <span class = "badge"> 12 </span> </li>
-            <li class = "list-group-item"> RUMBLE <span class = "badge"> 5 </span> </li>
-            <li class = "list-group-item"> TIKTOK <span class = "badge"> 3 </span> </li>
-            <li class = "list-group-item"> VIMEO <span class = "badge"> 3 </span> </li>
-            <li class = "list-group-item"> REDDIT.COM <span class = "badge"> 3 </span> </li>
-            <li class = "list-group-item"> ARCHIVE.ORG <span class = "badge"> 3 </span> </li>
-            <li class = "list-group-item"> BANNED.VIDEO <span class = "badge"> 3 </span> </li>
-            <li class = "list-group-item"> ODYSEE <span class = "badge"> 3 </span> </li>
-            <li class = "list-group-item"> DTUBE <span class = "badge"> 3 </span> </li>
-            <li class = "list-group-item"> DAILYMOTION <span class = "badge"> 3 </span> </li>
-    </ul>
-</div>
+
+
+
 <form action="/request_form/{{request_type}}" method="POST" enctype="multipart/form-data">
     <div>
         <label><b><u><h2>Post Title:</h2></u></b></label>
         <input class="form-control" id="name" name="post_title" placeholder="Post Title" required>
     </div>
     <div>
-        <label><b><u><h2>Who is in this video?</h2></u></b></label>
+        <label><b><u><h2>Who is in this video? (multiple people in 1 video coming soon..)</h2></u></b></label>
         <div>
-            <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search...">
+            <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search..." >
         </div>
         </br>
     </div> 
 
-    <div id="search-results">
+    <div id="search-results" >
     </div>
     
 
     <div >
-        <input class="form-control" name="chosen_name" placeholder="" value="" id="selected_users">
+        <input class="form-control" name="chosen_name" placeholder="" value="" id="selected_users"readonly>
     </div>
     <div>
         <a href="/request_form/person">
@@ -75,7 +78,7 @@
     </div> 
     <div>
         <label for="textbox"><b><u><h2>Description:</h2></u></b></label>
-        <textarea class="form-control" id="textbox" name="description" rows="4" cols="50" maxlength="400" required></textarea>
+        <textarea class="form-control" id="textbox" name="description" rows="2" cols="50" maxlength="400" required></textarea>
     </div>
     
     <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
@@ -88,7 +91,7 @@
     function choose_selected_user(user){
         if (count <= 5)
             // turn into += when i figure out hwo to do multiple
-            document.getElementById("selected_users").value += `${user},`
+            document.getElementById("selected_users").value = `${user},`
             count +=1
     }
 </script>

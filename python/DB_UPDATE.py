@@ -53,6 +53,17 @@ def UPDATE_POST_HTML_BY_ID(Post_id, embed_link):
     modules.print_green(f"{inspect.stack()[0][3]} {Post_id, embed_link} COMPLETED\n")
     modules.close_conn(cursor, conn)
 
+def UPDATE_POST_TO_LIVE(Post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        UPDATE POSTS
+        SET Post_live = 'True'
+        WHERE Post_id = '{Post_id}'
+    """)
+    conn.commit()
+    modules.print_green(f"{inspect.stack()[0][3]} {Post_id} COMPLETED\n")
+    modules.close_conn(cursor, conn)    
+
 def UPDATE_CURRENT_SEARCH_BY_USER_ID(Search_algorithm_id, User_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
@@ -71,4 +82,15 @@ def UPDATE_CURRENT_SEARCH_BY_USER_ID(Search_algorithm_id, User_id):
     conn.commit()
     modules.print_green(f"{inspect.stack()[0][3]} {Search_algorithm_id, User_id} COMPLETED\n")
     modules.close_conn(cursor, conn)
+    
+def UPDATE_USER_STRIKES(User_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        UPDATE USER_STATUS
+        SET User_Strikes = User_Strikes + 1
+        WHERE User_id = '{User_id}'
+    """)
+    conn.commit()
+    modules.print_green(f"{inspect.stack()[0][3]} {User_id} COMPLETED\n")
+    modules.close_conn(cursor, conn)    
 

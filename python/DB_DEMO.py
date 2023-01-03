@@ -103,9 +103,22 @@ def INSERT_DEMO_POST():
 
 def INSERT_DEMO_SUBJECTS():
     modules.print_title(f"{inspect.stack()[0][3]}")
-    modules.INSERT_SUBJECTS(Subject_name="philosophy", Subject_type="HARD", Post_id=1)
-    modules.INSERT_SUBJECTS(Subject_name="philosophy", Subject_type="SOFT", Post_id=1)
+    modules.INSERT_SUBJECTS(Subject_name="Science")
+    modules.INSERT_SUBJECTS(Subject_name="Language")
+    modules.INSERT_SUBJECTS(Subject_name="Art")
+    modules.INSERT_SUBJECTS(Subject_name="Lacan")
+    modules.INSERT_SUBJECTS(Subject_name="Deluze")
 
+def INSERT_DEMO_POST_SUBJECTS():
+    modules.INSERT_POST_SUBJECTS(Subject_id=1, Post_id=1)
+    modules.INSERT_POST_SUBJECTS(Subject_id=2, Post_id=1)
+    modules.INSERT_POST_SUBJECTS(Subject_id=3, Post_id=1)
+    modules.INSERT_POST_SUBJECTS(Subject_id=4, Post_id=1)
+    
+    modules.INSERT_POST_SUBJECTS(Subject_id=1, Post_id=2)
+    modules.INSERT_POST_SUBJECTS(Subject_id=1, Post_id=3)
+    modules.INSERT_POST_SUBJECTS(Subject_id=1, Post_id=4)
+    
 def INSERT_DEMO_LIKES():
     modules.print_title(f"{inspect.stack()[0][3]}")
     modules.INSERT_LIKE(Post_id=1, User_id=1)

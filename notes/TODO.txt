@@ -1,43 +1,45 @@
 #TODO:APPROVE DENY AND REPORT TRIBNAL LOGIC
-TODO
-========================
-DONE. when registering do the injection check so i dont end up with a pass that cant be entered
-NOT DOING.no mandatory login 
-subject tags when inserting posts
-    1. create long default subject list, and insert into db
-    2. create search thing that grabs list and checks for inside like name
-    3. can click from list
-    4. if admin can create new subject
-    5. post can have n subjects
-
-
-be able to tag a person in a post with a tag request
-only get to save 1 search a day
-input vaidate search
-liimit number user interactions per minute (more)
-
-put a warning modal whensomeone goes to tribunal page
-    - going to be graphic, 
-    -  likely 18+ filled with all kinds of terrible shit, this si where psots are decieed whther they make rddlabsdodgfo
-show convos
-
-QUALITY OF LIFE
-========================
-check for the response of the youtube url when it is entered
-lederboards
-TODO: should add more input checks in the frontend
-playlists
-
-DUNNO WHAT THIS MEANS
-========================
-change count all to reflect the constraints of the query
+#TODO: only get to save N search a day
+#TODO: WILL HAVE TO RESET THE LIVE TABLES
+#TODO: DISABLE voting participation by some accounts, (mutes, bans timeouts etc)
 
 
 pytest
 
+
+input vaidate search
+
+put a warning modal whensomeone goes to tribunal page
+    - going to be graphic, 
+    -  likely 18+ filled with all kinds of terrible shit, this si where psots are decieed whther they make rddlabsdodgfo
+
+
+DONE.liimit number user interactions per minute
+DONE.goiogle popular linux hack commands
+DONE.put input validation in any location there is user input
+
 show convos,
     - sne dpost
+remove spaces from entered tribunal words 
+DONE. fix navbar
+DONE.make the cards narrower, less whitespace
+put in larger descriptions to test size
 
+
+tags when entering a video,
+suggested tags as well
+
+
+tribunal video list
+    - if not a moderator, show (apply to be a content moderator)
+COMMENT
+===========
+DONE.COMMENT VOTES TABLE
+DONE. comment validation
+NOT DOING. DOESNT REFRESH, NOT SURE, VOTES 
+NOT DOING. just do scroll functionality, replies to hard rn
+
+save AND VIEWS MISSING
 
 POSTS=
 ========
