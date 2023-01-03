@@ -10,7 +10,7 @@ def CREATE_TABLES(server="false"):
         modules.print_title(f"DEVELOPING, RECREATING ALL TABLES [{server}]", )
         
     modules.CREATE_TABLE_USER(server)
-    modules.CREATE_TABLE_USER_STATUS(server)
+    # modules.CREATE_TABLE_USER_STATUS(server)
     modules.CREATE_TABLE_PEOPLE(server)
     modules.CREATE_TABLE_POST(server)
     modules.CREATE_TABLE_POST_PERSON(server)

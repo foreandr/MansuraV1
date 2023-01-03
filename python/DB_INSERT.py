@@ -22,9 +22,9 @@ def INSERT_USER(username, password, Email):
         cursor.execute(
             f"""
             INSERT INTO USERS
-            (Username, Password, Profile_pic, Email, Date_time)
+            (Username, Password, Profile_pic, Email,User_Strikes, Date_time)
             VALUES
-            (%(username)s, %(password)s, %(pic)s, %(email)s, NOW())
+            (%(username)s, %(password)s, %(pic)s, %(email)s, 0, NOW())
             
             ON CONFLICT DO NOTHING
             """, {'username': username,
@@ -44,18 +44,20 @@ def INSERT_USER(username, password, Email):
     modules.close_conn(cursor, conn)  
     return False
     
-def INSERT_PERSON(Person_name):
+def INSERT_PERSON(Person_name, Person_live="True"):
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
             f"""
             INSERT INTO PEOPLE
-            (Person_name)
+            (Person_name, Person_live)
             VALUES
-            (%(Person_name)s)
+            (%(Person_name)s, %(Person_live)s)
             ON CONFLICT DO NOTHING
-            """, {'Person_name': Person_name}
+            """, {'Person_name': Person_name,
+                  'Person_live': Person_live,
+                  }
             )
         conn.commit()
 
@@ -87,11 +89,13 @@ def INSERT_POST_ADMIN(User_id):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)  
-
-        
-    
+   
 def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User_id=1):
-    print(Person)
+    # print(Person)
+    if not modules.CHECK_ACCOUNT_STATUS(User_id):
+        print(User_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
+        return ""
+        
     cursor, conn = modules.create_connection()
     try:
         Post_html = modules.translate_link_to_html(Post_link)
@@ -190,7 +194,6 @@ def INSERT_POST_SUBJECTS(Subject_id, Post_id):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
-
 def LIKE_LOGIC(Post_id, User_id):
     already_liked = modules.CHECK_LIKE_EXISTS(Post_id, User_id)
     if already_liked:
@@ -215,11 +218,6 @@ def SEARCH_FAVE_LOGIC(Search_algorithm_id, User_id):
         modules.DELETE_SEARCH_FAVOURITE(Search_algorithm_id, User_id)
     else:
         modules.INSERT_SEARCH_FAVOURITES(Search_algorithm_id, User_id)
-
-
-
-
-
 
 def INSERT_LIKE(Post_id, User_id):
     cursor, conn = modules.create_connection()
@@ -296,7 +294,7 @@ def INSERT_DISLIKE(Post_id, User_id):
     modules.close_conn(cursor, conn)
 
 def INSERT_FAVOURITES(Post_id, User_id):
-    print(Post_id, User_id)
+    # print(Post_id, User_id)
     cursor, conn =modules. create_connection()
     try:
         cursor = conn.cursor()
@@ -346,6 +344,10 @@ def INSERT_SEARCH_FAVOURITES(Search_algorithm_id, User_id):
     modules.close_conn(cursor, conn) 
     
 def INSERT_COMMENTS(Post_id, User_id, Comment_text, Replying_to_id="NULL"):
+    if not modules.CHECK_ACCOUNT_STATUS(User_id):
+        print(User_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
+        return ""
+        
     Comment_text = modules.COMMENT_TEXT_CHECK(Comment_text)
     cursor, conn = modules.create_connection()
     try:
@@ -435,7 +437,6 @@ def INSERT_VIEWS(Post_id, User_id):
     if not modules.CHECK_POST_IS_LIVE(Post_id):
         return False
         
-    
     cursor, conn = modules.create_connection()
     can_view = CHECK_IF_BEEN_30s_SINCE_LAST_VIEW(Post_id, User_id)
     if not can_view:
@@ -638,8 +639,6 @@ def INSERT_SUBJECT_REQUEST(User_id, Subject,Post_id):
     
     modules.close_conn(cursor, conn)
 
-
-
 def CHECK_NEW_BANNED_WORD_IS_NOT_STUPID(word):
     # TURN THIS INTO A FILE WITH A BIG LIST
     list_of_good_words = ["and", "or", "if"]
@@ -648,9 +647,14 @@ def CHECK_NEW_BANNED_WORD_IS_NOT_STUPID(word):
     else:
         return True
 
-def INSERT_TRIBUNAL_WORD(word):
+def INSERT_TRIBUNAL_WORD(word, User_id=1):
     if not CHECK_NEW_BANNED_WORD_IS_NOT_STUPID(word):
         return "" # exit function if stupid
+    
+    if not modules.CHECK_ACCOUNT_STATUS(User_id):
+        print(User_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
+        return ""
+        
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
@@ -697,17 +701,22 @@ def INSERT_DEMO_WORD_LIST():
             INSERT_INTO_PROFANITY_LIST_VOTES(i, 1, "DOWN")
             
 def INSERT_INTO_PROFANITY_LIST_VOTES(word_id, voter_id, vote_Type):
+    if not modules.CHECK_ACCOUNT_STATUS(voter_id):
+        print(voter_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
+        return ""
     if voter_id == 1: # SO that on my account i can vote infinitely
         modules.INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type)     
         return ""
-    
-
     if modules.CHECK_IF_WORD_VOTE_EXISTS(word_id, voter_id):
         modules.UPDATE_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type)
     else:
         modules.INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_Type)
      
 def INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_type):
+    if not modules.CHECK_ACCOUNT_STATUS(voter_id):
+        print(voter_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
+        return ""
+    
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
         INSERT INTO TRIBUNAL_WORD_VOTE(Tribunal_word_id, User_id, Vote_Type)
@@ -724,7 +733,7 @@ def INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_type):
 def INSERT_DEMO_PEOPLE():
     word_list = modules.GET_ORIGINAL_PEOPLE_LIST()
     for i in range(len(word_list)):
-        INSERT_PERSON(word_list[i])
+        INSERT_PERSON(word_list[i], Person_live="True")
         
 def brute_force_replace(string):
     new_string = ""
@@ -740,6 +749,10 @@ def INSERT_SEARCH_ALGORITHM(Search_algorithm_name, Search_where_clause, Search_o
     #Search_where_clause = Search_where_clause.replace("'", "\'")
     #Search_order_clause = Search_order_clause.replace("'", "sadhgfajhsdgfkjahdfsgkjdfahsg")
     # Search_where_clause= brute_force_replace(Search_where_clause)
+    if not modules.CHECK_ACCOUNT_STATUS(User_id):
+        print(User_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
+        return ""
+    
     Search_algorithm_name = f"{modules.GET_USER_NAME_FROM_ID(User_id)}-{Search_algorithm_name}"
     modules.GET_USER_ID_FROM_NAME
     try:
@@ -774,4 +787,5 @@ if __name__ == "__main__":
     # INSERT_DEMO_PEOPLE()
     # modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK2", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", Post_live="True", User_id=1, Person="Noam Chomsky")
     # INSERT_TRIBUNAL_WORD("faggotere")
+
     pass

@@ -1,3 +1,18 @@
+pytest
+
 check for the response of the youtube url when it is entered
 lederboards
 should add more input checks in the frontend
+input vaidate search
+
+put a warning modal whensomeone goes to tribunal page
+    - going to be graphic, 
+    -  likely 18+ filled with all kinds of terrible shit, this si where psots are decieed whther they make rddlabsdodgfo
+
+
+subjects when entering a video,
+suggested tags as well
+
+SHOW subjetcs
+Profile
+    - link to their socials when you go to their page

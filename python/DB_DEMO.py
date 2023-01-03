@@ -31,6 +31,8 @@ def INSERT_DEMO_PEOPLE():
     modules.INSERT_PERSON("Michael Sugrue")
     modules.INSERT_PERSON("John Vervaeke")
     modules.INSERT_PERSON("George Hotz")
+    modules.INSERT_PERSON("Adina Samuels", Person_live="False")
+    modules.INSERT_PERSON("Kristen Celotto", Person_live="False")
 
 def INSERT_DEMO_POST():
     modules.print_title(f"{inspect.stack()[0][3]}")

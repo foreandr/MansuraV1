@@ -39,7 +39,14 @@
                     <button type="submit" class="btn btn-primary btn-lg btn-block" id="search_algo_button" disabled>Create</button>
                     <div id="search-results"></div>
                     <small>
-                        No spaces, no swearing
+                        <div>
+                            No spaces, no swearing, 2 per day.
+                        </div>
+
+                        <div>
+                            {{failure_message}}
+                        </div>
+                        
                     </small>
                     {{message}}
                     </br>
@@ -92,6 +99,11 @@
                             <option value="Views">Views</option>
                             <option value="Favourites">Favourites</option>
                             <option value="Comments">Comments</option>
+                            <option value="Have/Not Liked" disabled>I Liked</option>
+                            <option value="Have/Not Commented" disabled>I Commented</option>
+                            <option value="Have/Not Viewed" disabled>I Viewed</option>
+                            <option value="Have/Not Faved" disabled>I Faved</option>
+                            <option value="Person Name(s)" disabled>Person Name(s)</option>
                             <option value="more coming" disabled>More Coming..</option>
                         </select>
                         <select class="form-select" name="where_select_comparison" id="where_select_comparison" disabled>
@@ -128,35 +140,37 @@
     array_of_time_checkers = ["Today","This Week","This Month","This Year","All Time"]
     // document.getElementById("order_by_clauses").innerHTML = order_by_string
     function add_another_order_by_section(){
-        order_by_string = `
-        <div id=order_by_clause_${order_count}>
-            <select class="form-select" aria-label="Default select example" name="order_clauses_${order_count}">
-                <option value="Date"selected>Date New</option>
-                <option value="Date" disabled>Date Old</option>
-                <option value="Likes">Likes</option>
-                <option value="Favourites">Favourites</option>
-                <option value="Comments">Comments</option>
-                <option value="Views">Views</option>
-                <option value="Likes_Views">Likes+Views</option>
-                <option value="Likes_Favourites">Likes+Favourites</option>
-                <option value="Likes_Favourites_Comments">Likes+Favourites+Comments</option>
-                <option value="Likes_Favourites_Comments_Views">Likes+Favourites+Comments+Views</option>
-                <option value="Alpha_Title">Alpha_Title</option>
-                <option value="Alpha_Person" disabled>Alpha_Person</option>
-                <option value="AI" disabled>AI</option>
-                <option value="AI" disabled>More coming soon..</option>
-              </select>
-            <button class="btn btn-lg" type="button" onclick="remove_another_order_by_section(this)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
-                    <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
-                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
-                  </svg>
-            </button>
-        </div>
-        `
-        document.getElementById("order_by_clauses").innerHTML += order_by_string
-        order_count += 1 
-
+        if (order_count < 50){
+            order_by_string = `
+            <div id=order_by_clause_${order_count}>
+                <select class="form-select" aria-label="Default select example" name="order_clauses_${order_count}">
+                    <option value="Date"selected>Date New</option>
+                    <option value="Date" disabled>Date Old</option>
+                    <option value="Trending" disabled>Trending</option>
+                    <option value="Likes">Likes</option>
+                    <option value="Favourites">Favourites</option>
+                    <option value="Comments">Comments</option>
+                    <option value="Views">Views</option>
+                    <option value="Likes_Views">Likes+Views</option>
+                    <option value="Likes_Favourites">Likes+Favourites</option>
+                    <option value="Likes_Favourites_Comments">Likes+Favourites+Comments</option>
+                    <option value="Likes_Favourites_Comments_Views">Likes+Favourites+Comments+Views</option>
+                    <option value="Alpha_Title">Alpha_Title</option>
+                    <option value="Alpha_Person" disabled>Alpha_Person</option>
+                    <option value="AI" disabled>AI</option>
+                    <option value="AI" disabled>More coming soon..</option>
+                  </select>
+                <button class="btn btn-lg" type="button" onclick="remove_another_order_by_section(this)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
+                        <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                      </svg>
+                </button>
+            </div>
+            `
+            document.getElementById("order_by_clauses").innerHTML += order_by_string
+            order_count += 1 
+        }
     }
     function remove_another_order_by_section(section_element){
         element_id = (section_element.parentNode.id)
@@ -169,47 +183,51 @@
         document.getElementById(`${element_id}`).remove();
     }
     function add_another_where_section(){
-        var comparison_value = ""
-        var count_value = ""
-        var e = document.getElementById("where_select_type");
-        var value = e.value;
-        //var text = e.options[e.selectedIndex].text;
-        //console.log("value",value)
-
-
-        var ANDORe = document.getElementById("where_select_type_and_or");
-        var ANDORvalue = ANDORe.value;
-        //console.log("ANDOR value",ANDORvalue)
-
-        // IF IT IS NOT A TIME CHECK
-        if (!(array_of_time_checkers.includes(value))){
-            var comparison =  document.getElementById("where_select_comparison");
-            comparison_value = comparison.value;
-            //console.log("comparison", comparison_value)
+        if (where_count < 50){
+            var comparison_value = ""
+            var count_value = ""
+            var e = document.getElementById("where_select_type");
+            var value = e.value;
+            //var text = e.options[e.selectedIndex].text;
+            //console.log("value",value)
     
-            var count =  document.getElementById("where_select_count");
-            count_value = count.value;
-            //console.log("count_value", count_value)
+    
+            var ANDORe = document.getElementById("where_select_type_and_or");
+            var ANDORvalue = ANDORe.value;
+            //console.log("ANDOR value",ANDORvalue)
+    
+            // IF IT IS NOT A TIME CHECK
+            if (!(array_of_time_checkers.includes(value))){
+                var comparison =  document.getElementById("where_select_comparison");
+                comparison_value = comparison.value;
+                //console.log("comparison", comparison_value)
+        
+                var count =  document.getElementById("where_select_count");
+                count_value = count.value;
+                //console.log("count_value", count_value)
+            }
+    
+            // put in input value
+            full_string = `${ANDORvalue},${value},${comparison_value},${count_value}`
+            // console.log(full_string)
+            where_by_string = `
+              <div class="input-group mb-3" id="additional_where_clause_${where_count}">
+                <input type="text" style="width: 35ch;" class="form-control" id="where_clauses_${where_count}" name="where_clauses_${where_count}" value="${full_string}" placeholder="${full_string}" readonly>
+                <div class="input-group-append">
+                    <button class="btn btn-lg" type="button" onclick="remove_another_where_by_section(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
+                            <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
+                            <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                          </svg>
+                    </button>
+                </div>
+              </div>
+            `
+            document.getElementById("where_clauses").innerHTML += where_by_string
+            console.log(where_count)
+            where_count += 1 
         }
 
-        // put in input value
-        full_string = `${ANDORvalue},${value},${comparison_value},${count_value}`
-        // console.log(full_string)
-        where_by_string = `
-          <div class="input-group mb-3" id="additional_where_clause_${where_count}">
-            <input type="text" style="width: 35ch;" class="form-control" id="where_clauses_${where_count}" name="where_clauses_${where_count}" value="${full_string}" placeholder="${full_string}" readonly>
-            <div class="input-group-append">
-                <button class="btn btn-lg" type="button" onclick="remove_another_where_by_section(this)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-minus" viewBox="0 0 16 16">
-                        <path d="M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5z"/>
-                        <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
-                      </svg>
-                </button>
-            </div>
-          </div>
-        `
-        document.getElementById("where_clauses").innerHTML += where_by_string
-        where_count += 1 
     }
     function check_select_type_comparison(){
         e = document.getElementById("where_select_type")

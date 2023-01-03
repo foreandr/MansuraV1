@@ -3,6 +3,7 @@
 <div class="container">
     <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
         <h1><u>SUPPORTED SITES</u></h1>
+        <p>If you try to post: porn, gore, doxxing, etc; you will lose request privileges.</p>
     </div>
     <ul class="d-flex flex-wrap list-group-horizontal">
         <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/youtube.png') }} width="50" height="50"></li>
@@ -15,6 +16,9 @@
         <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/rumble.png') }} width="50" height="50"></li>
         <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/tiktok.png') }} width="50" height="50"></li>
         <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/vimeo.png') }} width="50" height="50"></li>
+        <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/facebook.png') }} width="50" height="50"></li>
+        <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/twitter.png') }} width="50" height="50"></li>
+        <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/instagram.png') }} width="50" height="50"></li>
     </ul>
 </div>
 
@@ -22,12 +26,12 @@
 <form action="/request_form/{{request_type}}" method="POST" enctype="multipart/form-data">
 
     <div>
-        <label><b><u><h2>Person Name<h4>(alias works, but less likely to be accepted).</h4></h2></u></b></label>
-        <input class="form-control" id="name" name="person_name" placeholder="Name"required>
+        <label><b><u><h2>Person Name<h4>(alias works, but <b><u>FAR</u></b> less likely to be accepted).</h4></h2></u></b></label>
+        <input class="form-control" id="name" name="person_name" placeholder="Name" maxlength="40" required>
     </div>
     <div>
         <label><b><u><h2>Post Title:</h2></u></b></label>
-        <input class="form-control" id="name" name="post_title" placeholder="Post Title" required>
+        <input class="form-control" id="name" name="post_title" placeholder="Post Title" maxlength="40" required>
     </div>
     <div>
         <label><b><u><h2>Description:</h2></u></b></label>
@@ -35,7 +39,7 @@
     </div>
     <div>
         <label><b><u><h2>Example link of their work:</h2></u></b></label>
-        <input class="form-control"id="link" name="post_link" type="url" placeholder="Video Link" required>
+        <input class="form-control"id="link" name="post_link" type="url" placeholder="Video Link" maxlength="100" required>
     </div> 
     
     
@@ -48,12 +52,12 @@
 <form action="/request_form/{{request_type}}" method="POST" enctype="multipart/form-data">
     <div>
         <label><b><u><h2>Post Title:</h2></u></b></label>
-        <input class="form-control" id="name" name="post_title" placeholder="Post Title" required>
+        <input class="form-control" id="name" name="post_title" placeholder="Post Title" maxlength="40" required>
     </div>
     <div>
         <label><b><u><h2>Who is in this video? (multiple people in 1 video coming soon..)</h2></u></b></label>
         <div>
-            <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search..." >
+            <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" maxlength="40" name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search..." >
         </div>
         </br>
     </div> 
@@ -61,8 +65,7 @@
     <div id="search-results" >
     </div>
     
-
-    <div >
+    <div>
         <input class="form-control" name="chosen_name" placeholder="" value="" id="selected_users"readonly>
     </div>
     <div>
@@ -71,10 +74,9 @@
         </a>
     </div>
 
-
     <div>
         <label><b><u><h2>Source Link:</h2></u></b></label>
-        <input class="form-control"id="link" name="post_link" type="url" placeholder="Video Link">
+        <input class="form-control"id="link" name="post_link" type="url" maxlength="100" placeholder="Video Link">
     </div> 
     <div>
         <label for="textbox"><b><u><h2>Description:</h2></u></b></label>

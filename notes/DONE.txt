@@ -35,3 +35,51 @@ DONE.save AND VIEWS MISSING
 NOT DONE. subject tags when inserting posts be able to tag a person in a post with a tag request
 DONE. change count all to reflect the constraints of the query
 DONE.no mandatory login 
+DONE.liimit number user interactions per minute
+DONE.goiogle popular linux hack commands
+DONE.put input validation in any location there is user input
+remove spaces from entered tribunal words 
+DONE. fix navbar
+DONE.make the cards narrower, less whitespace
+DONE. put in larger descriptions to test size
+#DONE. APPROVE DENY AND REPORT TRIBNAL LOGIC
+#DONE: only get to save N search a day
+#DONE.: DISABLE voting participation by some accounts, (mutes, bans timeouts etc)
+COMMENT
+===========
+DONE.COMMENT VOTES TABLE
+DONE. comment validation
+NOT DOING. DOESNT REFRESH, NOT SURE, VOTES 
+NOT DOING. just do scroll functionality, replies to hard rn
+Comment Section (Modal, nested comments?)
+    - create Modal
+    - show n comments  in Modal
+    - button showing num replies to comment, and a way to expand n comments
+    - add button to reply to comments in Modal
+POSTS=
+========
+SHOW LINK UNDER POSTS, SOME WILL BE BROKEN
+save AND VIEWS MISSING
+DONE.people
+Phrase Tribunal (put words and votes in db)
+DONE. Register
+DONE. Login
+DONE. Logout
+DONE.Favourites
+DONE.Contact
+DONE.Terms
+DONE.Mission
+
+REQUESTING
+==========
+title cap 30 chars
+desc cap 200 (front end not back incase i want to change)
+
+Max length desc / title
+a few bad requests mutes, a few more bans, a few more IP bans
+grand some people request admin privileges
+DONE. check description before entering into database frontend and backend
+SEARCH
+==========
+DONE. limit num params in create search algo to 100
+DONE. need to have a tag in usersfor whether its a live user or not

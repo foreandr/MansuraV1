@@ -53,7 +53,21 @@ def UPDATE_POST_HTML_BY_ID(Post_id, embed_link):
     modules.print_green(f"{inspect.stack()[0][3]} {Post_id, embed_link} COMPLETED\n")
     modules.close_conn(cursor, conn)
 
+def UPDATE_PERSON_TO_LIVE(Person_Id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        UPDATE PEOPLE
+        SET Person_live = 'True'
+        WHERE Person_Id = '{Person_Id}'
+    """)
+    conn.commit()
+    modules.print_green(f"{inspect.stack()[0][3]} {Person_Id} COMPLETED\n")
+    modules.close_conn(cursor, conn)       
+
 def UPDATE_POST_TO_LIVE(Post_id):
+    Person_Id = modules.GET_PERSON_ID_BY_POST_ID(Post_id)
+    modules.UPDATE_PERSON_TO_LIVE(Person_Id)
+
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
         UPDATE POSTS

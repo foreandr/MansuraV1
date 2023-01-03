@@ -95,10 +95,12 @@ def TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses):
     full_order_by = """"""
     try:
         for i in range(len(array_of_order_clauses)):
-            print(i, array_of_order_clauses[i])
+            #print(i, array_of_order_clauses[i])
             full_order_by += ORDER_CLAUSE_SECTIONS(array_of_order_clauses[i])
     except Exception as e:
-        print(str(e), str(array_of_order_clauses[i]), i)
+        pass
+        # print(str(e), str(array_of_order_clauses[i]), i)
+        # TODO:log this
 
     
     

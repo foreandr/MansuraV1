@@ -16,12 +16,15 @@ def CREATE_TABLE_USER(server="false"):
                     User_id SERIAL PRIMARY KEY,
                     Username varchar(20) UNIQUE,
                     Password varchar(200),
-                    Description varchar,
                     Profile_pic BYTEA,
                     Email varchar(200) UNIQUE,
                     Date_time timestamp,
+                    User_Strikes INT,
+                    User_mute_status varchar, 
+                    User_timeout_status varchar,
+                    User_ban_status varchar
                     
-                    UNIQUE(Username, Description)
+                    
                 );
                 """)
         conn.commit()
@@ -31,7 +34,7 @@ def CREATE_TABLE_USER(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)    
-   
+'''
 def CREATE_TABLE_USER_STATUS(server="false"):
     cursor, conn = modules.create_connection()
     try:
@@ -54,7 +57,7 @@ def CREATE_TABLE_USER_STATUS(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)  
-
+'''   
  
 def CREATE_TABLE_MODERATION_ADMINS(server="false"):
     cursor, conn = modules.create_connection()
@@ -86,8 +89,9 @@ def CREATE_TABLE_PEOPLE(server="false"):
             (
             Person_id SERIAL PRIMARY KEY,       
             Person_name varchar UNIQUE,
+            Person_live varchar CHECK (Person_live = 'True'  OR Person_live = 'False' ),
             Person_description varchar
-            );
+            )
             """)
         conn.commit()
         modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
@@ -177,7 +181,7 @@ def CREATE_TABLE_POST_SUBJECTS(server="false"):
             CREATE TABLE POST_SUBJECTS
             (
             Subject_id BIGINT,       
-            Post_id BIGINT, 
+            Post_id BIGINT 
             );
             """)
         conn.commit()

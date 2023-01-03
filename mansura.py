@@ -28,6 +28,13 @@ def post_logic(person_id, page_no):
         person_id=person_id,
         )
     
+    
+    if str(person_id) != "0":
+        person_page = "True"
+    else:
+        person_page = "False"
+        
+        
     offset_calc = int(int(page_no) * int(posts_per_page))
     return render_template('home.html',
         query=query,                   
@@ -40,6 +47,7 @@ def post_logic(person_id, page_no):
         offset_calc=offset_calc,
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
+        coming_from_person_page=person_page,
         
 
     )
@@ -58,6 +66,7 @@ def post_tribunal(page_no):
     offset_calc = int(int(page_no) * int(posts_per_page))
     
     can_vote = modules.CHECK_USER_IS_GLOBAL_ADMIN(session["id"])
+    
 
     return render_template('home.html',
         query=query,                   
@@ -214,7 +223,7 @@ def request_form(request_type):
             # print("person_name", people)
             
             # CHANGE TO POST
-            print("i got here")
+            # print("i got here")
             modules.INSERT_POST(Post_title=post_title, 
                                 Post_description=description, 
                                 Post_link=link, 
@@ -236,7 +245,7 @@ def request_form(request_type):
             # print("link", link)
 
             person_person_name = request.form["person_name"]
-            print("person_name:", person_person_name)
+            # print("person_name:", person_person_name)
             modules.INSERT_POST(Post_title=person_post_title, 
                                 Post_description=person_description, 
                                 Post_link=person_link, 
@@ -397,9 +406,9 @@ def word_tribunal():
         # THIS ALL ASSUMES THERE ARE REALLY ONLY 2 TYPES OF POST REQUESTS
         new_bad_word = request.form.get("bad_word")
         if modules.CHECK_INJECTION(new_bad_word):
-            print("new_bad_word", new_bad_word)
+            # print("new_bad_word", new_bad_word)
             if new_bad_word != None:
-                modules.INSERT_TRIBUNAL_WORD(new_bad_word.lower())
+                modules.INSERT_TRIBUNAL_WORD(new_bad_word.lower(), session["id"])
             else:
                 keep_phrase = request.form.get("keep_phrase")
                 block_phrase = request.form.get("block_phrase")
@@ -499,8 +508,8 @@ def update_post_tribunal(Post_id, approval):
     if "email" not in session: 
         return redirect(url_for("login"))
     modules.log_function("request", request)
-    print("Post_id", Post_id)
-    print("approval type", approval)
+    # print("Post_id", Post_id)
+    # print("approval type", approval)
 
     if modules.CHECK_IF_IT_IS_ME(session["id"]):
         if approval == "approve":
@@ -509,9 +518,13 @@ def update_post_tribunal(Post_id, approval):
             modules.DELETE_POST(Post_id)
         elif approval == "report_uploader":
             modules.UPDATE_USER_STRIKES(session["id"])
+            modules.DELETE_POST(Post_id)
         elif approval == "delete_person":
             person_id = modules.GET_PERSON_ID_BY_POST_ID(Post_id)
+            modules.UPDATE_USER_STRIKES(session["id"])
+            modules.DELETE_POST(Post_id)
             modules.DELETE_PERSON(person_id)
+
 
         
     if modules.CHECK_IF_IT_IS_ME(session["id"]) and approval == "deny":
@@ -598,6 +611,10 @@ def search_algo_create():
     array_of_where_clauses = []
 
     if request.method == "POST":
+        if not modules.GET_NUM_SEARCH_ALGOS_TODAY_BY_ID(session["id"]):
+                return render_template(f"search_algo_create.html",
+                    failure_message="Already created 2 today, wait until tomorrow."
+            )    
         for key,value in request.form.items():
             # print(key, value)
             if "order_clauses" in key:
@@ -650,6 +667,7 @@ def search_algo_home(search_type, page_no):
 def update_search_algo_choice(search_algo_id):
     if "email" not in session: 
         return redirect(url_for("login"))
+    modules.log_function("request", request, session_user=session['user'])      
         
     #print("search_algo_id:", search_algo_id)
     #print("user id       :", session["id"])
@@ -659,6 +677,17 @@ def update_search_algo_choice(search_algo_id):
     return render_template(f"update_chosen_algorithm.html"
     )
 
+@app.route("/notifications/<page_no>", methods=['GET', 'POST'])
+def notifications(page_no):
+    if "email" not in session: 
+        return redirect(url_for("login"))
+    modules.log_function("request", request, session_user=session['user'])
+        
+    # notifications = modules.GET_NOTIFICATIONS(session["id"], page_no)
+    
+    return render_template(f"notifications.html",
+        notifications="hello world"
+    )
 
     
     

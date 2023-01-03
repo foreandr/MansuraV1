@@ -222,6 +222,8 @@ def DELETE_PERSON(Person_id):
     )
     conn.commit()
     modules.close_conn(cursor, conn) 
+    modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+
     
     
 if __name__ == "__main__":

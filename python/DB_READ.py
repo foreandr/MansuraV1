@@ -8,6 +8,21 @@ except:
     import MODULES as modules
 
 
+def CHECK_PERSON_IS_LIVE(person_id):
+
+    cursor, conn = modules.create_connection()
+    query = f"""
+        SELECT Person_live
+        FROM PEOPLE
+        WHERE Person_id = '{person_id}'
+    """
+    cursor.execute(query)
+    results = ""
+    for i in cursor.fetchall():
+        results = i[0]
+        
+    modules.close_conn(cursor, conn)
+    return results
 
 def GET_USERS_BY_TEXT(text):
     print("GET_USERS_BY_TEXT:", text)
@@ -16,6 +31,7 @@ def GET_USERS_BY_TEXT(text):
         SELECT Person_name
         FROM PEOPLE
         WHERE LOWER(Person_name) LIKE LOWER('%{text}%')
+        AND Person_live = 'True'
     """
     cursor.execute(query)
     results = []
@@ -213,8 +229,10 @@ def GET_ALL_PEOPLE(sort_method, letter=""):
         FROM PEOPLE people
         WHERE 1=1
         {modules.CHECK_PEOPLE_LETTER(letter)}
-        {modules.CHECK_PEOPLE_ORDER(sort_method)}
+        AND people.Person_live = 'True'
         
+        {modules.CHECK_PEOPLE_ORDER(sort_method)}
+       
         
     """)
     results = []
@@ -281,7 +299,7 @@ def CHECK_PERSON_EXISTS(Person):
 def GET_PERSON_ID_BY_NAME(Person):
     # CHECK IF PERSON EXISTS
     if not modules.CHECK_PERSON_EXISTS(Person):
-        modules.INSERT_PERSON(Person)
+        modules.INSERT_PERSON(Person, Person_live="False")
         
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
@@ -573,7 +591,8 @@ def UNIVERSAL_FUNCTION(
     {modules.SEARCH_USER_HAS_SAVED(searcher_id)},
     posts.Post_link,
     (SELECT Username FROM USERS users WHERE posts.User_id = users.User_id),
-    posts.User_id
+    posts.User_id,
+    people.Person_live
         
     FROM POSTS posts
     
@@ -625,6 +644,7 @@ def UNIVERSAL_FUNCTION(
             i[13], # post link
             i[14], # UPLOADER name
             i[15], # UPLOADER id
+            i[16], # person live
         ])
         # print(i)
         
@@ -878,7 +898,7 @@ def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type, limit_search="", page_no=
             SELECT COUNT(*)
             FROM SEARCH_ALGORITM_VOTES votes
             WHERE search.Search_algorithm_id = votes.Search_algorithm_id
-        )
+        ) DESC
         
         OFFSET ( ({page_no}-1)  * {posts_per_page} )
         LIMIT {posts_per_page};
@@ -959,7 +979,53 @@ def GET_SEARCH_FAVES():
     modules.close_conn(cursor, conn)
     return results
 
-if __name__ == "__main__": 
+def GET_NUM_SEARCH_ALGOS_TODAY_BY_ID(User_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+    SELECT COUNT(*)
+    FROM SEARCH_ALGORITHMS
+    WHERE Date_time BETWEEN NOW() - INTERVAL '24 HOURS' AND NOW()                 
+    AND User_id = '{User_id}'
+    """)
+    results = 0
+    for i in cursor.fetchall():
+        results = i[0]
+    modules.close_conn(cursor, conn)
+    print(results)
+    if results < 3:
+        return True
+    else:
+        return False
 
+def GET_NOTIFICATIONS(user_id, page_no):
+    cursor, conn = modules.create_connection()
+    posts_per_page = 10
+    
+    # GET ALL LIKES WHERE USER ID IS RECIPIENT
+    cursor.execute(f"""
+    SELECT likes.Like_id, likes.Date_time
+
+    FROM LIKES likes
+    
+    INNER JOIN POSTS posts
+    ON posts.User_id = likes.User_id
+    
+    INNER JOIN USERS users
+    ON posts.User_id = users.User_id
+    
+    
+    WHERE users.User_id = '{user_id}'
+    
+    OFFSET ( ({page_no}-1)  * {posts_per_page} )
+    LIMIT {posts_per_page};               
+    """)
+    
+    for i in cursor.fetchall():
+        print(i)
+    modules.close_conn(cursor, conn)
+    
+
+if __name__ == "__main__": 
+    GET_NOTIFICATIONS(1, 1)
     pass
 

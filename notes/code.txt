@@ -104,3 +104,18 @@ def person_page(person_id, page_no):
     )
 ''' 
   
+
+  <!-- WORKS BUT DOESNT LOOK GOOD, WILL HAVE TO MAKE LOOK BETTER
+{% elif coming_from_person_page == "True" %}
+    <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+        <div style="margin: auto; width: 50%; padding: 10px;">
+            <h1><u>{{posts[0][4]}}</u></h1>
+        </div>
+    </div>
+
+    {% if can_scroll == true %}
+    <div class="row gy-5" style="margin: auto" hx-post="/{{person_id}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+    {% else %}
+    <div class="row gy-5" style="margin: auto">
+    {% endif %}
+-->

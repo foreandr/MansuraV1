@@ -466,6 +466,9 @@ def COMMENT_TEXT_CHECK(entered_string):
     entered_string = entered_string.split(" ") # GET each word
         
     for i in range(len(entered_string)):
+        if not CHECK_INJECTION(entered_string[i]):
+            entered_string[i] = "****"
+            
         if entered_string[i] in my_lines:
             #print("FOUND", entered_string[i], len(entered_string[i]), i)
 
@@ -674,10 +677,40 @@ def CHECK_ALGO_FUNCTION(algo_name, user):
     if modules.GET_SEARCH_ALGO_BY_NAME(algo_with_append) != "":
         return "False"
         
-        
     return "True"
-        
 
+def CHECK_ACCOUNT_STATUS(User_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT User_id, User_Strikes, User_mute_status, User_timeout_status, User_ban_status
+        
+        FROM USERS
+        
+        WHERE User_id = '{User_id}'
+    """)
+    results = []
+    for i in cursor.fetchall():
+        results.append([
+            i[0], # User_id
+            i[1], # User_Strikes
+            i[2], # User_mute_status
+            i[3], # User_timeout_status
+            i[4]  # User_ban_status
+            ]
+        )
+        
+    print("results", results)
+        
+    modules.close_conn(cursor, conn)         
+    if results != []:
+        if results[0][1] >= 10:
+            return False
+        # ELIF THE REST OF THE CHECKS FOR BAD BEHAVIOUR
+        else: 
+            return True
+    else:
+        return True
+   
 if __name__ == "__main__":
     CHECK_SEARCH_FAVE_EXISTS(1, 3)
     CHECK_SEARCH_FAVE_EXISTS(2, 3)
