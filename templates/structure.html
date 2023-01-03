@@ -37,116 +37,132 @@
             <form class="form-inline my-2 my-lg-0" method="POST" action="/structure_search_by_phrase/0/None">
                 <span style="text-align: center;">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="searched_value">
-                    <button class="btn btn-lg btn-primary" type="submit" value="submit">
+                    <button class="btn btn-lg" type="submit" value="submit">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                         </svg>
                     </button>
                     <span class="dropdown" id="nav_dropdown" style="text-align: center;">
-                        <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
+                        <button class="btn btn-link dropdown-toggle btn-lg" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-lg" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M4.475 5.458c-.284 0-.514-.237-.47-.517C4.28 3.24 5.576 2 7.825 2c2.25 0 3.767 1.36 3.767 3.215 0 1.344-.665 2.288-1.79 2.973-1.1.659-1.414 1.118-1.414 2.01v.03a.5.5 0 0 1-.5.5h-.77a.5.5 0 0 1-.5-.495l-.003-.2c-.043-1.221.477-2.001 1.645-2.712 1.03-.632 1.397-1.135 1.397-2.028 0-.979-.758-1.698-1.926-1.698-1.009 0-1.71.529-1.938 1.402-.066.254-.278.461-.54.461h-.777ZM7.496 14c.622 0 1.095-.474 1.095-1.09 0-.618-.473-1.092-1.095-1.092-.606 0-1.087.474-1.087 1.091S6.89 14 7.496 14Z"/>
                               </svg>
                         </button>
                         <span class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
-                            <a href="/search_algo_create" class="dropdown-item">CREATE ALGORITHMS</a>
-                            <a href="/search_algo_home/home/0" class="dropdown-item">COMMUNITY ALGORITHMS</a>
-                            <a href="/search_algo_home/user/0" class="dropdown-item">MY ALGORITHMS</a><!--OPEN MODAL ALGO-->
+                            <h4><a href="/search_algo_create" class="dropdown-item">CREATE ALGORITHMS</a></h4>
+                            <h4><a href="/search_algo_home/home/0" class="dropdown-item">COMMUNITY ALGORITHMS</a></h4>
+                            <h4><a href="/search_algo_home/user/0" class="dropdown-item">MY ALGORITHMS</a></h4><!--OPEN MODAL ALGO-->
                         </span>
                     </span>
                 </span>
             </form>
 
-
-
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon lg"></span>
+                <span class="navbar-toggler-icon lg"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-right: 125px;">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-right: 300px;">
               <ul class="navbar-nav ml-auto">
                 <li>
                     <div>
                         <form action="/">
-                            <input class="btn btn-link" type="submit" value="HOME" style="text-decoration: none; color: black; ">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
-                                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
-                                <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
-                            </svg>
+                            <button class="btn btn-lg btn-secondary" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-fill" viewBox="0 0 16 16">
+                                    <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L8 2.207l6.646 6.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5Z"/>
+                                    <path d="m8 3.293 6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6Z"/>
+                                </svg>
+                            </button>
                         </form>
                     </div>
                 </li>
                 <li>
                     <div>
                         <form action="/people/alpha/a">
-                            <input class="btn btn-link" type="submit" value="PEOPLE" style="text-decoration: none; color: black; ">
+                            <button class="btn btn-lg btn-secondary" type="submit">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+                                    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+                                    <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                  </svg>
+                            </button>
                         </form>
                     </div>
                 </li> 
                 <li>
                     <div>
                         <form action="/subjects/alpha/a">
-                            <input class="btn btn-link" type="submit" value="SUBJECTS" style="text-decoration: none; color: black; " disabled>
+                            <button class="btn btn-lg" type="button" disabled>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-ol" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>
+                                    <path d="M1.713 11.865v-.474H2c.217 0 .363-.137.363-.317 0-.185-.158-.31-.361-.31-.223 0-.367.152-.373.31h-.59c.016-.467.373-.787.986-.787.588-.002.954.291.957.703a.595.595 0 0 1-.492.594v.033a.615.615 0 0 1 .569.631c.003.533-.502.8-1.051.8-.656 0-1-.37-1.008-.794h.582c.008.178.186.306.422.309.254 0 .424-.145.422-.35-.002-.195-.155-.348-.414-.348h-.3zm-.004-4.699h-.604v-.035c0-.408.295-.844.958-.844.583 0 .96.326.96.756 0 .389-.257.617-.476.848l-.537.572v.03h1.054V9H1.143v-.395l.957-.99c.138-.142.293-.304.293-.508 0-.18-.147-.32-.342-.32a.33.33 0 0 0-.342.338v.041zM2.564 5h-.635V2.924h-.031l-.598.42v-.567l.629-.443h.635V5z"/>
+                                  </svg>
+                            </button>
                         </form>
                     </div>
                 </li> 
                 <li>
                     <div class="dropdown" id="nav_dropdown">
-                        <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
-                            UPLOAD
+                        <button class="btn btn-link dropdown-toggle btn-lg" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-upload" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/>
+                                <path fill-rule="evenodd" d="M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z"/>
+                              </svg>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
-                            <a href="/request_form/person" class="dropdown-item">Person</a>
-                            <a href="/request_form/post" class="dropdown-item">Post</a>
+                            <h1><a href="/request_form/person" class="dropdown-item">Person</a></h1>
+                            <h1><a href="/request_form/post" class="dropdown-item">Post</a></h1>
                         </div>
                     </div>
                 </li>
                 <li>
                     <div class="dropdown" id="nav_dropdown">
-                        <button class="btn btn-link dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">TRIBUNAL</button>
+                        <button class="btn btn-link dropdown-toggle btn-lg" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-flag-fill" viewBox="0 0 16 16">
+                                <path d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12.435 12.435 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A19.626 19.626 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a19.587 19.587 0 0 0 1.349-.476l.019-.007.004-.002h.001"/>
+                              </svg>
+                        </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a href="/word_tribunal" class="dropdown-item">Phrase Tribunal</a>
-                            <a href="/post_tribunal/0" class="dropdown-item" >Post Tribunal</a>
+                            <h1><a href="/word_tribunal" class="dropdown-item">Phrase Tribunal</a></h1>
+                            <h1><a href="/post_tribunal/0" class="dropdown-item" >Post Tribunal</a></h1>
                         </div>
                     </div>
                 </li>
                 <li>
                     <div class="dropdown" id="nav_dropdown">
-                        <button class="btn btn-link dropdown-toggle" type="button" id="user_name_location" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
+                        <button class="btn btn-link dropdown-toggle btn-lg" type="button" id="user_name_location" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
                                 <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
                                 <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
                             </svg>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
-                               <a  class="dropdown-item" id="username_location" href="/user_profile" disabled>Profile</a>
-                               <a class="dropdown-item" href="/register">Register</a>
-                               <a class="dropdown-item disabled" href="/messages">Messages</a>
-                               <a class="dropdown-item disabled" href="/notifications" disabled>Notifications</a>
-                               <a class="dropdown-item"  href="/favourites/0">Favourites</a>
-                               <a class="dropdown-item" href="/login">Login</a>
-                               <a class="dropdown-item" href="/logout">Logout</a>
+                            <h1><a  class="dropdown-item" id="username_location" href="/user_profile/home_profile/0" disabled>Profile</a></h1>
+                            <h1><a class="dropdown-item" href="/register">Register</a></h1>
+                            <h1><a class="dropdown-item disabled" href="/messages" disabled>Messages</a></h1>
+                            <h1><a class="dropdown-item disabled" href="/notifications" disabled>Notifications</a></h1>
+                            <h1><a class="dropdown-item"  href="/favourites/0">Favourites</a></h1>
+                            <h1><a class="dropdown-item" href="/login">Login</a></h1>
+                            <h1><a class="dropdown-item" href="/logout">Logout</a></h1>
                         </div>
                     </div>
                 </li>
                 <li>
                     <div class="dropdown" id="nav_dropdown">
-                        <button class="btn btn-link dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
+                        <button class="btn btn-link dropdown-toggle btn-lg" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none; color: black; ">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                                 <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                             </svg>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" max-width: 100%>
-                            <a href="/settings" class="dropdown-item disabled" >Settings</a>
-                            <a href="/contact" class="dropdown-item">Contact</a>
-                            <a href="/instructions" class="dropdown-item disabled">Intstructions</a>
-                            <a href="/FAQ" class="dropdown-item disabled">FAQ</a>
-                            <a href="/terms_and_conditions" class="dropdown-item disabled">Terms and Conditions</a>
-                            <a href="/patch_notes" class="dropdown-item disabled">Patch Notes</a>
-                            <a href="/newsletter" class="dropdown-item disabled">Newsletter</a>
-                            <a href="/cover_page" class="dropdown-item disabled">Mission</a>
-                            <a href="/careers" class="dropdown-item disabled">Careers</a>
+                            <h1><a href="/settings" class="dropdown-item disabled" >Settings</a></h1>
+                            <h1><a href="/contact" class="dropdown-item">Contact</a></h1>
+                            <h1><a href="/instructions" class="dropdown-item disabled">Intstructions</a></h1>
+                            <h1><a href="/FAQ" class="dropdown-item disabled">FAQ</a></h1>
+                            <h1><a href="/terms_and_conditions" class="dropdown-item disabled">Terms</a></h1>
+                            <h1><a href="/patch_notes" class="dropdown-item disabled">Patch Notes</a></h1>
+                            <h1><a href="/newsletter" class="dropdown-item disabled">Newsletter</a></h1>
+                            <h1><a href="/cover_page" class="dropdown-item disabled">Mission</a>
+                            <h1><a href="/careers" class="dropdown-item disabled">Careers</a></h1>
                         </div>
                     </div>
                 </li>   

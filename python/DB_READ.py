@@ -482,6 +482,7 @@ def UNIVERSAL_FUNCTION(
         page_no=1, 
         favourites=False,
         post_tribunal=False,
+        profile_id="",
         search_phrase="",
         ):
     '''
@@ -499,6 +500,14 @@ def UNIVERSAL_FUNCTION(
     searcher_id = modules.GET_USER_ID_FROM_NAME(searcher) 
     fave_string, fave_inner_join = modules.FAVOURITE_QUERY(favourites, searcher_id)
     search_algo_id, _ = modules.GET_USER_CURRENT_SEARCH_ALGO_BY_ID(searcher_id)
+    
+    # SPECIFIC TO USER
+    if profile_id != "":
+        user_profile = f"AND posts.User_id = '{profile_id}'"
+    else:
+        user_profile = ""
+        
+    # print("user profile", user_profile)
     
     # ORDER PARAMETERS
     order_clause = modules.GET_ORDER_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
@@ -539,6 +548,7 @@ def UNIVERSAL_FUNCTION(
     {IN_POST_TRIBUNAL(post_tribunal)}
     {SEARCH_QUERY(search_phrase)}
     {where_clause}
+    {user_profile}
     
     ORDER BY {order_clause}
     
@@ -764,7 +774,7 @@ def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type, limit_search="", page_no=
     else:
         constrain_algos = ""
         
-    posts_per_page = 10
+    posts_per_page = 100
     
     # print(" constrain_algos:",constrain_algos)    
     
@@ -832,7 +842,7 @@ def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type, limit_search="", page_no=
             i[7], # has saved
             i[8]  # count saved
         ])
-        break_number =+1
+        # break_number =+1
         
     #for i in results:
     #    print(i)

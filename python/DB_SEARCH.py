@@ -62,7 +62,7 @@ def GET_ALL_COUNTS():
 
 def ORDER_CLAUSE_SECTIONS(clause):
     if clause.lower() == "Date".lower():
-        return "posts.Date_Time,"
+        return "posts.Date_Time DESC,"
     
     elif clause.lower() == "Likes".lower():
         return GET_POST_LIKE_COUNT(True)

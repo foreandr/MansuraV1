@@ -11,12 +11,19 @@
     <option value="3">Most Views</option>
   </select>
 -->
-
-<div class="d-flex justify-content-center">
-    {% for letter in alpha_chars %}
-    <a class="btn btn-primary btn-lg" href="/people/alpha/{{letter}}" role="button">{{letter}}</a>
-    {% endfor %}
+<div class="container">
+	<div class="d-flex justify-content-center">
+		{% for i in range(0, alpha_chars|length -13) %}
+			<a class="btn btn-primary btn-lg" href="/people/alpha/{{alpha_chars[i]}}" role="button">{{alpha_chars[i]}}</a>
+		{% endfor %}
+	</div>
+	<div class="d-flex justify-content-center">
+		{% for i in range(13, alpha_chars|length) %}
+			<a class="btn btn-primary btn-lg" href="/people/alpha/{{alpha_chars[i]}}" role="button">{{alpha_chars[i]}}</a>
+		{% endfor %}
+	</div>
 </div>
+
 
 
 

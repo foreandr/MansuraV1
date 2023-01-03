@@ -97,6 +97,35 @@ def favourites(page_no):
         coming_from_favourites= "true" #fucking hate javascript
     )    
     
+@app.route("/user_profile/<user_profile_id>/<page_no>", methods=['GET', 'POST'])
+def user_profile(user_profile_id, page_no):
+    modules.log_function("request", request)
+    
+    if user_profile_id == "home_profile":
+        user_profile_id = session["id"]
+    
+    query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
+        searcher=session["user"], 
+        page_no=int(page_no)+1,
+        profile_id=user_profile_id
+    )
+    offset_calc = int(int(page_no) * int(posts_per_page))
+    
+    return render_template('home.html',
+        query=query,                   
+                           
+        posts=posts,
+        num_posts=len(posts),
+        
+        person_id=person_id,
+        page_no=new_page_no,
+        offset_calc=offset_calc,
+        can_scroll=can_scroll,
+        posts_per_page=posts_per_page,
+        coming_from_profile= "True", #fucking hate javascript
+        user_profile_id=user_profile_id
+    )
+    
 @app.route("/person/<person_id>", methods=['GET', 'POST'])
 def person(person_id):
     modules.log_function("request", request)
