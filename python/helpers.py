@@ -305,6 +305,27 @@ def CHECK_LIKE_EXISTS(Post_id, User_id):
     else: 
         return False
     
+def CHECK_CONNECTION_EXISTS(User_id1, User_id2):
+    cursor, conn = modules.create_connection()
+    
+    cursor.execute(f"""
+        SELECT COUNT(*)
+        FROM CONNECTIONS
+        WHERE User_id1= %(User_id1)s
+        AND User_id2 = %(User_id2)s          
+    """, {'User_id1': User_id1,
+          'User_id2': User_id2
+        }
+    )
+    result = 0
+    for i in cursor.fetchall():
+        result = i[0]
+    
+    modules.close_conn(cursor, conn) 
+    if result > 0:
+        return True
+    else: 
+        return False    
 def CHECK_FAVE_EXISTS(Post_id, User_id):
     cursor, conn = modules.create_connection()
     

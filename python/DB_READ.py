@@ -43,7 +43,7 @@ def GET_USERS_BY_TEXT(text):
 
 def GET_USER_ID_FROM_NAME(username):
     cursor, conn = modules.create_connection()
-    
+    # print("NAME BEING USED", username)
     cursor.execute(f"""
         SELECT User_id 
         FROM USERS

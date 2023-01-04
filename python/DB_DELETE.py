@@ -147,7 +147,7 @@ def  DELETE_FROM_COMMENTS(post_id):
     modules.close_conn(cursor, conn) 
     modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
 
-def  DELETE_FROM_LIKES(post_id):
+def DELETE_FROM_LIKES(post_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
         DELETE FROM LIKES
@@ -159,6 +159,18 @@ def  DELETE_FROM_LIKES(post_id):
     modules.close_conn(cursor, conn) 
     modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
     
+def DELETE_FROM_COMMENTS(post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        DELETE FROM COMMENTS
+        WHERE Post_id = %(post_id)s
+    """, {'post_id': post_id
+        }
+    )
+    conn.commit() 
+    modules.close_conn(cursor, conn) 
+    modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")    
+
 def DELETE_FROM_POSTS(post_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
@@ -171,12 +183,27 @@ def DELETE_FROM_POSTS(post_id):
     modules.close_conn(cursor, conn) 
     modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
 
+def DELETE_FROM_FAVOURITES(post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        DELETE FROM FAVOURITES
+        WHERE Post_id = %(post_id)s
+    """, {'post_id': post_id
+        }
+    )
+    conn.commit() 
+    modules.close_conn(cursor, conn) 
+    modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+
+
 
 def DELETE_POST(post_id):
+    DELETE_FROM_LIKES(post_id)
     DELETE_FROM_VIEWS(post_id)
+    DELETE_FROM_COMMENTS(post_id)
+    DELETE_FROM_FAVOURITES(post_id)
     DELETE_FROM_POST_PERSON(post_id)
     DELETE_FROM_POSTS(post_id)
-    
     
 def DELETE_USER(User_id):
     cursor, conn = modules.create_connection()

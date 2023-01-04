@@ -12,7 +12,11 @@ put a warning modal whensomeone goes to tribunal page
 
 subjects when entering a video,
 suggested tags as well
+playlists
 
-SHOW subjetcs
 Profile
     - link to their socials when you go to their page
+
+    DUNNO WHAT THIS MEANS
+========================
+change count all to reflect the constraints of the query for scrolling in other tings than the mian

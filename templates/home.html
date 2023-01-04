@@ -11,7 +11,6 @@
 
 {%block main %}
 
-
 {% if posts | length == 0 %}
     <div class="container">
         <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
@@ -23,7 +22,6 @@
         </small>
     </div>
 {% endif %}
-
 
 {% if coming_from_tribunal == "true" %}
         {% if page_no == 1 %}
@@ -68,15 +66,32 @@
     {% if page_no == 1 %}
     <div class="container">
         <div class="jumbotron" style="  padding-top: 10px !important;padding-bottom: 10px !important;">
-            <h1><u>{{username}}</u></h1>
-            <p>FOLLOWERS: {{followers |length}}</p>
-            <p>FOLLOWING: {{following |length}}</p>
+
+            <h1><u>{{username}}</u>                
+                <button class="btn btn-lg btn-dark" type="button" hx-post="/update_follow/{{user_profile_id}}" hx-trigger="click" hx-target="#follow_location" hx-swap="innerHTML" onclick="like_logic(this)" style="position:relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+                        <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
+                    </svg>  
+                </button>
+            </h1>
+
+
+            <p>
+                FOLLOWERS:
+                <span id="follow_location">
+                    {{following |length}}
+                    {{new_following_count}}
+                </span>
+            </p>
+            <p>FOLLOWING: {{followers |length}}</p>
+            
         </div> 
     </div>
     {% endif %}
 
     {% if can_scroll == true %}
-        <div class="row gy-5" style="margin: auto" hx-post="/user_profile/{{user_profile_id}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+        <div class="row gy-5" style="margin: auto" hx-post="/user_profile/{{user_profile_name}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
     {% else %}
         <div class="row gy-5" style="margin: auto">
     {% endif %}
@@ -130,7 +145,9 @@
                                 </div>
                             </div>
                         </div>
-                        {% if coming_from_tribunal == "false"%}
+                        {% if coming_from_tribunal != "true"%}                                
+                        {% else %}
+                        {% endif %}
 
                         <div class="card-footer">
                             <small class="text-muted">
@@ -143,8 +160,6 @@
                                     <!--VIEWS-->
                                     <span>
                                         <button class="btn btn-lg no-click" style="pointer-events: none">
-                                            
-                                        
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
                                                 <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
                                                 <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
@@ -302,8 +317,7 @@
                                     </span>
 
                                 </span>
-                                {% else %}
-                                {% endif %}
+
                                 <span style="text-align: center;">
                                     {% if coming_from_tribunal == "true" %}
                                         {% if can_vote == "true" %}

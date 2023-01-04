@@ -116,7 +116,19 @@ def favourites(page_no):
 def user_profile(user_profile_name, page_no):
     modules.log_function("request", request)
     if "email" not in session: 
-        return redirect(url_for("login"))    
+        return redirect(url_for("login"))  
+    
+    
+    print("user_profile_name", user_profile_name) 
+    '''
+    # THERE IS SOMETHING BUGGY GOING ON IN THIS FUNCTION
+    # GET_USER_ID_FROM_NAME(username)
+    THIS seems to get run twice, and the second time returns the wrong name
+    doesnt seem to effect the query tho
+    ''' 
+
+    
+    
     if user_profile_name == "home_profile":
         user_profile_id = session["id"]
     else:
@@ -140,6 +152,7 @@ def user_profile(user_profile_name, page_no):
         offset_calc=offset_calc,
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
+        user_profile_name=user_profile_name,
         coming_from_profile= "True", #fucking hate javascript
         user_profile_id=user_profile_id,
         
@@ -438,6 +451,17 @@ def update_like(Post_id):
     modules.LIKE_LOGIC(Post_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
     return render_template(f"update_like.html",
         likes=modules.GET_NUM_LIKES_BY_POST_ID(Post_id))
+    
+@app.route("/update_follow/<user_profile_id>", methods=['GET', 'POST'])
+def update_follow(user_profile_id):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
+    modules.log_function("request", request)
+    
+    modules.CONNECTION_LOGIC(session["id"], user_profile_id)
+    return render_template(f"update_follow.html",
+        new_following_count=len(modules.GET_FOLLOWERS_BY_USER_ID(user_profile_id))
+        )
 
 @app.route("/update_search_fave/<algo_id>", methods=['GET', 'POST'])
 def update_search_fave(algo_id):
@@ -510,12 +534,14 @@ def update_post_tribunal(Post_id, approval):
     modules.log_function("request", request)
     # print("Post_id", Post_id)
     # print("approval type", approval)
-
     if modules.CHECK_IF_IT_IS_ME(session["id"]):
         if approval == "approve":
             modules.UPDATE_POST_TO_LIVE(Post_id)
+            modules.UPDATE_PERSON_TO_LIVE(modules.GET_PERSON_ID_BY_POST_ID(Post_id))
         elif approval == "deny":
             modules.DELETE_POST(Post_id)
+            #if modules.CHECK_IF_IT_IS_ME(session["id"]):   
+            #    modules.UPDATE_POST_TO_LIVE(Post_id)
         elif approval == "report_uploader":
             modules.UPDATE_USER_STRIKES(session["id"])
             modules.DELETE_POST(Post_id)
@@ -524,14 +550,6 @@ def update_post_tribunal(Post_id, approval):
             modules.UPDATE_USER_STRIKES(session["id"])
             modules.DELETE_POST(Post_id)
             modules.DELETE_PERSON(person_id)
-
-
-        
-    if modules.CHECK_IF_IT_IS_ME(session["id"]) and approval == "deny":
-        modules.UPDATE_POST_TO_LIVE(Post_id)
-    
-    
-    
     return render_template(f"update_post.html",
         updated_html=modules.GET_POST_HTML_BY_ID(Post_id)
         )

@@ -83,3 +83,43 @@ SEARCH
 ==========
 DONE. limit num params in create search algo to 100
 DONE. need to have a tag in usersfor whether its a live user or not
+#TODO: IF PERSON == "LIVE" DISABLE DELETE PERSON OPTION
+POSTS=
+========
+SHOW LINK UNDER POSTS, SOME WILL BE BROKEN
+SHOW TAGS
+
+PAGES
+========
+DONE.people
+Profile
+    - link to their socials when you go to their page
+Phrase Tribunal (put words and votes in db)
+
+
+Comment Section (Modal, nested comments?)
+    - create Modal
+    - show n comments  in Modal
+    - button showing num replies to comment, and a way to expand n comments
+    - add button to reply to comments in Modal
+
+    DONE. Register
+DONE. Login
+DONE. Logout
+DONE.Favourites
+Contact
+Terms
+Mission
+
+REQUESTING
+==========
+title cap 30 chars
+desc cap 200 (front end not back incase i want to change)
+
+Max length desc / title
+a few bad requests mutes, a few more bans, a few more IP bans
+grand some people request admin privileges
+check description before entering into database frontend and backend
+APPROVE DENY AND REPORT TRIBNAL LOGIC
+DONE. when registering do the injection check so i dont end up with a pass that cant be entered
+NOT DOING.no mandatory login 

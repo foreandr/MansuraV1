@@ -202,6 +202,14 @@ def LIKE_LOGIC(Post_id, User_id):
     else:
         modules.INSERT_LIKE(Post_id, User_id)
 
+def CONNECTION_LOGIC(User_id1, User_id2):
+    already_following = modules.CHECK_CONNECTION_EXISTS(User_id1, User_id2)
+    if already_following:
+        #print( User_id, "has already liked",Post_id)
+        modules.DELETE_CONNECTION(User_id1, User_id2)
+    else:
+        modules.INSERT_CONNECTION(User_id1, User_id2)
+
 def FAVE_LOGIC(Post_id, User_id):
     already_liked = modules.CHECK_FAVE_EXISTS(Post_id, User_id)
     if already_liked:
@@ -465,7 +473,8 @@ def INSERT_VIEWS(Post_id, User_id):
             modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
         
         modules.close_conn(cursor, conn) 
-    
+
+
 def INSERT_CONNECTION(user_id1, user_id2):
 
     cursor, conn = modules.create_connection()
