@@ -1,9 +1,9 @@
 {%for i in range( room_messages |length )%}
 <span>
     <u><h5><a href="/user_profile/{{room_messages[i][0]}}/0">{{room_messages[i][0]}}</a></h5></u>
-    {{room_messages[i][1]}}
+    {{room_messages[i][1] | safe }}
 </span>
 <div style="word-wrap: break-word;">
-    {{room_messages[i][2]}}
+    {{room_messages[i][2] | safe}}
 </div>
 {%endfor%}

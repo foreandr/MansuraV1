@@ -1296,12 +1296,13 @@ def GET_CHAT_ROOM_NAMES_BY_TEXT(query_text, user_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
         SELECT Room_name
-        FROM CHAT_ROOMS
+        FROM CHAT_ROOMS rooms
         WHERE LOWER(Room_name) LIKE LOWER('%{query_text}%')
         AND (
             SELECT COUNT(Room_id)
-            FROM CHAT_USERS
+            FROM CHAT_USERS chat_users
             WHERE User_id = '{user_id}'
+            AND chat_users.Room_id = rooms.Room_id
         ) > 0
     """)
     results = []
@@ -1325,6 +1326,7 @@ def GET_ALL_USERS_IN_ROOM(Room_id):
     modules.close_conn(cursor, conn) 
     # return results
 if __name__ == "__main__":
-    GET_ALL_USERS_IN_ROOM(Room_id=3)
+    # GET_ALL_USERS_IN_ROOM(Room_id=3)
+    print(GET_CHAT_ROOM_NAMES_BY_TEXT(query_text="hello", user_id=1))
     pass
 

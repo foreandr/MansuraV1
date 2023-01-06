@@ -6,7 +6,7 @@ show convos,
 
 wrap my functions int ry catch
 if they fail the test, send them to the spam page
-
+1295
 n comments, n cvomment views, n other interactions per timeframew
 cloudflare 2fa turnstile
     

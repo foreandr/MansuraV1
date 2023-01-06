@@ -283,10 +283,11 @@ def search_text_by_category(type):
     if "email" not in session: 
         return redirect(url_for("login"))    
     # GOTTA BE A BETTER WAY to get the query
-    print("request.url", request.url)
+    # print("request.url", request.url)
     query_text = str(request.url).split("name=")[1]
     
     if type == "user":
+        print("1===============================")
         if modules.CHECK_INJECTION(query_text):
             users = modules.GET_USERS_BY_TEXT(query_text)
         else:
@@ -779,6 +780,7 @@ def messages(page_no):
     
     chat_rooms = modules.GET_CHAT_ROOM_DETAILS(session["id"], int(page_no)+1)
     chat_invites = modules.GET_CHAT_INVITE_DETAILS(session["id"], int(page_no)+1)
+    
     # print(chat_invites)
     return render_template(f"messages_home.html",
         page_no=int(page_no)+1,
@@ -795,14 +797,18 @@ def chat_page(room_id, page_no):
     
     room_name = modules.GET_ROOM_NAME_BY_ID(room_id)
     room_messages, can_scroll = modules.GET_CHAT_MESSAGES(room_id, page_no=int(page_no)+1)
+    # chat_creator = modules.GET_CHAT_CREATOR_BY_ROOM(room_id)
+    current_username = modules.GET_USER_NAME_FROM_ID(session["id"])
     # print(room_messages)
+    
     
     return render_template(f"messages_page.html",
         page_no=int(page_no)+1,
         room_messages=room_messages,
         room_name=room_name,
         room_id=room_id,
-        can_scroll=can_scroll
+        can_scroll=can_scroll,
+        current_username=current_username
     )
     
 @app.route("/update_message/<room_id>/<page_no>", methods=['GET', 'POST'])

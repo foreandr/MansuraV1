@@ -53,7 +53,7 @@
 {% elif chat_rooms_with_x_names != "None" %}
 
 <div>
-    <select class="selectpicker form-control" name="chat_room_name_x" onchange="put_choice_in_input(this.value)">
+    <select class="selectpicker form-control" name="chat_room_name" onchange="put_choice_in_input(this.value)">
         <option disabled selected="None">List</option>
         {% for i in range(0, chat_rooms_with_x_names | length) %}
         <option>{{chat_rooms_with_x_names[i]}}</option>
