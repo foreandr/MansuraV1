@@ -1,8 +1,7 @@
 
-#TODO: WILL HAVE TO RESET THE LIVE TABLES
-    - CREATE A DEFAULT ALGO THAT IS JUST THE SUM AND MOST RECENT ON CREATION
-    - default algo us e apure all time count
 
+- CREATE A DEFAULT ALGO THAT IS JUST THE SUM AND MOST RECENT ON CREATION
+- create chat room that can't be exited, and only i can message in
 
 
 
