@@ -2,7 +2,7 @@
 
 #mkdir /tmp/mansura
 #touch /tmp/mansura/ipc.sock
-sudo chmod 666 /tmp/mansura/ipc.sock
+#sudo chmod 666 /tmp/mansura/ipc.sock
 
 #1. 
 . /root/mansura/venv/bin/activate
