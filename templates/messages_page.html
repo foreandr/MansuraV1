@@ -12,25 +12,37 @@
 {%block main %}
 
 {% if page_no == 1 %}
-<div class="container">
-    <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
-        <h1>Room: <u>{{room_name}}</u></h1>
-        <h6>(messages are not encrypted)</h6>
+    <div class="container">
+        <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+            <h1>Room: <u>{{room_name}}</u></h1>
+            <h2>Creator: {{chat_creator}}</h2>
+            <h6>(messages are not encrypted)</h6>
+
+            
+        {% if current_username == chat_creator %} <!--ALSO CHECK FOR MODERATOR STATUS -->
+            <form action="/kick_from_chat_room/{{room_id}}" name="my_form" class="form-signup" method="POST" >
+                <input name="user_kicked_from_channel" class="form-control"  maxlength="30">
+                <button class="btn btn-dark" hx-post="/kick_from_chat_room/{{room_id}}" type="button" hx-trigger="click">
+                    KICK USER
+                </button> 
+            </form>
+        {% endif %}
+        </div>
     </div>
-</div>
-<form action="/update_message/{{room_id}}/0" name="my_form" class="form-signup" method="POST" >
-    <textarea name="user_message" class="form-control" id="textbox" rows="2" cols="50" maxlength="400" required></textarea>
-    <button class="btn btn-outline-secondary" hx-post="/update_message/{{room_id}}/0" type="button" hx-trigger="click" hx-swap="innerHTML" hx-target="#update_message">
-        Send Message
-    </button> 
-</form>
-{% else %}
+
+    <form action="/update_message/{{room_id}}/0" name="my_form" class="form-signup" method="POST" >
+        <textarea name="user_message" class="form-control" id="textbox" rows="2" cols="50" maxlength="400" required></textarea>
+        <button class="btn btn-outline-secondary" hx-post="/update_message/{{room_id}}/0" type="button" hx-trigger="click" hx-swap="innerHTML" hx-target="#update_message">
+            Send Message
+        </button> 
+    </form>
+    {% else %}
 {% endif %}
     <!-- MESSAGES -->
     {% if can_scroll == "True" %}
-    <div class="container border border-dark" hx-post="/chat_page/{{room_id}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend" >
+    <div class="container" hx-post="/chat_page/{{room_id}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend" >
     {% else %}
-    <div class="container border border-dark">
+    <div class="container">
     {% endif %}
         <div id="update_message">
             {%for i in range( room_messages |length )%}

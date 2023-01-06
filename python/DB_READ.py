@@ -649,7 +649,7 @@ def UNIVERSAL_FUNCTION(
     posts.Post_description, 
     posts.Post_html, 
     posts.Date_time, 
-    people.Person_name, 
+    people.Person_name,  
     people.Person_id,
     posts.Post_id,
     {modules.GET_ALL_COUNTS()}
@@ -711,6 +711,8 @@ def UNIVERSAL_FUNCTION(
             i[14], # UPLOADER name
             i[15], # UPLOADER id
             i[16], # person live
+            modules.GET_PEOPLE_BY_POST_ID(i[6]),
+            modules.GET_PEOPLE_ID_BY_POST_ID(i[6])
         ])
         # print(i)
         
@@ -743,6 +745,44 @@ def GET_MAX_POSTS(person_id):
     modules.close_conn(cursor, conn)
     return count 
         
+def GET_PEOPLE_BY_POST_ID(post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT (
+            SELECT Person_name
+            FROM PEOPLE people
+            
+            WHERE post_person.Person_id =  people.Person_id
+        )
+        FROM POST_PERSON post_person
+        WHERE post_id = '{post_id}'
+    """)
+    results = []
+    for i in cursor.fetchall():
+        results.append(i[0])
+    
+    modules.close_conn(cursor, conn)
+    return results
+
+def GET_PEOPLE_ID_BY_POST_ID(post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT (
+            SELECT Person_id
+            FROM PEOPLE people
+            
+            WHERE post_person.Person_id =  people.Person_id
+        )
+        FROM POST_PERSON post_person
+        WHERE post_id = '{post_id}'
+    """)
+    results = []
+    for i in cursor.fetchall():
+        results.append(i[0])
+    
+    modules.close_conn(cursor, conn)
+    return results
+
 def CHECK_CAN_SCROLL(num_posts, max_posts):
     #print("NUM POSTS FOR QUERY :", num_posts)
     #print("MAX POSTS      :", max_posts)
@@ -809,7 +849,6 @@ def CHECK_IF_WORD_VOTE_EXISTS(word_id, user_id):
     else: return False
 
 def GET_ALL_INTERACTIONS(User_id):
-    # print("RUNNING GET_ALL_INTERACTIONS")
     cursor, conn = modules.create_connection()
     query = F"""
         SELECT users.User_id,
@@ -839,12 +878,6 @@ def GET_ALL_INTERACTIONS(User_id):
         ),
         (
             SELECT COUNT(*)
-            FROM VIEWS views
-            WHERE views.User_id = users.User_id
-            AND Date_Time > now() - interval '30 second'
-        ),
-        (
-            SELECT COUNT(*)
             FROM CONNECTIONS conn
             WHERE conn.User_id1 = users.User_id
             AND Date_Time > now() - interval '30 second'
@@ -853,6 +886,36 @@ def GET_ALL_INTERACTIONS(User_id):
             SELECT COUNT(*)
             FROM  BLOCKS block
             WHERE block.User_id1 = users.User_id
+            AND Date_Time > now() - interval '30 second'
+        ),
+        (
+            SELECT COUNT(*)
+            FROM  SEARCH_ALGORITHMS search
+            WHERE search.User_id = users.User_id
+            AND Date_Time > now() - interval '30 second'
+        ),
+        (
+            SELECT COUNT(*)
+            FROM  SEARCH_ALGORITM_VOTES search_votes
+            WHERE search_votes.User_id = users.User_id
+            AND Date_Time > now() - interval '30 second'
+        ),
+        (
+            SELECT COUNT(*)
+            FROM  SEARCH_ALGORITM_SAVE search_save
+            WHERE search_save.User_id = users.User_id
+            AND Date_Time > now() - interval '30 second'
+        ),
+        (
+            SELECT COUNT(*)
+            FROM  CHAT_ROOMS rooms
+            WHERE rooms.Creator_id = users.User_id
+            AND Date_Time > now() - interval '30 second'
+        ),
+        (
+            SELECT COUNT(*)
+            FROM  CHAT_MESSAGES messages
+            WHERE messages.User_id = users.User_id
             AND Date_Time > now() - interval '30 second'
         )
         
@@ -872,7 +935,11 @@ def GET_ALL_INTERACTIONS(User_id):
             i[4], # COMM VOTE
             i[5], # VIEW
             i[6], # CONN
-            i[7]  # BLOCKS
+            i[7],  # BLOCKS
+            i[8], 
+            i[9], 
+            i[10], 
+            i[11],  
             ])
         
     modules.close_conn(cursor, conn)
@@ -882,7 +949,7 @@ def GET_ALL_INTERACTIONS(User_id):
     for i in range(1, len(results)):
         # print(results[i])
         count += results[i]
-    if count > 20: # PROBABLY NEED TO REFINE THIS NUMBER
+    if count > 30: # PROBABLY NEED TO REFINE THIS NUMBER
         # print("too much traffic from user")
         return False
     return True
@@ -1121,8 +1188,8 @@ def GET_CHAT_ROOM_DETAILS(User_id, page_no):
         (
             SELECT COUNT(*)
             FROM CHAT_USERS chat_users
-            WHERE rooms.Creator_id = chat_users.User_id
-            AND rooms.Room_id = chat_users.Room_id
+            -- WHERE rooms.Creator_id = chat_users.User_id
+            WHERE rooms.Room_id = chat_users.Room_id
         )
         
         FROM CHAT_ROOMS rooms
@@ -1178,8 +1245,8 @@ def GET_CHAT_INVITE_DETAILS(User_id, page_no):
             INNER JOIN CHAT_ROOMS rooms
             ON chat_users.User_id = rooms.Creator_id
             
-            WHERE rooms.Creator_id = chat_users.User_id
-            AND rooms.Room_id = chat_users.Room_id
+            --WHERE rooms.Creator_id = chat_users.User_id
+            WHERE rooms.Room_id = chat_users.Room_id
             AND rooms.Room_id = invites.Room_id
         )
         
@@ -1325,8 +1392,27 @@ def GET_ALL_USERS_IN_ROOM(Room_id):
 
     modules.close_conn(cursor, conn) 
     # return results
+
+def GET_CHAT_CREATOR_BY_ROOM(room_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT (
+            SELECT Username
+            FROM Users users
+            WHERE users.User_id = rooms.Creator_id
+        )
+        FROM CHAT_ROOMS rooms
+        WHERE rooms.Room_id = '{room_id}'
+    """)
+    results = []
+    for i in cursor.fetchall():
+        results = i[0]
+
+    modules.close_conn(cursor, conn) 
+    return results
+    
 if __name__ == "__main__":
     # GET_ALL_USERS_IN_ROOM(Room_id=3)
-    print(GET_CHAT_ROOM_NAMES_BY_TEXT(query_text="hello", user_id=1))
+    print(GET_PEOPLE_BY_POST_ID(46))
     pass
 

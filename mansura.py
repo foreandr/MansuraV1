@@ -54,8 +54,6 @@ def post_logic(person_id, page_no):
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
         coming_from_person_page=person_page,
-        
-
     )
     
 @app.route("/post_tribunal/<page_no>", methods=['GET', "POST"])
@@ -186,7 +184,12 @@ def add_connection(User_id):
     modules.log_function("request", request)
     if "email" not in session: 
         return redirect(url_for("login"))    
-    modules.INSERT_CONNECTION(session["id"], User_id) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
+        
+    if not modules.GET_ALL_INTERACTIONS(session["id"]):
+        return render_template(f"spam_page.html")
+    
+    modules.INSERT_CONNECTION(session["id"], User_id) 
+    
     followers = modules.GET_FOLLOWERS_BY_USER_ID(3)
     return render_template("connection_change.html",
         followers=followers)
@@ -197,7 +200,10 @@ def remove_connection(User_id):
     if "email" not in session: 
         return redirect(url_for("login"))
     
-    modules.DELETE_CONNECTION(session["id"], User_id)
+    if not modules.GET_ALL_INTERACTIONS(session["id"]):
+        return render_template(f"spam_page.html")
+    
+    modules.DELETE_CONNECTION(session["id"], User_id) 
     followers = modules.GET_FOLLOWERS_BY_USER_ID(3)
     return render_template("update_connection.html",
         followers=followers)
@@ -239,18 +245,21 @@ def request_form(request_type):
             #print("link", link)
             
             person_name = request.form["chosen_name"]
-            people = person_name.split(",")[0]
-            # print("person_name", people)
+            people = person_name.split(",")[:-1]
+            print("person_name", people)
             
             # CHANGE TO POST
             # print("i got here")
+            if not modules.GET_ALL_INTERACTIONS(session["id"]):
+                return render_template(f"spam_page.html")
+            
             modules.INSERT_POST(Post_title=post_title, 
                                 Post_description=description, 
                                 Post_link=link, 
                                 Post_live="false", 
                                 Person=people, 
                                 User_id=session["id"]
-                                )
+                                ) 
         elif request_type == "person":
             
             person_post_title = request.form["post_title"]
@@ -460,7 +469,9 @@ def word_tribunal():
         if modules.CHECK_INJECTION(new_bad_word):
             # print("new_bad_word", new_bad_word)
             if new_bad_word != None:
-                modules.INSERT_TRIBUNAL_WORD(new_bad_word.lower(), session["id"])
+                if not modules.GET_ALL_INTERACTIONS(session["id"]):
+                    return render_template(f"spam_page.html")
+                modules.INSERT_TRIBUNAL_WORD(new_bad_word.lower(), session["id"]) 
             else:
                 keep_phrase = request.form.get("keep_phrase")
                 block_phrase = request.form.get("block_phrase")
@@ -487,7 +498,9 @@ def update_like(Post_id):
     if "email" not in session: 
         return redirect(url_for("login"))    
     modules.log_function("request", request)
-    modules.LIKE_LOGIC(Post_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
+    if not modules.GET_ALL_INTERACTIONS(session["id"]):
+        return render_template(f"spam_page.html")
+    modules.LIKE_LOGIC(Post_id, session["id"]) 
     return render_template(f"update_like.html",
         likes=modules.GET_NUM_LIKES_BY_POST_ID(Post_id))
     
@@ -496,7 +509,10 @@ def update_comment_like(Comment_id):
     if "email" not in session: 
         return redirect(url_for("login"))    
     modules.log_function("request", request)
-    modules.COMMENT_LIKE_LOGIC(Comment_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
+    if not modules.GET_ALL_INTERACTIONS(session["id"]):
+        return render_template(f"spam_page.html")
+    
+    modules.COMMENT_LIKE_LOGIC(Comment_id, session["id"])
     return render_template(f"update_comment_likes.html",
         comment_likes=modules.GET_NUM_COMMENT_VOTES_BY_ID(Comment_id),
         Comment_id=Comment_id
@@ -507,8 +523,10 @@ def update_follow(user_profile_id):
     if "email" not in session: 
         return redirect(url_for("login"))    
     modules.log_function("request", request)
+    if not modules.GET_ALL_INTERACTIONS(session["id"]):
+        return render_template(f"spam_page.html")
     
-    modules.CONNECTION_LOGIC(session["id"], user_profile_id)
+    modules.CONNECTION_LOGIC(session["id"], user_profile_id) 
     return render_template(f"update_follow.html",
         new_following_count=len(modules.GET_FOLLOWERS_BY_USER_ID(user_profile_id))
         )
@@ -519,7 +537,9 @@ def update_search_fave(algo_id):
         return redirect(url_for("login"))
     # print(algo_id)
     modules.log_function("request", request)
-    modules.SEARCH_FAVE_LOGIC(algo_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
+    if not modules.GET_ALL_INTERACTIONS(session["id"]):
+        return render_template(f"spam_page.html")
+    modules.SEARCH_FAVE_LOGIC(algo_id, session["id"]) 
     return render_template(f"update_fave_search.html",
         search_faves=modules.GET_NUM_SEARCH_FAVES_BY_SEARCH_ID(algo_id)
         )
@@ -529,7 +549,10 @@ def update_fave(Post_id):
     if "email" not in session: 
         return redirect(url_for("login"))    
     modules.log_function("request", request)
-    modules.FAVE_LOGIC(Post_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
+    if not modules.GET_ALL_INTERACTIONS(session["id"]):
+        return render_template(f"spam_page.html")
+    
+    modules.FAVE_LOGIC(Post_id, session["id"])
     return render_template(f"update_fave.html",
         faves=modules.GET_NUM_FAVES_BY_POST_ID(Post_id)
         )
@@ -539,7 +562,7 @@ def update_view(Post_id):
     if "email" not in session: 
         return redirect(url_for("login"))    
     modules.log_function("request", request)
-    modules.INSERT_VIEWS(Post_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
+    modules.INSERT_VIEWS(Post_id, session["id"]) # dont need to check here because views has internal clock
     return render_template(f"update_view.html",
         views=modules.GET_NUM_VIEWS_BY_POST_ID(Post_id)
         )
@@ -557,7 +580,9 @@ def update_comment(Post_id):
     print("input_field   :", input_field)
     print("howmany       :", how_many)
     if modules.CHECK_INJECTION(input_field):
-        modules.INSERT_COMMENTS(Post_id=Post_id, User_id=session["id"], Comment_text=input_field) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
+        if not modules.GET_ALL_INTERACTIONS(session["id"]):
+            return render_template(f"spam_page.html")
+        modules.INSERT_COMMENTS(Post_id=Post_id, User_id=session["id"], Comment_text=input_field) 
     
     return redirect(url_for('comment_section', Post_id=Post_id,how_many=how_many, order="date"))
 
@@ -692,12 +717,10 @@ def search_algo_create():
             elif key == "algo_name":
                 algo_name = value
                 
-
         full_order_by = modules.TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses)
         full_where = modules.TRANSFER_SEARCH_WHERE_TO_QUERY(array_of_where_clauses)
         algorithm = modules.CHECK_ALGO_FUNCTION(algo_name, session["user"])
 
-        
         if algorithm.lower() == "False".lower():
             return render_template(f"search_algo_create.html",
                 message="""<div class="text-danger">Algorithm Name Unavailable</div>"""  
@@ -739,7 +762,9 @@ def update_search_algo_choice(search_algo_id):
         
     #print("search_algo_id:", search_algo_id)
     #print("user id       :", session["id"])
-    modules.SEARCH_FAVE_LOGIC(search_algo_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
+    if not modules.GET_ALL_INTERACTIONS(session["id"]):
+        return render_template(f"spam_page.html")
+    modules.SEARCH_FAVE_LOGIC(search_algo_id, session["id"])
     modules.UPDATE_CURRENT_SEARCH_BY_USER_ID(search_algo_id, session["id"])
     
     return render_template(f"update_chosen_algorithm.html"
@@ -776,6 +801,10 @@ def messages(page_no):
         
         #print("list_of_names:",list_of_names)
         #print("room_name    :", room_name)
+        creator_name = modules.GET_USER_NAME_FROM_ID(session["id"])
+        list_of_names.insert(0, creator_name)
+        if not modules.GET_ALL_INTERACTIONS(session["id"]):
+            return render_template(f"spam_page.html")
         modules.INSERT_CHAT_ROOMS(Creator_id=session["id"], Room_name=room_name, list_of_names=list_of_names)
     
     chat_rooms = modules.GET_CHAT_ROOM_DETAILS(session["id"], int(page_no)+1)
@@ -797,10 +826,9 @@ def chat_page(room_id, page_no):
     
     room_name = modules.GET_ROOM_NAME_BY_ID(room_id)
     room_messages, can_scroll = modules.GET_CHAT_MESSAGES(room_id, page_no=int(page_no)+1)
-    # chat_creator = modules.GET_CHAT_CREATOR_BY_ROOM(room_id)
+    chat_creator = modules.GET_CHAT_CREATOR_BY_ROOM(room_id)
     current_username = modules.GET_USER_NAME_FROM_ID(session["id"])
     # print(room_messages)
-    
     
     return render_template(f"messages_page.html",
         page_no=int(page_no)+1,
@@ -808,7 +836,8 @@ def chat_page(room_id, page_no):
         room_name=room_name,
         room_id=room_id,
         can_scroll=can_scroll,
-        current_username=current_username
+        current_username=current_username,
+        chat_creator=chat_creator
     )
     
 @app.route("/update_message/<room_id>/<page_no>", methods=['GET', 'POST'])
@@ -819,7 +848,9 @@ def update_message(room_id, page_no):
     
     query_text = request.form["user_message"]
     # encrypted = modules.encrypt_caesar(query_text)
-    modules.INSERT_CHAT_MESSAGE(User_id=session["id"], Room_id=room_id, Message=query_text)
+    if not modules.GET_ALL_INTERACTIONS(session["id"]):
+        return render_template(f"spam_page.html")
+    modules.INSERT_CHAT_MESSAGE(User_id=session["id"], Room_id=room_id, Message=query_text) 
     
     room_name = modules.GET_ROOM_NAME_BY_ID(room_id)
     room_messages, can_scroll = modules.GET_CHAT_MESSAGES(room_id, page_no=int(page_no)+1)
@@ -838,6 +869,8 @@ def chat_logic(room_id, action):
     #print("action", action)
     if action == "leave":
         print("leaving room")
+        if not modules.GET_ALL_INTERACTIONS(session["id"]):
+            return render_template(f"spam_page.html")
         modules.LEAVE_CHAT_ROOM(session["id"], room_id)
         
         message="LEFT"
@@ -866,11 +899,35 @@ def send_file_message(post_id):
     print("message_text",message_text)
     print("mroom_id",room_id)
     
+    if not modules.GET_ALL_INTERACTIONS(session["id"]):
+        return render_template(f"spam_page.html")
+    
     
     modules.INSERT_CHAT_MESSAGE(User_id=user_id, Room_id=room_id, Message=message_text)
     return render_template(f"update_sent_message.html",
         success_or_failure="SENT MESSAGE"
         )
+
+@app.route("/kick_from_chat_room/<room_id>", methods=['GET', 'POST'])
+def kick_from_chat_room(room_id):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
+    modules.log_function("request", request)
+    # print("kicking user")
+     
+    # might be worth checkking if host user is the one who sent the kick?
+    user_being_kicked = request.form["user_kicked_from_channel"]
+    # print("user_being_kicked", user_being_kicked)
+    User_id = modules.GET_USER_ID_FROM_NAME(user_being_kicked)
+    if User_id != "NO ID":
+        if not modules.GET_ALL_INTERACTIONS(session["id"]):
+            return render_template(f"spam_page.html")
+        modules.KICK_FROM_CHAT_ROOM(room_id, User_id) 
+    
+    # NOT SURE WHY I HAVE TO PUT KICK IN THE FILE
+    return render_template(f"update_kick.html",
+    )
+    
 
 if __name__ == '__main__':
     host = "0.0.0.0" 

@@ -92,7 +92,7 @@ def INSERT_POST_ADMIN(User_id):
     modules.close_conn(cursor, conn)  
    
 def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User_id=1):
-    # print(Person)
+    
     if not modules.CHECK_ACCOUNT_STATUS(User_id):
         print(User_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
         return ""
@@ -102,7 +102,7 @@ def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User
         Post_html = modules.translate_link_to_html(Post_link)
         Post_title = modules.clean_title(Post_title)
         Post_description = modules.clean_description(Post_description)
-        Person_id = modules.GET_PERSON_ID_BY_NAME(Person)
+        
         
         cursor = conn.cursor()
         cursor.execute(
@@ -121,8 +121,11 @@ def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User
             )
         conn.commit()
         
-        Post_id = modules.GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link)
-        INSERT_POST_PERSON(Post_id, Person_id)
+        # print("Person", Person)
+        for i in Person:
+            Person_id = modules.GET_PERSON_ID_BY_NAME(i)
+            Post_id = modules.GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link)
+            INSERT_POST_PERSON(Post_id, Person_id)
         
         modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
     except Exception as e:
@@ -543,10 +546,12 @@ def INSERT_IP_ADRESSES(Address, User_id):
 def INSERT_CHAT_REQUEST(user_name, room_id):
     user_id = modules.GET_USER_ID_FROM_NAME(user_name)
     cursor, conn = modules.create_connection()
+    print("INSERTING CHAT REQUEST", user_name, room_id)
     
     if modules.CHECK_USER_ID_ROOM_CREATOR(user_id, room_id):
-        # print("This user is the creator")
+        # print("This user is the creator", user_id, room_id)
         modules.INSERT_CHAT_ROOMS_USER(user_id, room_id)
+        print("THIS SHOULD BE RUNNING", user_name, room_id)
         return ""
     
     cursor.execute(f"""
@@ -851,12 +856,13 @@ def XOR_ENCRYPTION(text):
     return text2
     
 if __name__ == "__main__":
-    text= 'hello world'
-    text2 = XOR_ENCRYPTION(text)
-    print(text2)
-    
-    text3 = XOR_ENCRYPTION(text2)
-    print(text3)
+    # modules.INSERT_CHAT_ROOMS(Creator_id=2, Room_name="hello world2",list_of_names=["Andre", "David", "Foreman"])
+    #modules.INSERT_CHAT_ROOMS(Creator_id=1, Room_name="hello world2",list_of_names=["Andre", "Foreman"])
+    #modules.INSERT_CHAT_ROOMS(Creator_id=2, Room_name="hello world3",list_of_names=["Andre", "David"])
+    #modules.INSERT_CHAT_ROOMS(Creator_id=3, Room_name="hello world4",list_of_names=["Andre", "David", "Foreman"])
+    #modules.INSERT_CHAT_ROOMS(Creator_id=3, Room_name="hello world5",list_of_names=["Andre", "David"])
+    #modules.INSERT_CHAT_ROOMS(Creator_id=3, Room_name="hello world6",list_of_names=["Andre"])
+    pass
 
 
 

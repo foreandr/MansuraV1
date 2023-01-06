@@ -1,0 +1,19 @@
+{% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
+{%block main %}
+<script>
+    console.log("hello world TEST TEST TEST")
+
+    body = document.getElementById("body_block")
+    console.log(body)
+    body.remove()
+
+    document.getElementById("my_body").innerHTML = `
+    <div class="container">
+        <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+            <h1><u>MANSURA THINKS YOU'RE SPAMMING.</u></h1>
+        </div>
+    </div>
+    `
+</script>
+{% endblock main %}
+

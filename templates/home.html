@@ -11,6 +11,7 @@
 
 {%block main %}
 
+
 {% if posts | length == 0 %}
     <div class="container">
         <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
@@ -122,12 +123,15 @@
                             <!--<h1>{{[i]}}</h1>-->
                         </div>
 
+                        
                         <div>
-                            <a href="/{{posts[i][5]}}/0">
+                            {% for j in range(0, posts[i][17] | length) %}
+                            <a href="/{{posts[i][18][j]}}/0">
                                 <h3 class="text-center">
-                                {{posts[i][4]}}
+                                {{posts[i][17][j]}}
                                 </h3>
                             </a> 
+                            {% endfor %}                     
                         </div>
                         
                         <div class="container-fluid">

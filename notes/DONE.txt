@@ -125,3 +125,7 @@ DONE.be able to follow an account on thier page
 DONE. COMMENT VOTES close enough
 DONE.convert chat messags in and out of hexadimecal or some kind of encoding
 DONE.baaic encrypt instead of encode acutrally, 1 letter caser cypher
+DONE.chat algos by page, multiple pages
+DONE.OTHER CHAT LOGIC NOT DONE YET CHEKC AGAION
+DONE.show convos,
+DONE.    - sne dpost

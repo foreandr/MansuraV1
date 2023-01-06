@@ -856,9 +856,7 @@ def decrypt_caesar(encrypted_message, k=1):
     return decrypted_message
 
 if __name__ == "__main__":
-    text = encrypt_text("hello world",n=1)
-    print(text)
-    print(decrypt(text))
+    pass
 
 
 

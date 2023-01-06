@@ -1,20 +1,25 @@
 
 #TODO: WILL HAVE TO RESET THE LIVE TABLES
-OTHER CHAT LOGIC NOT DONE YET CHEKC AGAION
-show convos,
-    - sne dpost
 
 wrap my functions int ry catch
+pay for ad free experience 
+
 if they fail the test, send them to the spam page
-1295
+
 n comments, n cvomment views, n other interactions per timeframew
 cloudflare 2fa turnstile
     
 incase i have to reset, create a text file that stores all the uploads in some way
+check kick implementation
 
-chat algos by page, multiple pages
+
 
 default algo us e apure all time count
+
+
+
+
+must be an admin to ad new words
 
 MONETIZATION
 =============

@@ -725,3 +725,9 @@ def CREATE_TABLE_TRIBUNAL_WORD_VOTE(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)      
+    
+    
+    
+    
+
+        

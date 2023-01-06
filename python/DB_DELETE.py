@@ -295,5 +295,24 @@ def DELETE_CHAT_INVITE(User_id, Room_id):
     modules.close_conn(cursor, conn)  
     modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
 
+def KICK_FROM_CHAT_ROOM(Room_id, User_id):
+    creator_id = modules.GET_CREATOR_OF_ROOM(Room_id)
+    if creator_id != User_id:
+        try:
+            cursor, conn = modules.create_connection()
+            cursor.execute(f"""
+                DELETE FROM CHAT_USERS
+                WHERE User_id = '{User_id}'
+                AND Room_id = '{Room_id}'
+            """
+            )
+            conn.commit()
+            modules.close_conn(cursor, conn) 
+            modules.print_green(f"{inspect.stack()[0][3]} {Room_id, User_id} COMPLETED\n")   
+        except Exception as e:
+            print("error as e", e)
+    else:
+        return "CAN'T KICK YOURSELF IDIOT"
+
 if __name__ == "__main__":
     DELETE_CONNECTION(1, 2)
