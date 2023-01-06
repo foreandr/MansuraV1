@@ -92,7 +92,6 @@ def INSERT_POST_ADMIN(User_id):
     modules.close_conn(cursor, conn)  
    
 def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User_id=1):
-    
     if not modules.CHECK_ACCOUNT_STATUS(User_id):
         print(User_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
         return ""
@@ -408,46 +407,38 @@ def INSERT_COMMENTS(Post_id, User_id, Comment_text, Replying_to_id="NULL"):
     modules.close_conn(cursor, conn) 
     
 def CHECK_IF_BEEN_30s_SINCE_LAST_VIEW(Post_id, User_id):
-    cursor, conn = modules.create_connection()
-    cursor.execute(f"""
-        SELECT Comment_id, Date_time
-        FROM VIEWS views
-        WHERE views.Post_id = %(Post_id)s
-        AND views.User_id = %(User_id)s
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            SELECT Comment_id, Date_time
+            FROM VIEWS views
+            WHERE views.Post_id = %(Post_id)s
+            AND views.User_id = %(User_id)s
+            
+            -- TO GET THE MOST RECENT
+            ORDER BY Date_time DESC
+            LIMIT 2
+            """, {
+                'Post_id': Post_id,
+                'User_id': User_id
+                }
+        )
+        results = []
+        for i in cursor.fetchall():
+            results.append([i[0], i[1]])
+        modules.close_conn(cursor, conn)
         
-        -- TO GET THE MOST RECENT
-        ORDER BY Date_time DESC
-        LIMIT 2
-        """, {
-            'Post_id': Post_id,
-            'User_id': User_id
-              }
-    )
-    results = []
-    for i in cursor.fetchall():
-        results.append([i[0], i[1]])
-    modules.close_conn(cursor, conn)
-    
-    if len(results) != 2:
-    # this means it returned 0 or 1 from the db, free to view 
-        return True
-    else:
-        # SHOULD ADD LOGIC FOR BOT DETECTION LIKE
-            # IF VIEW TIME DIFFERENCES ARE WITHIN 0.0010 MILISECONDS OR SOMETHING
-        ct = datetime.datetime.now()
-        now_seconds = (ct - results[0][1]).seconds
-        # print('SECONDS BETWEEN RECENT VIEW AND NOW: ', now_seconds)
-        if now_seconds > 30:
+        if len(results) != 2:
             return True
-        
-        ''' WRONG LOGIC
-        seconds = (results[0][1]-results[1][1]).seconds  # returns a timedelta object in seconds
-        print('SECONDS BETWEEN VIEWS              : ', seconds)
-        if seconds > 30:
-            return True
-        '''
-        
-    return False
+        else:
+            ct = datetime.datetime.now()
+            now_seconds = (ct - results[0][1]).seconds
+            if now_seconds > 30:
+                return True 
+        return False
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
   
 def INSERT_VIEWS(Post_id, User_id):
     #TODO: i would like to put some kind of sleep functionality here os people cant see thier view right away
@@ -544,28 +535,34 @@ def INSERT_IP_ADRESSES(Address, User_id):
     modules.close_conn(cursor, conn)
 
 def INSERT_CHAT_REQUEST(user_name, room_id):
-    user_id = modules.GET_USER_ID_FROM_NAME(user_name)
-    cursor, conn = modules.create_connection()
-    print("INSERTING CHAT REQUEST", user_name, room_id)
-    
-    if modules.CHECK_USER_ID_ROOM_CREATOR(user_id, room_id):
-        # print("This user is the creator", user_id, room_id)
-        modules.INSERT_CHAT_ROOMS_USER(user_id, room_id)
-        print("THIS SHOULD BE RUNNING", user_name, room_id)
-        return ""
-    
-    cursor.execute(f"""
-        INSERT INTO CHAT_ROOM_INVITES(Room_id, User_id,Date_time)
-        VALUES 
-        ('{room_id}', '{user_id}', NOW())  
-        ON CONFLICT DO NOTHING
-    """)
-    conn.commit()
-    modules.close_conn(cursor, conn)
-    modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+    try:
+        user_id = modules.GET_USER_ID_FROM_NAME(user_name)
+        cursor, conn = modules.create_connection()
+        print("INSERTING CHAT REQUEST", user_name, room_id)
+        
+        if modules.CHECK_USER_ID_ROOM_CREATOR(user_id, room_id):
+            # print("This user is the creator", user_id, room_id)
+            modules.INSERT_CHAT_ROOMS_USER(user_id, room_id)
+            print("THIS SHOULD BE RUNNING", user_name, room_id)
+            return ""
+        
+        cursor.execute(f"""
+            INSERT INTO CHAT_ROOM_INVITES(Room_id, User_id,Date_time)
+            VALUES 
+            ('{room_id}', '{user_id}', NOW())  
+            ON CONFLICT DO NOTHING
+        """)
+        conn.commit()
+        modules.close_conn(cursor, conn)
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
      
 def INSERT_CHAT_ROOMS(Creator_id, Room_name, list_of_names):
-
+    if not modules.CHECK_ACCOUNT_STATUS(Creator_id):
+        print(Creator_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
+        return ""
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
@@ -639,6 +636,10 @@ def INSERT_CHAT_ROOMS_ADMIN(User_id, Room_id):
     modules.close_conn(cursor, conn) 
     
 def INSERT_REQUEST(User_id, Post_title, Description, Link, Person_name):
+    if not modules.CHECK_ACCOUNT_STATUS(User_id):
+        print(User_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
+        return ""
+    
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
@@ -763,19 +764,22 @@ def INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_type):
     if not modules.CHECK_ACCOUNT_STATUS(voter_id):
         print(voter_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
         return ""
-    
-    cursor, conn = modules.create_connection()
-    cursor.execute(f"""
-        INSERT INTO TRIBUNAL_WORD_VOTE(Tribunal_word_id, User_id, Vote_Type)
-        VALUES(%(word_id)s, %(voter_id)s, %(vote_type)s)
-        ON CONFLICT DO NOTHING
-    """, {'word_id': word_id,
-          'voter_id': voter_id,
-          'vote_type': vote_type}
-    )
-    conn.commit()
-    modules.print_green(f"{inspect.stack()[0][3]} {word_id, voter_id, vote_type} COMPLETED")
-    modules.close_conn(cursor, conn)    
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            INSERT INTO TRIBUNAL_WORD_VOTE(Tribunal_word_id, User_id, Vote_Type)
+            VALUES(%(word_id)s, %(voter_id)s, %(vote_type)s)
+            ON CONFLICT DO NOTHING
+        """, {'word_id': word_id,
+            'voter_id': voter_id,
+            'vote_type': vote_type}
+        )
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} {word_id, voter_id, vote_type} COMPLETED")
+        modules.close_conn(cursor, conn)    
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
      
 def INSERT_DEMO_PEOPLE():
     word_list = modules.GET_ORIGINAL_PEOPLE_LIST()
@@ -817,30 +821,37 @@ def INSERT_SEARCH_ALGORITHM(Search_algorithm_name, Search_where_clause, Search_o
         print(e)
 
 def INSERT_SEARCH_VOTE(Search_algorithm_id, User_id):
-    cursor, conn = modules.create_connection()
-    cursor.execute(f"""
-        INSERT INTO SEARCH_ALGORITM_VOTES(Search_algorithm_id, User_id, Date_time)
-        VALUES ('{Search_algorithm_id}', '{User_id}',  NOW())  
-        ON CONFLICT DO NOTHING 
-    """)
-    
-    conn.commit()
-    modules.print_green(f"{inspect.stack()[0][3]} {User_id, Search_algorithm_id} COMPLETED")
-    modules.close_conn(cursor, conn) 
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            INSERT INTO SEARCH_ALGORITM_VOTES(Search_algorithm_id, User_id, Date_time)
+            VALUES ('{Search_algorithm_id}', '{User_id}',  NOW())  
+            ON CONFLICT DO NOTHING 
+        """)
+        
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} {User_id, Search_algorithm_id} COMPLETED")
+        modules.close_conn(cursor, conn) 
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
     
 def INSERT_CHAT_MESSAGE(User_id, Room_id, Message):
-    cursor, conn = modules.create_connection()
-    
-    cursor.execute(f"""
-        INSERT INTO CHAT_MESSAGES(User_id, Room_id, Date_time, Message)
-        VALUES 
-        (%(User_id)s, %(Room_id)s, NOW(), %(Message)s)  
-    """, {'User_id': User_id,
-          'Room_id': Room_id,
-          'Message': Message})
-    conn.commit()
-    modules.close_conn(cursor, conn)
-    modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            INSERT INTO CHAT_MESSAGES(User_id, Room_id, Date_time, Message)
+            VALUES 
+            (%(User_id)s, %(Room_id)s, NOW(), %(Message)s)  
+        """, {'User_id': User_id,
+            'Room_id': Room_id,
+            'Message': Message})
+        conn.commit()
+        modules.close_conn(cursor, conn)
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
     
 def XOR_ENCRYPTION(text):
     # performing XOR operation on each value of bytearray

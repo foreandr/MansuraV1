@@ -23,32 +23,36 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 def validate_user_from_session(email, password):
-    cursor, conn = modules.create_connection()
-    # print(f"VALIDATE {email} | {password}")  # GET THIS FROM JAVASCRIPT
-    cursor.execute(f"""
-    SELECT * 
-    FROM USERS
-    WHERE email = %(email)s
-    AND password = %(password)s
-    """, {'email': email,
-          'password':hashlib.sha256(password.encode('utf-8')).hexdigest()}
-    )
-    tables = cursor.fetchall()
-    user = ""
-    user_id = ""
-    for i in tables:
-        # print(i)
-        user_id = i[0]
-        user = i[1]
+    try:
+        cursor, conn = modules.create_connection()
+        # print(f"VALIDATE {email} | {password}")  # GET THIS FROM JAVASCRIPT
+        cursor.execute(f"""
+        SELECT * 
+        FROM USERS
+        WHERE email = %(email)s
+        AND password = %(password)s
+        """, {'email': email,
+            'password':hashlib.sha256(password.encode('utf-8')).hexdigest()}
+        )
+        tables = cursor.fetchall()
+        user = ""
+        user_id = ""
+        for i in tables:
+            # print(i)
+            user_id = i[0]
+            user = i[1]
+            
+        modules.close_conn(cursor, conn)
         
-    modules.close_conn(cursor, conn)
-    
-    if len(tables) > 0:
-        print("SIGNING IN")
-        return [True, user_id, user, email]
-    else:
-        print("NOT SIGNING IN")
-        return [False]
+        if len(tables) > 0:
+            print("SIGNING IN")
+            return [True, user_id, user, email]
+        else:
+            print("NOT SIGNING IN")
+            return [False]
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
 def STRING_SIMILARITY_CHECK(a, b):
     from difflib import SequenceMatcher
@@ -144,135 +148,139 @@ def triple_split(a, n):
     return (a[i*k+min(i, m):(i+1)*k+min(i+1, m)] for i in range(n))
 
 def SERVER_CHECK(server, function):
-    cursor, conn = modules.create_connection()
-    if server == "false":
-        if function == "CREATE_TABLE_USER":
-            cursor.execute("""DROP TABLE IF EXISTS USERS CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_PEOPLE":
-            cursor.execute("""DROP TABLE IF EXISTS PEOPLE CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_POST":
-            cursor.execute("""DROP TABLE IF EXISTS POSTS CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_SUBJECTS":
-            cursor.execute("""DROP TABLE IF EXISTS SUBJECTS CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_LIKES":
-            cursor.execute("""DROP TABLE IF EXISTS LIKES CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_DISLIKES":
-            cursor.execute("""DROP TABLE IF EXISTS DISLIKES CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_COMMENTS":
-            cursor.execute("""DROP TABLE IF EXISTS COMMENTS CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_VIEWS":
-            cursor.execute("""DROP TABLE IF EXISTS VIEWS CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_CONNECTIONS":
-            cursor.execute("""DROP TABLE IF EXISTS CONNECTIONS CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_IP_ADRESSES":
-            cursor.execute("""DROP TABLE IF EXISTS IP_ADRESSES CASCADE""")
-            modules.print_segment()
+    try:
+        cursor, conn = modules.create_connection()
+        if server == "false":
+            if function == "CREATE_TABLE_USER":
+                cursor.execute("""DROP TABLE IF EXISTS USERS CASCADE""")
+                modules.print_segment()
             
-        elif function == "CREATE_TABLE_CHAT_ROOMS":
-            cursor.execute("""DROP TABLE IF EXISTS CHAT_ROOMS CASCADE""")
-            modules.print_segment()
+            elif function == "CREATE_TABLE_PEOPLE":
+                cursor.execute("""DROP TABLE IF EXISTS PEOPLE CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_POST":
+                cursor.execute("""DROP TABLE IF EXISTS POSTS CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_SUBJECTS":
+                cursor.execute("""DROP TABLE IF EXISTS SUBJECTS CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_LIKES":
+                cursor.execute("""DROP TABLE IF EXISTS LIKES CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_DISLIKES":
+                cursor.execute("""DROP TABLE IF EXISTS DISLIKES CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_COMMENTS":
+                cursor.execute("""DROP TABLE IF EXISTS COMMENTS CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_VIEWS":
+                cursor.execute("""DROP TABLE IF EXISTS VIEWS CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_CONNECTIONS":
+                cursor.execute("""DROP TABLE IF EXISTS CONNECTIONS CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_IP_ADRESSES":
+                cursor.execute("""DROP TABLE IF EXISTS IP_ADRESSES CASCADE""")
+                modules.print_segment()
+                
+            elif function == "CREATE_TABLE_CHAT_ROOMS":
+                cursor.execute("""DROP TABLE IF EXISTS CHAT_ROOMS CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_CHAT_ADMINS":
+                cursor.execute("""DROP TABLE IF EXISTS CHAT_ADMINS CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_POST_PERSON":
+                cursor.execute("""DROP TABLE IF EXISTS POST_PERSON CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_FAVOURITES":
+                cursor.execute("""DROP TABLE IF EXISTS FAVOURITES CASCADE""")
+                modules.print_segment()
+                
+            elif function == "CREATE_TABLE_CHAT_USERS":
+                cursor.execute("""DROP TABLE IF EXISTS CHAT_USERS CASCADE""")
+                modules.print_segment()
+                
+            elif function == "CREATE_TABLE_BLOCKS":
+                cursor.execute("""DROP TABLE IF EXISTS BLOCKS CASCADE""")
+                modules.print_segment()
+                
+            elif function == "CREATE_TABLE_REQUESTS":
+                cursor.execute("""DROP TABLE IF EXISTS REQUESTS CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_SUBJECT_REQUESTS":
+                cursor.execute("""DROP TABLE IF EXISTS SUBJECT_REQUESTS CASCADE""")
+                modules.print_segment()
+                
+            elif function == "CREATE_TABLE_1_TIME_PASSWORDS":
+                cursor.execute("""DROP TABLE IF EXISTS ONE_TIME_PASSWORDS CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_TRIBUNAL_WORD":
+                cursor.execute("""DROP TABLE IF EXISTS TRIBUNAL_WORD CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_TRIBUNAL_WORD_VOTE":
+                cursor.execute("""DROP TABLE IF EXISTS TRIBUNAL_WORD_VOTE CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_COMMENT_VOTES":
+                cursor.execute("""DROP TABLE IF EXISTS COMMENT_VOTES CASCADE""")
+                modules.print_segment()
+                
+            elif function == "CREATE_TABLE_MODERATION_ADMINS":
+                cursor.execute("""DROP TABLE IF EXISTS MODERATION_ADMINS CASCADE""")
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_SEARCH_ALGORITHMS":
+                cursor.execute("""DROP TABLE IF EXISTS SEARCH_ALGORITHMS CASCADE""")
+                modules.print_segment()
+                
+            elif function == "CREATE_TABLE_SEARCH_ALGORITM_VOTES":
+                cursor.execute("""DROP TABLE IF EXISTS SEARCH_ALGORITM_VOTES CASCADE""")
+                modules.print_segment()
+                
+            elif function == "CREATE_TABLE_CURRENT_USER_SEARCH_ALGORITHM":
+                cursor.execute("""DROP TABLE IF EXISTS CURRENT_USER_SEARCH_ALGORITHM CASCADE""")
+                modules.print_segment()
+                
+            elif function == "CREATE_TABLE_SEARCH_ALGORITM_SAVE":
+                cursor.execute("""DROP TABLE IF EXISTS SEARCH_ALGORITM_SAVE CASCADE""")
+                modules.print_segment()             
         
-        elif function == "CREATE_TABLE_CHAT_ADMINS":
-            cursor.execute("""DROP TABLE IF EXISTS CHAT_ADMINS CASCADE""")
-            modules.print_segment()
+            elif function == "CREATE_TABLE_POST_SUBJECTS":
+                cursor.execute("""DROP TABLE IF EXISTS POST_SUBJECTS CASCADE""")
+                modules.print_segment()    
+                
+            elif function == "CREATE_TABLE_USER_STATUS":
+                cursor.execute("""DROP TABLE IF EXISTS USER_STATUS CASCADE""")
+                modules.print_segment()  
+                
+            elif function == "CREATE_TABLE_CHAT_MESSAGES":
+                cursor.execute("""DROP TABLE IF EXISTS CHAT_MESSAGES CASCADE""")
+                modules.print_segment()  
         
-        elif function == "CREATE_TABLE_POST_PERSON":
-            cursor.execute("""DROP TABLE IF EXISTS POST_PERSON CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_FAVOURITES":
-            cursor.execute("""DROP TABLE IF EXISTS FAVOURITES CASCADE""")
-            modules.print_segment()
-            
-        elif function == "CREATE_TABLE_CHAT_USERS":
-            cursor.execute("""DROP TABLE IF EXISTS CHAT_USERS CASCADE""")
-            modules.print_segment()
-            
-        elif function == "CREATE_TABLE_BLOCKS":
-            cursor.execute("""DROP TABLE IF EXISTS BLOCKS CASCADE""")
-            modules.print_segment()
-            
-        elif function == "CREATE_TABLE_REQUESTS":
-            cursor.execute("""DROP TABLE IF EXISTS REQUESTS CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_SUBJECT_REQUESTS":
-            cursor.execute("""DROP TABLE IF EXISTS SUBJECT_REQUESTS CASCADE""")
-            modules.print_segment()
-            
-        elif function == "CREATE_TABLE_1_TIME_PASSWORDS":
-            cursor.execute("""DROP TABLE IF EXISTS ONE_TIME_PASSWORDS CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_TRIBUNAL_WORD":
-            cursor.execute("""DROP TABLE IF EXISTS TRIBUNAL_WORD CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_TRIBUNAL_WORD_VOTE":
-            cursor.execute("""DROP TABLE IF EXISTS TRIBUNAL_WORD_VOTE CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_COMMENT_VOTES":
-            cursor.execute("""DROP TABLE IF EXISTS COMMENT_VOTES CASCADE""")
-            modules.print_segment()
-            
-        elif function == "CREATE_TABLE_MODERATION_ADMINS":
-            cursor.execute("""DROP TABLE IF EXISTS MODERATION_ADMINS CASCADE""")
-            modules.print_segment()
-        
-        elif function == "CREATE_TABLE_SEARCH_ALGORITHMS":
-            cursor.execute("""DROP TABLE IF EXISTS SEARCH_ALGORITHMS CASCADE""")
-            modules.print_segment()
-            
-        elif function == "CREATE_TABLE_SEARCH_ALGORITM_VOTES":
-            cursor.execute("""DROP TABLE IF EXISTS SEARCH_ALGORITM_VOTES CASCADE""")
-            modules.print_segment()
-            
-        elif function == "CREATE_TABLE_CURRENT_USER_SEARCH_ALGORITHM":
-            cursor.execute("""DROP TABLE IF EXISTS CURRENT_USER_SEARCH_ALGORITHM CASCADE""")
-            modules.print_segment()
-            
-        elif function == "CREATE_TABLE_SEARCH_ALGORITM_SAVE":
-            cursor.execute("""DROP TABLE IF EXISTS SEARCH_ALGORITM_SAVE CASCADE""")
-            modules.print_segment()             
-    
-        elif function == "CREATE_TABLE_POST_SUBJECTS":
-            cursor.execute("""DROP TABLE IF EXISTS POST_SUBJECTS CASCADE""")
-            modules.print_segment()    
-            
-        elif function == "CREATE_TABLE_USER_STATUS":
-            cursor.execute("""DROP TABLE IF EXISTS USER_STATUS CASCADE""")
-            modules.print_segment()  
-            
-        elif function == "CREATE_TABLE_CHAT_MESSAGES":
-            cursor.execute("""DROP TABLE IF EXISTS CHAT_MESSAGES CASCADE""")
-            modules.print_segment()  
-    
-        elif function == "CREATE_TABLE_CHAT_ROOM_INVITES":
-            cursor.execute("""DROP TABLE IF EXISTS CHAT_ROOM_INVITES CASCADE""")
-            modules.print_segment()  
+            elif function == "CREATE_TABLE_CHAT_ROOM_INVITES":
+                cursor.execute("""DROP TABLE IF EXISTS CHAT_ROOM_INVITES CASCADE""")
+                modules.print_segment()  
 
 
-        conn.commit()
-        modules.print_green(F"CASCADE DROPPED TABLE {function}")
+            conn.commit()
+            modules.print_green(F"CASCADE DROPPED TABLE {function}")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
 def CHECK_IF_IT_IS_ME(id):
     if str(id) == "1":
@@ -293,113 +301,128 @@ def CHECK_IF_MOBILE(request):
         return result
     
 def CHECK_COMMENT_LIKE_EXISTS(Comment_id, User_id):
-    cursor, conn = modules.create_connection()
-    
-    cursor.execute(f"""
-        SELECT COUNT(*)
-        FROM COMMENT_VOTES
-        WHERE Comment_id = %(Comment_id)s
-        AND User_id = %(User_id)s          
-    """, {'Comment_id':Comment_id,
-          'User_id': User_id
-        }
-    )
-    result = 0
-    for i in cursor.fetchall():
-        result = i[0]
-    
-    modules.close_conn(cursor, conn) 
-    if result > 0:
-        return True
-    else: 
-        return False
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            SELECT COUNT(*)
+            FROM COMMENT_VOTES
+            WHERE Comment_id = %(Comment_id)s
+            AND User_id = %(User_id)s          
+        """, {'Comment_id':Comment_id,
+            'User_id': User_id
+            }
+        )
+        result = 0
+        for i in cursor.fetchall():
+            result = i[0]
+        
+        modules.close_conn(cursor, conn) 
+        if result > 0:
+            return True
+        else: 
+            return False
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
 def CHECK_LIKE_EXISTS(Post_id, User_id):
-    cursor, conn = modules.create_connection()
-    
-    cursor.execute(f"""
-        SELECT COUNT(*)
-        FROM LIKES
-        WHERE Post_id = %(Post_id)s
-        AND User_id = %(User_id)s          
-    """, {'Post_id': Post_id,
-          'User_id': User_id
-        }
-    )
-    result = 0
-    for i in cursor.fetchall():
-        result = i[0]
-    
-    modules.close_conn(cursor, conn) 
-    if result > 0:
-        return True
-    else: 
-        return False
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            SELECT COUNT(*)
+            FROM LIKES
+            WHERE Post_id = %(Post_id)s
+            AND User_id = %(User_id)s          
+        """, {'Post_id': Post_id,
+            'User_id': User_id
+            }
+        )
+        result = 0
+        for i in cursor.fetchall():
+            result = i[0]
+        
+        modules.close_conn(cursor, conn) 
+        if result > 0:
+            return True
+        else: 
+            return False
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
 def CHECK_CONNECTION_EXISTS(User_id1, User_id2):
-    cursor, conn = modules.create_connection()
-    
-    cursor.execute(f"""
-        SELECT COUNT(*)
-        FROM CONNECTIONS
-        WHERE User_id1= %(User_id1)s
-        AND User_id2 = %(User_id2)s          
-    """, {'User_id1': User_id1,
-          'User_id2': User_id2
-        }
-    )
-    result = 0
-    for i in cursor.fetchall():
-        result = i[0]
-    
-    modules.close_conn(cursor, conn) 
-    if result > 0:
-        return True
-    else: 
-        return False    
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            SELECT COUNT(*)
+            FROM CONNECTIONS
+            WHERE User_id1= %(User_id1)s
+            AND User_id2 = %(User_id2)s          
+        """, {'User_id1': User_id1,
+            'User_id2': User_id2
+            }
+        )
+        result = 0
+        for i in cursor.fetchall():
+            result = i[0]
+        
+        modules.close_conn(cursor, conn) 
+        if result > 0:
+            return True
+        else: 
+            return False    
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
        
 def CHECK_FAVE_EXISTS(Post_id, User_id):
-    cursor, conn = modules.create_connection()
-    
-    cursor.execute(f"""
-        SELECT COUNT(*)
-        FROM FAVOURITES
-        WHERE Post_id = %(Post_id)s
-        AND User_id = %(User_id)s            
-    """, {'Post_id': Post_id,
-          'User_id': User_id
-        })
-    result = 0
-    for i in cursor.fetchall():
-        result = i[0]
-    
-    modules.close_conn(cursor, conn) 
-    if result > 0:
-        return True
-    else: 
-        return False
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            SELECT COUNT(*)
+            FROM FAVOURITES
+            WHERE Post_id = %(Post_id)s
+            AND User_id = %(User_id)s            
+        """, {'Post_id': Post_id,
+            'User_id': User_id
+            })
+        result = 0
+        for i in cursor.fetchall():
+            result = i[0]
+        
+        modules.close_conn(cursor, conn) 
+        if result > 0:
+            return True
+        else: 
+            return False
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
 def CHECK_SEARCH_FAVE_EXISTS(Search_algorithm_id, User_id):
-    cursor, conn = modules.create_connection()
-    
-    cursor.execute(f"""
-        SELECT COUNT(*)
-        FROM SEARCH_ALGORITM_SAVE
-        WHERE Search_algorithm_id = %(Search_algorithm_id)s
-        AND User_id = %(User_id)s            
-    """, {'Search_algorithm_id': Search_algorithm_id,
-          'User_id': User_id
-        })
-    result = 0
-    for i in cursor.fetchall():
-        # print(Search_algorithm_id, User_id, i[0])
-        result = i[0]
-    
-    modules.close_conn(cursor, conn) 
-    if result > 0:
-        return True
-    else: 
-        return False
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            SELECT COUNT(*)
+            FROM SEARCH_ALGORITM_SAVE
+            WHERE Search_algorithm_id = %(Search_algorithm_id)s
+            AND User_id = %(User_id)s            
+        """, {'Search_algorithm_id': Search_algorithm_id,
+            'User_id': User_id
+            })
+        result = 0
+        for i in cursor.fetchall():
+            # print(Search_algorithm_id, User_id, i[0])
+            result = i[0]
+        
+        modules.close_conn(cursor, conn) 
+        if result > 0:
+            return True
+        else: 
+            return False
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
 def JANKY_COMMENT_CHECK(how_many):
     if how_many == str(11): # JANKY BUT SHOUDL WORK
@@ -486,109 +509,127 @@ def GET_DOWNVOTES_BY_WORD(word):
     up_votes = '''(SELECT COUNT(*) FROM TRIBUNAL_WORD_VOTE votes WHERE Vote_type = 'UP' )'''    
     vote_count_check = f'''({down_votes} / ({down_votes} + {up_votes})) >= 0.0 '''       
     """
-    cursor, conn = modules.create_connection()
-    # GET DOWNVOTES    
-    cursor.execute(f"""
-        SELECT COUNT(*) 
-        FROM TRIBUNAL_WORD_VOTE votes 
-                
-        INNER JOIN TRIBUNAL_WORD word   
-        ON word.Tribunal_word_id = votes.Tribunal_word_id
-                
-        WHERE Vote_type = 'DOWN' 
-        AND word.Tribunal_word =  %(word)s  
-            """, {'word': word})
-    downvotes = 0
-    for k in cursor.fetchall():
-        downvotes = k[0]     
-    modules.close_conn(cursor, conn)
-    return downvotes  
+    try:
+        cursor, conn = modules.create_connection()
+        # GET DOWNVOTES    
+        cursor.execute(f"""
+            SELECT COUNT(*) 
+            FROM TRIBUNAL_WORD_VOTE votes 
+                    
+            INNER JOIN TRIBUNAL_WORD word   
+            ON word.Tribunal_word_id = votes.Tribunal_word_id
+                    
+            WHERE Vote_type = 'DOWN' 
+            AND word.Tribunal_word =  %(word)s  
+                """, {'word': word})
+        downvotes = 0
+        for k in cursor.fetchall():
+            downvotes = k[0]     
+        modules.close_conn(cursor, conn)
+        return downvotes  
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
 def GET_UPVOTES_BY_WORD(word):
-    cursor, conn = modules.create_connection()
-        # GET UPVOTES
-    cursor.execute(f"""
-                SELECT COUNT(*) 
-                FROM TRIBUNAL_WORD_VOTE votes 
-                
-                INNER JOIN TRIBUNAL_WORD word   
-                ON word.Tribunal_word_id = votes.Tribunal_word_id
-                
-                WHERE Vote_type = 'UP' 
-                AND word.Tribunal_word = %(word)s
-                          
-    """, {'word': word}
-    )
-    upvotes = 0
-    for j in cursor.fetchall():
-         upvotes = j[0]   
-    
-    modules.close_conn(cursor, conn)
-    return upvotes
+    try:
+        cursor, conn = modules.create_connection()
+            # GET UPVOTES
+        cursor.execute(f"""
+                    SELECT COUNT(*) 
+                    FROM TRIBUNAL_WORD_VOTE votes 
+                    
+                    INNER JOIN TRIBUNAL_WORD word   
+                    ON word.Tribunal_word_id = votes.Tribunal_word_id
+                    
+                    WHERE Vote_type = 'UP' 
+                    AND word.Tribunal_word = %(word)s
+                            
+        """, {'word': word}
+        )
+        upvotes = 0
+        for j in cursor.fetchall():
+            upvotes = j[0]   
+        
+        modules.close_conn(cursor, conn)
+        return upvotes
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
 def COMMENT_TEXT_CHECK(entered_string):
-    cursor, conn = modules.create_connection()
+    try:
+        cursor, conn = modules.create_connection()
+        my_lines = []
+        with open('/root/mansura/files/profanity_list.txt') as f:
+            # print("opened fie")
+            lines = f.readlines()[0].split(",") # NOT SURE WHY I HAVE TO INDEX FIRST
+            my_lines = lines
+            
+        entered_string = entered_string.split(" ") # GET each word
+            
+        for i in range(len(entered_string)):
+            if not CHECK_INJECTION(entered_string[i]):
+                entered_string[i] = "****"
+                
+            if entered_string[i] in my_lines:
+                #print("FOUND", entered_string[i], len(entered_string[i]), i)
 
-    my_lines = []
-    with open('/root/mansura/files/profanity_list.txt') as f:
-        # print("opened fie")
-        lines = f.readlines()[0].split(",") # NOT SURE WHY I HAVE TO INDEX FIRST
-        my_lines = lines
-        
-    entered_string = entered_string.split(" ") # GET each word
-        
-    for i in range(len(entered_string)):
-        if not CHECK_INJECTION(entered_string[i]):
-            entered_string[i] = "****"
-            
-        if entered_string[i] in my_lines:
-            #print("FOUND", entered_string[i], len(entered_string[i]), i)
-
-            upvotes = GET_UPVOTES_BY_WORD(entered_string[i])
-            downvotes = GET_DOWNVOTES_BY_WORD(entered_string[i])
-            
-            #print("UPVOTES      :", upvotes)
-            #print("DOWNVOTES    :", downvotes)
-            
-            total_votes = int(upvotes) + int(downvotes)
-            if downvotes >= 10:
-                dislike_ratio = int(downvotes) / (total_votes)
-                # print("dislike_ratio:",dislike_ratio)
-                if (dislike_ratio) >= 0.8:
-                    # print("changing", entered_string[i], "to ****")
-                    entered_string[i] = "****"
+                upvotes = GET_UPVOTES_BY_WORD(entered_string[i])
+                downvotes = GET_DOWNVOTES_BY_WORD(entered_string[i])
+                
+                #print("UPVOTES      :", upvotes)
+                #print("DOWNVOTES    :", downvotes)
+                
+                total_votes = int(upvotes) + int(downvotes)
+                if downvotes >= 10:
+                    dislike_ratio = int(downvotes) / (total_votes)
+                    # print("dislike_ratio:",dislike_ratio)
+                    if (dislike_ratio) >= 0.8:
+                        # print("changing", entered_string[i], "to ****")
+                        entered_string[i] = "****"
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     modules.close_conn(cursor, conn) 
     final_string = " ".join((map(str,entered_string))) # turn list back to stirng
     return final_string
     
 def COUNT_HOW_MANY_CUSS_WORD():
-    cursor, conn = modules.create_connection()
-    
-    cursor.execute("""
-    SELECT COUNT(*)
-    FROM TRIBUNAL_WORD             
-    """)
-    
-    for i in cursor.fetchall():
-        print(i)
-    modules.close_conn(cursor, conn)
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute("""
+        SELECT COUNT(*)
+        FROM TRIBUNAL_WORD             
+        """)
+        
+        for i in cursor.fetchall():
+            print(i)
+        modules.close_conn(cursor, conn)
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
 def CHECK_POST_IS_LIVE(Post_id):
-    cursor, conn = modules.create_connection()
-    cursor.execute(f"""
-    SELECT Post_live
-    FROM POSTS    
-    WHERE Post_id = '{Post_id}'
-    """)
-    results = ""
-    for i in cursor.fetchall():
-        results = i[0]
-    modules.close_conn(cursor, conn)
-    if results.lower() == "True".lower():
-        return True
-    else:
-        return False
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+        SELECT Post_live
+        FROM POSTS    
+        WHERE Post_id = '{Post_id}'
+        """)
+        results = ""
+        for i in cursor.fetchall():
+            results = i[0]
+        modules.close_conn(cursor, conn)
+        if results.lower() == "True".lower():
+            return True
+        else:
+            return False
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
 def GET_INJECTION_TERMS():
     f = open("/root/mansura/files/bad_words_username.txt", "r")
@@ -597,23 +638,26 @@ def GET_INJECTION_TERMS():
     return injection_terms
 
 def CHECK_USER_IS_GLOBAL_ADMIN(user_id):
-    cursor, conn = modules.create_connection()
-    
-    cursor.execute(f"""
-    SELECT COUNT(*)
-    FROM MODERATION_ADMINS
-    WHERE User_id = '{user_id}'
-    """)
-    admin_exists = 0
-    for i in cursor.fetchall():
-        admin_exists = i[0]
-    modules.close_conn(cursor, conn)
-    if admin_exists == 0:
-        # print("USER IS NOT ADMIN")
-        return "false"
-    else:
-        # print("USER IS ADMIN")
-        return "true"
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+        SELECT COUNT(*)
+        FROM MODERATION_ADMINS
+        WHERE User_id = '{user_id}'
+        """)
+        admin_exists = 0
+        for i in cursor.fetchall():
+            admin_exists = i[0]
+        modules.close_conn(cursor, conn)
+        if admin_exists == 0:
+            # print("USER IS NOT ADMIN")
+            return "false"
+        else:
+            # print("USER IS ADMIN")
+            return "true"
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
  
 def CHECK_INJECTION(word):
     array = modules.GET_INJECTION_TERMS()
@@ -751,36 +795,40 @@ def CHECK_ALGO_FUNCTION(algo_name, user):
     return "True"
 
 def CHECK_ACCOUNT_STATUS(User_id):
-    cursor, conn = modules.create_connection()
-    cursor.execute(f"""
-        SELECT User_id, User_Strikes, User_mute_status, User_timeout_status, User_ban_status
-        
-        FROM USERS
-        
-        WHERE User_id = '{User_id}'
-    """)
-    results = []
-    for i in cursor.fetchall():
-        results.append([
-            i[0], # User_id
-            i[1], # User_Strikes
-            i[2], # User_mute_status
-            i[3], # User_timeout_status
-            i[4]  # User_ban_status
-            ]
-        )
-        
-    print("results", results)
-        
-    modules.close_conn(cursor, conn)         
-    if results != []:
-        if results[0][1] >= 10:
-            return False
-        # ELIF THE REST OF THE CHECKS FOR BAD BEHAVIOUR
-        else: 
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            SELECT User_id, User_Strikes, User_mute_status, User_timeout_status, User_ban_status
+            
+            FROM USERS
+            
+            WHERE User_id = '{User_id}'
+        """)
+        results = []
+        for i in cursor.fetchall():
+            results.append([
+                i[0], # User_id
+                i[1], # User_Strikes
+                i[2], # User_mute_status
+                i[3], # User_timeout_status
+                i[4]  # User_ban_status
+                ]
+            )
+            
+        print("results", results)
+            
+        modules.close_conn(cursor, conn)         
+        if results != []:
+            if results[0][1] >= 10:
+                return False
+            # ELIF THE REST OF THE CHECKS FOR BAD BEHAVIOUR
+            else: 
+                return True
+        else:
             return True
-    else:
-        return True
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
 def CHECK_CHAT_ROOM_NAME(query_text):
     # 0. SPECIAL CHARACTERS  
@@ -801,22 +849,26 @@ def CHECK_CHAT_ROOM_NAME(query_text):
     return "True"
 
 def CHECK_USER_ID_ROOM_CREATOR(user_id, room_id):
-    cursor, conn = modules.create_connection()
-    cursor.execute(f"""
-        SELECT COUNT(*)
-        FROM CHAT_ROOMS
-        WHERE Creator_id = '{user_id}'   
-        AND Room_id = '{room_id}' 
-    """)
-    results = 0 
-    for i in cursor.fetchall():
-        results = i[0]
-    modules.close_conn(cursor, conn)
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            SELECT COUNT(*)
+            FROM CHAT_ROOMS
+            WHERE Creator_id = '{user_id}'   
+            AND Room_id = '{room_id}' 
+        """)
+        results = 0 
+        for i in cursor.fetchall():
+            results = i[0]
+        modules.close_conn(cursor, conn)
 
-    if str(results) != "0" or results != 0: # doublt JUST INCASE 
-        return True
-    else: 
-        return False
+        if str(results) != "0" or results != 0: # doublt JUST INCASE 
+            return True
+        else: 
+            return False
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
   
 def encrypt_caesar(plaintext,n=1):
     ans = ""

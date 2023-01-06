@@ -143,7 +143,7 @@ def user_profile(user_profile_name, page_no):
         profile_id=user_profile_id
     )
     offset_calc = int(int(page_no) * int(posts_per_page))
-    
+    user_strikes = modules.GET_USER_STRIKES_BY_ID(user_profile_id)
     return render_template('home.html',
         query=query,                   
                            
@@ -160,6 +160,10 @@ def user_profile(user_profile_name, page_no):
         user_profile_id=user_profile_id,
         
         username=modules.GET_USER_NAME_FROM_ID(user_profile_id),
+        session_user=session["user"],
+        
+        user_strikes=user_strikes,
+        
         # I THINK THE NAMES OF THESE ARE WRONG OT SOME ASPECT OF THIS IS WRONG
         #BUT IT WORKS ANYWAY
         followers=modules.GET_FOLLOWERS_BY_USER_ID(user_profile_id),

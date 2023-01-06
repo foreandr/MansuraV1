@@ -6,19 +6,9 @@ pay for ad free experience
 
 if they fail the test, send them to the spam page
 
-n comments, n cvomment views, n other interactions per timeframew
-cloudflare 2fa turnstile
-    
 incase i have to reset, create a text file that stores all the uploads in some way
-check kick implementation
-
-
-
+leaderboards
 default algo us e apure all time count
-
-
-
-
 must be an admin to ad new words
 
 MONETIZATION

@@ -129,3 +129,5 @@ DONE.chat algos by page, multiple pages
 DONE.OTHER CHAT LOGIC NOT DONE YET CHEKC AGAION
 DONE.show convos,
 DONE.    - sne dpost
+DONE.check kick implementation
+DONE.,n comments, n cvomment views, n other interactions per timeframew

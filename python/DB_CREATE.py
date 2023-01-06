@@ -77,8 +77,7 @@ def CREATE_TABLE_PEOPLE(server="false"):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     modules.close_conn(cursor, conn)
-      
-        
+           
 def CREATE_TABLE_POST(server="false"):
     cursor, conn = modules.create_connection()
     try:
@@ -105,8 +104,7 @@ def CREATE_TABLE_POST(server="false"):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     modules.close_conn(cursor, conn)
-      
-        
+          
 def CREATE_TABLE_POST_PERSON(server="false"):
     cursor, conn = modules.create_connection()
     try:
@@ -128,7 +126,6 @@ def CREATE_TABLE_POST_PERSON(server="false"):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     modules.close_conn(cursor, conn)
-
 
 def CREATE_TABLE_SUBJECTS(server="false"):
     cursor, conn = modules.create_connection()
@@ -196,7 +193,6 @@ def CREATE_TABLE_LIKES(server="false"):
 
     modules.close_conn(cursor, conn)
     
-
 def CREATE_TABLE_SEARCH_ALGORITHMS(server="false"):
     cursor, conn = modules.create_connection()
 
@@ -351,8 +347,7 @@ def CREATE_TABLE_FAVOURITES(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     modules.close_conn(cursor, conn)
-    
-        
+          
 def CREATE_TABLE_COMMENTS(server="false"):
     cursor, conn = modules.create_connection()
 
@@ -407,8 +402,7 @@ def CREATE_TABLE_COMMENT_VOTES(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     modules.close_conn(cursor, conn)
-    
-    
+        
 def CREATE_TABLE_VIEWS(server="false"):
     cursor, conn = modules.create_connection()
 
@@ -433,7 +427,6 @@ def CREATE_TABLE_VIEWS(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     modules.close_conn(cursor, conn)
-
 
 def CREATE_TABLE_CONNECTIONS(server="false"):
     cursor, conn = modules.create_connection()
@@ -514,8 +507,7 @@ def CREATE_TABLE_IP_ADRESSES(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     modules.close_conn(cursor, conn)
-    
-    
+       
 def CREATE_TABLE_CHAT_ROOMS(server="false"):
     cursor, conn = modules.create_connection()
 
@@ -637,7 +629,6 @@ def CREATE_TABLE_CHAT_MESSAGES(server="false"):
 
     modules.close_conn(cursor, conn)
     
-
 def CREATE_TABLE_SUBJECT_REQUESTS(server="false"):
     cursor, conn = modules.create_connection()
 
@@ -663,7 +654,6 @@ def CREATE_TABLE_SUBJECT_REQUESTS(server="false"):
 
     modules.close_conn(cursor, conn)  
 
- 
 def CREATE_TABLE_1_TIME_PASSWORDS(server="false"):
     cursor, conn = modules.create_connection()
     try:
@@ -724,10 +714,4 @@ def CREATE_TABLE_TRIBUNAL_WORD_VOTE(server="false"):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    modules.close_conn(cursor, conn)      
-    
-    
-    
-    
-
-        
+    modules.close_conn(cursor, conn)         
