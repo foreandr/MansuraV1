@@ -131,3 +131,7 @@ DONE.show convos,
 DONE.    - sne dpost
 DONE.check kick implementation
 DONE.,n comments, n cvomment views, n other interactions per timeframew
+DONE.if they fail the test, send them to the spam page
+DONE.wrap my functions int ry catch
+DONE.leaderboards
+DONE.must be an admin to ad new words

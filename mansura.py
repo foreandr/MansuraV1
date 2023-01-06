@@ -492,9 +492,10 @@ def word_tribunal():
                 modules.INSERT_INTO_PROFANITY_LIST_VOTES(word_id, session["id"], vote_type)
   
     blocked_words = modules.GET_ALL_TRIBUNAL_WORDS()
-    print(blocked_words)
+    # print(blocked_words)
     return render_template(f"word_tribunal.html",
-        blocked_words=blocked_words
+        blocked_words=blocked_words,
+        user_id=session["id"]
     )
 
 @app.route("/update_like/<Post_id>", methods=['GET', 'POST'])
@@ -930,6 +931,20 @@ def kick_from_chat_room(room_id):
     
     # NOT SURE WHY I HAVE TO PUT KICK IN THE FILE
     return render_template(f"update_kick.html",
+    )
+    
+@app.route("/leaderboards_home/<leaderboard_category>", methods=['GET', 'POST'])
+def leaderboards_home(leaderboard_category):
+    # print("hello world")
+
+    leaderboards = modules.LEADERBOARD_PERSON(leaderboard_category)        
+    user_leaderboards = modules.LEADERBOARD_USER(leaderboard_category)
+    # print('user_leaderboards', user_leaderboards)        
+    return render_template(f"leaderboards_home.html",
+        people_leaderboards=leaderboards,
+        user_leaderboards=user_leaderboards,
+        
+        leaderboard_category=leaderboard_category
     )
     
 

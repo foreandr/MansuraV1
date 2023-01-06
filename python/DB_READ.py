@@ -739,7 +739,6 @@ def UNIVERSAL_FUNCTION(
         fave_string, fave_inner_join = modules.FAVOURITE_QUERY(favourites, searcher_id)
         search_algo_id, _ = modules.GET_USER_CURRENT_SEARCH_ALGO_BY_ID(searcher_id)
         
-
         # SPECIFIC TO USER
         if profile_id != "":
             user_profile = f"AND posts.User_id = '{profile_id}'"
@@ -1612,7 +1611,138 @@ def GET_CHAT_CREATOR_BY_ROOM(room_id):
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
+def PERSON_LEADERBOARD_LIKES():
+    return """
+        (
+            SELECT COUNT(*) 
+            FROM LIKES likes
+                    
+            INNER JOIN POST_PERSON post_person
+            ON post_person.Person_id = people.Person_id
+                    
+            INNER JOIN POSTS posts
+            ON posts.Post_id = post_person.Post_id
+                    
+            WHERE likes.Post_id = posts.Post_id 
+        )
+    """
+def PERSON_LEADERBOARD_COMMENTS():
+    return """
+        (
+            SELECT COUNT(*) 
+            FROM COMMENTS comments
+                    
+            INNER JOIN POST_PERSON post_person
+            ON post_person.Person_id = people.Person_id
+                    
+            INNER JOIN POSTS posts
+            ON posts.Post_id = post_person.Post_id
+                    
+            WHERE comments.Post_id = posts.Post_id 
+        )
+    """   
+def PERSON_LEADERBOARD_VIEWS():
+    return """
+        (
+            SELECT COUNT(*) 
+            FROM VIEWS views
+                    
+            INNER JOIN POST_PERSON post_person
+            ON post_person.Person_id = people.Person_id
+                    
+            INNER JOIN POSTS posts
+            ON posts.Post_id = post_person.Post_id
+                    
+            WHERE views.Post_id = posts.Post_id 
+        )
+    """ 
+
+
+def LEADERBOARD_PERSON(leaderboard_category):
+    if leaderboard_category == 'likes':
+        query_addition = modules.PERSON_LEADERBOARD_LIKES()
+    elif leaderboard_category == "comments":
+        query_addition = PERSON_LEADERBOARD_COMMENTS()
+    elif leaderboard_category == "views":
+        query_addition = PERSON_LEADERBOARD_VIEWS() 
+        
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            SELECT Person_name,{query_addition},Person_id
+
+            FROM PEOPLE people
+            
+            ORDER BY {query_addition}
+
+            DESC
+        """)
+        results = []
+        for i in cursor.fetchall():
+            results.append([
+                i[0], i[1], i[2]
+            ])
+        modules.close_conn(cursor, conn) 
+        return results
+    except Exception as e:    
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
+
+def USER_LEADERBOARD_LIKES():
+    return """
+    (
+        SELECT COUNT(*) 
+        FROM LIKES likes                        
+        WHERE likes.User_id = users.User_id
+    )
+    """
+
+def USER_LEADERBOARD_COMMENTS():
+    return """
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments                        
+        WHERE comments.User_id = users.User_id
+    )
+    """
+
+def USER_LEADERBOARD_VIEWS():
+    return """
+    (
+        SELECT COUNT(*) 
+        FROM VIEWS views                        
+        WHERE views .User_id = users.User_id
+    )
+    """
+
+def LEADERBOARD_USER(leaderboard_category):
+    if leaderboard_category == 'likes':
+        query_addition = modules.USER_LEADERBOARD_LIKES()
+    elif leaderboard_category == "comments":
+        query_addition = modules.USER_LEADERBOARD_COMMENTS()
+    elif leaderboard_category == "views":
+        query_addition = modules.USER_LEADERBOARD_VIEWS() 
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            SELECT Username, {query_addition}
+            FROM Users users
+            
+            ORDER BY {query_addition}
+            DESC
+        """)
+        results = []
+        for i in cursor.fetchall():
+            results.append([
+                i[0], i[1]
+            ])
+        modules.close_conn(cursor, conn) 
+        return results
+    except Exception as e:    
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")    
 if __name__ == "__main__":
     # GET_ALL_USERS_IN_ROOM(Room_id=3)
     print(GET_PEOPLE_BY_POST_ID(46))

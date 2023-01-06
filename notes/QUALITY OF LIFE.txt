@@ -27,10 +27,9 @@ LOGGING
 =============
 log db actions instead of printing them
 shared playlists
-
-
-
-
 Allow myself (and in the future morderrators, to add subjects to posts)
 # admin conversation that is at the top of everyones inbox
 cloudflare 2fa turnstile
+incase i have to reset, create a text file that stores all the uploads in some way
+pay for ad free experience
+person page search by cerrtain fields

@@ -11,8 +11,11 @@
     <form name="my_form" class="form-signup" method="POST">
         <div class="input-group mb-3">
             <input name="bad_word" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" value="" maxlength="20">
-            <button  class="btn btn-lg btn-primary btn-block" type="submit">Vote to disable this word</button>
-            <p>If you choose a stupid word like "and" I'll just disable the functionality to participate in governance on your account.</p>
+            {% if user_id == 1 %}  
+            <button  class="btn btn-lg btn-primary btn-block" type="submit">Vote to disable this word (must be an admin to add new ones)</button>                              
+            {% else %}
+            <button  class="btn btn-lg btn-primary btn-block" type="submit" disabled>Vote to disable this word (must be an admin to add new words)</button>
+            {% endif %}
         </div>
     </form>
 </div>

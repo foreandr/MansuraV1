@@ -1,15 +1,10 @@
 
 #TODO: WILL HAVE TO RESET THE LIVE TABLES
+    - CREATE A DEFAULT ALGO THAT IS JUST THE SUM AND MOST RECENT ON CREATION
+    - default algo us e apure all time count
 
-wrap my functions int ry catch
-pay for ad free experience 
 
-if they fail the test, send them to the spam page
 
-incase i have to reset, create a text file that stores all the uploads in some way
-leaderboards
-default algo us e apure all time count
-must be an admin to ad new words
 
 MONETIZATION
 =============
@@ -18,6 +13,6 @@ SUBSCRIPTIONS
     - people can post n links to pages they want RSS feeds generated for
 ADS
 
-person page search by cerrtain fields
+
 
 
