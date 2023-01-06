@@ -22,6 +22,12 @@ def post_logic(person_id, page_no):
     if "email" not in session: 
         return redirect(url_for("login"))
     
+    '''
+    first_time = modules.CHECK_IF_SESSION_USER_FIRST_TIME(session["id"])
+    if first_time:
+        return redirect(url_for("first_time"))
+    '''
+        
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"],
         page_no=int(page_no)+1,
@@ -67,7 +73,6 @@ def post_tribunal(page_no):
     
     can_vote = modules.CHECK_USER_IS_GLOBAL_ADMIN(session["id"])
     
-
     return render_template('home.html',
         query=query,                   
                            
@@ -157,6 +162,8 @@ def user_profile(user_profile_name, page_no):
         user_profile_id=user_profile_id,
         
         username=modules.GET_USER_NAME_FROM_ID(user_profile_id),
+        # I THINK THE NAMES OF THESE ARE WRONG OT SOME ASPECT OF THIS IS WRONG
+        #BUT IT WORKS ANYWAY
         followers=modules.GET_FOLLOWERS_BY_USER_ID(user_profile_id),
         following=modules.GET_FOLLOWING_BY_USER_ID(user_profile_id)
     )
@@ -312,6 +319,37 @@ def search_text_by_category(type):
             
             can_scroll=can_scroll,
             page_no=int(page_no)+1
+        )   
+    elif type == "chat_room_additions":
+        users = modules.GET_REAL_USERS_BY_TEXT(query_text, session["id"])
+        return render_template(f'update_user_search.html',
+            users=users 
+        )
+    elif type == "chat_room_titles":
+        # users = modules.GET_REAL_USERS_BY_TEXT(query_text)
+        if modules.CHECK_CHAT_ROOM_NAME(query_text) == "True":
+            chat_room_answer = "True"
+        else:
+            chat_room_answer = "False"
+        # print("query_text", query_text)
+        return render_template(f'update_user_search.html',
+            users="None",
+            message="None",
+            algorithm="None",
+            chat_room_answer=chat_room_answer, 
+        )
+    elif type == "chat_room_name":
+        print("chat room name")
+
+        chat_rooms_with_x_names = modules.GET_CHAT_ROOM_NAMES_BY_TEXT(query_text, user_id=session["id"])
+        # chat_rooms_with_x_names = ["HELLO", "SHMELLO"]
+        
+        return render_template(f'update_user_search.html',
+            users="None",
+            message="None",
+            algorithm="None",
+            chat_room_answer="None", 
+            chat_rooms_with_x_names=chat_rooms_with_x_names
         )
         
 @app.route('/login', methods=['GET', 'POST'])
@@ -452,6 +490,17 @@ def update_like(Post_id):
     return render_template(f"update_like.html",
         likes=modules.GET_NUM_LIKES_BY_POST_ID(Post_id))
     
+@app.route("/update_comment_like/<Comment_id>", methods=['GET', 'POST'])
+def update_comment_like(Comment_id):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
+    modules.log_function("request", request)
+    modules.COMMENT_LIKE_LOGIC(Comment_id, session["id"]) if modules.GET_ALL_INTERACTIONS(session["id"]) else print("too much traffic")
+    return render_template(f"update_comment_likes.html",
+        comment_likes=modules.GET_NUM_COMMENT_VOTES_BY_ID(Comment_id),
+        Comment_id=Comment_id
+        )
+    
 @app.route("/update_follow/<user_profile_id>", methods=['GET', 'POST'])
 def update_follow(user_profile_id):
     if "email" not in session: 
@@ -493,7 +542,7 @@ def update_view(Post_id):
     return render_template(f"update_view.html",
         views=modules.GET_NUM_VIEWS_BY_POST_ID(Post_id)
         )
-    
+   
 @app.route("/update_comment/<Post_id>", methods=['GET', 'POST'])
 def update_comment(Post_id):
     if "email" not in session: 
@@ -706,11 +755,117 @@ def notifications(page_no):
     return render_template(f"notifications.html",
         notifications="hello world"
     )
+    
+@app.route("/messages/<page_no>", methods=['GET', 'POST'])
+def messages(page_no):
+    if "email" not in session: 
+        return redirect(url_for("login"))
+    
+    if int(page_no) <= 0:
+        page_no = 0 
+    
+    modules.log_function("request", request, session_user=session['user'])
+    
+    if request.method == "POST":
+        names = request.form["chosen_name"]
+        room_name = request.form["room_name"]
+        list_of_names = names.split(",")
+        while("" in list_of_names):
+            list_of_names.remove("")
+        
+        #print("list_of_names:",list_of_names)
+        #print("room_name    :", room_name)
+        modules.INSERT_CHAT_ROOMS(Creator_id=session["id"], Room_name=room_name, list_of_names=list_of_names)
+    
+    chat_rooms = modules.GET_CHAT_ROOM_DETAILS(session["id"], int(page_no)+1)
+    chat_invites = modules.GET_CHAT_INVITE_DETAILS(session["id"], int(page_no)+1)
+    # print(chat_invites)
+    return render_template(f"messages_home.html",
+        page_no=int(page_no)+1,
+        chat_rooms=chat_rooms,
+        chat_invites=chat_invites
+    )
+   
+@app.route("/chat_page/<room_id>/<page_no>", methods=['GET', 'POST'])
+def chat_page(room_id, page_no): 
+    if "email" not in session: 
+        return redirect(url_for("login"))
+    
+    modules.log_function("request", request, session_user=session['user'])
+    
+    room_name = modules.GET_ROOM_NAME_BY_ID(room_id)
+    room_messages, can_scroll = modules.GET_CHAT_MESSAGES(room_id, page_no=int(page_no)+1)
+    # print(room_messages)
+    
+    return render_template(f"messages_page.html",
+        page_no=int(page_no)+1,
+        room_messages=room_messages,
+        room_name=room_name,
+        room_id=room_id,
+        can_scroll=can_scroll
+    )
+    
+@app.route("/update_message/<room_id>/<page_no>", methods=['GET', 'POST'])
+def update_message(room_id, page_no):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
+    modules.log_function("request", request)
+    
+    query_text = request.form["user_message"]
+    # encrypted = modules.encrypt_caesar(query_text)
+    modules.INSERT_CHAT_MESSAGE(User_id=session["id"], Room_id=room_id, Message=query_text)
+    
+    room_name = modules.GET_ROOM_NAME_BY_ID(room_id)
+    room_messages, can_scroll = modules.GET_CHAT_MESSAGES(room_id, page_no=int(page_no)+1)
+    return render_template(f"update_message.html",
+            page_no=int(page_no)+1,
+            room_messages=room_messages,
+            room_name=room_name,
+            room_id=room_id,
+            can_scroll=can_scroll
+        )
+    
+@app.route("/chat_logic/<room_id>/<action>", methods=['GET', 'POST'])
+def chat_logic(room_id, action):
+    
+    #print("room_id", room_id)
+    #print("action", action)
+    if action == "leave":
+        print("leaving room")
+        modules.LEAVE_CHAT_ROOM(session["id"], room_id)
+        
+        message="LEFT"
+    elif action == "accept":
+        print("joining room")
+        message="JOINED"
+        modules.INSERT_CHAT_ROOMS_USER(session["id"], room_id)
+        modules.DELETE_CHAT_INVITE(session["id"], room_id)
+        print(session["id"], room_id)
+    elif action =="reject":
+        print("removing invitation")
+        message="REJECTED"
+        modules.DELETE_CHAT_INVITE(session["id"], room_id)
+    return render_template(f"chat_logic.html", message=message)
 
+@app.route("/send_file_message/<post_id>", methods=['GET', 'POST'])
+def send_file_message(post_id):
+    
+    user_id = session["id"]
+    message_text = modules.GET_POST_HTML_BY_ID(post_id)
+    chat_room_name = request.form["chat_room_name"]
+    room_id = modules.GET_CHAT_ROOM_ID_BY_NAME(chat_room_name)
+    
+    print("chat_room_name",chat_room_name)
+    print("user_id",user_id)
+    print("message_text",message_text)
+    print("mroom_id",room_id)
     
     
+    modules.INSERT_CHAT_MESSAGE(User_id=user_id, Room_id=room_id, Message=message_text)
+    return render_template(f"update_sent_message.html",
+        success_or_failure="SENT MESSAGE"
+        )
 
-    
 if __name__ == '__main__':
     host = "0.0.0.0" 
     # http://165.227.35.71:8088/

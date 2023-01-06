@@ -20,3 +20,14 @@ Profile
     DUNNO WHAT THIS MEANS
 ========================
 change count all to reflect the constraints of the query for scrolling in other tings than the mian
+
+(apply to be a content moderator)
+
+LOGGING
+=============
+log db actions instead of printing them
+shared playlists
+
+
+
+# admin conversation that is at the top of everyones inbox

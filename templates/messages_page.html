@@ -1,0 +1,51 @@
+{% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
+
+{% block nav %}
+{% if page_no == 1 %}
+{% block nav_location %}
+{{super()}}
+{% endblock nav_location %}
+{% else %}
+{% endif %}
+{% endblock nav %}
+
+{%block main %}
+
+{% if page_no == 1 %}
+<div class="container">
+    <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+        <h1>Room: <u>{{room_name}}</u></h1>
+        <h6>(messages are not encrypted)</h6>
+    </div>
+</div>
+<form action="/update_message/{{room_id}}/0" name="my_form" class="form-signup" method="POST" >
+    <textarea name="user_message" class="form-control" id="textbox" rows="2" cols="50" maxlength="400" required></textarea>
+    <button class="btn btn-outline-secondary" hx-post="/update_message/{{room_id}}/0" type="button" hx-trigger="click" hx-swap="innerHTML" hx-target="#update_message">
+        Send Message
+    </button> 
+</form>
+{% else %}
+{% endif %}
+    <!-- MESSAGES -->
+    {% if can_scroll == "True" %}
+    <div class="container border border-dark" hx-post="/chat_page/{{room_id}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend" >
+    {% else %}
+    <div class="container border border-dark">
+    {% endif %}
+        <div id="update_message">
+            {%for i in range( room_messages |length )%}
+            <span>
+                <u><h5><a href="/user_profile/{{room_messages[i][0]}}/0">{{room_messages[i][0]}}</a></h5></u>
+                {{room_messages[i][1]}}
+            </span>
+            <div style="word-wrap: break-word;">
+                {{room_messages[i][2] | safe}}
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+
+{% endblock main %}
+
+
+

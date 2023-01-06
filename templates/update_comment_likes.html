@@ -1,0 +1,8 @@
+<script>
+    let comment_id = "{{Comment_id}}"
+    let comment_likes = "{{comment_likes}}"
+    console.log("comment_id",comment_id)
+    console.log("comment_likes",comment_likes)
+    
+    document.getElementById(`comment_like_location${comment_id}`).innerHTML = comment_likes
+</script>

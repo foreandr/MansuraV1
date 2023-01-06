@@ -1,3 +1,4 @@
+from base64 import decode
 import io
 from PIL import Image
 import inspect
@@ -25,7 +26,7 @@ def CHECK_PERSON_IS_LIVE(person_id):
     return results
 
 def GET_USERS_BY_TEXT(text):
-    print("GET_USERS_BY_TEXT:", text)
+    # print("GET_USERS_BY_TEXT:", text)
     cursor, conn = modules.create_connection()
     query = f"""
         SELECT Person_name
@@ -41,7 +42,38 @@ def GET_USERS_BY_TEXT(text):
     modules.close_conn(cursor, conn)
     return results
 
+def GET_REAL_USERS_BY_TEXT(text, user_id):
+    '''
+    THE OR IN THIS FUNCTION CAN BE CHANGED TO REFLECT USER PRIVACY SETTINGS
+    IF IT'S AND, THE FOLLOWING HAS TO BE MUTUAL TO CREATE A CHAT, ELSE ONE JUST HAS TO BE FOLLOWING THE OTHER
+    '''
+    # print("GET_USERS_BY_TEXT:", text)
+    cursor, conn = modules.create_connection()
+    query = f"""
+        SELECT users.Username
+        FROM USERS users
+        WHERE LOWER(Username) LIKE LOWER('%{text}%')
+        
+        AND (
+                SELECT COUNT(*)
+                FROM CONNECTIONS
+                WHERE  
+                ( User_id1 = '{user_id}' AND users.User_id = User_id2 AND User_id2 = '{user_id}' OR users.User_id = User_id1)
+            ) > 0
+             
+               
+    """
+    cursor.execute(query)
+    results = []
+    for i in cursor.fetchall():
+        results.append(i[0])
+        
+    modules.close_conn(cursor, conn)
+    return results
+
+
 def GET_USER_ID_FROM_NAME(username):
+    print("username", username)
     cursor, conn = modules.create_connection()
     # print("NAME BEING USED", username)
     cursor.execute(f"""
@@ -54,7 +86,7 @@ def GET_USER_ID_FROM_NAME(username):
     for i in cursor.fetchall():
         modules.close_conn(cursor, conn)
         return i[0]
-    return "NO NAME"
+    return "NO ID"
 
 def GET_USER_NAME_FROM_ID(User_id):
     cursor, conn = modules.create_connection()
@@ -121,11 +153,25 @@ def NEW_COMMENT_ORDER(new_comment):
         new_comment_order = ""
     return new_comment_order
     
+def GET_NUM_COMMENT_VOTES_BY_ID(comment_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+    SELECT COUNT(*)
+    FROM COMMENT_VOTES
+    WHERE Comment_id = '{comment_id}'              
+    """)
+    
+    results = 0
+    for i in cursor.fetchall():
+        results = i[0]
+    modules.close_conn(cursor, conn)
+    return results
+
 def GET_N_COMMENTS(Post_id, N=3, comment_page_no=0, new_comment="false", check_order="likes"):
 
     cursor, conn = modules.create_connection()
     cursor.execute(F"""
-        SELECT users.Username, comments.Comment_text, comments.Date_time
+        SELECT users.Username, comments.Comment_text, comments.Date_time, comments.Post_id, comments.Comment_id
         FROM COMMENTS comments
         
         INNER JOIN USERS users
@@ -142,7 +188,7 @@ def GET_N_COMMENTS(Post_id, N=3, comment_page_no=0, new_comment="false", check_o
     results = []
     
     for i in cursor.fetchall():
-        results.append([i[0], i[1], i[2]])
+        results.append([i[0], i[1], i[2], i[3], i[4]])
     
 
     modules.close_conn(cursor, conn)
@@ -279,6 +325,26 @@ def GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link):
     
     modules.close_conn(cursor, conn)
     return post_link
+
+def GET_ROOM_ID_BY_TITLE_AND_USER_ID(User_id, Room_name):
+    cursor, conn = modules.create_connection()
+ 
+    cursor.execute(f"""
+        SELECT Room_id
+        FROM CHAT_ROOMS
+        WHERE Creator_id = %(User_id)s
+        AND Room_name = %(Room_name)s
+        """, 
+            {'User_id': User_id,
+             'Room_name': Room_name
+            }  
+    )
+    Room_id = 1 
+    for i in cursor.fetchall():
+        Room_id = i[0]
+    
+    modules.close_conn(cursor, conn)
+    return Room_id
 
 def CHECK_PERSON_EXISTS(Person):
     cursor, conn = modules.create_connection()
@@ -932,6 +998,21 @@ def GET_SEARCH_ALGORITHM_DETAILS(user_id, search_type, limit_search="", page_no=
     modules.close_conn(cursor, conn)
     return results, CAN_SCROLL_SEARCH(page_no, posts_per_page), page_no
 
+def GET_TOTAL_MESSAGES_FOR_ROOM(room_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+    SELECT COUNT(*) 
+    FROM CHAT_MESSAGES
+    WHERE Room_id = '{room_id}'
+    """)
+    results = 0
+    for i in cursor.fetchall():
+        # print("TOTAL MESSAGES IN ROOM", i[0])
+        results = i[0]
+        
+    modules.close_conn(cursor, conn)
+    return results
+
 def GET_TOTAL_POSTS_FOR_SEARCH():
     cursor, conn = modules.create_connection()
     cursor.execute("""
@@ -940,7 +1021,7 @@ def GET_TOTAL_POSTS_FOR_SEARCH():
     """)
     results = 0
     for i in cursor.fetchall():
-        print("TOTAL SEARCH ALGORITHMS", i[0])
+        # print("TOTAL SEARCH ALGORITHMS", i[0])
         results = i[0]
         
     modules.close_conn(cursor, conn)
@@ -953,6 +1034,8 @@ def CAN_SCROLL_SEARCH(page_no, posts_per_page):
         return "False"
     else:
         return "True"
+
+
 
 def GET_ALL_SEARCH_ALGOS():
     cursor, conn = modules.create_connection()
@@ -1024,8 +1107,224 @@ def GET_NOTIFICATIONS(user_id, page_no):
         print(i)
     modules.close_conn(cursor, conn)
     
+def GET_CHAT_ROOM_DETAILS(User_id, page_no):
+    cursor, conn = modules.create_connection()
+    
+    posts_per_page = 10
+    cursor.execute(f"""
+        SELECT Room_id, Room_name,
+        (
+            SELECT Username
+            FROM USERS users
+            WHERE rooms.Creator_id = users.User_id
+        ),
+        (
+            SELECT COUNT(*)
+            FROM CHAT_USERS chat_users
+            WHERE rooms.Creator_id = chat_users.User_id
+            AND rooms.Room_id = chat_users.Room_id
+        )
+        
+        FROM CHAT_ROOMS rooms
+        
+        WHERE (
+            SELECT COUNT(Room_id)
+            FROM CHAT_USERS
+            WHERE User_id = '{User_id}'
+            AND rooms.Room_id = chat_users.Room_id
+        ) > 0
+        
+        OFFSET ( ({page_no}-1)  * {posts_per_page} )
+        LIMIT {posts_per_page};     
+        
+    """)
+    results = []
+    for i in cursor.fetchall():
+        results.append([
+            i[0],
+            i[1],
+            i[2],
+            i[3]
+        ])
+    
+    modules.close_conn(cursor, conn) 
+    modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+    return results
 
-if __name__ == "__main__": 
-    GET_NOTIFICATIONS(1, 1)
+def GET_CHAT_INVITE_DETAILS(User_id, page_no):
+    posts_per_page = 10
+    
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT invites.Room_id,
+        (
+            SELECT Room_name
+            FROM CHAT_ROOMS rooms
+            WHERE rooms.Room_id = invites.Room_id
+        ),
+        (
+            SELECT Username
+            FROM USERS users
+            
+            INNER JOIN CHAT_ROOMS rooms
+            ON users.User_id = rooms.Creator_id
+            
+            WHERE rooms.Room_id = invites.Room_id
+        ),
+        (
+            SELECT COUNT(*)
+            FROM CHAT_USERS chat_users
+            
+            INNER JOIN CHAT_ROOMS rooms
+            ON chat_users.User_id = rooms.Creator_id
+            
+            WHERE rooms.Creator_id = chat_users.User_id
+            AND rooms.Room_id = chat_users.Room_id
+            AND rooms.Room_id = invites.Room_id
+        )
+        
+        FROM CHAT_ROOM_INVITES invites 
+        WHERE invites.User_id = '{User_id}'
+        
+        OFFSET ( ({page_no}-1)  * {posts_per_page} )
+        LIMIT {posts_per_page};  
+        
+    """)
+
+    results = []
+    for i in cursor.fetchall():
+        results.append([
+            i[0],
+            i[1],
+            i[2],
+            i[3]
+        ])
+    
+    
+    modules.close_conn(cursor, conn) 
+    modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+    return results
+
+
+def GET_CHAT_MESSAGES(room_id, page_no):
+    cursor, conn = modules.create_connection()
+
+    posts_per_page = 10
+    cursor.execute(f"""
+        SELECT 
+        (
+            SELECT Username
+            FROM USERS users
+            WHERE users.User_id = messages.User_id
+        ), 
+        messages.Date_time,
+        messages.Message
+        
+        FROM CHAT_MESSAGES messages
+        WHERE Room_id ='{room_id}'
+        
+        ORDER BY Date_time DESC
+        
+        OFFSET ( ({page_no}-1)  * {posts_per_page} )
+        LIMIT {posts_per_page};        
+    """)
+    results = []
+    for i in cursor.fetchall():
+        results.append([
+            i[0], #User_name, 
+            i[1], #Date_time, 
+            i[2], #Message
+        ])
+    
+    modules.close_conn(cursor, conn) 
+    modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+    return results, CAN_SCROLL_MESSAGES(page_no, posts_per_page, room_id)
+
+def CAN_SCROLL_MESSAGES(page_no, posts_per_page, room_id):
+    total_posts_this_far = int(page_no) * posts_per_page
+    if total_posts_this_far >= modules.GET_TOTAL_MESSAGES_FOR_ROOM(room_id):
+        return "False"
+    else:
+        return "True"
+
+
+def GET_ROOM_NAME_BY_ID(room_id):
+    cursor, conn = modules.create_connection()
+    
+    cursor.execute(f"""
+        SELECT Room_name
+        FROM CHAT_ROOMS
+        WHERE Room_id = '{room_id}'
+    """)
+    results = ""
+    for i in cursor.fetchall():
+        results = i[0]
+    modules.close_conn(cursor, conn) 
+    return results
+
+ 
+def GET_CREATOR_OF_ROOM(Room_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT Creator_id
+        FROM CHAT_ROOMS
+        WHERE Room_id = '{Room_id}'
+    """)
+    results = []
+    for i in cursor.fetchall():
+        results = i[0]
+
+    modules.close_conn(cursor, conn) 
+    return results
+
+def GET_CHAT_ROOM_ID_BY_NAME(Room_name):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT Room_id
+        FROM CHAT_ROOMS
+        WHERE Room_name = '{Room_name}'
+    """)
+    results = []
+    for i in cursor.fetchall():
+        results = i[0]
+
+    modules.close_conn(cursor, conn) 
+    return results
+
+
+def GET_CHAT_ROOM_NAMES_BY_TEXT(query_text, user_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT Room_name
+        FROM CHAT_ROOMS
+        WHERE LOWER(Room_name) LIKE LOWER('%{query_text}%')
+        AND (
+            SELECT COUNT(Room_id)
+            FROM CHAT_USERS
+            WHERE User_id = '{user_id}'
+        ) > 0
+    """)
+    results = []
+    for i in cursor.fetchall():
+        results.append(i[0])
+
+    modules.close_conn(cursor, conn) 
+    return results
+    
+def GET_ALL_USERS_IN_ROOM(Room_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT *
+        FROM CHAT_USERS
+        WHERE Room_id = '{Room_id}'
+    """)
+    # results = []
+    for i in cursor.fetchall():
+        print(i)
+
+    modules.close_conn(cursor, conn) 
+    # return results
+if __name__ == "__main__":
+    GET_ALL_USERS_IN_ROOM(Room_id=3)
     pass
 

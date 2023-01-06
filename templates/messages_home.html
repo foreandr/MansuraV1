@@ -1,0 +1,199 @@
+{% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
+
+{%block main %}
+<div>
+    <div class="container">
+        <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+            <h1><ul>CHAT ROOMS</ul></h1>
+        </div>
+        
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Create New Chat Room!
+        </button>
+    </div>
+    <p>
+
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Create Chat Room</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <form action="/messages/{{page_no}}" method="POST" enctype="multipart/form-data">
+                            <div>
+                                <label><b><u><h2>Room Name</h2></u></b></label>
+                                <div>
+                                    <input class="form-control" type="text" hx-get="/search_text_by_category/chat_room_titles" maxlength="20" name="room_name" hx-trigger="keyup changed delay:500ms" hx-target="#room-results" placeholder="Search Room Name" >
+                                    <div id="room-results" name="room-results"></div>
+                                    <div>
+                                        {{failure_message}}
+                                    </div>
+                                    
+                                </div>
+                            </div> 
+                            <div>
+                                <label><b><u><h2>Invite (can only invite people you follow)</h2></u></b></label>
+                                <div>
+                                    <input class="form-control" type="text" hx-get="/search_text_by_category/chat_room_additions" maxlength="20" name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search..." >
+                                </div>
+                            </div> 
+                        
+                            <div id="search-results" name="search_results">
+                            </div>
+                            
+                            <div>
+                                <input class="form-control" name="chosen_name" placeholder="" value="" id="selected_users"readonly>
+                            </div>                        
+                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button  id="room_create_button"type="submit" class="btn btn-primary" disabled>Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </p>
+</div>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-lg-6">
+            <h2>
+                CHAT ROOMS
+            </h2>
+            <table class="table table-striped table-sm">
+                <thead>
+                    <tr> 
+                        <th scope="col"></th>
+                        <th scope="col">ROOM NUMBER</th>
+                        <th scope="col">ROOM NAME</th>
+                        <th scope="col">CREATOR NAME</th>
+                        <th scope="col">NUM MEMBERS</th>
+                        <th scope="col">LEAVE</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    {%for i in range(chat_rooms |length )%}
+                    <tr>
+                        <td>
+                            <form action="/chat_page/{{chat_rooms[i][0]}}/0">
+                                <button class="btn btn-dark">
+                                    GO TO
+                                </button>
+                            </form>
+
+                        </td>
+
+                        <td>
+                            {{chat_rooms[i][0]}}
+                        </td>
+                        <td>
+                            {{chat_rooms[i][1]}}
+                        </td>
+                        <td>
+                            {{chat_rooms[i][2]}}
+                        </td>
+                        <td>
+                            {{chat_rooms[i][3]}}
+                        </td>
+                        <td>
+                            <button class="btn btn-dark" hx-get="/chat_logic/{{chat_rooms[i][0]}}/leave" hx-trigger="click">
+                               LEAVE
+                            </button>
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-lg-6">
+            <h2>
+               CHAT INVITES
+            </h2>
+            <table class="table table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">ACCEPT</th>
+                        <th scope="col">ROOM NUMBER</th>
+                        <th scope="col">ROOM NAME</th>
+                        <th scope="col">CREATOR NAME</th>
+                        <th scope="col">NUM MEMBERS</th>
+                        <th scope="col">REJECT</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    {%for i in range(chat_invites |length )%}
+                    <tr>
+                        <td>
+                            <button class="btn btn-dark" hx-get="/chat_logic/{{chat_invites[i][0]}}/accept" hx-trigger="click">
+                                ACCEPT
+                            </button>
+                        </td>
+                        <td>
+                            {{chat_invites[i][0]}}
+                        </td>
+                        <td>
+                            {{chat_invites[i][1]}}
+                        </td>
+                        <td>
+                            {{chat_invites[i][2]}}
+                        </td>
+                        <td>
+                            {{chat_invites[i][3]}}
+                        </td>
+                        <td>
+                            <button  class="btn btn-dark"hx-get="/chat_logic/{{chat_invites[i][0]}}/reject" hx-trigger="click">
+                                REJECT
+                            </button>
+                        </td>
+                    </tr>
+                    {%endfor%}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+
+<nav aria-label="">
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" href="/messages/{{page_no|int -2}}">Previous</a></li>
+      <li class="page-item"><a class="page-link" href="/messages/{{page_no}}">+1</a></li>
+      <li class="page-item"><a class="page-link" href="/messages/{{page_no+1}}">+2</a></li>
+      <li class="page-item"><a class="page-link" href="/messages/{{page_no+3}}">+4</a></li>
+      <li class="page-item"><a class="page-link" href="/messages/{{page_no+7}}">+8</a></li>
+      <li class="page-item"><a class="page-link" href="/messages/{{page_no+15}}">+16</a></li>
+      <li class="page-item"><a class="page-link" href="/messages/{{page_no+31}}">+32</a></li>
+    </ul>
+</nav>
+
+<script>
+    count = 0
+    function choose_selected_user(user){
+        if (count <= 5)
+            // turn into += when i figure out hwo to do multiple
+            document.getElementById("selected_users").value += `${user},`
+            count +=1
+    }
+</script>
+{% endblock main %}
+
+
+

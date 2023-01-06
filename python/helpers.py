@@ -261,6 +261,14 @@ def SERVER_CHECK(server, function):
         elif function == "CREATE_TABLE_USER_STATUS":
             cursor.execute("""DROP TABLE IF EXISTS USER_STATUS CASCADE""")
             modules.print_segment()  
+            
+        elif function == "CREATE_TABLE_CHAT_MESSAGES":
+            cursor.execute("""DROP TABLE IF EXISTS CHAT_MESSAGES CASCADE""")
+            modules.print_segment()  
+    
+        elif function == "CREATE_TABLE_CHAT_ROOM_INVITES":
+            cursor.execute("""DROP TABLE IF EXISTS CHAT_ROOM_INVITES CASCADE""")
+            modules.print_segment()  
 
 
         conn.commit()
@@ -270,7 +278,8 @@ def CHECK_IF_IT_IS_ME(id):
     if str(id) == "1":
         return "True"
     else:
-        return "False"     
+        return "False" 
+        
 def CHECK_IF_MOBILE(request):
     devices = ["Android", "webOS", "iPhone", "iPad", "iPod", "BlackBerry", "IEMobile", "Opera Mini"]
     result = False
@@ -282,7 +291,29 @@ def CHECK_IF_MOBILE(request):
     except Exception as e:
         modules.log_function("error", e)
         return result
-
+    
+def CHECK_COMMENT_LIKE_EXISTS(Comment_id, User_id):
+    cursor, conn = modules.create_connection()
+    
+    cursor.execute(f"""
+        SELECT COUNT(*)
+        FROM COMMENT_VOTES
+        WHERE Comment_id = %(Comment_id)s
+        AND User_id = %(User_id)s          
+    """, {'Comment_id':Comment_id,
+          'User_id': User_id
+        }
+    )
+    result = 0
+    for i in cursor.fetchall():
+        result = i[0]
+    
+    modules.close_conn(cursor, conn) 
+    if result > 0:
+        return True
+    else: 
+        return False
+    
 def CHECK_LIKE_EXISTS(Post_id, User_id):
     cursor, conn = modules.create_connection()
     
@@ -326,6 +357,7 @@ def CHECK_CONNECTION_EXISTS(User_id1, User_id2):
         return True
     else: 
         return False    
+       
 def CHECK_FAVE_EXISTS(Post_id, User_id):
     cursor, conn = modules.create_connection()
     
@@ -389,14 +421,18 @@ def TRANSFRM_COMMENT_ARRAY_INTO_HTML(comment_array):
             </div>
 
             <span>
-                <button class="btn" disabled>
+                <button class="btn btn-outline-dark btn-lg" hx-post="/update_comment_like/@COMMENT_ID" hx-trigger="click" onclick="like_logic(this)">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
                         <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
                     </svg>
+                    <span id="comment_like_location@COMMENT_ID">
+                    @NUM_COMMENT_VOTES
+                    </span>
                 </button>
 
             </span>
             
+            <!--
             <span>
                 <button class="btn" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
@@ -404,6 +440,7 @@ def TRANSFRM_COMMENT_ARRAY_INTO_HTML(comment_array):
                     </svg>
                 </button>
             </span> 
+            -->
             
             <span>
                 <button class="btn" disabled>
@@ -419,11 +456,25 @@ def TRANSFRM_COMMENT_ARRAY_INTO_HTML(comment_array):
         </div>   
     """
     for i in comment_array:
+        print(i)
         username = i[0]
         text = i[1]
         date = i[2]
+        post_id = i[3]
+        comment_id = i[4]
+        
+        num_comment_votes = modules.GET_NUM_COMMENT_VOTES_BY_ID(comment_id)
+        print("username", username)
+        print("text", text)
+        print("date", date)
+        print("post_id", post_id)
+        print("comment_id", comment_id)
+        print("num_comment_votes", num_comment_votes)
+        
         temp_html = html_template.replace("@USERNAME", username)
         temp_html = temp_html.replace("@TEXT", text)
+        temp_html = temp_html.replace("@COMMENT_ID", str(comment_id))
+        temp_html = temp_html.replace("@NUM_COMMENT_VOTES", str(num_comment_votes))
         temp_html = temp_html.replace("@DATE", str((date.strftime('%Y-%m-%d'))))
         html_array.append(temp_html)
     
@@ -674,7 +725,6 @@ def GETTING_POST_MAX_FROM_QUERY(query):
     modules.close_conn(cursor, conn)
     return num_total
 
-
 def CHECK_ALGO_FUNCTION(algo_name, user):
     #print("checking", algo_name)
     #print(algo_name, user)
@@ -731,30 +781,84 @@ def CHECK_ACCOUNT_STATUS(User_id):
             return True
     else:
         return True
-   
+
+def CHECK_CHAT_ROOM_NAME(query_text):
+    # 0. SPECIAL CHARACTERS  
+    if any(not c.isalnum() for c in query_text):
+    #    print(1)
+        return "False" 
+     
+    # 1. CHECK LENGTH
+    if len(query_text) > 20:
+        # print(2)
+        return "False"    
+       
+    # 2.  INJECTION CHECK
+    if not modules.CHECK_INJECTION(query_text):
+        # print(3)
+        return "False"  
+    
+    return "True"
+
+def CHECK_USER_ID_ROOM_CREATOR(user_id, room_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT COUNT(*)
+        FROM CHAT_ROOMS
+        WHERE Creator_id = '{user_id}'   
+        AND Room_id = '{room_id}' 
+    """)
+    results = 0 
+    for i in cursor.fetchall():
+        results = i[0]
+    modules.close_conn(cursor, conn)
+
+    if str(results) != "0" or results != 0: # doublt JUST INCASE 
+        return True
+    else: 
+        return False
+  
+def encrypt_caesar(plaintext,n=1):
+    ans = ""
+    # iterate over the given text
+    for i in range(len(plaintext)):
+        ch = plaintext[i]
+        
+        # check if space is there then simply add space
+        if ch==" ":
+            ans+=" "
+        # check if a character is uppercase then encrypt it accordingly 
+        elif (ch.isupper()):
+            ans += chr((ord(ch) + n-65) % 26 + 65)
+        # check if a character is lowercase then encrypt it accordingly
+        
+        else:
+            ans += chr((ord(ch) + n-97) % 26 + 97)
+    
+    return ans  
+    
+def decrypt_caesar(encrypted_message, k=1):
+        
+    letters="abcdefghijklmnopqrstuvwxyz"
+
+    decrypted_message = ""
+
+    for ch in encrypted_message:
+
+        if ch in letters:
+            position = letters.find(ch)
+            new_pos = (position - k) % 26
+            new_char = letters[new_pos]
+            decrypted_message += new_char
+        else:
+            decrypted_message += ch
+
+    return decrypted_message
+
 if __name__ == "__main__":
-    CHECK_SEARCH_FAVE_EXISTS(1, 3)
-    CHECK_SEARCH_FAVE_EXISTS(2, 3)
-    CHECK_SEARCH_FAVE_EXISTS(3, 3)
-    CHECK_SEARCH_FAVE_EXISTS(4, 3)
-    CHECK_SEARCH_FAVE_EXISTS(5, 3)
-    CHECK_SEARCH_FAVE_EXISTS(6, 3)
-    CHECK_SEARCH_FAVE_EXISTS(7, 3)
-    CHECK_SEARCH_FAVE_EXISTS(8, 3)
-    CHECK_SEARCH_FAVE_EXISTS(9, 3)
-    CHECK_SEARCH_FAVE_EXISTS(10, 3)
-    CHECK_SEARCH_FAVE_EXISTS(11, 3)
-    CHECK_SEARCH_FAVE_EXISTS(12, 3)
-    CHECK_SEARCH_FAVE_EXISTS(13, 3)
-    CHECK_SEARCH_FAVE_EXISTS(14, 3)
-    CHECK_SEARCH_FAVE_EXISTS(15, 3)
-    CHECK_SEARCH_FAVE_EXISTS(16, 3)
-    CHECK_SEARCH_FAVE_EXISTS(17, 3)
-    CHECK_SEARCH_FAVE_EXISTS(18, 3)
-    CHECK_SEARCH_FAVE_EXISTS(19, 3)
-    CHECK_SEARCH_FAVE_EXISTS(20, 3)
-    CHECK_SEARCH_FAVE_EXISTS(21, 3)
-    CHECK_SEARCH_FAVE_EXISTS(22, 3)
+    text = encrypt_text("hello world",n=1)
+    print(text)
+    print(decrypt(text))
 
 
 

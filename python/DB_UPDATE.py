@@ -108,3 +108,14 @@ def UPDATE_USER_STRIKES(User_id):
     modules.print_green(f"{inspect.stack()[0][3]} {User_id} COMPLETED\n")
     modules.close_conn(cursor, conn)    
 
+def REMOVE_CREATOR_FROM_ROOM(Room_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        UPDATE CHAT_ROOMS
+        SET Creator_id = NULL
+        WHERE Room_id = '{Room_id}'
+    """)
+    conn.commit()
+    modules.print_green(f"{inspect.stack()[0][3]} {Room_id} COMPLETED\n")
+    modules.close_conn(cursor, conn)    
+    

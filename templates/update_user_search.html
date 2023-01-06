@@ -1,6 +1,6 @@
 
 {% if users != "None"%}
-<div class="col-sm-3 selectdiv">
+<div>
     <select class="selectpicker form-control" onchange="choose_selected_user(this.value)">
         <option disabled selected="None">List</option>
         {% for i in range(0, users | length) %}
@@ -29,6 +29,44 @@
         document.getElementById("search_algo_button").disabled = true;
     </script>
     {% endif %}
+
+{% elif chat_room_answer != "None" %}
+    
+    {% if chat_room_answer == "True" %}
+    <script>
+        //console.log("CAN I DO THIS?222") 
+        document.getElementById("room_create_button").disabled = false;
+    </script>
+    <div class="text-success">
+        Room Name Available
+    </div>
+    {% else%}
+    <div class="text-danger">
+        Room Name Unavailable
+    </div>
+    <script>
+        //console.log("CAN I DO THIS?222") 
+        document.getElementById("room_create_button").disabled = true;
+    </script>
+    {% endif %}
+
+{% elif chat_rooms_with_x_names != "None" %}
+
+<div>
+    <select class="selectpicker form-control" name="chat_room_name_x" onchange="put_choice_in_input(this.value)">
+        <option disabled selected="None">List</option>
+        {% for i in range(0, chat_rooms_with_x_names | length) %}
+        <option>{{chat_rooms_with_x_names[i]}}</option>
+        {% endfor %}
+    </select>
+</div>
+<script>
+    function put_choice_in_input(value){
+        console.log(value)
+        document.getElementById("chat_room_name").value = value
+    }
+</script>
+
 
 {% endif %}
 

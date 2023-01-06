@@ -76,6 +76,20 @@ def DELETE_CONNECTION(user_id1, user_id2):
     
     modules.close_conn(cursor, conn) 
 
+def DELETE_FROM_COMMENT_LIKES(Comment_id, User_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        DELETE FROM COMMENT_VOTES
+        WHERE Comment_id = %(Comment_id)s
+        AND User_id = %(User_id)s
+    """, {'Comment_id': Comment_id,
+          'User_id':User_id
+        }
+    )
+    conn.commit() 
+    modules.close_conn(cursor, conn) 
+    modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+
 def DELETE_COMMENT(Post_id, User_id):
     # JUST REMOVE THE TEXT
     # MAYBE CREATE A TABLE OF DELETED COMMENTS 
@@ -123,7 +137,7 @@ def DELETE_FROM_POST_PERSON(post_id):
     modules.close_conn(cursor, conn)
     modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n") 
     
-def  DELETE_FROM_VIEWS(post_id):
+def DELETE_FROM_VIEWS(post_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
         DELETE FROM VIEWS
@@ -135,7 +149,7 @@ def  DELETE_FROM_VIEWS(post_id):
     modules.close_conn(cursor, conn)  
     modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
 
-def  DELETE_FROM_COMMENTS(post_id):
+def DELETE_FROM_COMMENTS(post_id):
     cursor, conn = modules.create_connection()
     cursor.execute(f"""
         DELETE FROM COMMENTS
@@ -195,8 +209,6 @@ def DELETE_FROM_FAVOURITES(post_id):
     modules.close_conn(cursor, conn) 
     modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
 
-
-
 def DELETE_POST(post_id):
     DELETE_FROM_LIKES(post_id)
     DELETE_FROM_VIEWS(post_id)
@@ -215,7 +227,6 @@ def DELETE_USER(User_id):
     )
     conn.commit()
     modules.close_conn(cursor, conn) 
-
 
 def GET_ALL_POST_IDS_BY_PERSON_ID(Person_id):
     cursor, conn = modules.create_connection()
@@ -251,7 +262,38 @@ def DELETE_PERSON(Person_id):
     modules.close_conn(cursor, conn) 
     modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
 
+def LEAVE_CHAT_ROOM(User_id, Room_id):
     
-    
+    creator_id = modules.GET_CREATOR_OF_ROOM(Room_id)
+    if creator_id == User_id:
+        modules.REMOVE_CREATOR_FROM_ROOM(Room_id)
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            DELETE FROM CHAT_USERS
+            WHERE User_id = '{User_id}'
+            AND Room_id = '{Room_id}'
+        """
+        )
+        conn.commit()
+        modules.close_conn(cursor, conn) 
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")   
+    except Exception as e:
+        print("error as e", e)
+
+def DELETE_CHAT_INVITE(User_id, Room_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        DELETE FROM CHAT_ROOM_INVITES
+        WHERE User_id = %(User_id)s
+        AND Room_id = %(Room_id)s
+    """, {'User_id': User_id,
+          'Room_id': Room_id
+        }
+    )
+    conn.commit()
+    modules.close_conn(cursor, conn)  
+    modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+
 if __name__ == "__main__":
     DELETE_CONNECTION(1, 2)

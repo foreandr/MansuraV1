@@ -110,12 +110,10 @@ DONE.Favourites
 Contact
 Terms
 Mission
-
 REQUESTING
 ==========
 title cap 30 chars
 desc cap 200 (front end not back incase i want to change)
-
 Max length desc / title
 a few bad requests mutes, a few more bans, a few more IP bans
 grand some people request admin privileges
@@ -123,3 +121,7 @@ check description before entering into database frontend and backend
 APPROVE DENY AND REPORT TRIBNAL LOGIC
 DONE. when registering do the injection check so i dont end up with a pass that cant be entered
 NOT DOING.no mandatory login 
+DONE.be able to follow an account on thier page
+DONE. COMMENT VOTES close enough
+DONE.convert chat messags in and out of hexadimecal or some kind of encoding
+DONE.baaic encrypt instead of encode acutrally, 1 letter caser cypher

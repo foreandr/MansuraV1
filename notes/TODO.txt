@@ -1,11 +1,20 @@
 
 #TODO: WILL HAVE TO RESET THE LIVE TABLES
-
-be able to follow an account on thier page
+OTHER CHAT LOGIC NOT DONE YET CHEKC AGAION
 show convos,
     - sne dpost
-(apply to be a content moderator)
-COMMENT VOTES
+
+wrap my functions int ry catch
+if they fail the test, send them to the spam page
+
+n comments, n cvomment views, n other interactions per timeframew
+cloudflare 2fa turnstile
+    
+incase i have to reset, create a text file that stores all the uploads in some way
+
+chat algos by page, multiple pages
+
+default algo us e apure all time count
 
 MONETIZATION
 =============
@@ -14,7 +23,6 @@ SUBSCRIPTIONS
     - people can post n links to pages they want RSS feeds generated for
 ADS
 
+person page search by cerrtain fields
 
-LOGGING
-=============
-log db actions instead of printing them
+

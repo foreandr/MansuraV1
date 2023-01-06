@@ -1,3 +1,4 @@
+from base64 import encode
 import hashlib
 import inspect
 import datetime
@@ -22,9 +23,9 @@ def INSERT_USER(username, password, Email):
         cursor.execute(
             f"""
             INSERT INTO USERS
-            (Username, Password, Profile_pic, Email,User_Strikes, Date_time)
+            (Username, Password, Profile_pic, Email,User_Strikes, Date_time, User_first_time)
             VALUES
-            (%(username)s, %(password)s, %(pic)s, %(email)s, 0, NOW())
+            (%(username)s, %(password)s, %(pic)s, %(email)s, 0, NOW(), 'True')
             
             ON CONFLICT DO NOTHING
             """, {'username': username,
@@ -201,6 +202,14 @@ def LIKE_LOGIC(Post_id, User_id):
         modules.DELETE_LIKE(Post_id, User_id)
     else:
         modules.INSERT_LIKE(Post_id, User_id)
+        
+def COMMENT_LIKE_LOGIC(Comment_id, User_id):
+    already_liked_comment = modules.CHECK_COMMENT_LIKE_EXISTS(Comment_id, User_id)
+    if already_liked_comment:
+        #print( User_id, "has already liked",Post_id)
+        modules.DELETE_FROM_COMMENT_LIKES(Comment_id, User_id)
+    else:
+        modules.INSERT_COMMENT_VOTE(Comment_id, User_id)
 
 def CONNECTION_LOGIC(User_id1, User_id2):
     already_following = modules.CHECK_CONNECTION_EXISTS(User_id1, User_id2)
@@ -251,22 +260,21 @@ def INSERT_LIKE(Post_id, User_id):
     
     modules.close_conn(cursor, conn) 
 
-def INSERT_COMMENT_VOTE(Comment_id, User_id, Vote_type):
+def INSERT_COMMENT_VOTE(Comment_id, User_id):
     cursor, conn = modules.create_connection()
     try:
         cursor = conn.cursor()
         cursor.execute(
             f"""
             INSERT INTO COMMENT_VOTES
-            (Comment_id, User_id, Vote_type, Date_time)
+            (Comment_id, User_id, Date_time)
             VALUES
-            (%(Comment_id)s, %(User_id)s, %(Vote_type)s, NOW())
+            (%(Comment_id)s, %(User_id)s, NOW())
             
             ON CONFLICT DO NOTHING
             """, {
                 'Comment_id': Comment_id,
                 'User_id': User_id,
-                'Vote_type': Vote_type,
                 })
         conn.commit()
 
@@ -349,8 +357,8 @@ def INSERT_SEARCH_FAVOURITES(Search_algorithm_id, User_id):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
-    modules.close_conn(cursor, conn) 
-    
+    modules.close_conn(cursor, conn)
+     
 def INSERT_COMMENTS(Post_id, User_id, Comment_text, Replying_to_id="NULL"):
     if not modules.CHECK_ACCOUNT_STATUS(User_id):
         print(User_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
@@ -387,7 +395,6 @@ def INSERT_COMMENTS(Post_id, User_id, Comment_text, Replying_to_id="NULL"):
                     'Replying_to_id': int(Replying_to_id),
                     'Comment_text': Comment_text
                     }
-                
                 )
         conn.commit()
         modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
@@ -474,7 +481,6 @@ def INSERT_VIEWS(Post_id, User_id):
         
         modules.close_conn(cursor, conn) 
 
-
 def INSERT_CONNECTION(user_id1, user_id2):
 
     cursor, conn = modules.create_connection()
@@ -533,8 +539,27 @@ def INSERT_IP_ADRESSES(Address, User_id):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)
+
+def INSERT_CHAT_REQUEST(user_name, room_id):
+    user_id = modules.GET_USER_ID_FROM_NAME(user_name)
+    cursor, conn = modules.create_connection()
     
-def INSERT_CHAT_ROOMS(Creator_id, Room_name):
+    if modules.CHECK_USER_ID_ROOM_CREATOR(user_id, room_id):
+        # print("This user is the creator")
+        modules.INSERT_CHAT_ROOMS_USER(user_id, room_id)
+        return ""
+    
+    cursor.execute(f"""
+        INSERT INTO CHAT_ROOM_INVITES(Room_id, User_id,Date_time)
+        VALUES 
+        ('{room_id}', '{user_id}', NOW())  
+        ON CONFLICT DO NOTHING
+    """)
+    conn.commit()
+    modules.close_conn(cursor, conn)
+    modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+     
+def INSERT_CHAT_ROOMS(Creator_id, Room_name, list_of_names):
 
     cursor, conn = modules.create_connection()
     try:
@@ -550,6 +575,14 @@ def INSERT_CHAT_ROOMS(Creator_id, Room_name):
             )
         conn.commit()
         modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        room_id = modules.GET_ROOM_ID_BY_TITLE_AND_USER_ID(User_id=Creator_id, Room_name=Room_name)
+        # print(list_of_names)
+        #for i in list_of_names:
+        #    print(i)
+        
+        for i in list_of_names:
+            INSERT_CHAT_REQUEST(user_name=i, room_id=room_id)
+            
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -730,7 +763,7 @@ def INSERT_TRIBUNAL_WORD_VOTE(word_id, voter_id, vote_type):
     cursor.execute(f"""
         INSERT INTO TRIBUNAL_WORD_VOTE(Tribunal_word_id, User_id, Vote_Type)
         VALUES(%(word_id)s, %(voter_id)s, %(vote_type)s)
-        ON CONFLICT DO NOTHING          
+        ON CONFLICT DO NOTHING
     """, {'word_id': word_id,
           'voter_id': voter_id,
           'vote_type': vote_type}
@@ -790,11 +823,41 @@ def INSERT_SEARCH_VOTE(Search_algorithm_id, User_id):
     modules.print_green(f"{inspect.stack()[0][3]} {User_id, Search_algorithm_id} COMPLETED")
     modules.close_conn(cursor, conn) 
     
+def INSERT_CHAT_MESSAGE(User_id, Room_id, Message):
+    cursor, conn = modules.create_connection()
+    
+    cursor.execute(f"""
+        INSERT INTO CHAT_MESSAGES(User_id, Room_id, Date_time, Message)
+        VALUES 
+        (%(User_id)s, %(Room_id)s, NOW(), %(Message)s)  
+    """, {'User_id': User_id,
+          'Room_id': Room_id,
+          'Message': Message})
+    conn.commit()
+    modules.close_conn(cursor, conn)
+    modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+    
+def XOR_ENCRYPTION(text):
+    # performing XOR operation on each value of bytearray
+    text2 = bytearray(text,'utf-8')
+    key = 1 
+    for index, values in enumerate(text2):
+        text2[index] = values ^ key 
+           
+    text2 = str(text2)
+    text2 = text2.replace("bytearray(b'", "")
+    text2 = text2[:-2]
+    
+    return text2
+    
 if __name__ == "__main__":
-    # INSERT_USER("coomerdoomer", "password", "coomerdoomer@gmail.com")
-    # INSERT_CONNECTION(1, 2)
-    # INSERT_DEMO_PEOPLE()
-    # modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK2", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=J_jzFt8VLnk", Post_live="True", User_id=1, Person="Noam Chomsky")
-    # INSERT_TRIBUNAL_WORD("faggotere")
+    text= 'hello world'
+    text2 = XOR_ENCRYPTION(text)
+    print(text2)
+    
+    text3 = XOR_ENCRYPTION(text2)
+    print(text3)
 
-    pass
+
+
+

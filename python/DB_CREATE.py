@@ -17,13 +17,15 @@ def CREATE_TABLE_USER(server="false"):
                     Username varchar(20) UNIQUE,
                     Password varchar(200),
                     Profile_pic BYTEA,
+                    bio varchar,
                     Email varchar(200) UNIQUE,
                     Date_time timestamp,
                     User_Strikes INT,
                     User_mute_status varchar, 
                     User_timeout_status varchar,
-                    User_ban_status varchar
-                    
+                    User_ban_status varchar,
+                    User_post_priority INT,
+                    User_first_time varchar
                     
                 );
                 """)
@@ -34,31 +36,7 @@ def CREATE_TABLE_USER(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)    
-'''
-def CREATE_TABLE_USER_STATUS(server="false"):
-    cursor, conn = modules.create_connection()
-    try:
-        modules.SERVER_CHECK(server, inspect.stack()[0][3])
-        cursor.execute(
-                f"""
-                CREATE TABLE USER_STATUS
-                (
-                    User_id BIGINT,
-                    User_Strikes INT,
-                    User_mute_status varchar, 
-                    User_timeout_status varchar,
-                    User_ban_status varchar
-                );
-                """)
-        conn.commit()
-        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
-    except Exception as e:
-        cursor.execute("ROLLBACK")
-        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
-    
-    modules.close_conn(cursor, conn)  
-'''   
- 
+
 def CREATE_TABLE_MODERATION_ADMINS(server="false"):
     cursor, conn = modules.create_connection()
     try:
@@ -549,7 +527,9 @@ def CREATE_TABLE_CHAT_ROOMS(server="false"):
                     Room_id SERIAL PRIMARY KEY,
                     Creator_id BIGINT,
                     Room_name varchar,
-                    FOREIGN KEY (Creator_id) REFERENCES USERS(User_id)
+                    Date_time timestamp,
+                    FOREIGN KEY (Creator_id) REFERENCES USERS(User_id),
+                    UNIQUE(Creator_id, Room_name)
                 );
                 """)
         conn.commit()
@@ -561,6 +541,30 @@ def CREATE_TABLE_CHAT_ROOMS(server="false"):
 
     modules.close_conn(cursor, conn)
     
+def CREATE_TABLE_CHAT_ROOM_INVITES(server="false"):
+    cursor, conn = modules.create_connection()
+
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE CHAT_ROOM_INVITES(
+                    Room_id BIGINT,
+                    User_id BIGINT,
+                    Date_time timestamp,
+                    
+                    FOREIGN KEY (Room_id) REFERENCES CHAT_ROOMS(Room_id),
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id)
+                );
+                """)
+        conn.commit()
+
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
+    modules.close_conn(cursor, conn)
     
 def CREATE_TABLE_CHAT_ADMINS(server="false"):
     cursor, conn = modules.create_connection()
@@ -584,8 +588,7 @@ def CREATE_TABLE_CHAT_ADMINS(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
     modules.close_conn(cursor, conn)
-    
-    
+     
 def CREATE_TABLE_CHAT_USERS(server="false"):
     cursor, conn = modules.create_connection()
 
@@ -596,6 +599,31 @@ def CREATE_TABLE_CHAT_USERS(server="false"):
                 CREATE TABLE CHAT_USERS(
                     User_id BIGINT,
                     Room_id BIGINT, 
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
+                    FOREIGN KEY (Room_id) REFERENCES CHAT_ROOMS(Room_id)
+                );
+                """)
+        conn.commit()
+
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
+    modules.close_conn(cursor, conn)
+    
+def CREATE_TABLE_CHAT_MESSAGES(server="false"):
+    cursor, conn = modules.create_connection()
+
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+                f"""
+                CREATE TABLE CHAT_MESSAGES(
+                    User_id BIGINT,
+                    Room_id BIGINT,
+                    Date_time timestamp,
+                    Message varchar,
                     FOREIGN KEY (User_id) REFERENCES USERS(User_id),
                     FOREIGN KEY (Room_id) REFERENCES CHAT_ROOMS(Room_id)
                 );
