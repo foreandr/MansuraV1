@@ -278,12 +278,12 @@ def request_form(request_type):
             # print("link", link)
 
             person_person_name = request.form["person_name"]
-            # print("person_name:", person_person_name)
+            print("person_name:", person_person_name)
             modules.INSERT_POST(Post_title=person_post_title, 
                                 Post_description=person_description, 
                                 Post_link=person_link, 
                                 Post_live="false", 
-                                Person=person_person_name, 
+                                Person=[person_person_name], 
                                 User_id=session["id"]
                 )
             
