@@ -569,25 +569,24 @@ def COMMENT_TEXT_CHECK(entered_string):
         entered_string = entered_string.split(" ") # GET each word
             
         for i in range(len(entered_string)):
-            if not CHECK_INJECTION(entered_string[i]):
-                entered_string[i] = "****"
-                
-            if entered_string[i] in my_lines:
-                #print("FOUND", entered_string[i], len(entered_string[i]), i)
+            # TOO STRICT
+            #if not CHECK_INJECTION(entered_string[i]):
+            #    entered_string[i] = "****"
 
-                upvotes = GET_UPVOTES_BY_WORD(entered_string[i])
-                downvotes = GET_DOWNVOTES_BY_WORD(entered_string[i])
+            upvotes = GET_UPVOTES_BY_WORD(entered_string[i])
+            downvotes = GET_DOWNVOTES_BY_WORD(entered_string[i])
                 
-                #print("UPVOTES      :", upvotes)
-                #print("DOWNVOTES    :", downvotes)
+            #print("UPVOTES      :", upvotes)
+            #print("DOWNVOTES    :", downvotes)
                 
-                total_votes = int(upvotes) + int(downvotes)
-                if downvotes >= 10:
-                    dislike_ratio = int(downvotes) / (total_votes)
-                    # print("dislike_ratio:",dislike_ratio)
-                    if (dislike_ratio) >= 0.8:
-                        # print("changing", entered_string[i], "to ****")
-                        entered_string[i] = "****"
+            total_votes = int(upvotes) + int(downvotes)
+            if downvotes >= 10:
+                dislike_ratio = int(downvotes) / (total_votes)
+                # print("dislike_ratio:",dislike_ratio)
+                if (dislike_ratio) >= 0.8:
+                    # print("changing", entered_string[i], "to ****")
+                    entered_string[i] = "****"
+                    
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
