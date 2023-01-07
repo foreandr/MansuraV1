@@ -1718,12 +1718,16 @@ def USER_LEADERBOARD_VIEWS():
     """
 
 def LEADERBOARD_USER(leaderboard_category):
+    
     if leaderboard_category == 'likes':
         query_addition = modules.USER_LEADERBOARD_LIKES()
     elif leaderboard_category == "comments":
         query_addition = modules.USER_LEADERBOARD_COMMENTS()
     elif leaderboard_category == "views":
         query_addition = modules.USER_LEADERBOARD_VIEWS() 
+    
+    print(query_addition)
+    
     try:
         cursor, conn = modules.create_connection()
         cursor.execute(f"""
@@ -1745,6 +1749,7 @@ def LEADERBOARD_USER(leaderboard_category):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")    
 if __name__ == "__main__":
     # GET_ALL_USERS_IN_ROOM(Room_id=3)
-    print(GET_PEOPLE_BY_POST_ID(46))
+    # GET_ALL_USERS()
+    LEADERBOARD_USER("likes")
     pass
 

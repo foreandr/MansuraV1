@@ -939,7 +939,8 @@ def leaderboards_home(leaderboard_category):
 
     leaderboards = modules.LEADERBOARD_PERSON(leaderboard_category)        
     user_leaderboards = modules.LEADERBOARD_USER(leaderboard_category)
-    # print('user_leaderboards', user_leaderboards)        
+    
+    3 print('user_leaderboards', user_leaderboards)        
     return render_template(f"leaderboards_home.html",
         people_leaderboards=leaderboards,
         user_leaderboards=user_leaderboards,
