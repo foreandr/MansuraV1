@@ -5,6 +5,9 @@
 - change bad query to be below profile
 
 
+
+circle on upload
+
 MONETIZATION
 =============
 DONATIONS

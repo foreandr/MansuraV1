@@ -365,5 +365,37 @@ def KICK_FROM_CHAT_ROOM(Room_id, User_id):
     else:
         return "CAN'T KICK YOURSELF IDIOT"
 
+def EMERGENCY_DELETE_ALL_POSTS():
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            DELETE FROM VIEWS
+        """
+        )
+        conn.commit()
+        modules.close_conn(cursor, conn) 
+        
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            DELETE FROM POST_PERSON
+        """
+        )
+        conn.commit()
+        modules.close_conn(cursor, conn) 
+        
+        
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            DELETE FROM POSTS
+        """
+        )
+        conn.commit()
+        modules.close_conn(cursor, conn) 
+            
+    except Exception as e:
+            print("error as e", e)
+
+
 if __name__ == "__main__":
-    DELETE_CONNECTION(1, 2)
+    # EMERGENCY_DELETE_ALL_POSTS()
+    pass
