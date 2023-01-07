@@ -2,7 +2,7 @@
 
 - CREATE A DEFAULT ALGO THAT IS JUST THE SUM AND MOST RECENT ON CREATION
 - create chat room that can't be exited, and only i can message in
-
+- change bad query to be below profile
 
 
 MONETIZATION
