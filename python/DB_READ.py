@@ -34,7 +34,7 @@ def GET_USERS_BY_TEXT(text):
         query = f"""
             SELECT Person_name
             FROM PEOPLE
-            WHERE LOWER(Person_name) LIKE LOWER('%{text}%')
+            WHERE LOWER(Person_name) LIKE LOWER('{text}%')
             AND Person_live = 'True'
         """
         cursor.execute(query)
@@ -442,10 +442,15 @@ def CHECK_PERSON_EXISTS(Person):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
     
-def GET_PERSON_ID_BY_NAME(Person):
+def GET_PERSON_ID_BY_NAME(Person, User_id):
     # CHECK IF PERSON EXISTS
     if not modules.CHECK_PERSON_EXISTS(Person):
-        modules.INSERT_PERSON(Person, Person_live="False")
+        if User_id == 1: 
+            modules.INSERT_PERSON(Person, Person_live="True")
+        else:
+            modules.INSERT_PERSON(Person, Person_live="False")
+            
+        
     try:
         cursor, conn = modules.create_connection()
         cursor.execute(f"""
@@ -1775,7 +1780,8 @@ def GET_ALL_PEOPLE_TESTING(letter):
 if __name__ == "__main__":
     # GET_ALL_USERS_IN_ROOM(Room_id=3)
     # GET_ALL_USERS()
-    GET_ALL_PEOPLE_TESTING("D")
+    print(GET_ALL_PEOPLE_TESTING("D"))
     # print(GET_ALL_PEOPLE(sort_method="date", letter="D"))
+    # print(GET_USERS_BY_TEXT("dal"))
     pass
 

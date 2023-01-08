@@ -149,4 +149,8 @@ def REMOVE_CREATOR_FROM_ROOM(Room_id):
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
+if __name__ == "__main__":
+    UPDATE_PERSON_TO_LIVE(148)
+    pass
     

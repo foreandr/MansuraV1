@@ -122,10 +122,10 @@ def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User
             )
         conn.commit()
         
-        print("Person", Person)
+        # print("Person", Person)
         for i in Person:
-            print(i)
-            Person_id = modules.GET_PERSON_ID_BY_NAME(i)
+            # print(i)
+            Person_id = modules.GET_PERSON_ID_BY_NAME(i, User_id)
             Post_id = modules.GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link)
             INSERT_POST_PERSON(Post_id, Person_id)
         
