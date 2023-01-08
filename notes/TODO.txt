@@ -4,9 +4,17 @@
 - create chat room that can't be exited, and only i can message in
 - change bad query to be below profile
 
-
+get rid of dupes
 
 circle on upload
+
+loading circle on page navigation
+
+notifications
+    - early virality boosts
+
+public playlists
+playlist leaderboards
 
 MONETIZATION
 =============
