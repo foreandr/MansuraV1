@@ -107,12 +107,15 @@
 
 
     {% for i in range(0, num_posts) %}
+                <div hidden><!--POST ID FOR THOSE OF YOU WHO ARE CURIOUS-->
+                    {{posts[i][6]}}
+                </div>
                 <!--HOW MANY PER ROW-->
                 {% if i % 1  == 0 %}
                     <div class="w-100"></div>
                 {% endif %}
                 
-                {% if posts[i][0] |length  == 0%} <!--DON'T print the empties-->
+                {% if posts[i][0] |length  == 0%} <!--DON'T print the empties might slow things down, need another solution-->
                 {% else %}
 
 
