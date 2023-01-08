@@ -18,7 +18,8 @@ notifications
 public playlists
 playlist leaderboards
 
-
+leaderboards by subject
+leaderboards by type of person, occupation etc
 
 DB backups
 SEND a version of the code to my actual machine every week to so
