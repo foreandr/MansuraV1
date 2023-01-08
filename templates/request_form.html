@@ -64,20 +64,20 @@
                     name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results"
                     placeholder="Search...">
             </div>
-            </br>
     </div>
-        
     <div id="search-results">
     </div>
+    <div>
+        <input class="form-control" name="chosen_name" placeholder="" value="" id="selected_users"readonly>
+    </div>
+
     
     <div>
         <label><b><u><h2>Post Title:</h2></u></b></label>
         <input class="form-control" id="name" name="post_title" placeholder="Post Title" maxlength="80" required>
     </div>
     
-    <div>
-        <input class="form-control" name="chosen_name" placeholder="" value="" id="selected_users"readonly>
-    </div>
+
     <div>
         <a href="/request_form/person">
             <h6><i>Can't find who you're looking for? Add them here.</i></h6>
