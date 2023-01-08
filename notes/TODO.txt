@@ -11,12 +11,16 @@ circle on upload
 loading circle on page navigation
 
 larger post titles
-
+ if there is a dupe, take them tod th post
 notifications
     - early virality boosts
 
 public playlists
 playlist leaderboards
+
+DB backups
+SEND a version of the code to my actual machine every week to so
+
 
 MONETIZATION
 =============
