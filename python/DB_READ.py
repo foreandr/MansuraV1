@@ -1660,6 +1660,8 @@ def PERSON_LEADERBOARD_VIEWS():
 
 
 def LEADERBOARD_PERSON(leaderboard_category):
+
+    
     if leaderboard_category == 'likes':
         query_addition = modules.PERSON_LEADERBOARD_LIKES()
     elif leaderboard_category == "comments":
@@ -1718,6 +1720,8 @@ def USER_LEADERBOARD_VIEWS():
     """
 
 def LEADERBOARD_USER(leaderboard_category):
+    
+
     
     if leaderboard_category == 'likes':
         query_addition = modules.USER_LEADERBOARD_LIKES()

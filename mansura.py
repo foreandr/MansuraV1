@@ -278,7 +278,10 @@ def request_form(request_type):
             # print("link", link)
 
             person_person_name = request.form["person_name"]
-            print("person_name:", person_person_name)
+            person_person_name = [person_person_name]
+            modules.log_function(msg_type="test", log_string=str(person_person_name), function_name=f"INSERT_PERSON")
+            
+            # print("person_name:", person_person_name)
             modules.INSERT_POST(Post_title=person_post_title, 
                                 Post_description=person_description, 
                                 Post_link=person_link, 
