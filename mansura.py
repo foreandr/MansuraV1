@@ -239,13 +239,16 @@ def request_form(request_type):
             
             post_title = request.form["post_title"]
             post_title = modules.clean_title(post_title)
+            post_title = post_title.strip()
             #print("post_title", post_title)
             
             description = request.form["description"]
             description = modules.COMMENT_TEXT_CHECK(description)
+            description = description.strip()
             #print("description", description)
             
             link = request.form["post_link"]
+            link = link.strip()
             #print("link", link)
             
             person_name = request.form["chosen_name"]
@@ -267,17 +270,22 @@ def request_form(request_type):
         elif request_type == "person":
             
             person_post_title = request.form["post_title"]
+            person_post_title = person_post_title.strip()
             #post_title = modules.clean_title(post_title)
             #print("post_title", post_title)
             
             person_description = request.form["description"]
             person_description = modules.COMMENT_TEXT_CHECK(person_description)
+            person_description = person_description.strip()
             #print("description", description)
             
             person_link = request.form["post_link"]
+            person_link = person_link.strip()
             # print("link", link)
 
             person_person_name = request.form["person_name"]
+            person_person_name = person_person_name.strip()
+            
             person_person_name = [person_person_name]
             modules.log_function(msg_type="test", log_string=str(person_person_name), function_name=f"INSERT_PERSON")
             
