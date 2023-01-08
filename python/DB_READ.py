@@ -1751,9 +1751,31 @@ def LEADERBOARD_USER(leaderboard_category):
     except Exception as e:    
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")    
+        
+        
+def GET_ALL_PEOPLE_TESTING(letter):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+    SELECT Person_id, Person_name,
+        (   
+            SELECT COUNT(*) 
+            FROM POST_PERSON post_person
+            WHERE post_person.Person_id = people.Person_id
+        ) 
+    FROM People
+    WHERE LOWER(people.Person_name) LIKE LOWER('{letter}%')
+    ORDER BY Person_name DESC
+    """)
+    names = []
+    for i in cursor.fetchall():
+        names.append(i)
+        # print(i)
+    modules.close_conn(cursor, conn) 
+    return names
 if __name__ == "__main__":
     # GET_ALL_USERS_IN_ROOM(Room_id=3)
     # GET_ALL_USERS()
-    LEADERBOARD_USER("likes")
+    GET_ALL_PEOPLE_TESTING("D")
+    # print(GET_ALL_PEOPLE(sort_method="date", letter="D"))
     pass
 

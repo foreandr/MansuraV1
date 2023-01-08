@@ -218,7 +218,7 @@ def people(sort_method, letter):
         return redirect(url_for("login"))
     modules.log_function("request", request)
     
-    people = modules.GET_ALL_PEOPLE(sort_method=sort_method, letter=letter) #TODO: By letter
+    people = modules.GET_ALL_PEOPLE_TESTING(letter=letter)
     people = list(modules.triple_split(people, 3))
 
     alpha_chars = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']

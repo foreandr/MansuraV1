@@ -398,4 +398,9 @@ def EMERGENCY_DELETE_ALL_POSTS():
 
 if __name__ == "__main__":
     # EMERGENCY_DELETE_ALL_POSTS()
+    DELETE_PERSON(125)
+    DELETE_PERSON(146)
+    DELETE_PERSON(147)
+
+    
     pass
