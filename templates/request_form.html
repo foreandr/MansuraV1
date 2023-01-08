@@ -111,11 +111,28 @@
     function add_new_user(){
         if (person_count <= 4){
             name = document.getElementById("new_person_name").value
-            console.log("test", name)
+            // console.log("test", name)
             name = name.replace(/[^a-zA-Z ]/g, "")
             name = name.replace("  ", " ")
             name = name.replace("   ", " ")
-            document.getElementById("new_users").value += `${name},`
+            name = name.replace("    ", " ")
+            name = name.replace("     ", " ")
+
+
+            let mySentence = name
+            let words = mySentence.split(" ");
+            final_phrase = ""
+            for (let i = 0; i < words.length; i++) {
+                words[i] = words[i][0].toUpperCase() + words[i].substr(1);
+                final_phrase += words[i] + " "
+
+            }
+            console.log(final_phrase)
+            console.log(final_phrase.length)
+
+            final_phrase = final_phrase.trim()
+            
+            document.getElementById("new_users").value += `${final_phrase},`
             person_count +=1
     
             document.getElementById("new_person_name").value = ""
