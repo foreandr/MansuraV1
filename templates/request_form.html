@@ -25,11 +25,11 @@
 
     <div>
         <label><b><u><h2>Person Name<h4>(alias works, but <b><u>FAR</u></b> less likely to be accepted).</h4></h2></u></b></label>
-        <input class="form-control" id="name" name="person_name" placeholder="Name" maxlength="60" required>
+        <input class="form-control" id="name" name="person_name" placeholder="Name" maxlength="80" required>
     </div>
     <div>
         <label><b><u><h2>Post Title:</h2></u></b></label>
-        <input class="form-control" id="name" name="post_title" placeholder="Post Title" maxlength="60" required>
+        <input class="form-control" id="name" name="post_title" placeholder="Post Title" maxlength="80" required>
     </div>
     <div>
         <label><b><u><h2>Description (cuss words will be removed):</h2></u></b></label>
@@ -50,12 +50,12 @@
 <form action="/request_form/{{request_type}}" method="POST" enctype="multipart/form-data">
     <div>
         <label><b><u><h2>Post Title:</h2></u></b></label>
-        <input class="form-control" id="name" name="post_title" placeholder="Post Title" maxlength="60" required>
+        <input class="form-control" id="name" name="post_title" placeholder="Post Title" maxlength="80" required>
     </div>
     <div>
         <label><b><u><h2>Who is in this video? (5 max)</h2></u></b></label>
         <div>
-            <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" maxlength="60" name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search..." >
+            <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" maxlength="80" name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search..." >
         </div>
         </br>
     </div> 
