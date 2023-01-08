@@ -286,7 +286,7 @@ def request_form(request_type):
                                 Post_description=person_description, 
                                 Post_link=person_link, 
                                 Post_live="false", 
-                                Person=[person_person_name], 
+                                Person=person_person_name, 
                                 User_id=session["id"]
                 )
             

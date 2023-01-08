@@ -92,6 +92,7 @@ def INSERT_POST_ADMIN(User_id):
     modules.close_conn(cursor, conn)  
    
 def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User_id=1):
+    print("POST PROPERTIES\n")
     if not modules.CHECK_ACCOUNT_STATUS(User_id):
         print(User_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
         return ""
@@ -103,7 +104,6 @@ def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User
         Post_html = modules.translate_link_to_html(Post_link)
         Post_title = modules.clean_title(Post_title)
         Post_description = modules.clean_description(Post_description)
-        
         
         cursor = conn.cursor()
         cursor.execute(
@@ -122,8 +122,9 @@ def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User
             )
         conn.commit()
         
-        # print("Person", Person)
+        print("Person", Person)
         for i in Person:
+            print(i)
             Person_id = modules.GET_PERSON_ID_BY_NAME(i)
             Post_id = modules.GET_POST_ID_BY_LINK_AND_USER_ID(User_id, Post_link)
             INSERT_POST_PERSON(Post_id, Person_id)
