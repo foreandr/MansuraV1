@@ -22,11 +22,18 @@
 
 {% if request_type == "person" %}
 <form action="/request_form/{{request_type}}" method="POST" enctype="multipart/form-data">
-
-    <div>
-        <label><b><u><h2>Person Name<h4>(alias works, but <b><u>FAR</u></b> less likely to be accepted).</h4></h2></u></b></label>
-        <input class="form-control" id="name" name="person_name" placeholder="Name" maxlength="80" required>
+    <label><b><u><h2>Person Name(s)<h4>(alias works, but <b><u>FAR</u></b> less likely to be accepted)</h4></h2></u></b></label>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="button" onclick="add_new_user()">Add User</button>
+        </div>
+        <div>
+            <input class="form-control" id="new_person_name"   placeholder="Name" maxlength="80"><!--name="person_name"-->
+        </div>
     </div>
+
+    <input class="form-control" id="new_users" name="person_name" placeholder="Names" maxlength="80" required readonly>
+
     <div>
         <label><b><u><h2>Post Title:</h2></u></b></label>
         <input class="form-control" id="name" name="post_title" placeholder="Post Title" maxlength="80" required>
@@ -40,27 +47,32 @@
         <input class="form-control"id="link" name="post_link" type="url" placeholder="Video Link" maxlength="100" required>
     </div> 
     
-    
     <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
 </form>
+
+
 {% elif request_type == "post" %}
-
-
-
 <form action="/request_form/{{request_type}}" method="POST" enctype="multipart/form-data">
+    <div>
+            <label>
+                <b><u>
+                    <h2>Who is in this video? (5 max)</h2>
+                </u></b>
+            </label>
+            <div>
+                <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" maxlength="80"
+                    name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results"
+                    placeholder="Search...">
+            </div>
+            </br>
+    </div>
+        
+    <div id="search-results">
+    </div>
+    
     <div>
         <label><b><u><h2>Post Title:</h2></u></b></label>
         <input class="form-control" id="name" name="post_title" placeholder="Post Title" maxlength="80" required>
-    </div>
-    <div>
-        <label><b><u><h2>Who is in this video? (5 max)</h2></u></b></label>
-        <div>
-            <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" maxlength="80" name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results" placeholder="Search..." >
-        </div>
-        </br>
-    </div> 
-
-    <div id="search-results" >
     </div>
     
     <div>
@@ -94,5 +106,23 @@
             document.getElementById("selected_users").value += `${user},`
             count +=1
     }
+
+    person_count = 0
+    function add_new_user(){
+        if (person_count <= 4){
+            name = document.getElementById("new_person_name").value
+            console.log("test", name)
+            name = name.replace(/[^a-zA-Z ]/g, "")
+            name = name.replace("  ", " ")
+            name = name.replace("   ", " ")
+            document.getElementById("new_users").value += `${name},`
+            person_count +=1
+    
+            document.getElementById("new_person_name").value = ""
+        }
+
+
+    }
+    
 </script>
 {% endblock main %}

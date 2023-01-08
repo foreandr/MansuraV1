@@ -424,19 +424,22 @@ def GET_ROOM_ID_BY_TITLE_AND_USER_ID(User_id, Room_name):
 
 def CHECK_PERSON_EXISTS(Person):
     try:
+        print(F"{Person} is being checked for thier existence")
         cursor, conn = modules.create_connection()
         cursor.execute(f"""
         SELECT COUNT(*)
         FROM PEOPLE
-        WHERE Person_name = '{Person}'
+        WHERE LOWER(Person_name) = LOWER('{Person}')
         """)
         person_exists = 0
         for i in cursor.fetchall():
             person_exists = i[0]
         modules.close_conn(cursor, conn)
         if person_exists == 0:
+            print("does not exist")
             return False
         else:
+            print("does exist")
             return True
     except Exception as e:
         cursor.execute("ROLLBACK")
@@ -449,17 +452,16 @@ def GET_PERSON_ID_BY_NAME(Person, User_id):
             modules.INSERT_PERSON(Person, Person_live="True")
         else:
             modules.INSERT_PERSON(Person, Person_live="False")
-            
-        
     try:
         cursor, conn = modules.create_connection()
         cursor.execute(f"""
             SELECT Person_id 
             FROM PEOPLE
-            WHERE Person_name = %(Person)s
+            WHERE LOWER(Person_name) = LOWER(%(Person)s)
         """, {'Person': Person})
         
         for i in cursor.fetchall():
+            # print(i)
             person = i[0]
         
         modules.close_conn(cursor, conn)
@@ -1777,10 +1779,30 @@ def GET_ALL_PEOPLE_TESTING(letter):
         # print(i)
     modules.close_conn(cursor, conn) 
     return names
+
+def GET_USER_BY_NAME_LIKE(test):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+    SELECT Person_name
+    FROM PEOPLE
+    WHERE Lower(Person_name) = LOWER('{test}')
+    """)
+    names = []
+    for i in cursor.fetchall():
+        names.append(i[0])
+        # print(i)
+
+    
+    modules.close_conn(cursor, conn) 
+    return names
+    
 if __name__ == "__main__":
     # GET_ALL_USERS_IN_ROOM(Room_id=3)
     # GET_ALL_USERS()
-    print(GET_ALL_PEOPLE_TESTING("D"))
+    # print(GET_PERSON_ID_BY_NAME("Noam Chomsky", 1))
+    # print(modules.STRING_SIMILARITY_CHECK("Noam Chomsky", "noam Chomsky"))
+    # print(modules.STRING_SIMILARITY_CHECK("Noam Chomsky", "noam chomsky"))
+    # print(GET_USER_BY_NAME_LIKE("Noam Chomsky"))
     # print(GET_ALL_PEOPLE(sort_method="date", letter="D"))
     # print(GET_USERS_BY_TEXT("dal"))
     pass

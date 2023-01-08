@@ -288,9 +288,17 @@ def request_form(request_type):
             # print("link", link)
 
             person_person_name = request.form["person_name"]
-            person_person_name = person_person_name.strip()
+            person_person_name = person_person_name.split(",")[:-1]
+            print("OG", person_person_name)
             
-            person_person_name = [person_person_name]
+            upgraded_person_person_name = []
+            for i in person_person_name:
+                j = i.strip()
+                if modules.CHECK_INJECTION(j): #this might be exessive
+                    upgraded_person_person_name.append(j)
+                
+            print("NEW", upgraded_person_person_name)
+            
             modules.log_function(msg_type="test", log_string=str(person_person_name), function_name=f"INSERT_PERSON")
             
             # print("person_name:", person_person_name)
