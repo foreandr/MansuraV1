@@ -19,17 +19,21 @@ def home():
 @app.route("/<person_id>/<page_no>", methods=['GET', 'POST'])
 def post_logic(person_id, page_no):
     modules.log_function("request", request)
-    if "email" not in session: 
-        return redirect(url_for("login"))
+    #if "email" not in session: 
+    #    return redirect(url_for("login"))
     
     '''
     first_time = modules.CHECK_IF_SESSION_USER_FIRST_TIME(session["id"])
     if first_time:
         return redirect(url_for("first_time"))
     '''
+    try:
+        username = session["user"] 
+    except:
+        username = "Andre"   
         
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
-        searcher=session["user"],
+        searcher=username,
         page_no=int(page_no)+1,
         person_id=person_id,
         )
