@@ -10,6 +10,8 @@ circle on upload
 
 loading circle on page navigation
 
+larger post titles
+
 notifications
     - early virality boosts
 
