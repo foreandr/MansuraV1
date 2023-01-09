@@ -99,12 +99,16 @@ def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User
         
     cursor, conn = modules.create_connection()
     try:
-        if User_id == 1:
-            Post_live = "True"
-        Post_html = modules.translate_link_to_html(Post_link)
+
+        Post_html, changed = modules.translate_link_to_html(Post_link)
         Post_title = modules.clean_title(Post_title)
         Post_description = modules.clean_description(Post_description)
         
+        if User_id == 1 and changed:
+            Post_live = "True"
+        else:
+            Post_live = "False"
+            
         cursor = conn.cursor()
         cursor.execute(
             f"""

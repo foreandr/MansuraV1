@@ -671,9 +671,9 @@ def CHECK_INJECTION(word):
        
 def translate_link_to_html(link):
     #print("ORIGIN", link)
-    
+    changed = False
     if link == None:
-        return link
+        return link, changed
     try:
         if "tiktok" in link:
             # print("TIKTOKING")
@@ -699,6 +699,7 @@ def translate_link_to_html(link):
             tiktok_template = tiktok_template.replace("LOCATION_FOR_TIKTOK_UPLOADER_VIDEO_ID", tiktok_video_file_id)
             
             link = tiktok_template
+            changed = True
             
         elif "youtube" in link:
             if "list" in link: # check if if it's a playlist or any other ways youtube can be fucked about with
@@ -718,6 +719,7 @@ def translate_link_to_html(link):
             
             youtube_template = youtube_template.replace("YOUTUBE_FILE_ID", youtube_file_id)
             link = youtube_template
+            changed = True
 
         elif "spotify" in link:
             # print(link, "\n")
@@ -735,15 +737,16 @@ def translate_link_to_html(link):
             
             #print(spotify_template)
             link = spotify_template
+            changed = True
         
         elif "rumble" in link:
             # TEMPLATE RUMBLE <iframe class="youtube-player" width="500" height="315" src="https://rumble.com/embed/v20cira/?pub=4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             link = link
         # print("NEW LINK:", link)
-        return link
+        return link,changed
     except Exception as e:
         modules.log_function("error", str(e), function_name=F"{inspect.stack()[0][3]}")
-        return link  
+        return link,changed  
 
 def translate_RUBMLE_LINK(embed_link):
     template = '''<iframe class="youtube-player" width="500" height="315" src="LINK_LOCATION" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'''

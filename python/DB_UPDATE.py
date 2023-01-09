@@ -54,7 +54,7 @@ def UPDATE_POST_HTML_BY_ID(Post_id, embed_link):
         cursor, conn = modules.create_connection()
         cursor.execute(f"""
             UPDATE POSTS
-            SET Post_html = '{modules.translate_RUBMLE_LINK(embed_link)}'
+            SET Post_html = '{embed_link}'
             WHERE Post_id = '{Post_id}'
         """)
         conn.commit()
