@@ -4,6 +4,7 @@ TAGGING
     ALLOW MULTIPLE SEPARATED BY COMMAS
     ON INSERT POST, 
 
+when entering new post-> check for %like%, grab em all, then if it meets some similarity threshold, ad it to the one that already exists
 
 when checking for username, lower verything
 

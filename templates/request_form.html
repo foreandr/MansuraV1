@@ -38,14 +38,15 @@
         <label><b><u><h2>Post Title:</h2></u></b></label>
         <input class="form-control" id="name" name="post_title" placeholder="Post Title" maxlength="80" required>
     </div>
-    <div>
-        <label><b><u><h2>Description (cuss words will be removed):</h2></u></b></label>
-        <textarea class="form-control" id="textbox" name="description" rows="2" cols="50" maxlength="400" required></textarea>
-    </div>
+
     <div>
         <label><b><u><h2>Example link of their work:</h2></u></b></label>
         <input class="form-control"id="link" name="post_link" type="url" placeholder="Video Link" maxlength="100" required>
     </div> 
+    <div>
+        <label><b><u><h2>Description (cuss words will be removed):</h2></u></b></label>
+        <textarea class="form-control" id="textbox" name="description" rows="2" cols="50" maxlength="400" required></textarea>
+    </div>
     
     <button class="btn btn-secondary" name="upload" value="upload">UPLOAD</button>
 </form>
@@ -53,11 +54,17 @@
 
 {% elif request_type == "post" %}
 <form action="/request_form/{{request_type}}" method="POST" enctype="multipart/form-data">
+    
     <div>
             <label>
                 <b><u>
                     <h2>Who is in this video? (5 max)</h2>
                 </u></b>
+                <div>
+                    <a href="/request_form/person">
+                        <h6><i>Can't find who you're looking for? Add them here.</i></h6>
+                    </a>
+                </div>
             </label>
             <div>
                 <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" maxlength="80"
@@ -75,13 +82,6 @@
     <div>
         <label><b><u><h2>Post Title:</h2></u></b></label>
         <input class="form-control" id="name" name="post_title" placeholder="Post Title" maxlength="80" required>
-    </div>
-    
-
-    <div>
-        <a href="/request_form/person">
-            <h6><i>Can't find who you're looking for? Add them here.</i></h6>
-        </a>
     </div>
 
     <div>
