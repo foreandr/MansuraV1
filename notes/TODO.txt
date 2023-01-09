@@ -1,28 +1,18 @@
-TAGGING
-    STEPS
-    ===============
-    ALLOW MULTIPLE SEPARATED BY COMMAS
-    ON INSERT POST, 
 
-introductory video?
-put some kind of a signature in the sent messages so it knows what files are safe and which arent
-
+balajis@1729.com
+bsrini@gmail.com
 scroll logic for the tribunal
+HOMEPAGE-PICK CERTIAN USERS TO PRIORITIZE?
 
-NOT DOING.when entering new post-> check for %like%, grab em all, then if it meets some similarity threshold, ad it to the one that already exists
-    - probably not a good idea, jordan vs jordon, will auto correct to something I already have 
-    
-DONE.when checking for username, lower verything
+NEED A WAY TO subscribe PERSONS
+    - as well as pick people they may be interested in TO FOLLOWER ON HOMEPAGE
+    - human favourites
+    add demo to search algo creation
 
-on the homepage, check if firstitme by id
-    - send them to the HTML to create an algo
-    - as well as pick people they may be interested in
 
-DONE.CREATE A DEFAULT ALGO THAT IS JUST THE SUM AND MOST RECENT ON CREATION
-- create chat room that can't be exited, and only i can message in
-- change bad query to be below profile
 
-human favourites
+
+
 
 hoverable over text icons
 
@@ -34,6 +24,7 @@ loading circle on page navigation
 
 larger post titles
  if there is a dupe, take them tod th post
+
 notifications
     - early virality boosts
 

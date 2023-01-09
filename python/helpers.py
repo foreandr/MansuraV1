@@ -274,7 +274,10 @@ def SERVER_CHECK(server, function):
             elif function == "CREATE_TABLE_CHAT_ROOM_INVITES":
                 cursor.execute("""DROP TABLE IF EXISTS CHAT_ROOM_INVITES CASCADE""")
                 modules.print_segment()  
-
+            
+            elif function == "CREATE_TABLE_SUBSCRIPTIONS":
+                cursor.execute("""DROP TABLE IF EXISTS SUBSCRIPTIONS CASCADE""")
+                modules.print_segment()  
 
             conn.commit()
             modules.print_green(F"CASCADE DROPPED TABLE {function}")
@@ -350,6 +353,31 @@ def CHECK_LIKE_EXISTS(Post_id, User_id):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
+def CHECK_SUBSCRIBE_EXISTS(Person_id, User_id):
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            SELECT COUNT(*)
+            FROM SUBSCRIPTIONS
+            WHERE Person_id = %(Person_id)s
+            AND User_id = %(User_id)s          
+        """, {'Person_id': Person_id,
+            'User_id': User_id
+            }
+        )
+        result = 0
+        for i in cursor.fetchall():
+            result = i[0]
+        
+        modules.close_conn(cursor, conn) 
+        if result > 0:
+            return True
+        else: 
+            return False
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+
 def CHECK_CONNECTION_EXISTS(User_id1, User_id2):
     try:
         cursor, conn = modules.create_connection()
@@ -912,7 +940,22 @@ def decrypt_caesar(encrypted_message, k=1):
     return decrypted_message
 
 def CHECK_FIRST_TIME(User_id):
-    return True
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT User_first_time
+        FROM USERS
+        WHERE User_id = '{User_id}'
+    """)
+    first_time = ""
+    for i in cursor.fetchall():
+        first_time = i[0]
+    modules.close_conn(cursor, conn)
+    
+    if first_time == "True":
+        print("this is the users first time")
+        modules.UPDATE_USERS_FIRST_TIME(User_id)
+        return True
+    return False
 if __name__ == "__main__":
     pass
 

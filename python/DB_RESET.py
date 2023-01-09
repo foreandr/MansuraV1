@@ -38,6 +38,7 @@ def CREATE_TABLES(server="false"):
     modules.CREATE_TABLE_SEARCH_ALGORITM_VOTES(server)
     modules.CREATE_TABLE_CURRENT_USER_SEARCH_ALGORITHM(server)
     modules.CREATE_TABLE_SEARCH_ALGORITM_SAVE(server)
+    modules.CREATE_TABLE_SUBSCRIPTIONS(server)
     
     
     if server != "true":

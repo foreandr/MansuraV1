@@ -150,6 +150,22 @@ def REMOVE_CREATOR_FROM_ROOM(Room_id):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
 
+def UPDATE_USERS_FIRST_TIME(User_Id):
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            UPDATE USERS
+            SET User_first_time = 'False'
+            WHERE User_id = '{User_Id}'
+        """)
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} {User_Id} COMPLETED\n")
+        modules.close_conn(cursor, conn)    
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+
+
 if __name__ == "__main__":
     UPDATE_PERSON_TO_LIVE(148)
     pass

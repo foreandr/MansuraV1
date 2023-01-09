@@ -33,3 +33,5 @@ cloudflare 2fa turnstile
 incase i have to reset, create a text file that stores all the uploads in some way
 pay for ad free experience
 person page search by cerrtain fields
+consolodate am subscribed and num, scribes iunto one query
+    - or into unniversal

@@ -444,7 +444,22 @@ def CHECK_PERSON_EXISTS(Person):
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
-    
+  
+def GET_PERSON_NAME_BY_ID(person_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT Person_name
+        FROM PEOPLE
+        WHERE Person_id = '{person_id}'
+    """)
+        
+    for i in cursor.fetchall():
+        # print(i)
+        person = i[0]
+        
+    modules.close_conn(cursor, conn)
+    return person     
+  
 def GET_PERSON_ID_BY_NAME(Person, User_id):
     # CHECK IF PERSON EXISTS
     if not modules.CHECK_PERSON_EXISTS(Person):
@@ -507,6 +522,24 @@ def GET_NUM_LIKES_BY_POST_ID(Post_id):
             FROM LIKES likes
             WHERE likes.Post_id = %(Post_id)s
         """, {'Post_id': Post_id}
+        )
+        results = 0
+        for i in cursor.fetchall():
+            results = i[0]
+        modules.close_conn(cursor, conn)
+        return results
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+        
+def GET_NUM_SUBSCRIBERS_BY_PERSON_ID(Person_id):
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            SELECT COUNT(*) 
+            FROM SUBSCRIPTIONS sub
+            WHERE sub.Person_id = %(Person_id)s
+        """, {'Person_id': Person_id}
         )
         results = 0
         for i in cursor.fetchall():
@@ -716,6 +749,35 @@ def GET_WHERE_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id):
             
         modules.close_conn(cursor, conn)
         return results
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+
+def CHECK_IF_SUBSCRIBED(Person_id, User_id):
+
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            (
+                SELECT COUNT(*)
+                FROM SUBSCRIPTIONS
+                WHERE Person_id = '{Person_id}'
+                AND User_id  = '{User_id}'
+            )
+            """)
+            
+        results = 0
+        for i in cursor.fetchall():
+            # print("search algo was not empty, returning:", i[0])
+            results = i[0]
+            
+            
+        modules.close_conn(cursor, conn)
+        if str(results) != "0":
+            return "True"
+        else:
+            return "False"
+            
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 

@@ -32,19 +32,18 @@ def post_logic(person_id, page_no):
     except:
         username = "Trial"   
     
-    
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=username,
         page_no=int(page_no)+1,
         person_id=person_id,
         )
     
-    
     if str(person_id) != "0":
         person_page = "True"
+        person_name = modules.GET_PERSON_NAME_BY_ID(person_id) 
     else:
         person_page = "False"
-        
+        person_name = "Home"
         
     offset_calc = int(int(page_no) * int(posts_per_page))
     return render_template('home.html',
@@ -59,6 +58,9 @@ def post_logic(person_id, page_no):
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
         coming_from_person_page=person_page,
+        person_name=person_name,
+        subscribers=modules.GET_NUM_SUBSCRIBERS_BY_PERSON_ID(person_id),
+        am_subscribed = modules.CHECK_IF_SUBSCRIBED(person_id, session["id"])
     )
     
 @app.route("/post_tribunal/<page_no>", methods=['GET', "POST"])
@@ -563,6 +565,21 @@ def update_like(Post_id):
     return render_template(f"update_like.html",
         likes=modules.GET_NUM_LIKES_BY_POST_ID(Post_id))
     
+@app.route("/update_subscribe/<Person_id>", methods=['GET', 'POST'])
+def update_subscribe(Person_id):
+    if "email" not in session: 
+        return redirect(url_for("login"))    
+    modules.log_function("request", request)
+    if not modules.GET_ALL_INTERACTIONS(session["id"]):
+        return render_template(f"spam_page.html")
+    
+    modules.SUBSCRIBE_LOGIC(Person_id, session["id"]) 
+    return render_template(f"update_sub.html",
+        subscribers=modules.GET_NUM_SUBSCRIBERS_BY_PERSON_ID(Person_id)
+        )
+         
+
+   
 @app.route("/update_comment_like/<Comment_id>", methods=['GET', 'POST'])
 def update_comment_like(Comment_id):
     if "email" not in session: 
@@ -964,13 +981,19 @@ def send_file_message(post_id):
     
     user_id = session["id"]
     message_text = modules.GET_POST_HTML_BY_ID(post_id)
+    # SIGN THE HTML SOMEHOW SO I KNOW IT'S COMING FROM INSIDE, WILL PROBABLY NEED TO CHANGE THIS 
+    message_text += """
+    <div hidden>
+        @LOCAL HTML@
+    </div>
+    """
     chat_room_name = request.form["chat_room_name"]
     room_id = modules.GET_CHAT_ROOM_ID_BY_NAME(chat_room_name)
     
     print("chat_room_name",chat_room_name)
     print("user_id",user_id)
     print("message_text",message_text)
-    print("mroom_id",room_id)
+    print("room_id",room_id)
     
     if not modules.GET_ALL_INTERACTIONS(session["id"]):
         return render_template(f"spam_page.html")

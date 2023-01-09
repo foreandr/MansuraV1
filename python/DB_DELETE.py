@@ -20,7 +20,24 @@ def DELETE_LIKE(Post_id, User_id):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
     
-    modules.close_conn(cursor, conn) 
+    modules.close_conn(cursor, conn)
+    
+def DELETE_SUBSCRIBE(Person_id, User_id):
+    cursor, conn = modules.create_connection()
+    
+    try:
+        cursor.execute(
+            f"""
+                DELETE FROM SUBSCRIPTIONS
+                WHERE Person_id = '{Person_id}' AND User_id = '{User_id}'
+            """)
+        conn.commit()
+        modules.print_green(f"REMOVED SUB {User_id} from post  {Person_id}")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+    
+    modules.close_conn(cursor, conn)  
 
 def DELETE_FAVOURITE(Post_id, User_id):
     cursor, conn = modules.create_connection()

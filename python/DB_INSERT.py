@@ -251,6 +251,30 @@ def SEARCH_FAVE_LOGIC(Search_algorithm_id, User_id):
     else:
         modules.INSERT_SEARCH_FAVOURITES(Search_algorithm_id, User_id)
 
+def INSERT_SUBSCRIBE(Person_id, User_id):
+    cursor, conn = modules.create_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            f"""
+            INSERT INTO SUBSCRIPTIONS
+            (Person_id, User_id, Date_time)
+            VALUES
+            (%(Person_id)s, %(User_id)s, NOW())
+            """, {
+                'Person_id': Person_id,
+                'User_id': User_id
+                }
+            )
+        conn.commit()
+
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED {Person_id, User_id}")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    
+    modules.close_conn(cursor, conn) 
+
 def INSERT_LIKE(Post_id, User_id):
     cursor, conn = modules.create_connection()
     try:
@@ -880,6 +904,14 @@ def XOR_ENCRYPTION(text):
     
     return text2
     
+def SUBSCRIBE_LOGIC(Person_id, User_id):
+    already_liked = modules.CHECK_SUBSCRIBE_EXISTS(Person_id, User_id)
+    if already_liked:
+        #print( User_id, "has already liked",Post_id)
+        modules.DELETE_SUBSCRIBE(Person_id, User_id)
+    else:
+        modules.INSERT_SUBSCRIBE(Person_id, User_id)    
+
 if __name__ == "__main__":
     # modules.INSERT_CHAT_ROOMS(Creator_id=2, Room_name="hello world2",list_of_names=["Andre", "David", "Foreman"])
     #modules.INSERT_CHAT_ROOMS(Creator_id=1, Room_name="hello world2",list_of_names=["Andre", "Foreman"])

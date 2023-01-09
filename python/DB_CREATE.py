@@ -715,3 +715,28 @@ def CREATE_TABLE_TRIBUNAL_WORD_VOTE(server="false"):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn)         
+
+def CREATE_TABLE_SUBSCRIPTIONS(server="false"):
+    cursor, conn = modules.create_connection()
+    
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        cursor.execute(
+            f"""
+                CREATE TABLE SUBSCRIPTIONS
+                (
+                    Subscription_id SERIAL PRIMARY KEY,
+                    User_id INT,
+                    Person_id INT,
+                    Date_time timestamp,
+                    
+                    FOREIGN KEY (User_id) REFERENCES USERS(User_id),
+                    FOREIGN KEY (Person_id) REFERENCES PEOPLE(Person_id),
+                    UNIQUE (User_id,  Person_id)
+                );
+            """)
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
