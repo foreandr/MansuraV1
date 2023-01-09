@@ -1,1 +1,11 @@
-{{subscribers}}
+
+{% if am_subscribed == "False" %}
+    <span id="sub_div">
+        SUBSCRIBE: {{subscribers}}
+    </span>
+{% else %}
+<span id="sub_div">
+    SUBSCRIBED: {{subscribers}}
+</span>
+
+{% endif %}

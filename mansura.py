@@ -575,7 +575,8 @@ def update_subscribe(Person_id):
     
     modules.SUBSCRIBE_LOGIC(Person_id, session["id"]) 
     return render_template(f"update_sub.html",
-        subscribers=modules.GET_NUM_SUBSCRIBERS_BY_PERSON_ID(Person_id)
+        subscribers=modules.GET_NUM_SUBSCRIBERS_BY_PERSON_ID(Person_id),
+        am_subscribed = modules.CHECK_IF_SUBSCRIBED(Person_id, session["id"])
         )
          
 
