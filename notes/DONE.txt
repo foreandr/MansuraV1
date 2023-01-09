@@ -152,3 +152,8 @@ on the homepage, check if firstitme by id
 DONE.CREATE A DEFAULT ALGO THAT IS JUST THE SUM AND MOST RECENT ON CREATION
 - create chat room that can't be exited, and only i can message in
 - change bad query to be below profile
+
+DONE. NEED A WAY TO subscribe PERSONS
+    DONE. as well as pick people they may be interested in TO FOLLOWER ON HOMEPAGE
+    
+    DONE. add demo to search algo creation

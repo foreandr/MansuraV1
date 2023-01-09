@@ -4,3 +4,6 @@ gdsaqlhggkishjng
 seems like there is some weird issue where u have to put the embeddings in html beforte you give them to jinja, jinja can't dynamically render them all maybe?
 if on desktop, you have to click to the left of the palay button
 when registering do the injection check so i dont end up with a pass that cant be entered
+
+balajis@1729.com
+bsrini@gmail.com
