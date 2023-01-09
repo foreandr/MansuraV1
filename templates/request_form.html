@@ -128,17 +128,24 @@
 
             }
             console.log(final_phrase)
-            console.log(final_phrase.length)
+            //console.log(final_phrase.length)
 
             final_phrase = final_phrase.trim()
-            
-            document.getElementById("new_users").value += `${final_phrase},`
-            person_count +=1
-    
-            document.getElementById("new_person_name").value = ""
+            list_of_names_already = get_list_of_names()
+            console.log(list_of_names_already)
+
+            if (!(list_of_names_already.includes(final_phrase))){
+                document.getElementById("new_users").value += `${final_phrase},`
+                person_count +=1
+        
+                document.getElementById("new_person_name").value = ""
+            }
         }
-
-
+    }
+    function get_list_of_names(){
+        names = document.getElementById("new_users").value
+        names.split(",")
+        return names
     }
     
 </script>
