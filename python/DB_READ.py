@@ -424,7 +424,7 @@ def GET_ROOM_ID_BY_TITLE_AND_USER_ID(User_id, Room_name):
 
 def CHECK_PERSON_EXISTS(Person):
     try:
-        print(F"{Person} is being checked for thier existence")
+        # print(F"{Person} is being checked for thier existence")
         cursor, conn = modules.create_connection()
         cursor.execute(f"""
         SELECT COUNT(*)
@@ -436,10 +436,10 @@ def CHECK_PERSON_EXISTS(Person):
             person_exists = i[0]
         modules.close_conn(cursor, conn)
         if person_exists == 0:
-            print("does not exist")
+            # print("does not exist")
             return False
         else:
-            print("does exist")
+            # print("does exist")
             return True
     except Exception as e:
         cursor.execute("ROLLBACK")

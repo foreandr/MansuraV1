@@ -29,14 +29,28 @@
         {% endif %}
         </div>
     </div>
-
-    <form action="/update_message/{{room_id}}/0" name="my_form" class="form-signup" method="POST" >
-        <textarea name="user_message" class="form-control" id="textbox" rows="2" cols="50" maxlength="400" required></textarea>
-        <button class="btn btn-outline-secondary" hx-post="/update_message/{{room_id}}/0" type="button" hx-trigger="click" hx-swap="innerHTML" hx-target="#update_message">
-            Send Message
-        </button> 
-    </form>
+    {% if room_name == "Homeroom" %}
+        {% if current_username == "Andre" %}
+            <form action="/update_message/{{room_id}}/0" name="my_form" class="form-signup" method="POST" >
+                <textarea name="user_message" class="form-control" id="textbox" rows="2" cols="50" maxlength="400" required></textarea>
+                <button class="btn btn-outline-secondary" hx-post="/update_message/{{room_id}}/0" type="button" hx-trigger="click" hx-swap="innerHTML" hx-target="#update_message">
+                    Send Message
+                </button> 
+            </form>
+        {% else %}
+            Only I can type in this chat room.
+        {% endif %}
+        
     {% else %}
+        <form action="/update_message/{{room_id}}/0" name="my_form" class="form-signup" method="POST" >
+            <textarea name="user_message" class="form-control" id="textbox" rows="2" cols="50" maxlength="400" required></textarea>
+            <button class="btn btn-outline-secondary" hx-post="/update_message/{{room_id}}/0" type="button" hx-trigger="click" hx-swap="innerHTML" hx-target="#update_message">
+                Send Message
+            </button> 
+        </form>
+    {% endif %}
+
+{% else %}
 {% endif %}
     <!-- MESSAGES -->
     {% if can_scroll == "True" %}

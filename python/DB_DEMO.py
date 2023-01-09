@@ -16,7 +16,7 @@ def INSERT_DEMO_COMMENT_VOTE():
 
 def INSERT_DEMO_USER():
     modules.print_title(f"{inspect.stack()[0][3]}")
-    modules.INSERT_USER("Andre", "helloWorld!", "foreandr@gmail.com")
+    
     modules.INSERT_USER("Foreman", "helloWorld!", "andrfore@gmail.com")
     modules.INSERT_USER("David", "helloWorld!", "david@gmail.com")
     modules.INSERT_USER("Homer", "helloWorld!", "homer@gmail.com")
@@ -230,9 +230,13 @@ def INSERT_DEMO_CHAT_MESSAGES():
     modules.INSERT_CHAT_MESSAGE(User_id=1, Room_id=1, Message="MESSAGE6")
     modules.INSERT_CHAT_MESSAGE(User_id=1, Room_id=1, Message="MESSAGE7")
 
+def DEMO_CREATE_INITIAL_CHAT_ROOM():
+    modules.INSERT_CHAT_ROOMS(Creator_id=1, Room_name="Homeroom",list_of_names=["Andre"])
+    print("working")
+    
 def INSERT_DEMO_CHAT_ROOMS():
     modules.print_title(f"{inspect.stack()[0][3]}")
-    modules.INSERT_CHAT_ROOMS(Creator_id=1, Room_name="hello world",list_of_names=["Andre", "David", "Foreman"])
+    
     modules.INSERT_CHAT_ROOMS(Creator_id=1, Room_name="hello world2",list_of_names=["Andre", "Foreman"])
     modules.INSERT_CHAT_ROOMS(Creator_id=2, Room_name="hello world3",list_of_names=["Andre", "David"])
     modules.INSERT_CHAT_ROOMS(Creator_id=3, Room_name="hello world4",list_of_names=["Andre", "David", "Foreman"])
@@ -262,7 +266,12 @@ def INSERT_DEMO_SEARCH_VOTE():
 
    
 def FULL_DEMO_INSERT():
+    modules.INSERT_USER("Andre", "helloWorld!", "foreandr@gmail.com")
+    modules.INSERT_USER("Trial", "helloWorld!", "trial@gmail.com")
+    DEMO_CREATE_INITIAL_CHAT_ROOM()
+    
     INSERT_DEMO_USER()
+    INSERT_DEMO_CHAT_ROOMS()
     INSERT_DEMO_ADMIN()
     INSERT_DEMO_PEOPLE()
     INSERT_DEMO_POST()
@@ -276,8 +285,7 @@ def FULL_DEMO_INSERT():
     INSERT_DEMO_CONNECTIONS()
     INSERT_DEMO_BLOCKS()
     INSERT_DEMO_IP_ADRESSES()
-    INSERT_DEMO_CHAT_ROOMS()
-    INSERT_DEMO_CHAT_ROOMS_USER()
+    # INSERT_DEMO_CHAT_ROOMS_USER()
     INSERT_DEMO_CHAT_ROOMS_ADMIN()
     INSERT_DEMO_REQUEST()
     INSERT_DEMO_TRIBUNAL_WORD_VOTE()

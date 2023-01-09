@@ -1,0 +1,69 @@
+{% extends "structure.html" %} <!-- INHEREITING FROM STRUCTURE.HTML-->
+
+{%block main %}
+
+<div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;text-align: center;">
+    <h1>Welcome to Mansura!</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div>
+                
+            </div>
+        </br>
+            <div>
+                
+            </div>
+        </br>
+            <div>
+                
+            </div>
+            
+        </div>
+        <div class="col">
+            <div>
+                <h1>
+                    Customizing Algorithms
+                </h1>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/IIuSu2CmALA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+        </br>
+            <div>
+                <h1>
+                    Integrating From Multiple Sites
+                </h1>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/r04QiUw_TaI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+
+        </div>
+        <div class="col">
+            <div style="text-align: center;">
+                <h3>Sites Available</h3>
+            </div>
+            
+            <ul class="d-flex flex-wrap list-group-horizontal">
+                <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/youtube.png') }} width="50" height="50"></li>
+                <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/archive.png') }} width="50" height="50"></li>
+                <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/dailymotion.png') }} width="50" height="50"></li>
+                <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/dtube.png') }} width="50" height="50"></li>
+                <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/infowars.png') }} width="50" height="50"></li>
+                <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/odysee.png') }} width="50" height="50"></li>
+                <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/reddit.png') }} width="50" height="50"></li>
+                <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/rumble.png') }} width="50" height="50"></li>
+                <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/tiktok.png') }} width="50" height="50"></li>
+                <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/vimeo.png') }} width="50" height="50"></li>
+                <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/facebook.png') }} width="50" height="50"></li>
+                <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/twitter.png') }} width="50" height="50"></li>
+                <li class="list-group-item"><img src={{ url_for('static', filename='site_logos/instagram.png') }} width="50" height="50"></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+test
+<script>
+
+</script>
+
+{% endblock main %}

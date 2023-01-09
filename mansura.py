@@ -30,8 +30,9 @@ def post_logic(person_id, page_no):
     try:
         username = session["user"] 
     except:
-        username = "Andre"   
-        
+        username = "Trial"   
+    
+    
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=username,
         page_no=int(page_no)+1,
@@ -48,7 +49,7 @@ def post_logic(person_id, page_no):
     offset_calc = int(int(page_no) * int(posts_per_page))
     return render_template('home.html',
         query=query,                   
-                           
+        searcher=username,                   
         posts=posts,
         num_posts=len(posts),
         
@@ -65,6 +66,13 @@ def post_tribunal(page_no):
     modules.log_function("request", request)
     if "email" not in session: 
         return redirect(url_for("login"))
+
+    try:
+        session_id = session["id"] 
+        session_user = session["user"] 
+    except:
+        session_id = 2
+        session_user = "Trial"
     
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"], 
@@ -72,8 +80,8 @@ def post_tribunal(page_no):
         post_tribunal=True
     )
     offset_calc = int(int(page_no) * int(posts_per_page))
-    
-    can_vote = modules.CHECK_USER_IS_GLOBAL_ADMIN(session["id"])
+
+    can_vote = modules.CHECK_USER_IS_GLOBAL_ADMIN(session_id)
     
     return render_template('home.html',
         query=query,                   
@@ -88,7 +96,7 @@ def post_tribunal(page_no):
         posts_per_page=posts_per_page,
         coming_from_tribunal="true",
         can_vote=can_vote,
-        ADMINISTRATOR=modules.CHECK_IF_IT_IS_ME(session["id"])
+        ADMINISTRATOR=modules.CHECK_IF_IT_IS_ME(session_id)
         #fucking hate javascript
     ) 
  
@@ -97,6 +105,14 @@ def favourites(page_no):
     modules.log_function("request", request)
     if "email" not in session: 
         return redirect(url_for("login"))
+    
+    try:
+        session_id = session["id"]
+        session_user = session["id"]  
+    except:
+        session_id = 2
+    
+    
     
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"], 
@@ -121,28 +137,32 @@ def favourites(page_no):
     
 @app.route("/user_profile/<user_profile_name>/<page_no>", methods=['GET', 'POST'])
 def user_profile(user_profile_name, page_no):
-    modules.log_function("request", request)
-    if "email" not in session: 
-        return redirect(url_for("login"))  
-    
-    
-    print("user_profile_name", user_profile_name) 
     '''
     # THERE IS SOMETHING BUGGY GOING ON IN THIS FUNCTION
     # GET_USER_ID_FROM_NAME(username)
     THIS seems to get run twice, and the second time returns the wrong name
     doesnt seem to effect the query tho
     ''' 
-
+    modules.log_function("request", request)
+    if "email" not in session: 
+        return redirect(url_for("login"))  
     
+    try:
+        session_id = session["id"] 
+        session_user = session["user"] 
+    except:
+        session_id = 2
+        session_user = "Trial"
+    
+    print("user_profile_name", user_profile_name) 
     
     if user_profile_name == "home_profile":
-        user_profile_id = session["id"]
+        user_profile_id = session_id
     else:
         user_profile_id = modules.GET_USER_ID_FROM_NAME(user_profile_name)
     
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
-        searcher=session["user"], 
+        searcher=session_user, 
         page_no=int(page_no)+1,
         profile_id=user_profile_id
     )
@@ -164,7 +184,7 @@ def user_profile(user_profile_name, page_no):
         user_profile_id=user_profile_id,
         
         username=modules.GET_USER_NAME_FROM_ID(user_profile_id),
-        session_user=session["user"],
+        session_user=session_user,
         
         user_strikes=user_strikes,
         
@@ -179,8 +199,15 @@ def person(person_id):
     modules.log_function("request", request)
     if "email" not in session: 
         return redirect(url_for("login"))
-        
-    posts = modules.UNIVERSAL_FUNCTION(searcher=session["user"], person_id=person_id)
+    
+    try:
+        session_id = session["id"] 
+        session_user = session["user"] 
+    except:
+        session_id = 2
+        session_user = "Trial"
+                
+    posts = modules.UNIVERSAL_FUNCTION(searcher=session_user, person_id=person_id)
     
     return render_template('home.html',
         posts=posts,
@@ -218,8 +245,8 @@ def remove_connection(User_id):
     
 @app.route("/people/<sort_method>/<letter>", methods=['GET', 'POST'])
 def people(sort_method, letter):
-    if "email" not in session: 
-        return redirect(url_for("login"))
+    #if "email" not in session: 
+    #    return redirect(url_for("login"))
     modules.log_function("request", request)
     
     people = modules.GET_ALL_PEOPLE_TESTING(letter=letter)
@@ -405,14 +432,18 @@ def login():
         #print(email)
         #print(password)
         if modules.CHECK_INJECTION(email) and modules.CHECK_INJECTION(password):
-            print(1)
+            # print(1)
             signed_in = modules.validate_user_from_session(email, password)
             
             if signed_in[0]: # First element in dict is bool for success/failure
                 session["id"] = signed_in[1]
                 session["user"] = signed_in[2]
                 session["email"] = email
-                return redirect(url_for("home"))
+                
+                if modules.CHECK_FIRST_TIME(session["id"]):
+                    return redirect(url_for("intro_page"))
+                else:
+                    return redirect(url_for("home"))
             else:
                 return render_template('login.html', message="wrong email or password, try again")
     return render_template('login.html', message="")
@@ -670,18 +701,32 @@ def comment_section(Post_id, how_many, order):
 
 @app.route("/contact", methods=['GET'])
 def contact():
-    if "email" not in session:
-        return redirect(url_for('login'))
-    modules.log_function("request", request, session_user=session['user'])
+    #if "email" not in session:
+    #    return redirect(url_for('login'))
+
+    try:
+        session_id = session["id"] 
+        session_user = session["user"] 
+    except:
+        session_id = 2
+        session_user = "Trial"
+    modules.log_function("request", request, session_user=session_user)
     
     return render_template(f"contact.html",
     )
 
 @app.route("/structure_search_by_phrase/<page_no>/<phrase_again>", methods=['GET', 'POST'])
 def structure_search_by_phrase(page_no, phrase_again):
-    if "email" not in session: 
-        return redirect(url_for("login"))    
-    modules.log_function("request", request, session_user=session['user'])
+    #if "email" not in session: 
+    #    return redirect(url_for("login"))   
+    try:
+        session_id = session["id"] 
+        session_user = session["user"] 
+    except:
+        session_id = 2
+        session_user = "Trial" 
+        
+    modules.log_function("request", request, session_user=session_user)
     searched_value = ""
     if request.method == "POST":
         try: 
@@ -699,7 +744,7 @@ def structure_search_by_phrase(page_no, phrase_again):
         return redirect(url_for('post_logic', person_id=0,page_no=0 ))
     
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
-        searcher=session["user"],
+        searcher=session_user,
         page_no=int(page_no)+1,
         search_phrase=searched_value
         )
@@ -718,7 +763,7 @@ def structure_search_by_phrase(page_no, phrase_again):
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
         coming_from_search="true",
-        
+        searcher=session_user,
         search_phrase=searched_value
     )        
 
@@ -899,8 +944,8 @@ def chat_logic(room_id, action):
         print("leaving room")
         if not modules.GET_ALL_INTERACTIONS(session["id"]):
             return render_template(f"spam_page.html")
-        modules.LEAVE_CHAT_ROOM(session["id"], room_id)
-        
+        if str(room_id) != "1":
+            modules.LEAVE_CHAT_ROOM(session["id"], room_id)
         message="LEFT"
     elif action == "accept":
         print("joining room")
@@ -959,7 +1004,7 @@ def kick_from_chat_room(room_id):
 @app.route("/leaderboards_home/<leaderboard_category>", methods=['GET', 'POST'])
 def leaderboards_home(leaderboard_category):
     # print("hello world")
-
+    modules.log_function("request", request)
     leaderboards = modules.LEADERBOARD_PERSON(leaderboard_category)        
     user_leaderboards = modules.LEADERBOARD_USER(leaderboard_category)
     
@@ -970,7 +1015,12 @@ def leaderboards_home(leaderboard_category):
         
         leaderboard_category=leaderboard_category
     )
+@app.route("/intro_page", methods=['GET'])
+def intro_page():
+    modules.log_function("request", request)
     
+    return render_template(f"intro_page.html",
+    )
 
 if __name__ == '__main__':
     host = "0.0.0.0" 

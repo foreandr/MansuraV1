@@ -35,8 +35,14 @@ def INSERT_USER(username, password, Email):
             )
         conn.commit()
 
-        modules.print_green(F"{username} INSERT COMPLETED")
+        
         modules.close_conn(cursor, conn) 
+        # ADD TO CHAT DEFAULT CHAT ROOM
+        user_id = modules.GET_USER_ID_FROM_NAME(username)
+        modules.INSERT_CHAT_ROOMS_USER(user_id, 1)
+        
+        # completed
+        modules.print_green(F"{username} INSERT COMPLETED")
         return True
     except Exception as e:
         cursor.execute("ROLLBACK")
@@ -591,7 +597,8 @@ def INSERT_CHAT_ROOMS(Creator_id, Room_name, list_of_names):
         
         for i in list_of_names:
             INSERT_CHAT_REQUEST(user_name=i, room_id=room_id)
-            
+        for i in range(100):
+            print("TESTING")    
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
@@ -880,6 +887,7 @@ if __name__ == "__main__":
     #modules.INSERT_CHAT_ROOMS(Creator_id=3, Room_name="hello world4",list_of_names=["Andre", "David", "Foreman"])
     #modules.INSERT_CHAT_ROOMS(Creator_id=3, Room_name="hello world5",list_of_names=["Andre", "David"])
     #modules.INSERT_CHAT_ROOMS(Creator_id=3, Room_name="hello world6",list_of_names=["Andre"])
+
     pass
 
 

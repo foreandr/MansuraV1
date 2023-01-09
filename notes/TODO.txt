@@ -4,9 +4,15 @@ TAGGING
     ALLOW MULTIPLE SEPARATED BY COMMAS
     ON INSERT POST, 
 
-when entering new post-> check for %like%, grab em all, then if it meets some similarity threshold, ad it to the one that already exists
+introductory video?
+put some kind of a signature in the sent messages so it knows what files are safe and which arent
 
-when checking for username, lower verything
+scroll logic for the tribunal
+
+NOT DOING.when entering new post-> check for %like%, grab em all, then if it meets some similarity threshold, ad it to the one that already exists
+    - probably not a good idea, jordan vs jordon, will auto correct to something I already have 
+    
+DONE.when checking for username, lower verything
 
 on the homepage, check if firstitme by id
     - send them to the HTML to create an algo

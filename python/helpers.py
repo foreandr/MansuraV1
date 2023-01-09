@@ -911,6 +911,8 @@ def decrypt_caesar(encrypted_message, k=1):
 
     return decrypted_message
 
+def CHECK_FIRST_TIME(User_id):
+    return True
 if __name__ == "__main__":
     pass
 

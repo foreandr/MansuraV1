@@ -109,11 +109,19 @@
                         <td>
                             {{chat_rooms[i][3]}}
                         </td>
+                        {% if chat_rooms[i][0] == 1%}
+                        <td>
+                            <button class="btn btn-dark" hx-get="/chat_logic/{{chat_rooms[i][0]}}/leave" hx-trigger="click" disabled>
+                               LEAVE
+                            </button>
+                        </td>
+                        {% else %}
                         <td>
                             <button class="btn btn-dark" hx-get="/chat_logic/{{chat_rooms[i][0]}}/leave" hx-trigger="click">
                                LEAVE
                             </button>
                         </td>
+                        {% endif %}
                     </tr>
                     {%endfor%}
                 </tbody>
