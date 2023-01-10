@@ -21,6 +21,8 @@ aply to be a moderator page
 
 move cursor out of try catch where applicable
 
+disable subscribe if using the trial ID
+
 MONETIZATION
 =============
 DONATIONS

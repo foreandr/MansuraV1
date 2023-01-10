@@ -28,9 +28,11 @@ def post_logic(person_id, page_no):
         return redirect(url_for("first_time"))
     '''
     try:
-        username = session["user"] 
+        username = session["user"]
+        session_id = session["id"]
     except:
-        username = "Trial"   
+        username = "Trial"
+        session_id = 2
     
     query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
         searcher=username,
@@ -60,7 +62,7 @@ def post_logic(person_id, page_no):
         coming_from_person_page=person_page,
         person_name=person_name,
         subscribers=modules.GET_NUM_SUBSCRIBERS_BY_PERSON_ID(person_id),
-        am_subscribed = modules.CHECK_IF_SUBSCRIBED(person_id, session["id"])
+        am_subscribed = modules.CHECK_IF_SUBSCRIBED(person_id, session_id)
     )
     
 @app.route("/post_tribunal/<page_no>", methods=['GET', "POST"])
