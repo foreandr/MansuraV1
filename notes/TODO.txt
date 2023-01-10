@@ -19,6 +19,7 @@ DB backups
 SEND a version of the code to my actual machine every week to so
 aply to be a moderator page
 
+move cursor out of try catch where applicable
 
 MONETIZATION
 =============

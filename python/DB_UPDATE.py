@@ -165,9 +165,24 @@ def UPDATE_USERS_FIRST_TIME(User_Id):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
 
-
+def UPDATE_NAME_TYPO(Person_name, new_name):
+    cursor, conn = modules.create_connection()
+    try:
+        
+        cursor.execute(f"""
+            UPDATE PEOPLE
+            SET Person_name = '{new_name}'
+            WHERE Person_name = '{Person_name}'
+        """)
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} {Person_name} COMPLETED\n")
+        modules.close_conn(cursor, conn)    
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+    
 
 if __name__ == "__main__":
-    UPDATE_PERSON_TO_LIVE(148)
+    # UPDATE_NAME_TYPO("Terrence Tao", "Terence Tao")
     pass
     
