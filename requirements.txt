@@ -20,6 +20,8 @@ Pillow==9.2.0
 # PROFANITY
 better_profanity==0.7.0
 
+# YOUTUBE
+# youtube-video-scraping==1.0.4
 
 #APScheduler==3.9.1
 #openpyxl==3.0.10

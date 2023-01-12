@@ -23,6 +23,19 @@ move cursor out of try catch where applicable
 
 disable subscribe if using the trial ID
 
+need to be able to tag on actual videos
+    - post person request table?
+
+what i should do is put all of these in the tribunal, then allow tagging in the tribunal
+
+search algo where clause with site source
+https://pypi.org/project/youtube-video-scraping/
+wrong tag lose tag privileges
+
+follwoing follower UI is WAY off
+
+leaderboards is counting things that I've liked, not things that art posted by me
+
 MONETIZATION
 =============
 DONATIONS

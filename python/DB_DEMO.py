@@ -263,8 +263,6 @@ def INSERT_DEMO_SEARCH_VOTE():
     modules.print_title(f"{inspect.stack()[0][3]}")
     modules.INSERT_SEARCH_VOTE(Search_algorithm_id=1, User_id=1)
 
-
-   
 def FULL_DEMO_INSERT():
     modules.INSERT_USER("Andre", "helloWorld!", "foreandr@gmail.com")
     modules.INSERT_USER("Trial", "helloWorld!", "trial@gmail.com")

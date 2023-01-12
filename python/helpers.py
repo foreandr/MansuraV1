@@ -6,6 +6,7 @@ from better_profanity import profanity
 import hashlib
 import datetime
 
+
 try:    
     import python.MODULES as modules
 except:
@@ -956,7 +957,69 @@ def CHECK_FIRST_TIME(User_id):
         modules.UPDATE_USERS_FIRST_TIME(User_id)
         return True
     return False
+
+def READ_FROM_PERSON_FILE_AND_INSERT(Person_name):
+    # GET FILE CONTENTS
+    f = open(f"/root/mansura/python/scraper/channels/{Person_name}/channel_details.txt", "r")
+    file_contents = f.read().split("\n")
+    import ast
+    new_arrays = []
+    for i in range(len(file_contents)):
+        if file_contents[i] == "":
+            # print("empty line")
+            continue
+        # print(i, type(file_contents[i]), file_contents[i])
+        temp_array = ast.literal_eval(file_contents[i])
+        new_arrays.append(temp_array)
+    
+        
+    
+    for i in range(len(new_arrays)):
+        print(i, type(new_arrays[i]), new_arrays[i])
+        name = [new_arrays[i][0]]
+        id = new_arrays[i][1]
+        title = new_arrays[i][2]
+        description = new_arrays[i][3]
+        youtube_url = new_arrays[i][4]
+        
+        if description == "NO DESCRIPTION":
+            description = f"{name} - {title}"
+        
+        if len(title) >= 100:
+            print("TITLE IS TOO LONG", title)
+            continue
+        if len(description) >= 400:
+            print("description IS TOO LONG")
+            description = title
+            
+        print("name        :",name, type(name))
+        print("title       :",title)
+        print("description :",description)
+        print("url         :",youtube_url)
+
+        modules.INSERT_POST(Post_title=title, 
+            Post_description=description, 
+            Post_link=youtube_url, 
+            Post_live="false", 
+            Person=name,
+            User_id=1
+        ) 
+        
+       
+        
+        
+        
+    
+    #for i in file_contents:
+    #    print(i)
+    
+    # CONVERT FILE CONTENTS TO ARRAY OF ITEMS
+    
+    # FOR EACH ITEM IN ARRAY, DO A POST INSERT
+    pass
+
 if __name__ == "__main__":
+    READ_FROM_PERSON_FILE_AND_INSERT(Person_name="Bernardo Kastrup")
     pass
 
 

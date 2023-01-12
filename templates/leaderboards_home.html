@@ -9,17 +9,19 @@
             <div><h1>PEOPLE</h1></div>
             {% for i in range(0, people_leaderboards | length) %}
             <div>
-                <b>RANK:{{i+1}}-{{leaderboard_category}} {{people_leaderboards[i][1]}} <a href="/{{people_leaderboards[i-1][2]}}/0">{{people_leaderboards[i][0]}} </a></b>
+                <b>RANK:{{i+1}}-{{leaderboard_category}} {{people_leaderboards[i][1]}} <a href="/{{people_leaderboards[i][2]}}/0">{{people_leaderboards[i][0]}} </a></b>
             </div>
             {% endfor %}
         </div>
 
         <div class="col">
+            <!--
             <div>
-                <button class="btn" disabled>
-                    <a href="/leaderboards_home/total"><h2>TOTAL</h2></a>
+                <button class="btn" readonly>
+                    <a href="/leaderboards_home/total" readonly><h2>TOTAL</h2></a>
                 </button>
             </div>
+            -->
         </br>
             <div>
                 <button class="btn">
@@ -56,7 +58,7 @@
             <div><h1>USERS</h1></div>
             {% for i in range(0, user_leaderboards | length) %}
             <div>
-                <b>RANK:{{i+1}}-{{leaderboard_category}} {{user_leaderboards[i][1]}} <a href="/user_profile/{{user_leaderboards[i-1][0]}}/0">{{user_leaderboards[i][0]}}</a></b>
+                <b>RANK:{{i+1}}-{{leaderboard_category}} {{user_leaderboards[i][1]}} <a href="/user_profile/{{user_leaderboards[i][0]}}/0">{{user_leaderboards[i][0]}}</a></b>
             </div>
             {% endfor %}
         </div>

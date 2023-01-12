@@ -3,6 +3,7 @@ try:
 except:
     import MODULES as modules
 
+import inspect
 def PERSON_SEARCH(person_id):
     if person_id == "" or str(person_id) == '0':
         # print("empty person id")
@@ -192,5 +193,129 @@ def TRANSFER_SEARCH_WHERE_TO_QUERY(array_of_where_clauses):
     # end with this just becasue it's easier than finagling
     return full_where
     
+def UNIVERSAL_FUNCTION(
+        searcher, 
+        searcher_id="", 
+        person_id="",
+        page_no=1, 
+        favourites=False,
+        post_tribunal=False,
+        profile_id="",
+        search_phrase="",
+        ):
+    '''
+    print("searcher",searcher) 
+    print("searcher_id",searcher_id) 
+    print("person_id",person_id) 
+    print("page_no",page_no)  
+    print("favourites",favourites) 
+    print("post_tribunal",post_tribunal) 
+    print("search_phrase",search_phrase)
+    ''' 
+    try:
+        cursor, conn = modules.create_connection()
+        person = modules.PERSON_SEARCH(person_id)
+        searcher_id = modules.GET_USER_ID_FROM_NAME(searcher) 
+        fave_string, fave_inner_join = modules.FAVOURITE_QUERY(favourites, searcher_id)
+        search_algo_id, _ = modules.GET_USER_CURRENT_SEARCH_ALGO_BY_ID(searcher_id)
+        
+        # SPECIFIC TO USER
+        if profile_id != "":
+            user_profile = f"AND posts.User_id = '{profile_id}'"
+        else:
+            user_profile = ""
+            
+        # print("user profile", user_profile)
+        
+        # ORDER PARAMETERS
+        #order_clause = modules.GET_ORDER_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
+        order_clause = modules.CREATE_DEMO_ORDER_CLAUSE()
+        order_clause = order_clause.replace("@SEARCHER_ID", str(searcher_id))
+        
+        where_clause = modules.GET_WHERE_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
+        
+        # CAST VOTE FOR SEARCH
+        modules.INSERT_SEARCH_VOTE(search_algo_id, searcher_id)
+        
+        posts_per_page = 3
+        
+        query = f"""
+        SELECT 
+        posts.Post_title, 
+        posts.Post_description, 
+        posts.Post_html, 
+        posts.Date_time, 
+        people.Person_name,  
+        people.Person_id,
+        posts.Post_id,
+        {modules.GET_ALL_COUNTS()}
+        {modules.SEARCH_USER_HAS_LIKED(searcher_id)},
+        {modules.SEARCH_USER_HAS_SAVED(searcher_id)},
+        posts.Post_link,
+        (SELECT Username FROM USERS users WHERE posts.User_id = users.User_id),
+        posts.User_id,
+        people.Person_live
+            
+        FROM POSTS posts
+        
+        INNER JOIN POST_PERSON post_person
+        ON post_person.Post_id = posts.Post_id
+        
+        INNER JOIN PEOPLE people
+        ON people.Person_id = post_person.Person_id
+        
+        {fave_inner_join}
+
+        WHERE 1=1 
+        {person}
+        {fave_string}
+        {modules.IN_POST_TRIBUNAL(post_tribunal)}
+        {modules.SEARCH_QUERY(search_phrase)}
+        {where_clause}
+        {user_profile}
+        
+        ORDER BY {order_clause}
+        
+        OFFSET ( ({page_no}-1)  * {posts_per_page} )
+        LIMIT {posts_per_page};
+        """
+        
+        #LOG THE QUERY [ERROR CHECKING]
+        # modules.log_function(msg_type="test", log_string=query, function_name=f"{inspect.stack()[0][3]}")
+
+        cursor.execute(query)
+        posts = []
+        for i in range((page_no-1) * posts_per_page):
+            posts.append([])
+        
+        for i in cursor.fetchall():
+            posts.append([
+                i[0], # posts.Post_title, 
+                i[1], # posts.Post_description, 
+                i[2], # posts.Post_html, 
+                i[3], # posts.Date_time, 
+                i[4], # people.Person_name,
+                i[5], # people.Person_id,
+                i[6], # post_id#
+                i[7], # count likes
+                i[8], # count comments
+                i[9], # count favourites 
+                i[10], # count views 
+                i[11], # has searcher liked post ( 0 == unliked)
+                i[12], # has searcher SAVED post ( 0 == unliked)
+                i[13], # post link
+                i[14], # UPLOADER name
+                i[15], # UPLOADER id
+                i[16], # person live
+                modules.GET_PEOPLE_BY_POST_ID(i[6]),
+                modules.GET_PEOPLE_ID_BY_POST_ID(i[6])
+            ])
+            # print(i)
+            
+        modules.close_conn(cursor, conn)
+        return query, posts, int(page_no), posts_per_page, modules.CHECK_CAN_SCROLL(len(posts), modules.GETTING_POST_MAX_FROM_QUERY(query)), person_id
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
 if __name__ == "__main__": 
     pass
