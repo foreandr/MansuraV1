@@ -843,7 +843,7 @@ def INSERT_SEARCH_ALGORITHM(Search_algorithm_name, Search_where_clause, Search_o
         return ""
     
     Search_algorithm_name = f"{modules.GET_USER_NAME_FROM_ID(User_id)}-{Search_algorithm_name}"
-    modules.GET_USER_ID_FROM_NAME
+    # modules.GET_USER_ID_FROM_NAME
     try:
         cursor, conn = modules.create_connection()
         cursor.execute(f"""

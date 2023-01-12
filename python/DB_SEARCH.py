@@ -24,50 +24,257 @@ def CHECK_PEOPLE_ORDER(sort_method):
     else: return ""
     
     
-def GET_POST_LIKE_COUNT(home_function=False, user_bias=False):
+def GET_POST_LIKE_COUNT(
+    home_function=False, 
+    user_following_constraint=False,
+    user_followers_constraint=False,
+    user_constraint=False
+    ):
+    
     if home_function:
         search_addition = "DESC,"
     else:
         search_addition = ""
     
-    if user_bias:
+    # LIKED BY PEOPLE THE USER IS FOLLOWING
+    if user_following_constraint:
         bias_user_likes_join = """INNER JOIN CONNECTIONS conn ON conn.User_id2 = likes.User_id"""
         bias_user_likes_and =  """AND conn.User_id1 = @SEARCHER_ID""" 
     else:
         bias_user_likes_join = ""
         bias_user_likes_and = ""
         
-    return f"""(
+    
+    # LIKES BY PEOPLE THE FOLLOWERS LIKED
+    if user_followers_constraint:
+        bias_followers_likes_join = """INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = likes.User_id"""
+        bias_followers_likes_and =  """AND conn2.User_id2 = @SEARCHER_ID""" 
+    else:
+        bias_followers_likes_join = ""
+        bias_followers_likes_and = ""
+    
+    # LIKES BY USER
+    if user_constraint:
+        user_constraint_str = "AND likes.User_id = @SEARCHER_ID"
+    else:
+        user_constraint_str = ""
+    
+    return f"""
+    (
         SELECT COUNT(*) 
         FROM LIKES likes 
         {bias_user_likes_join}
+        {bias_followers_likes_join}
         
         WHERE likes.Post_id = posts.Post_id
-        {bias_user_likes_and} 
-        ){search_addition}
-        
-    """ 
-        
-def GET_POST_VIEW_COUNT(home_function=False):
-    if home_function:
-        search_addition = "DESC,"
-    else:
-        search_addition = ""    
-    return f"""(SELECT COUNT(*) FROM VIEWS views WHERE views.Post_id = posts.Post_id){search_addition}"""
-        
-def GET_POST_COMMENT_COUNT(home_function=False):
-    if home_function:
-        search_addition = "DESC,"
-    else:
-        search_addition = ""
-    return f"""( SELECT COUNT(*) FROM COMMENTS comments WHERE comments.Post_id = posts.Post_id){search_addition}"""
-        
-def GET_POST_FAVOURITE_COUNT(home_function=False):
+        {bias_user_likes_and}
+        {user_constraint_str} 
+        {bias_followers_likes_and}
+    )
+    {search_addition}""" 
+    
+def GET_POST_COMMENT_COUNT(    
+    home_function=False, 
+    user_following_constraint=False,
+    user_followers_constraint=False,
+    user_constraint=False):
+    
     if home_function:
         search_addition = "DESC,"
     else:
         search_addition = ""
-    return f"""(SELECT COUNT(*) FROM FAVOURITES favourites WHERE favourites.Post_id = posts.Post_id ){search_addition}"""
+    
+    # COMMENTS BY PEOPLE THE USER IS FOLLOWING
+    if user_following_constraint:
+        bias_user_comments_join = """INNER JOIN CONNECTIONS conn ON conn.User_id2 = comments.User_id"""
+        bias_user_comments_and =  """AND conn.User_id1 = @SEARCHER_ID""" 
+    else:
+        bias_user_comments_join = ""
+        bias_user_comments_and = ""
+        
+    # COMMENTS BY PEOPLE THE FOLLOWERS LIKED
+    if user_followers_constraint:
+        bias_followers_comments_join = """INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = comments.User_id"""
+        bias_followers_comments_and =  """AND conn2.User_id2 = @SEARCHER_ID""" 
+    else:
+        bias_followers_comments_join = ""
+        bias_followers_comments_and = ""
+    
+    # COMMENTS BY USER
+    if user_constraint:
+        user_constraint_str = "AND comments.User_id = @SEARCHER_ID"
+    else:
+        user_constraint_str = ""
+
+    if home_function:
+        search_addition = "DESC,"
+    else:
+        search_addition = ""
+        
+    return f"""
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        {bias_user_comments_join}
+        {bias_followers_comments_join}
+        
+        WHERE comments.Post_id = posts.Post_id
+        {bias_user_comments_and}
+        {user_constraint_str} 
+        {bias_followers_comments_and}
+    )
+    {search_addition}""" 
+
+def GET_POST_VIEW_COUNT( 
+    home_function=False, 
+    user_following_constraint=False,
+    user_followers_constraint=False,
+    user_constraint=False):
+    
+    if home_function:
+        search_addition = "DESC,"
+    else:
+        search_addition = ""
+    
+    # VIEWS BY PEOPLE THE USER IS FOLLOWING
+    if user_following_constraint:
+        bias_user_views_join = """INNER JOIN CONNECTIONS conn ON conn.User_id2 = views.User_id"""
+        bias_user_views_and =  """AND conn.User_id1 = @SEARCHER_ID""" 
+    else:
+        bias_user_views_join = ""
+        bias_user_views_and = ""
+        
+    # VIEWS BY PEOPLE THE FOLLOWERS LIKED
+    if user_followers_constraint:
+        bias_followers_views_join = """INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = views.User_id"""
+        bias_followers_views_and =  """AND conn2.User_id2 = @SEARCHER_ID""" 
+    else:
+        bias_followers_views_join = ""
+        bias_followers_views_and = ""
+    
+    # VIEWS BY USER
+    if user_constraint:
+        user_constraint_str = "AND views.User_id = @SEARCHER_ID"
+    else:
+        user_constraint_str = ""
+
+    if home_function:
+        search_addition = "DESC,"
+    else:
+        search_addition = ""
+        
+    return f"""
+    (
+        SELECT COUNT(*) 
+        FROM VIEWS views
+        {bias_user_views_join}
+        {bias_followers_views_join}
+        
+        WHERE views.Post_id = posts.Post_id
+        {bias_user_views_and}
+        {user_constraint_str} 
+        {bias_followers_views_and}
+    )
+    {search_addition}""" 
+          
+def GET_POST_FAVOURITE_COUNT(home_function=False, 
+    user_following_constraint=False,
+    user_followers_constraint=False,
+    user_constraint=False):
+    
+    if home_function:
+        search_addition = "DESC,"
+    else:
+        search_addition = ""
+    
+    # FAVOURITE BY PEOPLE THE USER IS FOLLOWING
+    if user_following_constraint:
+        bias_user_faves_join = """INNER JOIN CONNECTIONS conn ON conn.User_id2 = faves.User_id"""
+        bias_user_faves_and =  """AND conn.User_id1 = @SEARCHER_ID""" 
+    else:
+        bias_user_faves_join = ""
+        bias_user_faves_and = ""
+        
+    # FAVOURITE BY PEOPLE THE FOLLOWERS LIKED
+    if user_followers_constraint:
+        bias_followers_faves_join = """INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = faves.User_id"""
+        bias_followers_faves_and =  """AND conn2.User_id2 = @SEARCHER_ID""" 
+    else:
+        bias_followers_faves_join = ""
+        bias_followers_faves_and = ""
+    
+    # FAVOURITE BY USER
+    if user_constraint:
+        user_constraint_str = "AND faves.User_id = @SEARCHER_ID"
+    else:
+        user_constraint_str = ""
+
+    if home_function:
+        search_addition = "DESC,"
+    else:
+        search_addition = ""
+        
+    return f"""
+    (
+        SELECT COUNT(*) 
+        FROM FAVOURITES faves
+        {bias_user_faves_join}
+        {bias_followers_faves_join}
+        
+        WHERE faves.Post_id = posts.Post_id
+        {bias_user_faves_and}
+        {user_constraint_str} 
+        {bias_followers_faves_and}
+    )
+    {search_addition}""" 
+         
+def GET_POST_COMMENT_LIKE_COUNT(home_function=False, 
+    user_following_constraint=False,
+    user_followers_constraint=False,
+    user_constraint=False):
+    
+    if home_function:
+        search_addition = "DESC,"
+    else:
+        search_addition = ""
+    
+    # COMMENT LIKES BY PEOPLE THE USER IS FOLLOWING
+    if user_following_constraint:
+        bias_user_comment_likes_join = """INNER JOIN CONNECTIONS conn ON conn.User_id2 = comment_votes.User_id"""
+        bias_user_comment_likes_and =  """AND conn.User_id1 = @SEARCHER_ID""" 
+    else:
+        bias_user_comment_likes_join = ""
+        bias_user_comment_likes_and = ""
+        
+    
+    # COMMENT LIKES BY PEOPLE THE FOLLOWERS LIKED
+    if user_followers_constraint:
+        bias_followers_comment_likes_join = """INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = comment_votes.User_id"""
+        bias_followers_comment_likes_and =  """AND conn2.User_id2 = @SEARCHER_ID""" 
+    else:
+        bias_followers_comment_likes_join = ""
+        bias_followers_comment_likes_and = ""
+    
+    # COMMENT LIKES BY USER
+    if user_constraint:
+        user_constraint_str = "AND comment_votes.User_id = @SEARCHER_ID"
+    else:
+        user_constraint_str = ""
+    return f"""
+        SELECT COUNT(*) 
+        FROM COMMENT_VOTES comment_votes
+        
+        {bias_followers_comment_likes_join}
+        {bias_user_comment_likes_join}
+        
+        INNER JOIN COMMENTS comments  
+        ON comments.Comment_id = comment_votes.Comment_id        
+        
+        WHERE comments.Post_id = posts.Post_id
+        {bias_user_comment_likes_and}
+        {user_constraint_str} 
+        {bias_followers_comment_likes_and}
+    """        
          
 def GET_ALL_COUNTS():
     query = f"""
@@ -79,6 +286,61 @@ def GET_ALL_COUNTS():
     return query
 
 def ORDER_CLAUSE_SECTIONS(clause):
+    if clause == "":
+        pass
+    
+    # LIKES ORDER BY CLAUSES
+    elif clause == "Order_Num_Likes_Total":
+        return GET_POST_LIKE_COUNT()
+    elif clause == "Order_Num_Likes_By_Me":
+        return GET_POST_LIKE_COUNT(user_constraint=True)
+    elif clause == "Order_Num_Likes_by_Followers":
+        return GET_POST_LIKE_COUNT(user_followers_constraint=True)
+    elif clause == "Order_Num_Likes_by_Following":
+        return GET_POST_LIKE_COUNT(user_following_constraint=True)
+    
+    # COMMENTS ORDER BY CLAUSES
+    elif clause == "Order_Num_Comments_Total":
+        return GET_POST_COMMENT_COUNT()
+    elif clause == "Order_Num_Comments_By_Me":
+        return GET_POST_COMMENT_COUNT(user_constraint=True)
+    elif clause == "Order_Num_Comments_by_Followers":
+        return GET_POST_COMMENT_COUNT(user_followers_constraint=True)
+    elif clause == "Order_Num_Comments_by_Following":
+        return GET_POST_COMMENT_COUNT(user_following_constraint=True)
+    
+    # VIEWS ORDER BY CLAUSES
+    elif clause == "Order_Num_Views_Total":
+        return GET_POST_VIEW_COUNT()
+    elif clause == "Order_Num_Views_By_Me":
+        return GET_POST_COMMENT_COUNT(user_constraint=True)
+    elif clause == "Order_Num_Views_by_Followers":
+        return GET_POST_COMMENT_COUNT(user_followers_constraint=True)
+    elif clause == "Order_Num_Views_by_Following":
+        return GET_POST_COMMENT_COUNT(user_following_constraint=True)
+    
+    # FAVES ORDER BY CLAUSES
+    elif clause == "Order_Num_Favourites_Total":
+        return GET_POST_FAVOURITE_COUNT()
+    elif clause == "Order_Num_Favourites_By_Me":
+        return GET_POST_FAVOURITE_COUNT(user_constraint=True)
+    elif clause == "Order_Num_Favourites_by_Followers":
+        return GET_POST_FAVOURITE_COUNT(user_followers_constraint=True)
+    elif clause == "Order_Num_Favourites_by_Following":
+        return GET_POST_FAVOURITE_COUNT(user_following_constraint=True)
+    
+    # COMMENT LIKES COMMENT LIKES BY CLAUSES
+    elif clause == "Order_Num_Comment_Likes_Total":
+        return GET_POST_COMMENT_LIKE_COUNT()
+    elif clause == "Order_Num_Comment_Likes_By_Me":
+        return GET_POST_COMMENT_LIKE_COUNT(user_constraint=True)
+    elif clause == "Order_Num_Comment_Likes_by_Followers":
+        return GET_POST_COMMENT_LIKE_COUNT(user_followers_constraint=True)
+    elif clause == "Order_Num_Comment_Likes_by_Following":
+        return GET_POST_COMMENT_LIKE_COUNT(user_following_constraint=True)
+
+def OLD_UNUSED_ORDER_CLAUSE_SECTIONS(clause):
+    """THIS IS WHAT I WAS USING BEFORE MAKING THE SWITCH TO CHECKBOXES
     if clause.lower() == "Date".lower():
         return "posts.Date_Time DESC,"
     
@@ -108,24 +370,54 @@ def ORDER_CLAUSE_SECTIONS(clause):
     
     elif clause.lower() == "Likes_Favourites_Comments_Views".lower():
         return (F"({GET_POST_FAVOURITE_COUNT()}+{GET_POST_LIKE_COUNT()}+{GET_POST_COMMENT_COUNT()}+{GET_POST_VIEW_COUNT()}) DESC,")
-
-def TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses):
+    """
+    
+def GET_BIAS_TYPE_FROM_ARRAY(html_clause):
+    if "Order_Num_Likes" in html_clause: 
+        bias_type = "like_bias"
+        
+    elif "Order_Num_Views" in html_clause:
+        bias_type = "views_bias"
+        
+    elif "Order_Num_Favourites" in html_clause:
+        bias_type = "faves_bias"
+        
+    elif "Order_Num_Comments" in html_clause:
+        bias_type = "comments_bias"
+        
+    elif "Order_Num_Comment_Likes" in html_clause:
+        bias_type = "comment_likes_bias"
+    
+    return bias_type
+    
+def TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses, bias_dict):
     full_order_by = """"""
+    print("BIAS DICT", bias_dict)
     try:
         for i in range(len(array_of_order_clauses)):
-            #print(i, array_of_order_clauses[i])
-            full_order_by += ORDER_CLAUSE_SECTIONS(array_of_order_clauses[i])
+            bias_type = GET_BIAS_TYPE_FROM_ARRAY(array_of_order_clauses[i])
+            bias_number = bias_dict[bias_type]
+            print(i, array_of_order_clauses[i], bias_type, bias_number)
+            
+            if i == len(array_of_order_clauses) - 1:
+                full_order_by += f"(({ORDER_CLAUSE_SECTIONS(array_of_order_clauses[i])}) * {bias_number})"
+            else:
+                full_order_by += f"(({ORDER_CLAUSE_SECTIONS(array_of_order_clauses[i])}) * {bias_number})" + "+"
+            
+            
     except Exception as e:
         pass
         # print(str(e), str(array_of_order_clauses[i]), i)
         # TODO:log this
 
-    
+    # print(full_order_by)
     
     # end with this just becasue it's easier than finagling
-    full_order_by += ("posts.Post_title")  
-     
-    # print(full_order_by)
+    #todo:GOTTA ADD DESC TO THE END along with a plus sign to add queries
+    print("QUERY BELOW:")
+    # full_order_by += ("posts.Post_title")  
+    print(full_order_by)
+    exit()
     return full_order_by
 
 def TRANSLATE_DATE_CLAUSES(date_clause):

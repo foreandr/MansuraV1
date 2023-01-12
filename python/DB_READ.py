@@ -1243,6 +1243,8 @@ def GET_SEARCH_FAVES():
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
 
 def GET_NUM_SEARCH_ALGOS_TODAY_BY_ID(User_id):
+    if User_id == 1:
+        return True
     try:
         cursor, conn = modules.create_connection()
         cursor.execute(f"""
@@ -1737,20 +1739,10 @@ def GET_POST_DETAILS_BY_ID(Post_id):
     try:
         cursor, conn = modules.create_connection()
         query = f"""
-            SELECT posts.Post_id, Likes.User_id
+            SELECT posts.Post_id, posts.Post_title
             FROM POSTS posts
             
-            INNER JOIN LIKES likes
-            ON likes.Post_id = posts.Post_id
-            
-            INNER JOIN FAVOURITES faves
-            ON faves.Post_id = posts.Post_id
-            
-            INNER JOIN COMMENTS comments
-            ON comments.Post_id = posts.Post_id
-            
-            INNER JOIN VIEWS views
-            ON views.Post_id = posts.Post_id
+
             
             WHERE posts.Post_id = '{Post_id}'
         """
@@ -1770,35 +1762,48 @@ def DEMO(User_id=1):
     following = GET_FOLLOWING_BY_USER_ID(1)
     print("following", following)
     cursor, conn = modules.create_connection()
-    cursor.execute(F"""
-    SELECT Post_Id,
-    (
+    insane_query = f"""
+((
         SELECT COUNT(*) 
-        FROM LIKES likes 
+        FROM COMMENT_VOTES comment_votes
         
-        INNER JOIN CONNECTIONS conn
-        ON conn.User_id2 = likes.User_id
         
-        WHERE likes.Post_id = posts.Post_id 
-        AND conn.User_id1 = '{User_id}'
-
-    ) DESC
         
-    
+        
+        INNER JOIN COMMENTS comments  
+        ON comments.Comment_id = comment_votes.Comment_id        
+        
+        WHERE comments.Post_id = posts.Post_id
+        
+         
+        
+    ) * 13)+((
+        SELECT COUNT(*) 
+        FROM COMMENT_VOTES comment_votes
+        
+        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = comment_votes.User_id
+        
+        
+        INNER JOIN COMMENTS comments  
+        ON comments.Comment_id = comment_votes.Comment_id        
+        
+        WHERE comments.Post_id = posts.Post_id
+        
+         
+        AND conn2.User_id2 = @SEARCHER_ID
+    ) * 13)
+    """
+    insane_query = insane_query.replace("@SEARCHER_ID", f"{User_id}")
+    cursor.execute(F"""
+    SELECT Post_Id,(
+        {insane_query}
+    )
     FROM POSTS posts
     
-    ORDER BY (
-        SELECT COUNT(*) 
-        FROM LIKES likes 
-        
-        INNER JOIN CONNECTIONS conn
-        ON conn.User_id2 = likes.User_id
-        
-        WHERE likes.Post_id = posts.Post_id 
-        AND conn.User_id1 = '{User_id}'
-        ) 
-        DESC
-    LIMIT 10
+    order by (
+        {insane_query}
+    ) DESC
+    LIMIT 600
     """)
     
     for i in cursor.fetchall():
@@ -1833,7 +1838,7 @@ def CREATE_DEMO_ORDER_CLAUSE():
 if __name__ == "__main__":
     # GET_NUM_POSTS()
     DEMO(User_id=1)
-    # GET_POST_DETAILS_BY_ID(87) 
-    
+    #GET_POST_DETAILS_BY_ID(38) 
+
     pass
 

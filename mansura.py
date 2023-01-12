@@ -792,7 +792,7 @@ def search_algo_create():
     if "email" not in session: 
         return redirect(url_for("login"))    
     modules.log_function("request", request, session_user=session['user'])
-    
+
     array_of_order_clauses = []
     array_of_where_clauses = []
 
@@ -800,17 +800,43 @@ def search_algo_create():
         if not modules.GET_NUM_SEARCH_ALGOS_TODAY_BY_ID(session["id"]):
                 return render_template(f"search_algo_create.html",
                     failure_message="Already created 2 today, wait until tomorrow."
-            )    
+            )
+        like_bias = request.form["likes_bias"]
+        views_bias = request.form["views_bias"]
+        faves_bias = request.form["faves_bias"]
+        comments_bias = request.form["comments_bias"]
+        comment_likes_bias = request.form["comment_likes_bias"]
+        subscriptions_bias = request.form["subscriptions_bias"]
+        
+        #print("like_bias          :", like_bias)
+        #print("views_bias         :", views_bias)
+        #print("faves_bias         :", faves_bias)
+        #print("comments_bias      :", comments_bias)
+        #print("subscriptions_bias :", subscriptions_bias)
+        
+        bias_dict = {
+            "like_bias":like_bias, 
+            "views_bias":views_bias, 
+            "faves_bias":faves_bias, 
+            "comments_bias":comments_bias, 
+            "comment_likes_bias":comment_likes_bias,
+            "subscriptions_bias":subscriptions_bias
+        }
+        # print(bias_dict)
+        
         for key,value in request.form.items():
             # print(key, value)
-            if "order_clauses" in key:
-                array_of_order_clauses.append(value)
+            if "Order" in key:
+                array_of_order_clauses.append(key)
             elif "where_clauses" in key:
                 array_of_where_clauses.append(value)
             elif key == "algo_name":
                 algo_name = value
-                
-        full_order_by = modules.TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses)
+        # print(f"ORDER CLAUSES\n{array_of_order_clauses}")
+        # print("GOT HERE 2")
+        full_order_by = modules.TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses, bias_dict)
+        print(full_order_by)
+        exit()
         full_where = modules.TRANSFER_SEARCH_WHERE_TO_QUERY(array_of_where_clauses)
         algorithm = modules.CHECK_ALGO_FUNCTION(algo_name, session["user"])
 
