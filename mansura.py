@@ -1047,7 +1047,14 @@ def intro_page():
     
     return render_template(f"intro_page.html",
     )
-
+@app.route("/test_page", methods=['GET', 'POST'])
+def test_page():
+    modules.log_function("request", request)
+    print("VALUES COMING BACK FROM SEARCH ARRAY")
+    for key,value in request.form.items():
+        print(f"key{key} , value{value}")
+    return render_template(f"test_page.html",
+    )
 if __name__ == '__main__':
     host = "0.0.0.0" 
     # http://165.227.35.71:8088/

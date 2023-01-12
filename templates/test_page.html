@@ -1,0 +1,239 @@
+{% extends "structure.html" %}
+
+{%block main %}
+<form action="/test_page" method="POST" enctype="multipart/form-data">
+    <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="Likes" onchange="LikesChange()">
+        <label class="custom-control-label" for="Likes">Likes</label>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Likes_Total" id="Num_Likes_Total" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Likes Total
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Likes_By_Me" id="Num_Likes_By_Me" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Likes By Me
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Likes_by_Followers" id="Num_Likes_by_Followers" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Likes by Followers
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Likes_by_Following" id="Num_Likes_by_Following" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Likes by Following
+            </label>
+        </div>
+
+    </div>
+
+    <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="Comments" onchange="CommentsChange()">
+        <label class="custom-control-label" for="Comments">Comments</label>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Comments_Total" id="Num_Comments_Total" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Comments Total
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Comments_By_Me" id="Num_Comments_By_Me" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Comments By Me
+            </label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Comments_by_Followers" id="Num_Comments_by_Followers" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Comments by Followers
+            </label>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Comments_by_Following" id="Num_Comments_by_Following" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Comments by Following
+            </label>
+        </div>
+
+    </div>
+
+    <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="Views" onchange="ViewsChange()">
+        <label class="custom-control-label" for="Views">Views</label>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Views_Total" id="Num_Views_Total" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Views Total
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Views_By_Me" id="Num_Views_By_Me" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Views By Me
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Views_by_Followerss" id="Num_Views_by_Followers" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Views by Followers
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Views_by_Following" id="Num_Views_by_Following" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Views by Following
+            </label>
+        </div>
+
+    </div>
+
+    <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="Favourites" onchange="FavouritesChange()">
+        <label class="custom-control-label" for="Favourites">Favourites</label>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Favourites_Total" id="Num_Favourites_Total" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Favourites Total
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Favourites_By_Me" id="Num_Favourites_By_Me" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Favourites By Me
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Favourites_by_Followers" id="Num_Favourites_by_Followers" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Favourites by Followers
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Favourites_by_Following" id="Num_Favourites_by_Following" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Favourites by Following
+            </label>
+        </div>
+
+    </div>
+
+    <div class="custom-control custom-switch">
+        <input type="checkbox" class="custom-control-input" id="Comment Likes" onclick="CommentLikesChange()">
+        <label class="custom-control-label" for="Comment Likes">Comment Likes</label>
+
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Comment_Likes_Total" id="Num_Comment_Likes_Total" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Comment Likes Total
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Comment_Likes_By_Me" id="Num_Comment_Likes_By_Me" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Comment Likes By Me
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Comment_Likes_by_Followers" id="Num_Comment_Likes_by_Followers" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Comment Likes by Followers
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" name="Order_Num_Comment_Likes_by_Following" id="Num_Comment_Likes_by_Following" disabled>
+            <label class="form-check-label" for="flexCheckDefault">
+                Num Comment Likes by Following
+            </label>
+        </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg btn-block" id="search_algo_button">Create</button>
+
+</form>
+
+<script>
+    function LikesChange(){
+        console.log("Likes")
+        if (document.getElementById("Num_Likes_Total").disabled == true){
+            document.getElementById("Num_Likes_Total").disabled = false
+            document.getElementById("Num_Likes_By_Me").disabled = false
+            document.getElementById("Num_Likes_by_Followers").disabled = false
+            document.getElementById("Num_Likes_by_Following").disabled = false
+        }else{
+            document.getElementById("Num_Likes_Total").disabled = true
+            document.getElementById("Num_Likes_By_Me").disabled = true
+            document.getElementById("Num_Likes_by_Followers").disabled = true
+            document.getElementById("Num_Likes_by_Following").disabled = true
+        }
+    }
+    function CommentsChange(){
+        console.log("Comments");
+        if (document.getElementById("Num_Comments_Total").disabled == true){
+            document.getElementById("Num_Comments_Total").disabled = false
+            document.getElementById("Num_Comments_By_Me").disabled = false
+            document.getElementById("Num_Comments_by_Followers").disabled = false
+            document.getElementById("Num_Comments_by_Following").disabled = false
+        }else{
+            document.getElementById("Num_Comments_Total").disabled = true
+            document.getElementById("Num_Comments_By_Me").disabled = true
+            document.getElementById("Num_Comments_by_Followers").disabled = true
+            document.getElementById("Num_Comments_by_Following").disabled = true
+        }
+    }
+    function ViewsChange(){
+        console.log("Views");
+        if (document.getElementById("Num_Views_Total").disabled == true){
+            document.getElementById("Num_Views_Total").disabled = false
+            document.getElementById("Num_Views_By_Me").disabled = false
+            document.getElementById("Num_Views_by_Followers").disabled = false
+            document.getElementById("Num_Views_by_Following").disabled = false
+        }else{
+            document.getElementById("Num_Views_Total").disabled = true
+            document.getElementById("Num_Views_By_Me").disabled = true
+            document.getElementById("Num_Views_by_Followers").disabled = true
+            document.getElementById("Num_Views_by_Following").disabled = true
+        }
+    }
+    function FavouritesChange(){
+        console.log("Favourites");
+        if (document.getElementById("Num_Favourites_Total").disabled == true){
+            document.getElementById("Num_Favourites_Total").disabled = false
+            document.getElementById("Num_Favourites_By_Me").disabled = false
+            document.getElementById("Num_Favourites_by_Followers").disabled = false
+            document.getElementById("Num_Favourites_by_Following").disabled = false
+        }else{
+            document.getElementById("Num_Favourites_Total").disabled = true
+            document.getElementById("Num_Favourites_By_Me").disabled = true
+            document.getElementById("Num_Favourites_by_Followers").disabled = true
+            document.getElementById("Num_Favourites_by_Following").disabled = true
+        }
+    }
+    function CommentLikesChange(){
+        console.log("Comment Likes");
+        if (document.getElementById("Num_Comment_Likes_Total").disabled == true){
+            document.getElementById("Num_Comment_Likes_Total").disabled = false
+            document.getElementById("Num_Comment_Likes_By_Me").disabled = false
+            document.getElementById("Num_Comment_Likes_by_Followers").disabled = false
+            document.getElementById("Num_Comment_Likes_by_Following").disabled = false
+        }else{
+            document.getElementById("Num_Comment_Likes_Total").disabled = true
+            document.getElementById("Num_Comment_Likes_By_Me").disabled = true
+            document.getElementById("Num_Comment_Likes_by_Followers").disabled = true
+            document.getElementById("Num_Comment_Likes_by_Following").disabled = true
+        }
+    }
+
+</script>
+{% endblock main %}

@@ -24,12 +24,29 @@ def CHECK_PEOPLE_ORDER(sort_method):
     else: return ""
     
     
-def GET_POST_LIKE_COUNT(home_function=False):
+def GET_POST_LIKE_COUNT(home_function=False, user_bias=False):
     if home_function:
         search_addition = "DESC,"
     else:
         search_addition = ""
-    return f"""(SELECT COUNT(*) FROM LIKES likes WHERE likes.Post_id = posts.Post_id ){search_addition}""" 
+    
+    if user_bias:
+        bias_user_likes_join = """INNER JOIN CONNECTIONS conn ON conn.User_id2 = likes.User_id"""
+        bias_user_likes_and =  """AND conn.User_id1 = @SEARCHER_ID""" 
+    else:
+        bias_user_likes_join = ""
+        bias_user_likes_and = ""
+        
+    return f"""(
+        SELECT COUNT(*) 
+        FROM LIKES likes 
+        {bias_user_likes_join}
+        
+        WHERE likes.Post_id = posts.Post_id
+        {bias_user_likes_and} 
+        ){search_addition}
+        
+    """ 
         
 def GET_POST_VIEW_COUNT(home_function=False):
     if home_function:

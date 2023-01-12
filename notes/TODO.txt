@@ -36,6 +36,11 @@ follwoing follower UI is WAY off
 
 leaderboards is counting things that I've liked, not things that art posted by me
 
+
+2nd tier likes in query
+
+subscription bias
+
 MONETIZATION
 =============
 DONATIONS
