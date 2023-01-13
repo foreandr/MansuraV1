@@ -410,14 +410,14 @@ def TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses, bias_dict):
         # print(str(e), str(array_of_order_clauses[i]), i)
         # TODO:log this
 
-    # print(full_order_by)
     
-    # end with this just becasue it's easier than finagling
-    #todo:GOTTA ADD DESC TO THE END along with a plus sign to add queries
-    print("QUERY BELOW:")
-    # full_order_by += ("posts.Post_title")  
-    print(full_order_by)
-    exit()
+
+    
+
+    #print(full_order_by)
+    # ADD DESC TP TJE END
+    full_order_by = f"({full_order_by}) DESC"
+    
     return full_order_by
 
 def TRANSLATE_DATE_CLAUSES(date_clause):
@@ -527,6 +527,7 @@ def UNIVERSAL_FUNCTION(
         searcher_id = modules.GET_USER_ID_FROM_NAME(searcher) 
         fave_string, fave_inner_join = modules.FAVOURITE_QUERY(favourites, searcher_id)
         search_algo_id, _ = modules.GET_USER_CURRENT_SEARCH_ALGO_BY_ID(searcher_id)
+        print("search_algo_id", search_algo_id)
         
         # SPECIFIC TO USER
         if profile_id != "":
@@ -537,8 +538,8 @@ def UNIVERSAL_FUNCTION(
         # print("user profile", user_profile)
         
         # ORDER PARAMETERS
-        #order_clause = modules.GET_ORDER_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
-        order_clause = modules.CREATE_DEMO_ORDER_CLAUSE()
+        order_clause = modules.GET_ORDER_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
+        # order_clause = modules.CREATE_DEMO_ORDER_CLAUSE()
         order_clause = order_clause.replace("@SEARCHER_ID", str(searcher_id))
         
         where_clause = modules.GET_WHERE_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
@@ -622,6 +623,8 @@ def UNIVERSAL_FUNCTION(
             # print(i)
             
         modules.close_conn(cursor, conn)
+        # print(query)
+        
         return query, posts, int(page_no), posts_per_page, modules.CHECK_CAN_SCROLL(len(posts), modules.GETTING_POST_MAX_FROM_QUERY(query)), person_id
     except Exception as e:
         cursor.execute("ROLLBACK")

@@ -1764,6 +1764,198 @@ def DEMO(User_id=1):
     cursor, conn = modules.create_connection()
     insane_query = f"""
 ((
+    (
+        SELECT COUNT(*) 
+        FROM LIKES likes 
+        
+        
+        
+        WHERE likes.Post_id = posts.Post_id
+        
+         
+        
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM LIKES likes 
+        
+        
+        
+        WHERE likes.Post_id = posts.Post_id
+        
+        AND likes.User_id = @SEARCHER_ID 
+        
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM LIKES likes 
+        
+        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = likes.User_id
+        
+        WHERE likes.Post_id = posts.Post_id
+        
+         
+        AND conn2.User_id2 = @SEARCHER_ID
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM LIKES likes 
+        INNER JOIN CONNECTIONS conn ON conn.User_id2 = likes.User_id
+        
+        
+        WHERE likes.Post_id = posts.Post_id
+        AND conn.User_id1 = @SEARCHER_ID
+         
+        
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        
+        
+        
+        WHERE comments.Post_id = posts.Post_id
+        
+         
+        
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        
+        
+        
+        WHERE comments.Post_id = posts.Post_id
+        
+        AND comments.User_id = @SEARCHER_ID 
+        
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        
+        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = comments.User_id
+        
+        WHERE comments.Post_id = posts.Post_id
+        
+         
+        AND conn2.User_id2 = @SEARCHER_ID
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        INNER JOIN CONNECTIONS conn ON conn.User_id2 = comments.User_id
+        
+        
+        WHERE comments.Post_id = posts.Post_id
+        AND conn.User_id1 = @SEARCHER_ID
+         
+        
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM VIEWS views
+        
+        
+        
+        WHERE views.Post_id = posts.Post_id
+        
+         
+        
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        
+        
+        
+        WHERE comments.Post_id = posts.Post_id
+        
+        AND comments.User_id = @SEARCHER_ID 
+        
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        
+        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = comments.User_id
+        
+        WHERE comments.Post_id = posts.Post_id
+        
+         
+        AND conn2.User_id2 = @SEARCHER_ID
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        INNER JOIN CONNECTIONS conn ON conn.User_id2 = comments.User_id
+        
+        
+        WHERE comments.Post_id = posts.Post_id
+        AND conn.User_id1 = @SEARCHER_ID
+         
+        
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM FAVOURITES faves
+        
+        
+        
+        WHERE faves.Post_id = posts.Post_id
+        
+         
+        
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM FAVOURITES faves
+        
+        
+        
+        WHERE faves.Post_id = posts.Post_id
+        
+        AND faves.User_id = @SEARCHER_ID 
+        
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM FAVOURITES faves
+        
+        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = faves.User_id
+        
+        WHERE faves.Post_id = posts.Post_id
+        
+         
+        AND conn2.User_id2 = @SEARCHER_ID
+    )
+    ) * 100)+((
+    (
+        SELECT COUNT(*) 
+        FROM FAVOURITES faves
+        INNER JOIN CONNECTIONS conn ON conn.User_id2 = faves.User_id
+        
+        
+        WHERE faves.Post_id = posts.Post_id
+        AND conn.User_id1 = @SEARCHER_ID
+         
+        
+    )
+    ) * 100)+((
         SELECT COUNT(*) 
         FROM COMMENT_VOTES comment_votes
         
@@ -1777,7 +1969,21 @@ def DEMO(User_id=1):
         
          
         
-    ) * 13)+((
+    ) * 100)+((
+        SELECT COUNT(*) 
+        FROM COMMENT_VOTES comment_votes
+        
+        
+        
+        
+        INNER JOIN COMMENTS comments  
+        ON comments.Comment_id = comment_votes.Comment_id        
+        
+        WHERE comments.Post_id = posts.Post_id
+        
+        AND comment_votes.User_id = @SEARCHER_ID 
+        
+    ) * 100)+((
         SELECT COUNT(*) 
         FROM COMMENT_VOTES comment_votes
         
@@ -1791,7 +1997,21 @@ def DEMO(User_id=1):
         
          
         AND conn2.User_id2 = @SEARCHER_ID
-    ) * 13)
+    ) * 100)+((
+        SELECT COUNT(*) 
+        FROM COMMENT_VOTES comment_votes
+        
+        
+        INNER JOIN CONNECTIONS conn ON conn.User_id2 = comment_votes.User_id
+        
+        INNER JOIN COMMENTS comments  
+        ON comments.Comment_id = comment_votes.Comment_id        
+        
+        WHERE comments.Post_id = posts.Post_id
+        AND conn.User_id1 = @SEARCHER_ID
+         
+        
+    ) * 100)
     """
     insane_query = insane_query.replace("@SEARCHER_ID", f"{User_id}")
     cursor.execute(F"""

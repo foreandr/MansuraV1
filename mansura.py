@@ -806,7 +806,7 @@ def search_algo_create():
         faves_bias = request.form["faves_bias"]
         comments_bias = request.form["comments_bias"]
         comment_likes_bias = request.form["comment_likes_bias"]
-        subscriptions_bias = request.form["subscriptions_bias"]
+        # subscriptions_bias = request.form["subscriptions_bias"]
         
         #print("like_bias          :", like_bias)
         #print("views_bias         :", views_bias)
@@ -819,24 +819,24 @@ def search_algo_create():
             "views_bias":views_bias, 
             "faves_bias":faves_bias, 
             "comments_bias":comments_bias, 
-            "comment_likes_bias":comment_likes_bias,
-            "subscriptions_bias":subscriptions_bias
+            "comment_likes_bias":comment_likes_bias
+            # "subscriptions_bias":subscriptions_bias
         }
         # print(bias_dict)
-        
+        print("1")
         for key,value in request.form.items():
-            # print(key, value)
+            print(key, value)
             if "Order" in key:
                 array_of_order_clauses.append(key)
             elif "where_clauses" in key:
                 array_of_where_clauses.append(value)
             elif key == "algo_name":
                 algo_name = value
+        exit(0)
         # print(f"ORDER CLAUSES\n{array_of_order_clauses}")
         # print("GOT HERE 2")
         full_order_by = modules.TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses, bias_dict)
-        print(full_order_by)
-        exit()
+        # print(full_order_by)
         full_where = modules.TRANSFER_SEARCH_WHERE_TO_QUERY(array_of_where_clauses)
         algorithm = modules.CHECK_ALGO_FUNCTION(algo_name, session["user"])
 
