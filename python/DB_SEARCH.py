@@ -517,8 +517,9 @@ def UNIVERSAL_FUNCTION(
     print("post_tribunal",post_tribunal) 
     print("search_phrase",search_phrase)
     ''' 
+    cursor, conn = modules.create_connection()
     try:
-        cursor, conn = modules.create_connection()
+        
         person = modules.PERSON_SEARCH(person_id)
         searcher_id = modules.GET_USER_ID_FROM_NAME(searcher) 
         fave_string, fave_inner_join = modules.FAVOURITE_QUERY(favourites, searcher_id)
@@ -543,7 +544,7 @@ def UNIVERSAL_FUNCTION(
         # CAST VOTE FOR SEARCH
         modules.INSERT_SEARCH_VOTE(search_algo_id, searcher_id)
         
-        posts_per_page = 3
+        posts_per_page = 5
         
         query = f"""
         SELECT 
@@ -591,7 +592,7 @@ def UNIVERSAL_FUNCTION(
 
         cursor.execute(query)
         posts = []
-        for i in range((page_no-1) * posts_per_page):
+        for i in range((page_no-1) * posts_per_page): # add empty values
             posts.append([])
         
         for i in cursor.fetchall():
@@ -618,12 +619,47 @@ def UNIVERSAL_FUNCTION(
             ])
             # print(i)
             
-        modules.close_conn(cursor, conn)
-        # print(query)
-        
-        return query, posts, int(page_no), posts_per_page, modules.CHECK_CAN_SCROLL(len(posts), modules.GETTING_POST_MAX_FROM_QUERY(query)), person_id
     except Exception as e:
+
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+    modules.close_conn(cursor, conn)
+    # print(query)
+    posts = modules.GET_RID_OF_DUPES(posts, posts_per_page)
+    return query, posts, int(page_no), posts_per_page, modules.CHECK_CAN_SCROLL(len(posts), modules.GETTING_POST_MAX_FROM_QUERY(query)), person_id
+
+
+def GET_RID_OF_DUPES(posts, posts_per_page):
+    num_posts = len(posts)
+    post_array = []
+    id_array = []
+    
+    for i in range(len(posts)):
+        if posts[i] == []:
+            continue
+        
+        post_id = posts[i][6]
+        if post_id not in id_array:
+            post_array.append(posts[i])
+        else:
+            pass
+            # print("ALREADY EXISTS")
+        
+        id_array.append(post_id)
+
+    empties_needed = posts_per_page - len(post_array)
+    # print("STILL NEED", empties_needed)
+    
+    for i in range(empties_needed):
+        post_array.append([])
+
+    #for i in range(len(post_array)):
+    #    print('POST ARRAY', i, post_array[i])
+
+    
+    return post_array
+    
+    
+    
 if __name__ == "__main__": 
     pass
