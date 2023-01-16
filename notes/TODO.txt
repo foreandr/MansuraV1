@@ -1,9 +1,9 @@
 https://pypi.org/project/sql-formatter/
 
-scroll logic for the tribunal
-HOMEPAGE-PICK CERTIAN USERS TO PRIORITIZE?
-human favourites
-hoverable over text icons
+1. scroll logic for the tribunal
+2. HOMEPAGE-PICK CERTIAN USERS TO subscribe to?
+DONE. human favourites
+DONE. hoverable over text icons
 get rid of dupes
 circle on upload
 loading circle on page navigation
@@ -41,11 +41,29 @@ leaderboards is counting things that I've liked, not things that art posted by m
 
 subscription bias
 
+it might be desirable to be able to send the actual message so then I can tell how many times x message appears in a dm as WELL
+    - can be used for search, as well as being more certain about the html being injected
+
+references to papers?
+<div>
+    <a href="https://www.worldscientific.com/doi/pdf/10.1142/9789811258251_0091">a</a>
+</div>
+
+Mansura 
+    - digital content library
+
+seen by me, not seen by me, followeers, following etc
+
+larger tag list, need a toggle for showing tags
+
 MONETIZATION
 =============
 DONATIONS
 SUBSCRIPTIONS
     - people can post n links to pages they want RSS feeds generated for
 ADS
+    - there are other ad options
 
 person live == true to leaderboards
+
+check soundcloud embed

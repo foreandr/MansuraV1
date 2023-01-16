@@ -23,12 +23,11 @@ def CHECK_PEOPLE_ORDER(sort_method):
         return "ORDER BY DESC"
     else: return ""
     
-    
 def GET_POST_LIKE_COUNT(
     home_function=False, 
     user_following_constraint=False,
     user_followers_constraint=False,
-    user_constraint=False
+    user_constraint=False,
     ):
     
     if home_function:
@@ -58,6 +57,8 @@ def GET_POST_LIKE_COUNT(
         user_constraint_str = "AND likes.User_id = @SEARCHER_ID"
     else:
         user_constraint_str = ""
+    
+    # WHERE CLAUSE
     
     return f"""
     (
@@ -260,6 +261,8 @@ def GET_POST_COMMENT_LIKE_COUNT(home_function=False,
         user_constraint_str = "AND comment_votes.User_id = @SEARCHER_ID"
     else:
         user_constraint_str = ""
+        
+    
     return f"""
         SELECT COUNT(*) 
         FROM COMMENT_VOTES comment_votes
@@ -392,12 +395,12 @@ def GET_BIAS_TYPE_FROM_ARRAY(html_clause):
     
 def TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses, bias_dict):
     full_order_by = """"""
-    print("BIAS DICT", bias_dict)
+    # print("BIAS DICT", bias_dict)
     try:
         for i in range(len(array_of_order_clauses)):
             bias_type = GET_BIAS_TYPE_FROM_ARRAY(array_of_order_clauses[i])
             bias_number = bias_dict[bias_type]
-            print(i, array_of_order_clauses[i], bias_type, bias_number)
+            # print(i, array_of_order_clauses[i], bias_type, bias_number)
             
             if i == len(array_of_order_clauses) - 1:
                 full_order_by += f"(({ORDER_CLAUSE_SECTIONS(array_of_order_clauses[i])}) * {bias_number})"
@@ -407,15 +410,8 @@ def TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses, bias_dict):
             
     except Exception as e:
         pass
-        # print(str(e), str(array_of_order_clauses[i]), i)
         # TODO:log this
 
-    
-
-    
-
-    #print(full_order_by)
-    # ADD DESC TP TJE END
     full_order_by = f"({full_order_by}) DESC"
     
     return full_order_by
@@ -423,14 +419,13 @@ def TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses, bias_dict):
 def TRANSLATE_DATE_CLAUSES(date_clause):
     if date_clause == "All Time":
         return ""
-    
-    if date_clause.lower() == "Today".lower():
+    if date_clause.lower() == "Day".lower():
         date_needed = 1
-    elif date_clause.lower() == "This Week".lower():
+    elif date_clause.lower() == "Week".lower():
         date_needed = 7
-    elif date_clause.lower() == "This Month".lower():
+    elif date_clause.lower() == "Month".lower():
         date_needed = 30
-    elif date_clause.lower() == "This Year".lower():
+    elif date_clause.lower() == "Year".lower():
         date_needed = 365
 
     return f"(posts.Date_Time > current_date - interval ''{date_needed}'' day)" 
@@ -451,55 +446,56 @@ def TRANSLATE_PROPERTIES(properties):
     elif properties.lower() == "Comments".lower():
         return GET_POST_COMMENT_COUNT(False)
     
+def CREATE_TYPE_WHERE_CLAUSE(my_type, amount):
+    query = f"""
+    (
+        SELECT COUNT(*) 
+        FROM {my_type.upper()} {my_type}        
+        WHERE {my_type}.Post_id = posts.Post_id
+    ) >= {amount}
+    
+    """
+    return query
+    
+def WHERE_CLAUSE_TYPE_COUNT(clause_list):
+    #  print("WHERE_CLAUSE_TYPE_COUNT", clause_list)
+    first_index = clause_list[0]
+    check_type = first_index.split("_")[1]
+    amount = clause_list[1]
+    
+    print("type  :", check_type)
+    print("amount:", amount)
+    return CREATE_TYPE_WHERE_CLAUSE(check_type, amount)
+    
+    
 def WHERE_CLAUSE_SECTIONS(clause):
+    # print("clause", clause)
     # print(clause)
-    if "All Time" in clause:
-        return ""
 
-    date_clauses = ["All Time","This Week","This Month","This Year", "Today"]
-    conditional_clauses = ["AND", "OR"]
-    properties = ["Likes", "Views", "Favourites", "Comments"]
-    comparison = ["Less Than", "Equal", "Greater Than"]
-    numbers = ["10", "100", "1000", "10000","100000", "1000000","10000000"]
-    
-    
-    sectioned_clause = clause.split(",")
-    full_where_clause = ""
-    for i in range(len(sectioned_clause)):
-        # print("sectioned_clause[i]", len(sectioned_clause[i]), sectioned_clause[i])
-        value = ""
-        if sectioned_clause[i] in date_clauses:
-            value = TRANSLATE_DATE_CLAUSES(sectioned_clause[i])
-        
-        elif sectioned_clause[i] in conditional_clauses:
-            value = sectioned_clause[i] + " " 
-        
-        elif sectioned_clause[i] in properties:
-            # print("conditional_clauses", sectioned_clause[i])
-            value = TRANSLATE_PROPERTIES(sectioned_clause[i])
-    
-        elif sectioned_clause[i] in comparison:
-            # print("comparison", sectioned_clause[i])
-            value = TRANSLATE_CONDITIONAL(sectioned_clause[i])
-    
-        elif sectioned_clause[i] in numbers:
-            # print("numbers", sectioned_clause[i])
-            value = sectioned_clause[i]
-        
-        full_where_clause += value
-        # print(i, full_where_clause)
+    if clause[0] == "Where_Date":
+        value = TRANSLATE_DATE_CLAUSES(clause[1])
+    else:
+        value = WHERE_CLAUSE_TYPE_COUNT(clause)
 
-        
-            
-    # print("full_where_clause\n", full_where_clause)
-    return full_where_clause
+    # print(value)
+    return F"({value})"
 
 
 def TRANSFER_SEARCH_WHERE_TO_QUERY(array_of_where_clauses):
+    # print(array_of_where_clauses)
     full_where = """"""
-    for i in array_of_where_clauses:
-        full_where += WHERE_CLAUSE_SECTIONS(i) + "\n"
+    for i in range(len(array_of_where_clauses)):
+        if array_of_where_clauses[i][1] == "All Time":
+            print("adding nothing because it's all time")
+            continue
+        # print(i, array_of_where_clauses[i])
+        full_where += "AND " + str(WHERE_CLAUSE_SECTIONS(array_of_where_clauses[i])) 
+        #if i == len(array_of_where_clauses) - 1:
+        #else:
+        #    full_where += str(WHERE_CLAUSE_SECTIONS(array_of_where_clauses[i]))  + "AND"
+        
     # end with this just becasue it's easier than finagling
+    print("FULL WHERE CLAUSE\n", full_where)
     return full_where
     
 def UNIVERSAL_FUNCTION(

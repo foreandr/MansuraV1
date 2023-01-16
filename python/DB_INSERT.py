@@ -853,7 +853,7 @@ def INSERT_SEARCH_ALGORITHM(Search_algorithm_name, Search_where_clause, Search_o
         """)
     
         conn.commit()
-        modules.print_green(f"{inspect.stack()[0][3]} {Search_algorithm_name, Search_where_clause, Search_order_clause, User_id} COMPLETED")
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED")
         modules.close_conn(cursor, conn) 
     except Exception as e:
         print(e)

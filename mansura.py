@@ -808,12 +808,6 @@ def search_algo_create():
         comment_likes_bias = request.form["comment_likes_bias"]
         # subscriptions_bias = request.form["subscriptions_bias"]
         
-        #print("like_bias          :", like_bias)
-        #print("views_bias         :", views_bias)
-        #print("faves_bias         :", faves_bias)
-        #print("comments_bias      :", comments_bias)
-        #print("subscriptions_bias :", subscriptions_bias)
-        
         bias_dict = {
             "like_bias":like_bias, 
             "views_bias":views_bias, 
@@ -822,17 +816,17 @@ def search_algo_create():
             "comment_likes_bias":comment_likes_bias
             # "subscriptions_bias":subscriptions_bias
         }
-        # print(bias_dict)
-        print("1")
         for key,value in request.form.items():
-            print(key, value)
+            # print(key, value)
             if "Order" in key:
                 array_of_order_clauses.append(key)
-            elif "where_clauses" in key:
-                array_of_where_clauses.append(value)
+            elif "Where_" in key:
+                # print("ADDING TO WHERE CLAUSE", key, value)
+                array_of_where_clauses.append([key, value])
             elif key == "algo_name":
                 algo_name = value
-        exit(0)
+        # exit(0)
+        #TODO: IMPLEMENT WHERE CLAUSES ONN THE BASIS OF THOSE CRITERION
         # print(f"ORDER CLAUSES\n{array_of_order_clauses}")
         # print("GOT HERE 2")
         full_order_by = modules.TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses, bias_dict)

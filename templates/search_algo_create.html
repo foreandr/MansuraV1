@@ -2,9 +2,6 @@
 
 {%block main %}
 
-
-
-
 <div class="container">
     <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
         <h1><u>CREATE CUSTOM SEARCH ALGORITHM</u></h1>
@@ -242,25 +239,31 @@
                         <label class="custom-control-label" for="Date">Post Date</label>
                 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="Date" id="All Time" value="All Time"checked>
+                            <input class="form-check-input" type="radio" name="Where_Date" id="All Time" value="All Time"checked>
                             <label class="form-check-label" for="All Time">
                                 All Time
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="Date" id="Year"value="Year">
+                            <input class="form-check-input" type="radio" name="Where_Date" id="Year"value="Year">
                             <label class="form-check-label" for="Year">
                                 Year
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="Date" id="Month"value="Month">
+                            <input class="form-check-input" type="radio" name="Where_Date" id="Month"value="Month">
                             <label class="form-check-label" for="Month">
                                 Month
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="Date" id="Day" value="Day">
+                            <input class="form-check-input" type="radio" name="Where_Date" id="Week"value="Week">
+                            <label class="form-check-label" for="Week">
+                                Week
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="Where_Date" id="Day" value="Day">
                             <label class="form-check-label" for="Day">
                                 Day
                             </label>
@@ -272,25 +275,25 @@
                         <label class="custom-control-label" for="WhereLikes">Likes</label>
                 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="10" name="Likes" id="WhereLikes10" disabled>
+                            <input class="form-check-input" type="radio" value="10" name="Where_Likes" id="WhereLikes10" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Likes >= 10
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="100" name="Likes" id="WhereLikes100" disabled>
+                            <input class="form-check-input" type="radio" value="100" name="Where_Likes" id="WhereLikes100" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Likes >= 100
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="1000" name="Likes" id="WhereLikes1000" disabled>
+                            <input class="form-check-input" type="radio" value="1000" name="Where_Likes" id="WhereLikes1000" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Likes >= 1000
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="10000" name="Likes" id="WhereLikes10000" disabled>
+                            <input class="form-check-input" type="radio" value="10000" name="Where_Likes" id="WhereLikes10000" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Likes >= 10000
                             </label>
@@ -311,25 +314,25 @@
                         <label class="custom-control-label" for="WhereComments">Comments</label>
                 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="10" name="Comments" id="WhereComments10" disabled>
+                            <input class="form-check-input" type="radio" value="10" name="Where_Comments" id="WhereComments10" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Comments >= 10
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="100" name="Comments" id="WhereComments100" disabled>
+                            <input class="form-check-input" type="radio" value="100" name="Where_Comments" id="WhereComments100" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Comments >= 100
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="1000" name="Comments" id="WhereComments1000" disabled>
+                            <input class="form-check-input" type="radio" value="1000" name="Where_Comments" id="WhereComments1000" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Comments >= 1000
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="10000" name="Comments" id="WhereComments10000" disabled>
+                            <input class="form-check-input" type="radio" value="10000" name="Where_Comments" id="WhereComments10000" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Comments >= 10000
                             </label>
@@ -350,26 +353,26 @@
                         <label class="custom-control-label" for="WhereViews">Views</label>
                 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="10" name="Views" id="WhereViews10" disabled>
+                            <input class="form-check-input" type="radio" value="10" name="Where_Views" id="WhereViews10" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Views >= 10
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="100" name="Views" id="WhereViews100" disabled>
+                            <input class="form-check-input" type="radio" value="100" name="Where_Views" id="WhereViews100" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Views >= 100
                             </label>
                             
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="1000" name="Views" id="WhereViews1000" disabled>
+                            <input class="form-check-input" type="radio" value="1000" name="Where_Views" id="WhereViews1000" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Views >= 1000
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="10000" name="Views" id="WhereViews10000" disabled>
+                            <input class="form-check-input" type="radio" value="10000" name="Where_Views" id="WhereViews10000" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Views >= 10000
                             </label>
@@ -390,25 +393,25 @@
                         <label class="custom-control-label" for="WhereFavourites">Favourites</label>
                 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="10" name="Favourites" id="WhereFavourites10" disabled>
+                            <input class="form-check-input" type="radio" value="10" name="Where_Favourites" id="WhereFavourites10" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Favourites >= 10
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="100" name="Favourites" id="WhereFavourites100" disabled>
+                            <input class="form-check-input" type="radio" value="100" name="Where_Favourites" id="WhereFavourites100" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Favourites >= 100
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="1000" name="Favourites" id="WhereFavourites1000" disabled>
+                            <input class="form-check-input" type="radio" value="1000" name="Where_Favourites" id="WhereFavourites1000" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Favourites >= 1000
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" value="10000" name="Favourites" id="WhereFavourites10000" disabled>
+                            <input class="form-check-input" type="radio" value="10000" name="Where_Favourites" id="WhereFavourites10000" disabled>
                             <label class="form-check-label" for="flexCheckDefault">
                                 Favourites >= 10000
                             </label>
@@ -528,13 +531,13 @@
             document.getElementById("WhereLikes100").disabled = false
             document.getElementById("WhereLikes1000").disabled = false
             document.getElementById("WhereLikes10000").disabled = false
-            document.getElementById("WhereLikes100000").disabled = false
+            //document.getElementById("WhereLikes100000").disabled = false
         }else{
             document.getElementById("WhereLikes10").disabled = false
             document.getElementById("WhereLikes100").disabled = false
             document.getElementById("WhereLikes1000").disabled = false
             document.getElementById("WhereLikes10000").disabled = false
-            document.getElementById("WhereLikes100000").disabled = false
+           // document.getElementById("WhereLikes100000").disabled = false
         }
     }
     function WhereCommentsChange(){
@@ -544,13 +547,13 @@
             document.getElementById("WhereComments100").disabled = false
             document.getElementById("WhereComments1000").disabled = false
             document.getElementById("WhereComments10000").disabled = false
-            document.getElementById("WhereComments100000").disabled = false
+            //document.getElementById("WhereComments100000").disabled = false
         }else{
             document.getElementById("WhereComments10").disabled = false
             document.getElementById("WhereComments100").disabled = false
             document.getElementById("WhereComments1000").disabled = false
             document.getElementById("WhereComments10000").disabled = false
-            document.getElementById("WhereComments100000").disabled = false
+            //document.getElementById("WhereComments100000").disabled = false
         }
     }
     function WhereViewsChange(){
@@ -560,13 +563,13 @@
             document.getElementById("WhereViews100").disabled = false
             document.getElementById("WhereViews1000").disabled = false
             document.getElementById("WhereViews10000").disabled = false
-            document.getElementById("WhereViews100000").disabled = false
+            //document.getElementById("WhereViews100000").disabled = false
         }else{
             document.getElementById("WhereViews10").disabled = false
             document.getElementById("WhereViews100").disabled = false
             document.getElementById("WhereViews1000").disabled = false
             document.getElementById("WhereViews10000").disabled = false
-            document.getElementById("WhereViews100000").disabled = false
+            //document.getElementById("WhereViews100000").disabled = false
         }
     }
     function WhereFavouritesChange(){
@@ -576,17 +579,14 @@
             document.getElementById("WhereFavourites100").disabled = false
             document.getElementById("WhereFavourites1000").disabled = false
             document.getElementById("WhereFavourites10000").disabled = false
-            document.getElementById("WhereFavourites100000").disabled = false
+            //document.getElementById("WhereFavourites100000").disabled = false
         }else{
             document.getElementById("WhereFavourites10").disabled = false
             document.getElementById("WhereFavourites100").disabled = false
             document.getElementById("WhereFavourites1000").disabled = false
             document.getElementById("WhereFavourites10000").disabled = false
-            document.getElementById("WhereFavourites100000").disabled = false
+            //document.getElementById("WhereFavourites100000").disabled = false
         }
     }
-
-
-
 </script>
 {% endblock main %}

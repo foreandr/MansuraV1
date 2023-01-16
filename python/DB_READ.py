@@ -1762,267 +1762,45 @@ def DEMO(User_id=1):
     following = GET_FOLLOWING_BY_USER_ID(1)
     print("following", following)
     cursor, conn = modules.create_connection()
-    insane_query = f"""
-((
+    where_clause = '''
+    AND (
     (
         SELECT COUNT(*) 
-        FROM LIKES likes 
-        
-        
-        
-        WHERE likes.Post_id = posts.Post_id
-        
-         
-        
-    )
-    ) * 100)+((
+        FROM LIKES Likes        
+        WHERE Likes.Post_id = posts.Post_id
+    ) > 1
+    
+    )AND (
     (
         SELECT COUNT(*) 
-        FROM LIKES likes 
-        
-        
-        
-        WHERE likes.Post_id = posts.Post_id
-        
-        AND likes.User_id = @SEARCHER_ID 
-        
-    )
-    ) * 100)+((
+        FROM COMMENTS Comments        
+        WHERE Comments.Post_id = posts.Post_id
+    ) > 1
+    
+    )AND (
     (
         SELECT COUNT(*) 
-        FROM LIKES likes 
-        
-        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = likes.User_id
-        
-        WHERE likes.Post_id = posts.Post_id
-        
-         
-        AND conn2.User_id2 = @SEARCHER_ID
-    )
-    ) * 100)+((
+        FROM VIEWS Views        
+        WHERE Views.Post_id = posts.Post_id
+    ) > 1
+    
+    )AND (
     (
         SELECT COUNT(*) 
-        FROM LIKES likes 
-        INNER JOIN CONNECTIONS conn ON conn.User_id2 = likes.User_id
-        
-        
-        WHERE likes.Post_id = posts.Post_id
-        AND conn.User_id1 = @SEARCHER_ID
-         
-        
+        FROM FAVOURITES Favourites        
+        WHERE Favourites.Post_id = posts.Post_id
+    ) > 0
+    
     )
-    ) * 100)+((
-    (
-        SELECT COUNT(*) 
-        FROM COMMENTS comments 
-        
-        
-        
-        WHERE comments.Post_id = posts.Post_id
-        
-         
-        
-    )
-    ) * 100)+((
-    (
-        SELECT COUNT(*) 
-        FROM COMMENTS comments 
-        
-        
-        
-        WHERE comments.Post_id = posts.Post_id
-        
-        AND comments.User_id = @SEARCHER_ID 
-        
-    )
-    ) * 100)+((
-    (
-        SELECT COUNT(*) 
-        FROM COMMENTS comments 
-        
-        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = comments.User_id
-        
-        WHERE comments.Post_id = posts.Post_id
-        
-         
-        AND conn2.User_id2 = @SEARCHER_ID
-    )
-    ) * 100)+((
-    (
-        SELECT COUNT(*) 
-        FROM COMMENTS comments 
-        INNER JOIN CONNECTIONS conn ON conn.User_id2 = comments.User_id
-        
-        
-        WHERE comments.Post_id = posts.Post_id
-        AND conn.User_id1 = @SEARCHER_ID
-         
-        
-    )
-    ) * 100)+((
-    (
-        SELECT COUNT(*) 
-        FROM VIEWS views
-        
-        
-        
-        WHERE views.Post_id = posts.Post_id
-        
-         
-        
-    )
-    ) * 100)+((
-    (
-        SELECT COUNT(*) 
-        FROM COMMENTS comments 
-        
-        
-        
-        WHERE comments.Post_id = posts.Post_id
-        
-        AND comments.User_id = @SEARCHER_ID 
-        
-    )
-    ) * 100)+((
-    (
-        SELECT COUNT(*) 
-        FROM COMMENTS comments 
-        
-        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = comments.User_id
-        
-        WHERE comments.Post_id = posts.Post_id
-        
-         
-        AND conn2.User_id2 = @SEARCHER_ID
-    )
-    ) * 100)+((
-    (
-        SELECT COUNT(*) 
-        FROM COMMENTS comments 
-        INNER JOIN CONNECTIONS conn ON conn.User_id2 = comments.User_id
-        
-        
-        WHERE comments.Post_id = posts.Post_id
-        AND conn.User_id1 = @SEARCHER_ID
-         
-        
-    )
-    ) * 100)+((
-    (
-        SELECT COUNT(*) 
-        FROM FAVOURITES faves
-        
-        
-        
-        WHERE faves.Post_id = posts.Post_id
-        
-         
-        
-    )
-    ) * 100)+((
-    (
-        SELECT COUNT(*) 
-        FROM FAVOURITES faves
-        
-        
-        
-        WHERE faves.Post_id = posts.Post_id
-        
-        AND faves.User_id = @SEARCHER_ID 
-        
-    )
-    ) * 100)+((
-    (
-        SELECT COUNT(*) 
-        FROM FAVOURITES faves
-        
-        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = faves.User_id
-        
-        WHERE faves.Post_id = posts.Post_id
-        
-         
-        AND conn2.User_id2 = @SEARCHER_ID
-    )
-    ) * 100)+((
-    (
-        SELECT COUNT(*) 
-        FROM FAVOURITES faves
-        INNER JOIN CONNECTIONS conn ON conn.User_id2 = faves.User_id
-        
-        
-        WHERE faves.Post_id = posts.Post_id
-        AND conn.User_id1 = @SEARCHER_ID
-         
-        
-    )
-    ) * 100)+((
-        SELECT COUNT(*) 
-        FROM COMMENT_VOTES comment_votes
-        
-        
-        
-        
-        INNER JOIN COMMENTS comments  
-        ON comments.Comment_id = comment_votes.Comment_id        
-        
-        WHERE comments.Post_id = posts.Post_id
-        
-         
-        
-    ) * 100)+((
-        SELECT COUNT(*) 
-        FROM COMMENT_VOTES comment_votes
-        
-        
-        
-        
-        INNER JOIN COMMENTS comments  
-        ON comments.Comment_id = comment_votes.Comment_id        
-        
-        WHERE comments.Post_id = posts.Post_id
-        
-        AND comment_votes.User_id = @SEARCHER_ID 
-        
-    ) * 100)+((
-        SELECT COUNT(*) 
-        FROM COMMENT_VOTES comment_votes
-        
-        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = comment_votes.User_id
-        
-        
-        INNER JOIN COMMENTS comments  
-        ON comments.Comment_id = comment_votes.Comment_id        
-        
-        WHERE comments.Post_id = posts.Post_id
-        
-         
-        AND conn2.User_id2 = @SEARCHER_ID
-    ) * 100)+((
-        SELECT COUNT(*) 
-        FROM COMMENT_VOTES comment_votes
-        
-        
-        INNER JOIN CONNECTIONS conn ON conn.User_id2 = comment_votes.User_id
-        
-        INNER JOIN COMMENTS comments  
-        ON comments.Comment_id = comment_votes.Comment_id        
-        
-        WHERE comments.Post_id = posts.Post_id
-        AND conn.User_id1 = @SEARCHER_ID
-         
-        
-    ) * 100)
-    """
-    insane_query = insane_query.replace("@SEARCHER_ID", f"{User_id}")
+    '''
     cursor.execute(F"""
-    SELECT Post_Id,(
-        {insane_query}
-    )
+    SELECT Post_Id
     FROM POSTS posts
     
-    order by (
-        {insane_query}
-    ) DESC
+    
+    WHERE 1=1
+    {where_clause}
+    
     LIMIT 600
     """)
     
