@@ -544,7 +544,7 @@ def UNIVERSAL_FUNCTION(
         # CAST VOTE FOR SEARCH
         modules.INSERT_SEARCH_VOTE(search_algo_id, searcher_id)
         
-        posts_per_page = 5
+        posts_per_page = 10
         
         query = f"""
         SELECT 

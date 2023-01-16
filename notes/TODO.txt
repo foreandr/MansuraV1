@@ -4,7 +4,7 @@ https://pypi.org/project/sql-formatter/
 2. HOMEPAGE-PICK CERTIAN USERS TO subscribe to?
 DONE. human favourites
 DONE. hoverable over text icons
-get rid of dupes
+DONE.get rid of dupes
 circle on upload
 loading circle on page navigation
 larger post titles
