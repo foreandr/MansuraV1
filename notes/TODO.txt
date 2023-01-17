@@ -5,8 +5,8 @@ https://pypi.org/project/sql-formatter/
 DONE. human favourites
 DONE. hoverable over text icons
 DONE.get rid of dupes
-circle on upload
-loading circle on page navigation
+QUALITY OF LIFE. circle on upload
+QUALITY OF LIFE. loading circle on page navigation
 larger post titles
  if there is a dupe, take them tod th post
 notifications
@@ -56,6 +56,9 @@ seen by me, not seen by me, followeers, following etc
 
 larger tag list, need a toggle for showing tags
 
+
+can embed links from book archive too:
+<iframe src="https://archive.org/embed/germanjewishpion0000nach" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
 MONETIZATION
 =============
 DONATIONS

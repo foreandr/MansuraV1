@@ -524,7 +524,7 @@ def UNIVERSAL_FUNCTION(
         searcher_id = modules.GET_USER_ID_FROM_NAME(searcher) 
         fave_string, fave_inner_join = modules.FAVOURITE_QUERY(favourites, searcher_id)
         search_algo_id, _ = modules.GET_USER_CURRENT_SEARCH_ALGO_BY_ID(searcher_id)
-        print("search_algo_id", search_algo_id)
+        # print("search_algo_id", search_algo_id)
         
         # SPECIFIC TO USER
         if profile_id != "":
