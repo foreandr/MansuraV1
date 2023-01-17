@@ -1,6 +1,13 @@
 https://pypi.org/project/sql-formatter/
 https://pypi.org/project/youtube-video-scraping/
 
+TODO: CURRENTLY AT SENDING TAG request 
+    - TAG REQ table 
+    - TAG REQ HOME
+    - ONLY PEOPLE OF X REPUTATION CAN SUBMIT TAG REQUESTS
+        - DENIED = MINUS ON REPUTATION
+
+
 0. ADS
 1. scroll logic for the tribunal
 2. HOMEPAGE-PICK CERTIAN USERS TO subscribe to?
@@ -32,12 +39,6 @@ leaderboards
     - leaderboards by subject
     - leaderboards by type of person, occupation etc
 21. where users are thes users! in where clause
-DONE. human favourites
-DONE. hoverable over text icons
-DONE.get rid of dupes
-QUALITY OF LIFE. circle on upload
-QUALITY OF LIFE. loading circle on page navigation
-DONE.larger post titles
 
 NEW-UPLOADS
     - what i should do is put all of these in the tribunal, then allow tagging in the tribunal

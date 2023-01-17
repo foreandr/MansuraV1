@@ -35,3 +35,6 @@ pay for ad free experience
 person page search by cerrtain fields
 consolodate am subscribed and num, scribes iunto one query
     - or into unniversal
+
+QUALITY OF LIFE. circle on upload
+QUALITY OF LIFE. loading circle on page navigation

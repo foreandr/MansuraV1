@@ -156,4 +156,7 @@ DONE.CREATE A DEFAULT ALGO THAT IS JUST THE SUM AND MOST RECENT ON CREATION
 DONE. NEED A WAY TO subscribe PERSONS
     DONE. as well as pick people they may be interested in TO FOLLOWER ON HOMEPAGE
     
-    DONE. add demo to search algo creation
+    DONE. add demo to search algo creationDONE. human favourites
+DONE. hoverable over text icons
+DONE.get rid of dupes
+DONE.larger post titles
