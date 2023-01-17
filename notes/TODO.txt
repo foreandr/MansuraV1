@@ -1,45 +1,46 @@
 https://pypi.org/project/sql-formatter/
+https://pypi.org/project/youtube-video-scraping/
 
+0. ADS
 1. scroll logic for the tribunal
 2. HOMEPAGE-PICK CERTIAN USERS TO subscribe to?
+3.if there is a dupe, take them tod th post
+4. notifications
+    - early virality boosts
+5. public playlists
+    - playlist leaderboards
+
+6. DB backups
+    - SEND a version of the code to my actual machine every week to so
+7. apply to be a moderator page
+8. move cursor out of try catch where applicable
+9. disable subscribe if using the trial ID
+10. need to be able to tag on actual videos
+    - post person request table?
+11.follwoing follower UI is WAY off
+12.seen by me, not seen by me, followeers, following etc
+13. subscription bias
+14.leaderboards is counting things that I've liked, not things that art posted by me
+15. search algo where clause with site source
+    - WHERE site == "youtube" etc
+16. 2nd tier likes in query liked by people who liked my posts? NOT SURE WHAT I MEANT
+17. wrong tag lose tag privileges
+18. larger tag list, need a toggle for showing tags
+19. person live == true to leaderboards
+20. check soundcloud embed
+leaderboards
+    - leaderboards by subject
+    - leaderboards by type of person, occupation etc
+21. where users are thes users! in where clause
 DONE. human favourites
 DONE. hoverable over text icons
 DONE.get rid of dupes
 QUALITY OF LIFE. circle on upload
 QUALITY OF LIFE. loading circle on page navigation
-larger post titles
- if there is a dupe, take them tod th post
-notifications
-    - early virality boosts
-public playlists
-playlist leaderboards
-leaderboards by subject
-leaderboards by type of person, occupation etc
-DB backups
-SEND a version of the code to my actual machine every week to so
-aply to be a moderator page
+DONE.larger post titles
 
-move cursor out of try catch where applicable
-
-disable subscribe if using the trial ID
-
-need to be able to tag on actual videos
-    - post person request table?
-
-what i should do is put all of these in the tribunal, then allow tagging in the tribunal
-
-search algo where clause with site source
-https://pypi.org/project/youtube-video-scraping/
-wrong tag lose tag privileges
-
-follwoing follower UI is WAY off
-
-leaderboards is counting things that I've liked, not things that art posted by me
-
-
-2nd tier likes in query
-
-subscription bias
+NEW-UPLOADS
+    - what i should do is put all of these in the tribunal, then allow tagging in the tribunal
 
 it might be desirable to be able to send the actual message so then I can tell how many times x message appears in a dm as WELL
     - can be used for search, as well as being more certain about the html being injected
@@ -52,9 +53,7 @@ references to papers?
 Mansura 
     - digital content library
 
-seen by me, not seen by me, followeers, following etc
 
-larger tag list, need a toggle for showing tags
 
 
 can embed links from book archive too:
@@ -67,6 +66,5 @@ SUBSCRIPTIONS
 ADS
     - there are other ad options
 
-person live == true to leaderboards
 
-check soundcloud embed
+
