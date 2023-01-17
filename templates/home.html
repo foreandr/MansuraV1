@@ -27,27 +27,27 @@
         {% endif %}
 {% elif coming_from_favourites == "true" %}
             {% if can_scroll == true %}
-            <div class="row gy-5" style="margin: auto" hx-post="/favourites/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+            <div class="container-fluid" style="margin: auto" hx-post="/favourites/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
             {% else %}
-            <div class="row gy-5" style="margin: auto">
+            <div class="container-fluid" style="margin: auto">
         {% endif %}
 
 {% elif coming_from_search == "true" %}
         {% if can_scroll == true %}
-        <div class="row gy-5" style="margin: auto" hx-post="/structure_search_by_phrase/{{page_no}}/{{search_phrase}}" hx-trigger="revealed" hx-swap="afterend">
+        <div class="container-fluid" style="margin: auto" hx-post="/structure_search_by_phrase/{{page_no}}/{{search_phrase}}" hx-trigger="revealed" hx-swap="afterend">
         {% else %}
-        <div class="row gy-5" style="margin: auto">
+        <div class="container-fluid" style="margin: auto">
         {% endif %}
 
 {% elif coming_from_tribunal == "true" %}
             {% if can_scroll == true %}
                 {% if can_vote == "true"%}
-                <div class="row gy-5" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+                <div class="container-fluid" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
                 {% else %}
-                <div class="row gy-5" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend" hidden>
+                <div class="container-fluid" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend" hidden>
                 {% endif %}
             {% else %}
-            <div class="row gy-5" style="margin: auto">
+            <div class="container-fluid" style="margin: auto">
             {% endif %}
 
 {% elif coming_from_profile == "True" %}
@@ -78,9 +78,9 @@
     {% endif %}
 
     {% if can_scroll == true %}
-        <div class="row gy-5" style="margin: auto" hx-post="/user_profile/{{user_profile_name}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+        <div class="container-fluid" style="margin: auto" hx-post="/user_profile/{{user_profile_name}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
     {% else %}
-        <div class="row gy-5" style="margin: auto">
+        <div class="container-fluid" style="margin: auto">
     {% endif %}
 
                     
@@ -126,7 +126,7 @@
     {% if can_scroll == true %}
     <div class="container-fluid" hx-post="/{{person_id}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
     {% else %}
-    <div class="row gy-5">
+    <div class="container-fluid">
     {% endif %}
 {% endif %}
 
