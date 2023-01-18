@@ -126,6 +126,32 @@ def CREATE_TABLE_POST_PERSON(server="false"):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     modules.close_conn(cursor, conn)
+    
+def CREATE_TABLE_POST_PERSON_REQUEST(server="false"):
+    cursor, conn = modules.create_connection()
+    try:
+        modules.SERVER_CHECK(server, inspect.stack()[0][3])
+        # Path varchar,
+        cursor.execute(
+            f"""
+            CREATE TABLE POST_PERSON_REQUEST
+            (
+            Post_id BIGINT,  
+            Person_id BIGINT,
+            User_id BIGINT,     
+            FOREIGN KEY (Post_id) REFERENCES POSTS(Post_id),
+            FOREIGN KEY (Person_id) REFERENCES PEOPLE(Person_id),
+            FOREIGN KEY (User_id) REFERENCES USERS(User_id),
+            UNIQUE(Post_id, Person_id)
+            
+            );
+            """)
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    modules.close_conn(cursor, conn)
 
 def CREATE_TABLE_SUBJECTS(server="false"):
     cursor, conn = modules.create_connection()

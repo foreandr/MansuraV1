@@ -459,7 +459,27 @@ def GET_PERSON_NAME_BY_ID(person_id):
         
     modules.close_conn(cursor, conn)
     return person     
-  
+
+def GET_TAG_REQUESTS_BY_POST_ID(Post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT Post_id, Person_id, User_id
+        FROM POST_PERSON_REQUEST
+        WHERE Post_id = '{Post_id}'
+    """)
+    results = []
+    for i in cursor.fetchall():
+        results.append([
+            i[0],
+            i[1],
+            i[2],
+            modules.GET_PERSON_NAME_BY_ID(i[1]),
+            modules.GET_USER_NAME_FROM_ID(i[2])
+        ])
+        
+    modules.close_conn(cursor, conn)
+    return results
+    
 def GET_PERSON_ID_BY_NAME(Person, User_id):
     # CHECK IF PERSON EXISTS
     if not modules.CHECK_PERSON_EXISTS(Person):
@@ -696,11 +716,8 @@ def FAVOURITE_QUERY(favourites, searcher_id):
         return fave_string, fave_inner_join
     else:
         return "", ""
-def IN_POST_TRIBUNAL(post_tribunal):
-    if post_tribunal == False:
-        return "AND posts.Post_live = 'True'"
-    else:
-        return "AND posts.Post_live != 'True'"    
+ 
+   
 def SEARCH_QUERY(search_phrase):
     if search_phrase == "":
         return ""

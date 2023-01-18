@@ -205,8 +205,8 @@ def INSERT_DEMO_LIKES():
     modules.INSERT_LIKE(Post_id=22, User_id=1)
     modules.INSERT_LIKE(Post_id=23, User_id=1)
     
-    for i in range(35):
-        for j in range(40):
+    for i in range(1, 35):
+        for j in range(1,40):
             modules.INSERT_LIKE(Post_id=random.randint(j, 45), User_id=i)
 
 def INSERT_DEMO_DISLIKES():

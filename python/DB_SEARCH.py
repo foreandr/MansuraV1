@@ -407,14 +407,15 @@ def TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses, bias_dict):
             else:
                 full_order_by += f"(({ORDER_CLAUSE_SECTIONS(array_of_order_clauses[i])}) * {bias_number})" + "+"
             
-            
     except Exception as e:
-        pass
-        # TODO:log this
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
 
-    full_order_by = f"({full_order_by}) DESC"
+    if full_order_by != "":
+        full_order_by = f"({full_order_by}) DESC"
+        return full_order_by
+    else: 
+        return "posts.Post_title"
     
-    return full_order_by
 
 def TRANSLATE_DATE_CLAUSES(date_clause):
     if date_clause == "All Time":
@@ -497,7 +498,26 @@ def TRANSFER_SEARCH_WHERE_TO_QUERY(array_of_where_clauses):
     # end with this just becasue it's easier than finagling
     print("FULL WHERE CLAUSE\n", full_where)
     return full_where
+
+def IN_POST_TRIBUNAL(post_tribunal):
+    if post_tribunal == False:
+        return "AND posts.Post_live = 'True'"
+    else:
+        return "AND posts.Post_live != 'True'" 
     
+def IN_TAG_TRIBUNAL(tag_tribunal):
+    if tag_tribunal:
+        return """
+        AND (
+                (
+                    SELECT COUNT(*)
+                    FROM POST_PERSON_REQUEST tag_requests
+                    WHERE tag_requests.Post_id = posts.Post_id
+                ) > 1 
+            )
+        """ 
+    else:
+        return ""   
 def UNIVERSAL_FUNCTION(
         searcher, 
         searcher_id="", 
@@ -505,6 +525,7 @@ def UNIVERSAL_FUNCTION(
         page_no=1, 
         favourites=False,
         post_tribunal=False,
+        tag_tribunal=False,
         profile_id="",
         search_phrase="",
         ):
@@ -577,6 +598,7 @@ def UNIVERSAL_FUNCTION(
         {person}
         {fave_string}
         {modules.IN_POST_TRIBUNAL(post_tribunal)}
+        {modules.IN_TAG_TRIBUNAL(tag_tribunal)}
         {modules.SEARCH_QUERY(search_phrase)}
         {where_clause}
         {user_profile}
@@ -595,6 +617,11 @@ def UNIVERSAL_FUNCTION(
         for i in range((page_no-1) * posts_per_page): # add empty values
             posts.append([])
         
+        tag_requests = []
+        if tag_tribunal:
+            for i in range((page_no-1) * posts_per_page): # add empty values
+                tag_requests.append([])
+                
         for i in cursor.fetchall():
             posts.append([
                 i[0], # posts.Post_title, 
@@ -617,6 +644,8 @@ def UNIVERSAL_FUNCTION(
                 modules.GET_PEOPLE_BY_POST_ID(i[6]),
                 modules.GET_PEOPLE_ID_BY_POST_ID(i[6])
             ])
+            if tag_tribunal:
+                tag_requests.append(modules.GET_TAG_REQUESTS_BY_POST_ID(i[6]))
             # print(i)
             
     except Exception as e:
@@ -626,7 +655,9 @@ def UNIVERSAL_FUNCTION(
     modules.close_conn(cursor, conn)
     # print(query)
     posts = modules.GET_RID_OF_DUPES(posts, posts_per_page)
-    return query, posts, int(page_no), posts_per_page, modules.CHECK_CAN_SCROLL(len(posts), modules.GETTING_POST_MAX_FROM_QUERY(query)), person_id
+    print(len(posts)) 
+    print(modules.GETTING_POST_MAX_FROM_QUERY(query))
+    return query, posts, int(page_no), posts_per_page, modules.CHECK_CAN_SCROLL(len(posts*page_no), modules.GETTING_POST_MAX_FROM_QUERY(query)), person_id, tag_requests
 
 
 def GET_RID_OF_DUPES(posts, posts_per_page):

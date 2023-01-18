@@ -34,7 +34,7 @@ def post_logic(person_id, page_no):
         username = "Trial"
         session_id = 2
     
-    query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
+    query, posts, new_page_no, posts_per_page, can_scroll, person_id, tag_requests_ = modules.UNIVERSAL_FUNCTION(
         searcher=username,
         page_no=int(page_no)+1,
         person_id=person_id,
@@ -78,7 +78,7 @@ def post_tribunal(page_no):
         session_id = 2
         session_user = "Trial"
     
-    query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
+    query, posts, new_page_no, posts_per_page, can_scroll, person_id, tag_requests_ = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"], 
         page_no=int(page_no)+1,
         post_tribunal=True
@@ -104,6 +104,56 @@ def post_tribunal(page_no):
         #fucking hate javascript
     ) 
  
+@app.route("/tag_tribunal/<page_no>", methods=['GET', "POST"])
+def tag_tribunal(page_no):
+    print("TRIBUNAL TYPE======================================================")
+    modules.log_function("request", request)
+    if "email" not in session: 
+        return redirect(url_for("login"))
+
+    try:
+        session_id = session["id"] 
+        session_user = session["user"] 
+    except:
+        session_id = 2
+        session_user = "Trial"
+    
+    query, posts, new_page_no, posts_per_page, can_scroll, person_id, tag_requests = modules.UNIVERSAL_FUNCTION(
+        searcher=session["user"], 
+        page_no=int(page_no)+1,
+        tag_tribunal=True,
+    )
+    offset_calc = int(int(page_no) * int(posts_per_page))
+
+    can_vote = modules.CHECK_USER_IS_GLOBAL_ADMIN(session_id)
+    
+    # print(tag_requests)
+    updated_tag_requests = []
+    
+    #for i in range(len(tag_requests)):
+    #    print(i, tag_requests[i])
+    print("CAN I FUCKING SCROLL OR NOT", can_scroll)
+        
+    
+    
+    return render_template('home.html',
+        query=query,                   
+                           
+        posts=posts,
+        num_posts=len(posts),
+        
+        person_id=person_id,
+        page_no=new_page_no,
+        offset_calc=offset_calc,
+        can_scroll=can_scroll,
+        posts_per_page=posts_per_page,
+        coming_from_tag_tribunal="true",
+        can_vote=can_vote,
+        ADMINISTRATOR=modules.CHECK_IF_IT_IS_ME(session_id),
+        tag_requests=tag_requests
+    ) 
+ 
+ 
 @app.route("/favourites/<page_no>", methods=['GET', 'POST'])
 def favourites(page_no):
     modules.log_function("request", request)
@@ -118,7 +168,7 @@ def favourites(page_no):
     
     
     
-    query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
+    query, posts, new_page_no, posts_per_page, can_scroll, person_id, tag_requests_ = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"], 
         page_no=int(page_no)+1,
         favourites=True
@@ -165,7 +215,7 @@ def user_profile(user_profile_name, page_no):
     else:
         user_profile_id = modules.GET_USER_ID_FROM_NAME(user_profile_name)
     
-    query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
+    query, posts, new_page_no, posts_per_page, can_scroll, person_id, tag_requests_ = modules.UNIVERSAL_FUNCTION(
         searcher=session_user, 
         page_no=int(page_no)+1,
         profile_id=user_profile_id
@@ -708,6 +758,7 @@ def update_post_tribunal(Post_id, approval):
         updated_html=modules.GET_POST_HTML_BY_ID(Post_id)
         )
 
+
 @app.route("/comment_section/<Post_id>/<how_many>/<order>", methods=['GET', 'POST'])
 def comment_section(Post_id, how_many, order):
     if "email" not in session: 
@@ -763,7 +814,7 @@ def structure_search_by_phrase(page_no, phrase_again):
     if len(searched_value) == 0 :
         return redirect(url_for('post_logic', person_id=0,page_no=0 ))
     
-    query, posts, new_page_no, posts_per_page, can_scroll, person_id = modules.UNIVERSAL_FUNCTION(
+    query, posts, new_page_no, posts_per_page, can_scroll, person_id, tag_requests_ = modules.UNIVERSAL_FUNCTION(
         searcher=session_user,
         page_no=int(page_no)+1,
         search_phrase=searched_value
@@ -1075,6 +1126,21 @@ def test_page():
         print(f"key{key} , value{value}")
     return render_template(f"test_page.html",
     )
+    
+@app.route("/request_tag/<Post_id>", methods=['GET', 'POST'])
+def request_tag(Post_id):
+    modules.log_function("request", request)
+    chosen_names = request.form.get(f"chosen_names_{Post_id}")
+
+    names = chosen_names.split(",")[:-1]
+
+    for name in names:
+        if name != "None": # there is a frontend issue where i might get a none back
+            modules.INSERT_POST_PERSON_REQUEST(Post_id=Post_id, Person_id=modules.GET_PERSON_ID_BY_NAME(name, session["id"]), User_id=session["id"])
+    
+    return render_template(f"update_poster_person_request.html",
+    )
+
 if __name__ == '__main__':
     host = "0.0.0.0" 
     # http://165.227.35.71:8088/

@@ -278,7 +278,11 @@ def SERVER_CHECK(server, function):
             
             elif function == "CREATE_TABLE_SUBSCRIPTIONS":
                 cursor.execute("""DROP TABLE IF EXISTS SUBSCRIPTIONS CASCADE""")
-                modules.print_segment()  
+                modules.print_segment()
+            
+            elif function == "CREATE_TABLE_POST_PERSON_REQUEST":
+                cursor.execute("""DROP TABLE IF EXISTS POST_PERSON_REQUEST CASCADE""")
+                modules.print_segment()    
 
             conn.commit()
             modules.print_green(F"CASCADE DROPPED TABLE {function}")

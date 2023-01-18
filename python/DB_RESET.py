@@ -39,7 +39,7 @@ def CREATE_TABLES(server="false"):
     modules.CREATE_TABLE_CURRENT_USER_SEARCH_ALGORITHM(server)
     modules.CREATE_TABLE_SEARCH_ALGORITM_SAVE(server)
     modules.CREATE_TABLE_SUBSCRIPTIONS(server)
-    
+    modules.CREATE_TABLE_POST_PERSON_REQUEST(server)
     
     if server != "true":
         modules.INSERT_DEMO_PEOPLE()

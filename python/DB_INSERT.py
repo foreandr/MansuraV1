@@ -167,6 +167,31 @@ def INSERT_POST_PERSON(Post_id, Person_id):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
     modules.close_conn(cursor, conn) 
+    
+def INSERT_POST_PERSON_REQUEST(Post_id, Person_id, User_id):
+    # print(Post_id, Person_id)
+    cursor, conn = modules.create_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            f"""
+            INSERT INTO POST_PERSON_REQUEST
+            (Post_id, Person_id, User_id)
+            VALUES
+            (%(Post_id)s, %(Person_id)s, %(User_id)s)
+            """, {'Post_id': Post_id,
+                  'Person_id': Person_id,
+                  'User_id':User_id
+                  }
+            )
+        conn.commit()
+
+        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+    
+    modules.close_conn(cursor, conn) 
    
 def INSERT_SUBJECTS(Subject_name):
     cursor, conn = modules.create_connection()

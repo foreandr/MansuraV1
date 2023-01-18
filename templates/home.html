@@ -31,6 +31,27 @@
             {% else %}
             <div class="container-fluid" style="margin: auto">
         {% endif %}
+    
+{% elif coming_from_tag_tribunal == "true" %}
+    {% if page_no == 1 %}
+    <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+        <div style="margin: auto; width: 50%; padding: 10px;">
+            <h1><u>ONLY ADMINS WILL SEE CONTENT HERE!</u></h1>
+        </div>
+        
+        <div style="margin: auto;
+        width: 50%;
+        padding: 10px;">
+            <a href="/apply_for_admin/{{user_profile_id}}"><h1>WANT TO BE AN ADMIN? APPLY HERE!</h1></a>
+        </div>
+    </div>
+
+    {% endif %}
+    {% if can_scroll == true %}
+    <div class="container-fluid" style="margin: auto" hx-post="/tag_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+    {% else %}
+    <div class="container-fluid" style="margin: auto">
+        {% endif %}
 
 {% elif coming_from_search == "true" %}
         {% if can_scroll == true %}
@@ -145,6 +166,7 @@
         <div hidden><!--POST ID FOR THOSE OF YOU WHO ARE CURIOUS-->
             {{posts[i][6]}}
         </div>
+        
         <!--HOW MANY PER ROW-->
         {% if i % 1  == 0 %}
             <div class="w-100"></div>
@@ -153,17 +175,23 @@
         {% if posts[i][0] |length  == 0%} <!--DON'T print the empties might slow things down, need another solution-->
         {% else %}
 
-        <div class="row gy-5" hx-post="/update_view/{{posts[i][6]}}" hx-trigger="click" hx-target="#view_location{{i}}" hx-swap="innerHTML" style="overflow:scroll;" >
+        <div class="row gy-5" hx-post="/update_view/{{posts[i][6]}}" hx-trigger="click" hx-target="#view_location{{i}}" hx-swap="innerHTML" style="overflow:scroll;"onclick=get_iteration({{i}})>
             <div class="col-lg">
                 <div class="card" id="videos">
                     <div class="card-header">
                         
                         <span class="text-center">
+                            
                             <h1>{{posts[i][0]}} 
                                 <h6>
                                     <a href="/user_profile/{{posts[i][14]}}/0">{{posts[i][14]}}&nbsp;&nbsp;</a>{{posts[i][3]}}
                                 </h6>
                             </h1>
+                            {% if coming_from_tag_tribunal == "true" %}
+                            <div>
+                                {{tag_requests[i+offset_calc]}}
+                            </div>
+                            {% endif %}
                         </span>
                     </div>
     
@@ -192,9 +220,22 @@
                     {% else %}
                     <div class="card-footer">
                         <small class="text-muted">
-                                
+                                   
     
                             <span class="col d-flex justify-content-center"> 
+                                                                <!--VIEWS-->
+                                                                <span>
+                                                                    <button class="btn btn-lg no-click" style="pointer-events: none">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                                                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                                                                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                                                                        </svg>
+                                                                        <span id="view_location{{i}}">
+                                                                            {{posts[i][10]}}
+                                                                            {{views}}
+                                                                        </span>
+                                                                    </button>
+                                                        </span>
                                 <span class="dropdown text-left">
                                                 <!-- Button trigger modal -->
                                                 <button class="btn btn-dark btn-lg" data-toggle="modal" data-target="#tag_Modal{{i}}">
@@ -211,17 +252,27 @@
                                                                 <h5 class="modal-title" id="exampleModalLabel">Tag Request</h5>
                     
                                                             </div>
-                                                            <div class="modal-body">
-                                                                <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" maxlength="80"
-                                                                name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#name_search_location"
-                                                                placeholder="Search...">
-                                                                <div id="name_search_location">
+                                                            <form action="/request_tag/{{posts[i][6]}}" method="POST" enctype="multipart/form-data">
+                                                                <div class="modal-body">
+     
+                                                                    <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" maxlength="80"
+                                                                    name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#name_search_location{{i}}"
+                                                                    placeholder="Tag Another">
+                                                                    <div id="name_search_location{{i}}">
+    
+                                                                    </div>
+                                                                    
+                                                                    <input class="form-control" name="chosen_names_{{posts[i][6]}}" id="selected_users{{i}}" readonly>
+                                                                    
 
                                                                 </div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-primary">Send Tag Request</button>
-                                                            </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-primary" hx-post="/request_tag/{{posts[i][6]}}" hx-trigger="click" hx-target="#submitted_tag{{i}}" hx-swap="innerHTML" onclick="remove_tag_values()">Send Tag Request (close modal on click)</button>
+                                                                </div> 
+                                                                <div id="submitted_tag{{i}}">
+    
+                                                                </div>  
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -244,19 +295,7 @@
                                     </div> 
                                 </span>
                                 
-                                <!--VIEWS-->
-                                <span>
-                                            <button class="btn btn-lg no-click" style="pointer-events: none">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
-                                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                                </svg>
-                                                <span id="view_location{{i}}">
-                                                    {{posts[i][10]}}
-                                                    {{views}}
-                                                </span>
-                                            </button>
-                                </span>
+
                                     
                                 <!--LIKES-->
                                 <span>
@@ -513,7 +552,6 @@
 
 
 <script>
-    
     function show_link(iteraton){
         // console.log("hello world", iteraton)
         item =  document.getElementById("link_location" + iteraton)
@@ -537,7 +575,6 @@
         //isVisible = elemTop < window.innerHeight && elemBottom >= 0;
         return isVisible;
     }
-
     function like_logic(value){
         console.log(value)
         if ( $(value).hasClass("btn btn-outline-danger")){
@@ -570,7 +607,6 @@
             $(value).addClass("btn btn-outline-danger");  
         }
     }
-
     function fave_logic(value){
         console.log(value)
         if ( $(value).hasClass("btn btn-outline-danger")){
@@ -582,10 +618,7 @@
             $(value).addClass("btn btn-outline-danger");  
         }
     }
-
     function modal_toggle(post_id){
-        //console.log('hello')
-        //console.log('post id', post_id)
         document.getElementById("comment_modal").style.display = "block"
     }
 
@@ -597,6 +630,25 @@
             }
         }
     }
+
+    count = 0
+    iteration = 0
+    function choose_selected_user(user){
+        console.log("iteration", iteration)
+
+        if (count <= 4)
+            // turn into += when i figure out hwo to do multiple
+            console.log("current", document.getElementById(`selected_users${iteration}`).value);
+            document.getElementById(`selected_users${iteration}`).value += `${user},`
+            //document.getElementById(`selected_users${iteration}`).innerHTML += `${user},`
+            count +=1
+    }
+    // Changes the object in memory to the correct div tag
+    function get_iteration(i){
+        iteration = i
+    }
+    
+
 
 </script>
 {% endblock main %}

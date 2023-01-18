@@ -39,7 +39,7 @@ leaderboards
     - leaderboards by subject
     - leaderboards by type of person, occupation etc
 21. where users are thes users! in where clause
-
+22. liked by people who've liked n% of the videos ive liked, watched faved and so on
 NEW-UPLOADS
     - what i should do is put all of these in the tribunal, then allow tagging in the tribunal
 
