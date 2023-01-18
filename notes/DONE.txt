@@ -83,6 +83,9 @@ SEARCH
 ==========
 DONE. limit num params in create search algo to 100
 DONE. need to have a tag in usersfor whether its a live user or not
+
+DONE. HOMEPAGE-PICK CERTIAN USERS TO subscribe to?
+
 #TODO: IF PERSON == "LIVE" DISABLE DELETE PERSON OPTION
 POSTS=
 ========
@@ -160,3 +163,27 @@ DONE. NEED A WAY TO subscribe PERSONS
 DONE. hoverable over text icons
 DONE.get rid of dupes
 DONE.larger post titles
+
+TODO: CURRENTLY AT SENDING TAG request 
+    - TAG REQ table 
+    - TAG REQ HOME
+    - ONLY PEOPLE OF X REPUTATION CAN SUBMIT TAG REQUESTS
+        - DENIED = MINUS ON REPUTATION
+
+DONE. apply to be a moderator page
+DONE. disable subscribe if using the trial ID
+
+DONE. need to be able to tag on actual videos
+    - post person request table?
+done. wrong tag lose tag privileges
+DONE. larger tag list, need a toggle for showing tags
+NEW-UPLOADS
+    - what i should do is put all of these in the tribunal, then allow tagging in the tribunal
+
+MONETIZATION
+=============
+DONATIONS
+SUBSCRIPTIONS
+    - people can post n links to pages they want RSS feeds generated for
+ADS
+    - there are other ad options

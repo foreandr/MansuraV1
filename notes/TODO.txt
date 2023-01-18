@@ -1,82 +1,16 @@
 https://pypi.org/project/sql-formatter/
 https://pypi.org/project/youtube-video-scraping/
 
-TODO: CURRENTLY AT SENDING TAG request 
-    - TAG REQ table 
-    - TAG REQ HOME
-    - ONLY PEOPLE OF X REPUTATION CAN SUBMIT TAG REQUESTS
-        - DENIED = MINUS ON REPUTATION
-
 
 0. ADS
 1. scroll logic for the tribunal
-2. HOMEPAGE-PICK CERTIAN USERS TO subscribe to?
-3.if there is a dupe, take them tod th post
-4. notifications
-    - early virality boosts
-5. public playlists
-    - playlist leaderboards
-
-6. DB backups
-    - SEND a version of the code to my actual machine every week to so
-7. apply to be a moderator page
-8. move cursor out of try catch where applicable
-9. disable subscribe if using the trial ID
-10. need to be able to tag on actual videos
-    - post person request table?
-11.follwoing follower UI is WAY off
-12.seen by me, not seen by me, followeers, following etc
-13. subscription bias
-14.leaderboards is counting things that I've liked, not things that art posted by me
-15. search algo where clause with site source
-    - WHERE site == "youtube" etc
-16. 2nd tier likes in query liked by people who liked my posts? NOT SURE WHAT I MEANT
-17. wrong tag lose tag privileges
-18. larger tag list, need a toggle for showing tags
-19. person live == true to leaderboards
-20. check soundcloud embed
-leaderboards
-    - leaderboards by subject
-    - leaderboards by type of person, occupation etc
-21. where users are thes users! in where clause
-22. liked by people who've liked n% of the videos ive liked, watched faved and so on
-NEW-UPLOADS
-    - what i should do is put all of these in the tribunal, then allow tagging in the tribunal
-
-it might be desirable to be able to send the actual message so then I can tell how many times x message appears in a dm as WELL
-    - can be used for search, as well as being more certain about the html being injected
+2. subscription bias
+3. early virality boosts
+4. follwoing follower UI is WAY off
+5. leaderboards is counting things that I've liked, not things that art posted by me
+6. where users are thes users! in where clause
 
 
-ADMINISTRATOR
-    - HAVE MULTIPLE TIERS OF ADMINISTRATOR
-        - 1:100
-        - 100:1000
-        - 1000:10000
-        - 10000:100000
-        - 100000:1000000
-
-        different ways to earn points
-    
-references to papers?
-<div>
-    <a href="https://www.worldscientific.com/doi/pdf/10.1142/9789811258251_0091">a</a>
-</div>
-
-Mansura 
-    - digital content library
-
-
-
-
-can embed links from book archive too:
-<iframe src="https://archive.org/embed/germanjewishpion0000nach" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
-MONETIZATION
-=============
-DONATIONS
-SUBSCRIPTIONS
-    - people can post n links to pages they want RSS feeds generated for
-ADS
-    - there are other ad options
 
 
 

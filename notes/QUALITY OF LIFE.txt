@@ -1,5 +1,8 @@
 pytest
 
+6. DB backups
+    - SEND a version of the code to my actual machine every week to so
+
 check for the response of the youtube url when it is entered
 lederboards
 should add more input checks in the frontend
@@ -17,6 +20,13 @@ playlists
 Profile
     - link to their socials when you go to their page
 
+
+QUALITY. public playlists
+    - playlist leaderboards
+
+quality, add person description under their name on their profile
+
+8. move cursor out of try catch where applicable
     DUNNO WHAT THIS MEANS
 ========================
 change count all to reflect the constraints of the query for scrolling in other tings than the mian
@@ -38,3 +48,30 @@ consolodate am subscribed and num, scribes iunto one query
 
 QUALITY OF LIFE. circle on upload
 QUALITY OF LIFE. loading circle on page navigation
+
+QUALITY .if there is a dupe, take them tod th post
+12.seen by me, not seen by me, followeers, following etc
+4. notifications
+15. search algo where clause with site source
+    - WHERE site == "youtube" etc
+16. 2nd tier likes in query liked by people who liked my posts? NOT SURE WHAT I MEANT
+leaderboards
+    - leaderboards by subject
+    - leaderboards by type of person, occupation etc
+
+SEARCH WHERE users followed by x or follow x
+22. liked by people who've liked n% of the videos ive liked, watched faved and so on
+
+it might be desirable to be able to send the actual message so then I can tell how many times x message appears in a dm as WELL
+    - can be used for search, as well as being more certain about the html being injected
+
+ADMINISTRATOR
+    - HAVE MULTIPLE TIERS OF ADMINISTRATOR
+        - 1:100
+        - 100:1000
+        - 1000:10000
+        - 10000:100000
+        - 100000:1000000
+         different ways to earn points
+
+

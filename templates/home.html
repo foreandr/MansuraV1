@@ -17,7 +17,7 @@
     <div style="margin: auto;
         width: 50%;
         padding: 10px;">
-        <a href="/apply_for_admin/{{user_profile_id}}">
+        <a href="/apply_for_admin">
             <h1>WANT TO BE AN ADMIN? APPLY HERE!</h1>
         </a>
     </div>
@@ -38,7 +38,7 @@
     <div style="margin: auto;
         width: 50%;
         padding: 10px;">
-        <a href="/apply_for_admin/{{user_profile_id}}">
+        <a href="/apply_for_admin">
             <h1>WANT TO BE AN ADMIN? APPLY HERE!</h1>
         </a>
     </div>
@@ -70,7 +70,7 @@
 <div class="container-fluid">
     <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
         <h1>
-            <u>{{username}}</u>                
+            <u class="text-center">{{username}}</u>                
             <button class="btn btn-lg btn-dark" type="button" hx-post="/update_follow/{{user_profile_id}}" hx-trigger="click" hx-target="#follow_location" hx-swap="innerHTML" onclick="like_logic(this)" style="position:relative">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
                     <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
@@ -98,31 +98,51 @@
 {% if person_name != "Home" %}
 {% if page_no == 1 %}
 <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
-    <h1>
-        <ul>{{person_name}}</ul>
-    </h1>
-    {% if am_subscribed == "False" %}
-    <button class="btn" hx-post="/update_subscribe/{{person_id}}" hx-trigger="click" hx-target="#sub_location" hx-swap="innerHTML" onclick="sub_logic(this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
-        </svg>
-        <div id="sub_location">
-            <span id="sub_div">
-            SUBSCRIBE: {{subscribers}}
-            </span>
+
+    <div class="text-center">
+        <h1>
+            <u>{{person_name}}</u>
+        </h1>
+        
+        <div>
+            {% if searcher == "Trial" %}
+            <button class="btn" disabled>                
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+            </svg>
+            {{subscribers}}
+            </button>
+            {% else %}
+            {% if am_subscribed == "False" %}
+            <button class="btn" hx-post="/update_subscribe/{{person_id}}" hx-trigger="click" hx-target="#sub_location" hx-swap="innerHTML" onclick="sub_logic(this)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                </svg>
+                <div id="sub_location">
+                    <span id="sub_div">
+                    SUBSCRIBE: {{subscribers}}
+                    </span>
+                </div>
+            </button>
+            {% else %}
+            <button class="btn" hx-post="/update_subscribe/{{person_id}}" hx-trigger="click" hx-target="#sub_location" hx-swap="innerHTML" onclick="sub_logic(this)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+                </svg>
+                <div id="sub_location">
+                    <span id="sub_div">
+                    SUBSCRIBED: {{subscribers}}
+                    </span>
+                </div>
+            </button>
         </div>
-    </button>
-    {% else %}
-    <button class="btn" hx-post="/update_subscribe/{{person_id}}" hx-trigger="click" hx-target="#sub_location" hx-swap="innerHTML" onclick="sub_logic(this)">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
-            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
-        </svg>
-        <div id="sub_location">
-            <span id="sub_div">
-            SUBSCRIBED: {{subscribers}}
-            </span>
-        </div>
-    </button>
+    </div>
+            {% endif %}
+
+
+
+
+    
     {% endif %}
     {% endif %}
 </div>
@@ -238,7 +258,7 @@
                                                     <div class="modal-body">
                                                         <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" maxlength="80"
                                                             name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#name_search_location{{i}}"
-                                                            placeholder="Tag Another">
+                                                            placeholder="Tag Another Person">
                                                         <div id="name_search_location{{i}}">
                                                         </div>
                                                         <input class="form-control" name="chosen_names_{{posts[i][6]}}" id="selected_users{{i}}" readonly>

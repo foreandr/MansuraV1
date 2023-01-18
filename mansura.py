@@ -62,7 +62,7 @@ def post_logic(person_id, page_no):
         coming_from_person_page=person_page,
         person_name=person_name,
         subscribers=modules.GET_NUM_SUBSCRIBERS_BY_PERSON_ID(person_id),
-        am_subscribed = modules.CHECK_IF_SUBSCRIBED(person_id, session_id)
+        am_subscribed=modules.CHECK_IF_SUBSCRIBED(person_id, session_id)
     )
     
 @app.route("/post_tribunal/<page_no>", methods=['GET', "POST"])
@@ -127,12 +127,6 @@ def tag_tribunal(page_no):
 
     can_vote = modules.CHECK_USER_IS_GLOBAL_ADMIN(session_id)
         
-    for i in tag_requests:
-        print("TEST", i)
-        
-
-        
-    
     return render_template('home.html',
         query=query,                   
                            
@@ -169,15 +163,13 @@ def update_request_tag(tag_choice, post_id, person_id, requester_id):
         modules.UPDATE_USER_STRIKES(requester_id)
         modules.DELETE_FROM_POST_PERSON_REQUEST(post_id=post_id,User_id=requester_id,Person_id=person_id)
         return_string = '<span class="text-danger">Reported</span>'
-        
-        
-    
     
     return f"{return_string}"
     
-    
-    
-    
+@app.route("/apply_for_admin", methods=['GET'])
+def apply_for_admin():   
+    return render_template('apply_for_admin.html')
+
 @app.route("/favourites/<page_no>", methods=['GET', 'POST'])
 def favourites(page_no):
     modules.log_function("request", request)

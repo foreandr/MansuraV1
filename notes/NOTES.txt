@@ -7,3 +7,13 @@ when registering do the injection check so i dont end up with a pass that cant b
 
 balajis@1729.com
 bsrini@gmail.com
+
+
+references to papers?
+<div>
+    <a href="https://www.worldscientific.com/doi/pdf/10.1142/9789811258251_0091">a</a>
+</div>
+
+can embed links from book archive too:
+<iframe src="https://archive.org/embed/germanjewishpion0000nach" width="560" height="384" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+
