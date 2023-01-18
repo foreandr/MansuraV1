@@ -1,7 +1,7 @@
 from flask import *
 from os import *
 import base64
-
+import inspect
 
 import python.MODULES as modules
 
@@ -126,16 +126,7 @@ def tag_tribunal(page_no):
     offset_calc = int(int(page_no) * int(posts_per_page))
 
     can_vote = modules.CHECK_USER_IS_GLOBAL_ADMIN(session_id)
-    
-    # print(tag_requests)
-    updated_tag_requests = []
-    
-    #for i in range(len(tag_requests)):
-    #    print(i, tag_requests[i])
-    print("CAN I FUCKING SCROLL OR NOT", can_scroll)
         
-    
-    
     return render_template('home.html',
         query=query,                   
                            
@@ -1133,7 +1124,20 @@ def request_tag(Post_id):
     chosen_names = request.form.get(f"chosen_names_{Post_id}")
 
     names = chosen_names.split(",")[:-1]
-
+    
+    if not modules.GET_ALL_INTERACTIONS(session["id"]):
+        return render_template(f"spam_page.html")
+    
+    if not modules.CHECK_ACCOUNT_STATUS(session["id"]):
+        # print(session["id"], F"is suspended for now. CANT {inspect.stack()[0][3]}")
+        return '<div class="text-danger">Cant request tag, suspended until further notice</div>'
+    
+    num_current_tags = modules.GET_NUM_PEOPLE_BY_POST_ID(Post_id)
+    num_requests = modules.GET_NUM_PEOPLE_REQUESTS_BY_POST_ID(Post_id)
+    
+    if (num_current_tags + num_requests) > 5:
+        return '<div class="text-danger">Too many people tagged</div>'
+    
     for name in names:
         if name != "None": # there is a frontend issue where i might get a none back
             modules.INSERT_POST_PERSON_REQUEST(Post_id=Post_id, Person_id=modules.GET_PERSON_ID_BY_NAME(name, session["id"]), User_id=session["id"])

@@ -46,6 +46,17 @@ NEW-UPLOADS
 it might be desirable to be able to send the actual message so then I can tell how many times x message appears in a dm as WELL
     - can be used for search, as well as being more certain about the html being injected
 
+
+ADMINISTRATOR
+    - HAVE MULTIPLE TIERS OF ADMINISTRATOR
+        - 1:100
+        - 100:1000
+        - 1000:10000
+        - 10000:100000
+        - 100000:1000000
+
+        different ways to earn points
+    
 references to papers?
 <div>
     <a href="https://www.worldscientific.com/doi/pdf/10.1142/9789811258251_0091">a</a>

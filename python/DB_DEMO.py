@@ -79,6 +79,7 @@ def INSERT_DEMO_USER():
     
 def INSERT_DEMO_ADMIN():
     modules.INSERT_POST_ADMIN(1)
+    modules.INSERT_POST_ADMIN(2)
        
 def INSERT_DEMO_PEOPLE():
     modules.print_title(f"{inspect.stack()[0][3]}")

@@ -513,7 +513,7 @@ def IN_TAG_TRIBUNAL(tag_tribunal):
                     SELECT COUNT(*)
                     FROM POST_PERSON_REQUEST tag_requests
                     WHERE tag_requests.Post_id = posts.Post_id
-                ) > 1 
+                ) >= 1 
             )
         """ 
     else:
@@ -545,19 +545,15 @@ def UNIVERSAL_FUNCTION(
         searcher_id = modules.GET_USER_ID_FROM_NAME(searcher) 
         fave_string, fave_inner_join = modules.FAVOURITE_QUERY(favourites, searcher_id)
         search_algo_id, _ = modules.GET_USER_CURRENT_SEARCH_ALGO_BY_ID(searcher_id)
-        # print("search_algo_id", search_algo_id)
         
-        # SPECIFIC TO USER
         if profile_id != "":
             user_profile = f"AND posts.User_id = '{profile_id}'"
         else:
             user_profile = ""
             
-        # print("user profile", user_profile)
         
         # ORDER PARAMETERS
         order_clause = modules.GET_ORDER_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
-        # order_clause = modules.CREATE_DEMO_ORDER_CLAUSE()
         order_clause = order_clause.replace("@SEARCHER_ID", str(searcher_id))
         
         where_clause = modules.GET_WHERE_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
@@ -610,7 +606,7 @@ def UNIVERSAL_FUNCTION(
         """
         
         #LOG THE QUERY [ERROR CHECKING]
-        # modules.log_function(msg_type="test", log_string=query, function_name=f"{inspect.stack()[0][3]}")
+        modules.log_function(msg_type="test", log_string=query, function_name=f"{inspect.stack()[0][3]}")
 
         cursor.execute(query)
         posts = []
@@ -652,10 +648,11 @@ def UNIVERSAL_FUNCTION(
 
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+        
     modules.close_conn(cursor, conn)
     # print(query)
     posts = modules.GET_RID_OF_DUPES(posts, posts_per_page)
-    print(len(posts)) 
+    #print(len(posts)) 
     print(modules.GETTING_POST_MAX_FROM_QUERY(query))
     return query, posts, int(page_no), posts_per_page, modules.CHECK_CAN_SCROLL(len(posts*page_no), modules.GETTING_POST_MAX_FROM_QUERY(query)), person_id, tag_requests
 

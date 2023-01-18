@@ -480,6 +480,33 @@ def GET_TAG_REQUESTS_BY_POST_ID(Post_id):
     modules.close_conn(cursor, conn)
     return results
     
+def GET_NUM_PEOPLE_BY_POST_ID(Post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT COUNT(*)
+        FROM POST_PERSON
+        WHERE Post_id = '{Post_id}'         
+    """)
+    results = 0
+    for i in cursor.fetchall():
+        results = i[0]
+    modules.close_conn(cursor, conn)
+    return results
+
+def GET_NUM_PEOPLE_REQUESTS_BY_POST_ID(Post_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT COUNT(*)
+        FROM POST_PERSON_REQUEST
+        WHERE Post_id = '{Post_id}'         
+    """)
+    results = 0
+    for i in cursor.fetchall():
+        results = i[0]
+    modules.close_conn(cursor, conn)
+    return results
+    
+
 def GET_PERSON_ID_BY_NAME(Person, User_id):
     # CHECK IF PERSON EXISTS
     if not modules.CHECK_PERSON_EXISTS(Person):

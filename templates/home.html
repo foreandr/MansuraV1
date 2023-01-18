@@ -1,5 +1,4 @@
 {% extends "structure.html" %}
-
 {% block nav %}
 {% if page_no == 1 %}
 {% block nav_location %}
@@ -8,549 +7,489 @@
 {% else %}
 {% endif %}
 {% endblock nav %}
-
 {%block main %}
-
 {% if coming_from_tribunal == "true" %}
-        {% if page_no == 1 %}
-            <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
-                <div style="margin: auto; width: 50%; padding: 10px;">
-                    <h1><u>ONLY ADMINS WILL SEE CONTENT HERE!</u></h1>
-                </div>
-                
-                <div style="margin: auto;
-                width: 50%;
-                padding: 10px;">
-                    <a href="/apply_for_admin/{{user_profile_id}}"><h1>WANT TO BE AN ADMIN? APPLY HERE!</h1></a>
-                </div>
-            </div>
-        {% endif %}
-{% elif coming_from_favourites == "true" %}
-            {% if can_scroll == true %}
-            <div class="container-fluid" style="margin: auto" hx-post="/favourites/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
-            {% else %}
-            <div class="container-fluid" style="margin: auto">
-        {% endif %}
-    
-{% elif coming_from_tag_tribunal == "true" %}
-    {% if page_no == 1 %}
-    <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
-        <div style="margin: auto; width: 50%; padding: 10px;">
-            <h1><u>ONLY ADMINS WILL SEE CONTENT HERE!</u></h1>
-        </div>
-        
-        <div style="margin: auto;
+{% if page_no == 1 %}
+<div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+    <div style="margin: auto; width: 50%; padding: 10px;">
+        <h1><u>ONLY ADMINS WILL SEE CONTENT HERE!</u></h1>
+    </div>
+    <div style="margin: auto;
         width: 50%;
         padding: 10px;">
-            <a href="/apply_for_admin/{{user_profile_id}}"><h1>WANT TO BE AN ADMIN? APPLY HERE!</h1></a>
-        </div>
+        <a href="/apply_for_admin/{{user_profile_id}}">
+            <h1>WANT TO BE AN ADMIN? APPLY HERE!</h1>
+        </a>
     </div>
-
-    {% endif %}
-    {% if can_scroll == true %}
-    <div class="container-fluid" style="margin: auto" hx-post="/tag_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
-    {% else %}
-    <div class="container-fluid" style="margin: auto">
-        {% endif %}
-
-{% elif coming_from_search == "true" %}
-        {% if can_scroll == true %}
-        <div class="container-fluid" style="margin: auto" hx-post="/structure_search_by_phrase/{{page_no}}/{{search_phrase}}" hx-trigger="revealed" hx-swap="afterend">
-        {% else %}
-        <div class="container-fluid" style="margin: auto">
-        {% endif %}
-
-{% elif coming_from_tribunal == "true" %}
-            {% if can_scroll == true %}
-                {% if can_vote == "true"%}
-                <div class="container-fluid" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
-                {% else %}
-                <div class="container-fluid" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend" hidden>
-                {% endif %}
-            {% else %}
-            <div class="container-fluid" style="margin: auto">
-            {% endif %}
-
-{% elif coming_from_profile == "True" %}
-    {% if page_no == 1 %}
-    <div class="container-fluid">
-        <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
-
-            <h1><u>{{username}}</u>                
-                <button class="btn btn-lg btn-dark" type="button" hx-post="/update_follow/{{user_profile_id}}" hx-trigger="click" hx-target="#follow_location" hx-swap="innerHTML" onclick="like_logic(this)" style="position:relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
-                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
-                        <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
-                    </svg>  
-                </button>
-            </h1>
-
-            <p>
-                FOLLOWING:
-                <span id="follow_location">
-                    {{following |length}}
-                    {{new_following_count}}
-                </span>
-            </p>
-            <p>FOLLOWERS: {{followers |length}}</p>
-            
-        </div> 
-    </div>
-    {% endif %}
-
-    {% if can_scroll == true %}
-        <div class="container-fluid" style="margin: auto" hx-post="/user_profile/{{user_profile_name}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
-    {% else %}
-        <div class="container-fluid" style="margin: auto">
-    {% endif %}
-
-                    
+</div>
+{% endif %}
+{% elif coming_from_favourites == "true" %}
+{% if can_scroll == true %}
+<div class="container-fluid" style="margin: auto" hx-post="/favourites/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
 {% else %}
-    {% if person_name != "Home" %}
-        {% if page_no == 1 %}
-            <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
-                <h1><ul>{{person_name}}</ul></h1>
-
-                {% if am_subscribed == "False" %}
-                <button class="btn" hx-post="/update_subscribe/{{person_id}}" hx-trigger="click" hx-target="#sub_location" hx-swap="innerHTML" onclick="sub_logic(this)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
-                    </svg>
-
-
-                    <div id="sub_location">
-                        <span id="sub_div">
-                            SUBSCRIBE: {{subscribers}}
-                        </span>
-                    </div>    
-                </button>
-
-                {% else %}
-                <button class="btn" hx-post="/update_subscribe/{{person_id}}" hx-trigger="click" hx-target="#sub_location" hx-swap="innerHTML" onclick="sub_logic(this)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
-                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
-                    </svg>
-
-                    <div id="sub_location">
-                        <span id="sub_div">
-                            SUBSCRIBED: {{subscribers}}
-                        </span>
-                    </div>
-                </button>
-                
-                {% endif %}
-        {% endif %}
-
-            </div>
-    {% endif %}
-
-    {% if can_scroll == true %}
-    <div class="container-fluid" hx-post="/{{person_id}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
-    {% else %}
-    <div class="container-fluid">
-    {% endif %}
+<div class="container-fluid" style="margin: auto">
 {% endif %}
-
-{% if posts | length == 0 %}
-    <div class="container-fluid">
-        <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
-            <h1><ul>BAD QUERY!</ul></h1>
-            <p class="lead" >NO POSTS MEET THIS QUERY CRITERIA.</p>
-        </div>
-        <small>
-            {{query}}
-        </small>
+{% elif coming_from_tag_tribunal == "true" %}
+{% if page_no == 1 %}
+<div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+    <div style="margin: auto; width: 50%; padding: 10px;">
+        <h1><u>ONLY ADMINS WILL SEE CONTENT HERE!</u></h1>
     </div>
+    <div style="margin: auto;
+        width: 50%;
+        padding: 10px;">
+        <a href="/apply_for_admin/{{user_profile_id}}">
+            <h1>WANT TO BE AN ADMIN? APPLY HERE!</h1>
+        </a>
+    </div>
+</div>
 {% endif %}
-    {% for i in range(0, num_posts) %}
-        <div hidden><!--POST ID FOR THOSE OF YOU WHO ARE CURIOUS-->
-            {{posts[i][6]}}
+{% if can_scroll == true %}
+<div class="container-fluid" style="margin: auto" hx-post="/tag_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+{% else %}
+<div class="container-fluid" style="margin: auto">
+{% endif %}
+{% elif coming_from_search == "true" %}
+{% if can_scroll == true %}
+<div class="container-fluid" style="margin: auto" hx-post="/structure_search_by_phrase/{{page_no}}/{{search_phrase}}" hx-trigger="revealed" hx-swap="afterend">
+{% else %}
+<div class="container-fluid" style="margin: auto">
+{% endif %}
+{% elif coming_from_tribunal == "true" %}
+{% if can_scroll == true %}
+{% if can_vote == "true"%}
+<div class="container-fluid" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+{% else %}
+<div class="container-fluid" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend" hidden>
+{% endif %}
+{% else %}
+<div class="container-fluid" style="margin: auto">
+{% endif %}
+{% elif coming_from_profile == "True" %}
+{% if page_no == 1 %}
+<div class="container-fluid">
+    <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+        <h1>
+            <u>{{username}}</u>                
+            <button class="btn btn-lg btn-dark" type="button" hx-post="/update_follow/{{user_profile_id}}" hx-trigger="click" hx-target="#follow_location" hx-swap="innerHTML" onclick="like_logic(this)" style="position:relative">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+                    <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"/>
+                </svg>
+            </button>
+        </h1>
+        <p>
+            FOLLOWING:
+            <span id="follow_location">
+            {{following |length}}
+            {{new_following_count}}
+            </span>
+        </p>
+        <p>FOLLOWERS: {{followers |length}}</p>
+    </div>
+</div>
+{% endif %}
+{% if can_scroll == true %}
+<div class="container-fluid" style="margin: auto" hx-post="/user_profile/{{user_profile_name}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+{% else %}
+<div class="container-fluid" style="margin: auto">
+{% endif %}
+{% else %}
+{% if person_name != "Home" %}
+{% if page_no == 1 %}
+<div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+    <h1>
+        <ul>{{person_name}}</ul>
+    </h1>
+    {% if am_subscribed == "False" %}
+    <button class="btn" hx-post="/update_subscribe/{{person_id}}" hx-trigger="click" hx-target="#sub_location" hx-swap="innerHTML" onclick="sub_logic(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+        </svg>
+        <div id="sub_location">
+            <span id="sub_div">
+            SUBSCRIBE: {{subscribers}}
+            </span>
         </div>
-        
-        <!--HOW MANY PER ROW-->
-        {% if i % 1  == 0 %}
-            <div class="w-100"></div>
-        {% endif %}
-        
-        {% if posts[i][0] |length  == 0%} <!--DON'T print the empties might slow things down, need another solution-->
-        {% else %}
-
-        <div class="row gy-5" hx-post="/update_view/{{posts[i][6]}}" hx-trigger="click" hx-target="#view_location{{i}}" hx-swap="innerHTML" style="overflow:scroll;"onclick=get_iteration({{i}})>
-            <div class="col-lg">
-                <div class="card" id="videos">
-                    <div class="card-header">
-                        
-                        <span class="text-center">
+    </button>
+    {% else %}
+    <button class="btn" hx-post="/update_subscribe/{{person_id}}" hx-trigger="click" hx-target="#sub_location" hx-swap="innerHTML" onclick="sub_logic(this)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+            <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+        </svg>
+        <div id="sub_location">
+            <span id="sub_div">
+            SUBSCRIBED: {{subscribers}}
+            </span>
+        </div>
+    </button>
+    {% endif %}
+    {% endif %}
+</div>
+{% endif %}
+{% if can_scroll == true %}
+<div class="container-fluid" hx-post="/{{person_id}}/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+{% else %}
+<div class="container-fluid">
+{% endif %}
+{% endif %}
+{% if posts | length == 0 %}
+<div class="container-fluid">
+    <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+        <h1>
+            <ul>BAD QUERY!</ul>
+        </h1>
+        <p class="lead" >NO POSTS MEET THIS QUERY CRITERIA.</p>
+    </div>
+    <small>
+    {{query}}
+    </small>
+</div>
+{% endif %}
+{% for i in range(0, num_posts) %}
+    <div hidden>
+        <!--POST ID FOR THOSE OF YOU WHO ARE CURIOUS-->
+        {{posts[i][6]}}
+    </div>
+    <!--HOW MANY PER ROW-->
+    {% if i % 1  == 0 %}
+    <div class="w-100"></div>
+    {% endif %}
+    {% if posts[i][0] |length  == 0%} <!--DON'T print the empties might slow things down, need another solution-->
+    {% else %}
+    <div class="row gy-5" hx-post="/update_view/{{posts[i][6]}}" hx-trigger="click" hx-target="#view_location{{i}}" hx-swap="innerHTML" style="overflow:scroll;"onclick=get_iteration({{i}})>
+        <div class="col-lg">
+            <div class="card" id="videos">
+                <div class="card-header">
+                    <span class="text-center">
+                        <h1>
+                            <h6>
+                                <a href="/user_profile/{{posts[i][14]}}/0">{{posts[i][14]}}&nbsp;&nbsp;</a>{{posts[i][3]}}
+                            </h6>
+                        </h1>
+                        {% if coming_from_tag_tribunal == "true" %}
+                            {% for j in range(tag_requests | length) %}
                             
-                            <h1>{{posts[i][0]}} 
-                                <h6>
-                                    <a href="/user_profile/{{posts[i][14]}}/0">{{posts[i][14]}}&nbsp;&nbsp;</a>{{posts[i][3]}}
-                                </h6>
-                            </h1>
-                            {% if coming_from_tag_tribunal == "true" %}
-                            <div>
-                                {{tag_requests[i+offset_calc]}}
-                            </div>
-                            {% endif %}
-                        </span>
-                    </div>
-    
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-md-3 text-left" style="position: relative; left: 15px;"><!--WHY DO I HAVE TO ADD THE 15 PX-->
-                                <h5>{{posts[i][1]}}</h5>
-                            </div>
-                            <div class="col-md-6 d-flex justify-content-center" id="post_location{{i}}">
-                                {{posts[i][2] | safe}}
-                                {{updated_html | safe}}
-                            </div>
-                            <div class="col-md-3">
-                                ads
-                            </div>
+                                {% if tag_requests[i+offset_calc][j] | length != 0 %}
+                                    <div class="text-center" id="request_tag_{{i}}">
+                                        <button class="btn btn-success" hx-post="/update_request_tag/accept/{{posts[i][6]}}" hx-trigger="click" hx-target="#request_tag_{{i}}" hx-swap="innerHTML">Accept</button>
+                                        <button class="btn btn-warning" hx-post="/update_request_tag/deny/{{posts[i][6]}}"   hx-trigger="click" hx-target="#request_tag_{{i}}" hx-swap="innerHTML">Deny</button>
+                                        <button class="btn btn-danger"  hx-post="/update_request_tag/report/{{posts[i][6]}}" hx-trigger="click" hx-target="#request_tag_{{i}}" hx-swap="innerHTML">Report</button>
+                                        <span style="padding-left: 20px;">{{tag_requests[i+offset_calc][j][3]}}</span>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-3 text-left" style="position: relative; left: 15px;">
+                            <!--WHY DO I HAVE TO ADD THE 15 PX-->
+                            <h5>{{posts[i][1]}}</h5>
+                        </div>
+                        <div class="col-md-6 d-flex justify-content-center" id="post_location{{i}}">
+                            {{posts[i][2] | safe}}
+                            {{updated_html | safe}}
+                        </div>
+                        <div class="col-md-3">
+                            ads
                         </div>
                     </div>
-                    {% if coming_from_tribunal != "true"%}   <!--WHAT THE HELL WAS THIS FOR??-->                             
-                    {% else %}
-                    {% endif %}
-    
-                    <!--CHECK TO DISABLE INTERACTIONS-->
-                    {% if searcher == "Trial" %}
-                    <div class="card-footer" style="text-align: center;">
+                </div>
+                <!--CHECK TO DISABLE INTERACTIONS-->
+                {% if searcher == "Trial" %}
+                <div class="card-footer" style="text-align: center;">
                     <a href="/login">Login to unlock interactions</a>
                     {% else %}
                     <div class="card-footer">
                         <small class="text-muted">
-                                   
-    
-                            <span class="col d-flex justify-content-center"> 
-                                                                <!--VIEWS-->
-                                                                <span>
-                                                                    <button class="btn btn-lg no-click" style="pointer-events: none">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
-                                                                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                                                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                                                        </svg>
-                                                                        <span id="view_location{{i}}">
-                                                                            {{posts[i][10]}}
-                                                                            {{views}}
-                                                                        </span>
-                                                                    </button>
-                                                        </span>
+                            <span class="col d-flex justify-content-center">
+                                <!--VIEWS-->
+                                <span>
+                                    <button class="btn btn-lg no-click" style="pointer-events: none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                                        </svg>
+                                        <span id="view_location{{i}}">
+                                        {{posts[i][10]}}
+                                        {{views}}
+                                        </span>
+                                    </button>
+                                </span>
                                 <span class="dropdown text-left">
-                                                <!-- Button trigger modal -->
-                                                <button class="btn btn-dark btn-lg" data-toggle="modal" data-target="#tag_Modal{{i}}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
-                                                        <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
-                                                      </svg>
-                                                </button>
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="tag_Modal{{i}}" tabindex="-1" aria-labelledby="tag_Modal{{i}}">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Tag Request</h5>
-                    
-                                                            </div>
-                                                            <form action="/request_tag/{{posts[i][6]}}" method="POST" enctype="multipart/form-data">
-                                                                <div class="modal-body">
-     
-                                                                    <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" maxlength="80"
-                                                                    name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#name_search_location{{i}}"
-                                                                    placeholder="Tag Another">
-                                                                    <div id="name_search_location{{i}}">
-    
-                                                                    </div>
-                                                                    
-                                                                    <input class="form-control" name="chosen_names_{{posts[i][6]}}" id="selected_users{{i}}" readonly>
-                                                                    
-
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button class="btn btn-primary" hx-post="/request_tag/{{posts[i][6]}}" hx-trigger="click" hx-target="#submitted_tag{{i}}" hx-swap="innerHTML" onclick="remove_tag_values()">Send Tag Request (close modal on click)</button>
-                                                                </div> 
-                                                                <div id="submitted_tag{{i}}">
-    
-                                                                </div>  
-                                                            </form>
-                                                        </div>
-                                                    </div>
+                                    <!-- Button trigger modal -->
+                                    <button class="btn btn-dark btn-lg" data-toggle="modal" data-target="#tag_Modal{{i}}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                                            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                            <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                                        </svg>
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="tag_Modal{{i}}" tabindex="-1" aria-labelledby="tag_Modal{{i}}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Tag Request</h5>
                                                 </div>
+                                                <form action="/request_tag/{{posts[i][6]}}" method="POST" enctype="multipart/form-data">
+                                                    <div class="modal-body">
+                                                        <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/user" maxlength="80"
+                                                            name="person_name" hx-trigger="keyup changed delay:500ms" hx-target="#name_search_location{{i}}"
+                                                            placeholder="Tag Another">
+                                                        <div id="name_search_location{{i}}">
+                                                        </div>
+                                                        <input class="form-control" name="chosen_names_{{posts[i][6]}}" id="selected_users{{i}}" readonly>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-primary" hx-post="/request_tag/{{posts[i][6]}}" hx-trigger="click" hx-target="#submitted_tag{{i}}" hx-swap="innerHTML" onclick="remove_tag_values()">Send Tag Request (close modal on click)</button>
+                                                    </div>
+                                                    <div id="submitted_tag{{i}}">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <button class="btn btn-secondary dropdown-toggle btn-lg" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-video2" viewBox="0 0 16 16">
                                             <path d="M10 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
                                             <path d="M2 1a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2ZM1 3a1 1 0 0 1 1-1h2v2H1V3Zm4 10V2h9a1 1 0 0 1 1 1v9c0 .285-.12.543-.31.725C14.15 11.494 12.822 10 10 10c-3.037 0-4.345 1.73-4.798 3H5Zm-4-2h3v2H2a1 1 0 0 1-1-1v-1Zm3-1H1V8h3v2Zm0-3H1V5h3v2Z"/>
-                                          </svg>
+                                        </svg>
                                     </button>
-                                    
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            
                                         {% for j in range(0, posts[i][17] | length) %}
                                         <a class="dropdown-item" href="/{{posts[i][18][j]}}/0">
                                             <h3 class="text-center">
-                                            {{posts[i][17][j]}}
+                                                {{posts[i][17][j]}}
                                             </h3>
-                                        </a> 
+                                        </a>
                                         {% endfor %}   
-                                    </div> 
+                                    </div>
                                 </span>
-                                
-
-                                    
                                 <!--LIKES-->
                                 <span>
-                                            {% if posts[i][11] == 0%}
-                                            <button class="btn btn-outline-dark btn-lg" hx-post="/update_like/{{posts[i][6]}}" hx-trigger="click" hx-target="#like_location{{i}}" hx-swap="innerHTML" onclick="like_logic(this)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                                                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                                                </svg>
-                                                <span id="like_location{{i}}">
-                                                    {{posts[i][7]}}
-                                                    {{likes}}
-                                                </span>
-                                            </button>
-                                            {% else %}
-                                            <button class="btn btn-outline-danger btn-lg" hx-post="/update_like/{{posts[i][6]}}" hx-trigger="click" hx-target="#like_location{{i}}" hx-swap="innerHTML" onclick="like_logic(this)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
-                                                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
-                                                </svg>
-                                                <span id="like_location{{i}}">
-                                                    {{posts[i][7]}}
-                                                    {{likes}}
-                                                </span>
-                                            </button>
-                                            {% endif %}
+                                    {% if posts[i][11] == 0%}
+                                    <button class="btn btn-outline-dark btn-lg" hx-post="/update_like/{{posts[i][6]}}" hx-trigger="click" hx-target="#like_location{{i}}" hx-swap="innerHTML" onclick="like_logic(this)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                        </svg>
+                                        <span id="like_location{{i}}">
+                                        {{posts[i][7]}}
+                                        {{likes}}
+                                        </span>
+                                    </button>
+                                    {% else %}
+                                    <button class="btn btn-outline-danger btn-lg" hx-post="/update_like/{{posts[i][6]}}" hx-trigger="click" hx-target="#like_location{{i}}" hx-swap="innerHTML" onclick="like_logic(this)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+                                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                                        </svg>
+                                        <span id="like_location{{i}}">
+                                        {{posts[i][7]}}
+                                        {{likes}}
+                                        </span>
+                                    </button>
+                                    {% endif %}
                                 </span>
-                                    
                                 <!--COMMENTS-->
                                 <span>
-                                            <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-outline-dark btn-lg" data-toggle="modal" data-target="#exampleModalLong{{posts[i][6]}}" hx-post="/comment_section/{{posts[i][6]}}/10/likes" hx-trigger="click" hx-target="#comment_section{{posts[i][6]}}" hx-swap="innerHTML">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
-                                                    <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-                                                </svg>
-                                                {{posts[i][8]}}
-                                            </button>
-                                            
-                                            <!-- Modal -->
-                                            <div class="modal fade" id="exampleModalLong{{posts[i][6]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLongTitle">Comment Section</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <!--ENTER INTO A COMMENT -->
-                                                    <form action="update_comment/{{posts[i][6]}}" method="POST" enctype="multipart/form-data">
-                                                        <span class="input-group-prepend">
-                                                            <button class="btn btn-outline-secondary" hx-post="/update_comment/{{posts[i][6]}}" type="button" hx-trigger="click" hx-swap="innerHTML" hx-target="#comment_section{{posts[i][6]}}">
-                                                                    Leave a comment?
-                                                            </button>
-                                                        </span>
-                                                        <input type="text" name="input_field" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">    
-                                                    </form>
-    
-                                                    <!-- SHOW HOW MANY COMMENTS -->
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            HOW MANY? 
-                                                        </button>
-                                                        <p>
-                                                            (comment likes only show on refresh, sorry)
-                                                        </p>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                            <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{posts[i][6]}}/10/likes"    hx-target="#comment_section{{posts[i][6]}}" hx-swap="innerHTML">10</a>
-                                                            <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{posts[i][6]}}/100/likes"   hx-target="#comment_section{{posts[i][6]}}" hx-swap="innerHTML">100</a>
-                                                            <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{posts[i][6]}}/1000/likes"  hx-target="#comment_section{{posts[i][6]}}" hx-swap="innerHTML">1000</a>
-                                                            <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{posts[i][6]}}/10000/likes" hx-target="#comment_section{{posts[i][6]}}" hx-swap="innerHTML">10000</a>  
-                                                        </div>
-                                                    </div>
-                                                    <!-- COMMENT SECTION LOCATION -->
-                                                    <div class="modal-body" id="comment_section{{posts[i][6]}}">
-                                            
-                                                    </div>
-    
-                                                    <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-outline-dark btn-lg" data-toggle="modal" data-target="#exampleModalLong{{posts[i][6]}}" hx-post="/comment_section/{{posts[i][6]}}/10/likes" hx-trigger="click" hx-target="#comment_section{{posts[i][6]}}" hx-swap="innerHTML">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-dots-fill" viewBox="0 0 16 16">
+                                            <path d="M16 8c0 3.866-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7zM5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                                        </svg>
+                                        {{posts[i][8]}}
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModalLong{{posts[i][6]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Comment Section</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <!--ENTER INTO A COMMENT -->
+                                                <form action="update_comment/{{posts[i][6]}}" method="POST" enctype="multipart/form-data">
+                                                    <span class="input-group-prepend">
+                                                    <button class="btn btn-outline-secondary" hx-post="/update_comment/{{posts[i][6]}}" type="button" hx-trigger="click" hx-swap="innerHTML" hx-target="#comment_section{{posts[i][6]}}">
+                                                    Leave a comment?
+                                                    </button>
+                                                    </span>
+                                                    <input type="text" name="input_field" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">    
+                                                </form>
+                                                <!-- SHOW HOW MANY COMMENTS -->
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    HOW MANY? 
+                                                    </button>
+                                                    <p>
+                                                        (comment likes only show on refresh, sorry)
+                                                    </p>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{posts[i][6]}}/10/likes"    hx-target="#comment_section{{posts[i][6]}}" hx-swap="innerHTML">10</a>
+                                                        <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{posts[i][6]}}/100/likes"   hx-target="#comment_section{{posts[i][6]}}" hx-swap="innerHTML">100</a>
+                                                        <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{posts[i][6]}}/1000/likes"  hx-target="#comment_section{{posts[i][6]}}" hx-swap="innerHTML">1000</a>
+                                                        <a class="dropdown-item" hx-trigger="click" hx-post="/comment_section/{{posts[i][6]}}/10000/likes" hx-target="#comment_section{{posts[i][6]}}" hx-swap="innerHTML">10000</a>  
                                                     </div>
                                                 </div>
+                                                <!-- COMMENT SECTION LOCATION -->
+                                                <div class="modal-body" id="comment_section{{posts[i][6]}}">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
                                 </span>
-    
                                 <!--FAVES-->
                                 <span>
-                                            {% if posts[i][12] == 0%}
-                                            <button class="btn btn-outline-dark btn-lg" hx-post="/update_fave/{{posts[i][6]}}" hx-trigger="click" hx-target="#fave_location{{i}}" hx-swap="innerHTML" onclick="fave_logic(this)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
-                                                    <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-                                                </svg>
-                                                
-                                                <span id="fave_location{{i}}">
-                                                    {{posts[i][9]}}
-                                                    {{faves}}
-                                                </span>
-                                            </button>
-                                            {% else %}
-    
-                                            <button class="btn btn-outline-danger btn-lg" hx-post="/update_fave/{{posts[i][6]}}" hx-trigger="click" hx-target="#fave_location{{i}}" hx-swap="innerHTML"  onclick="fave_logic(this)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
-                                                    <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
-                                                </svg>
-                                                <span id="fave_location{{i}}">
-                                                    {{posts[i][9]}}
-                                                    {{faves}}
-                                                </span>
-                                            </button>
-                                            {% endif %}
+                                    {% if posts[i][12] == 0%}
+                                    <button class="btn btn-outline-dark btn-lg" hx-post="/update_fave/{{posts[i][6]}}" hx-trigger="click" hx-target="#fave_location{{i}}" hx-swap="innerHTML" onclick="fave_logic(this)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
+                                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                                        </svg>
+                                        <span id="fave_location{{i}}">
+                                        {{posts[i][9]}}
+                                        {{faves}}
+                                        </span>
+                                    </button>
+                                    {% else %}
+                                    <button class="btn btn-outline-danger btn-lg" hx-post="/update_fave/{{posts[i][6]}}" hx-trigger="click" hx-target="#fave_location{{i}}" hx-swap="innerHTML"  onclick="fave_logic(this)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark" viewBox="0 0 16 16">
+                                            <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
+                                        </svg>
+                                        <span id="fave_location{{i}}">
+                                        {{posts[i][9]}}
+                                        {{faves}}
+                                        </span>
+                                    </button>
+                                    {% endif %}
                                 </span>
-    
                                 <!-- SEND-->
                                 <span>
-                                            <button class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#send_modal_{{posts[i][6]}}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-plus" viewBox="0 0 16 16">
-                                                    <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z"/>
-                                                    <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z"/>
-                                                </svg>
-                                            </button>
-                                            <div class="modal fade" id="send_modal_{{posts[i][6]}}" tabindex="-1" role="dialog" aria-labelledby="send_modal_{{posts[i][6]}}" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLongTitle">SEND MESSAGE</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    
-                                                    <div>
-                                                        <form>
-                                                            <div>
-                                                                <input class="form-control" id="chat_room_name" type="text" readonly>
-                                                            </div>
-                                                            <div>
-                                                                <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/chat_room_name" name="algo_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results{{posts[i][6]}}" placeholder="Chat Room Name" required>
-                                                            </div>
-    
-                                                            <div id="search-results{{posts[i][6]}}"></div>
-                                                            <button type="button" class="btn btn-primary btn-lg btn-block" id="search_algo_button" hx-post="/send_file_message/{{posts[i][6]}}" hx-trigger="click" hx-target="#success_or_failure{{posts[i][6]}}" hx-swap="innerHTML">Send</button>   
-    
-                                                        </form>
-                                                    </div>
-    
-                                                    <div id="success_or_failure{{posts[i][6]}}">
-                                                        {{success_or_failure}}
-                                                    </div>
-    
-                                                    <div class="modal-footer">
+                                    <button class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#send_modal_{{posts[i][6]}}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-plus" viewBox="0 0 16 16">
+                                            <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z"/>
+                                            <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-3.5-2a.5.5 0 0 0-.5.5v1h-1a.5.5 0 0 0 0 1h1v1a.5.5 0 0 0 1 0v-1h1a.5.5 0 0 0 0-1h-1v-1a.5.5 0 0 0-.5-.5Z"/>
+                                        </svg>
+                                    </button>
+                                    <div class="modal fade" id="send_modal_{{posts[i][6]}}" tabindex="-1" role="dialog" aria-labelledby="send_modal_{{posts[i][6]}}" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">SEND MESSAGE</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div>
+                                                    <form>
+                                                        <div>
+                                                            <input class="form-control" id="chat_room_name" type="text" readonly>
+                                                        </div>
+                                                        <div>
+                                                            <input class="form-control" id="link" type="text" hx-get="/search_text_by_category/chat_room_name" name="algo_name" hx-trigger="keyup changed delay:500ms" hx-target="#search-results{{posts[i][6]}}" placeholder="Chat Room Name" required>
+                                                        </div>
+                                                        <div id="search-results{{posts[i][6]}}"></div>
+                                                        <button type="button" class="btn btn-primary btn-lg btn-block" id="search_algo_button" hx-post="/send_file_message/{{posts[i][6]}}" hx-trigger="click" hx-target="#success_or_failure{{posts[i][6]}}" hx-swap="innerHTML">Send</button>   
+                                                    </form>
+                                                </div>
+                                                <div id="success_or_failure{{posts[i][6]}}">
+                                                    {{success_or_failure}}
+                                                </div>
+                                                <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    </div>
-                                                </div>
                                                 </div>
                                             </div>
-    
+                                        </div>
+                                    </div>
                                 </span>
-    
-                                    <!--TAGGING
-                                        <span>
-                                            <button class="btn btn-lg" type="button">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
-                                                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
-                                                </svg>
-                                            </button>
-                                            TAG PERSON
-                                        </span>
-    
-                                        <span>
-                                            <button class="btn btn-lg" type="button">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-intersect" viewBox="0 0 16 16">
-                                                    <path d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm5 10v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2v5a2 2 0 0 1-2 2H5zm6-8V2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2V6a2 2 0 0 1 2-2h5z"/>
-                                                </svg>
-                                            </button>
-                                            TAG POST
-                                        </span>
-                                    -->
-    
-                                <span>
-                                            <button class="btn btn-lg" type="button" onclick="show_link({{i}})">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
-                                                    <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
-                                                    <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
-                                                </svg>
-                                            </button>
-                                            <span id="link_location{{i}}" hidden>
-                                                <a href="{{posts[i][13]}}">{{posts[i][13]}}<h6></h6></a>
-                                            </span>
-                                </span>
-    
-                            </span>
+                                <!--TAGGING
+                                    <span>
+                                        <button class="btn btn-lg" type="button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                                                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+                                            </svg>
+                                        </button>
+                                        TAG PERSON
+                                    </span>
                                     
+                                    <span>
+                                        <button class="btn btn-lg" type="button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-intersect" viewBox="0 0 16 16">
+                                                <path d="M0 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2H2a2 2 0 0 1-2-2V2zm5 10v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2v5a2 2 0 0 1-2 2H5zm6-8V2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h2V6a2 2 0 0 1 2-2h5z"/>
+                                            </svg>
+                                        </button>
+                                        TAG POST
+                                    </span>
+                                    -->
+                                <span>
+                                    <button class="btn btn-lg" type="button" onclick="show_link({{i}})">
+                                        BROKEN
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
+                                            <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
+                                            <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>
+                                        </svg>
+                                    </button>
+                                    <span id="link_location{{i}}" hidden>
+                                        <a href="{{posts[i][13]}}">
+                                            {{posts[i][13]}}
+                                        </a>
+                                    </span>
+                                </span>
+                            </span>
                             <span style="text-align: center;">
-                                        {% if coming_from_tribunal == "true" %}
-                                            {% if can_vote == "true" %}
-                                            <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/approve" hx-trigger="click">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
-                                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                                </svg>
-                                                APPROVE POST
-                                            </button>
-                    
-                                            <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/deny" hx-trigger="click">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-                                                </svg>
-                                                DELETE POST
-                                            </button>
-                                            <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/report_uploader" hx-trigger="click">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-diamond-fill" viewBox="0 0 16 16">
-                                                    <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                                                </svg>
-                                                REPORT 
-                                            </button>
-    
-                                            {% if ADMINISTRATOR == "True" and posts[i][16] == "False" %}
-                                            <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/delete_person" hx-trigger="click">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-diamond-fill" viewBox="0 0 16 16">
-                                                    <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                                                </svg>
-                                                DELETE PERSON
-                                            </button>
-                                            {% endif %}
-    
-                                            
-                                            <!--GET REAL LINK-->
-                                            <div>
-                                                <form method="POST" >
-                                                    <input class="form-control" name="post_link_embed" type="text" placeholder="">
-                                                    <button class="btn btn-primary btn-block" type="submit" hx-post="/update_post_html/{{posts[i][6]}}" hx-trigger="click" hx-target="#post_location{{i}}" hx-swap="innerHTML">Direct Embed Link (go to to the literally link and grab the mbedding)</button>
-                                                </form>
-                                            </div>
-    
-                                            
-                                            {% else %}
-    
-                                            
-                                            {% endif %}
-    
-                                        {% endif %}
+                                {% if coming_from_tribunal == "true" %}
+                                {% if can_vote == "true" %}
+                                <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/approve" hx-trigger="click">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                                        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                                    </svg>
+                                    APPROVE POST
+                                </button>
+                                <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/deny" hx-trigger="click">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                    </svg>
+                                    DELETE POST
+                                </button>
+                                <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/report_uploader" hx-trigger="click">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-diamond-fill" viewBox="0 0 16 16">
+                                        <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                    </svg>
+                                    REPORT 
+                                </button>
+                                {% if ADMINISTRATOR == "True" and posts[i][16] == "False" %}
+                                <button class="btn btn-sm" hx-post="/update_post_tribunal/{{posts[i][6]}}/delete_person" hx-trigger="click">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-diamond-fill" viewBox="0 0 16 16">
+                                        <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                    </svg>
+                                    DELETE PERSON
+                                </button>
+                                {% endif %}
+                                <!--GET REAL LINK-->
+                                <div>
+                                    <form method="POST" >
+                                        <input class="form-control" name="post_link_embed" type="text" placeholder="">
+                                        <button class="btn btn-primary btn-block" type="submit" hx-post="/update_post_html/{{posts[i][6]}}" hx-trigger="click" hx-target="#post_location{{i}}" hx-swap="innerHTML">Direct Embed Link (go to to the literally link and grab the mbedding)</button>
+                                    </form>
+                                </div>
+                                {% else %}
+                                {% endif %}
+                                {% endif %}
                             </span>
                         </small>
                     </div>
                     {% endif %}
-                </div>   
+                </div>
             </div>
         </div>
         {% endif %}
-                    
-
     {% endfor %}
 </div>
-
-
-
-
 <script>
     function show_link(iteraton){
         // console.log("hello world", iteraton)
@@ -595,8 +534,8 @@
         else{
             document.getElementById("sub_div").innerHTML ="SUBSCRIBED"
         }
-
-
+    
+    
         if ( $(value).hasClass("btn btn-outline-danger")){
             $(value).removeClass("btn btn-outline-danger");
             $(value).addClass("btn btn-outline-dark");  
@@ -621,7 +560,7 @@
     function modal_toggle(post_id){
         document.getElementById("comment_modal").style.display = "block"
     }
-
+    
     window.onclick = function (event) {
         var modal = document.getElementById("comment_modal");
         if (event.target == modal){
@@ -630,12 +569,12 @@
             }
         }
     }
-
+    
     count = 0
     iteration = 0
     function choose_selected_user(user){
         console.log("iteration", iteration)
-
+    
         if (count <= 4)
             // turn into += when i figure out hwo to do multiple
             console.log("current", document.getElementById(`selected_users${iteration}`).value);
@@ -648,7 +587,7 @@
         iteration = i
     }
     
-
-
+    
+    
 </script>
 {% endblock main %}
