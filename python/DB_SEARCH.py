@@ -518,6 +518,8 @@ def IN_TAG_TRIBUNAL(tag_tribunal):
         """ 
     else:
         return ""   
+    
+    
 def UNIVERSAL_FUNCTION(
         searcher, 
         searcher_id="", 
@@ -640,8 +642,8 @@ def UNIVERSAL_FUNCTION(
                 modules.GET_PEOPLE_BY_POST_ID(i[6]),
                 modules.GET_PEOPLE_ID_BY_POST_ID(i[6])
             ])
-            if tag_tribunal:
-                tag_requests.append(modules.GET_TAG_REQUESTS_BY_POST_ID(i[6]))
+            #if tag_tribunal:
+            #    tag_requests.append(modules.GET_TAG_REQUESTS_BY_POST_ID(i[6]))
             # print(i)
             
     except Exception as e:
@@ -650,10 +652,12 @@ def UNIVERSAL_FUNCTION(
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
         
     modules.close_conn(cursor, conn)
-    # print(query)
     posts = modules.GET_RID_OF_DUPES(posts, posts_per_page)
-    #print(len(posts)) 
-    print(modules.GETTING_POST_MAX_FROM_QUERY(query))
+    for i in posts:
+        if i != [] and tag_tribunal:
+            tag_requests.append(modules.GET_TAG_REQUESTS_BY_POST_ID(i[6]))
+            
+            
     return query, posts, int(page_no), posts_per_page, modules.CHECK_CAN_SCROLL(len(posts*page_no), modules.GETTING_POST_MAX_FROM_QUERY(query)), person_id, tag_requests
 
 

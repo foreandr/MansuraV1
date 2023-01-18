@@ -163,19 +163,20 @@
                 <div class="card-header">
                     <span class="text-center">
                         <h1>
-                            <h6>
-                                <a href="/user_profile/{{posts[i][14]}}/0">{{posts[i][14]}}&nbsp;&nbsp;</a>{{posts[i][3]}}
-                            </h6>
+                            {{posts[i][0]}}
                         </h1>
+                        <h6>
+                            <a href="/user_profile/{{posts[i][14]}}/0">{{posts[i][14]}}&nbsp;&nbsp;</a>{{posts[i][3]}}
+                        </h6>
                         {% if coming_from_tag_tribunal == "true" %}
                             {% for j in range(tag_requests | length) %}
-                            
+                            <!--{{tag_requests[i+offset_calc][j]}} {{i}} Checkin shit  --> 
                                 {% if tag_requests[i+offset_calc][j] | length != 0 %}
-                                    <div class="text-center" id="request_tag_{{i}}">
-                                        <button class="btn btn-success" hx-post="/update_request_tag/accept/{{posts[i][6]}}" hx-trigger="click" hx-target="#request_tag_{{i}}" hx-swap="innerHTML">Accept</button>
-                                        <button class="btn btn-warning" hx-post="/update_request_tag/deny/{{posts[i][6]}}"   hx-trigger="click" hx-target="#request_tag_{{i}}" hx-swap="innerHTML">Deny</button>
-                                        <button class="btn btn-danger"  hx-post="/update_request_tag/report/{{posts[i][6]}}" hx-trigger="click" hx-target="#request_tag_{{i}}" hx-swap="innerHTML">Report</button>
-                                        <span style="padding-left: 20px;">{{tag_requests[i+offset_calc][j][3]}}</span>
+                                    <div class="text-center" id="request_tag_{{i}}_{{j}}">
+                                        <button class="btn btn-success" hx-post="/update_request_tag/accept/{{posts[i][6]}}/{{tag_requests[i+offset_calc][j][1]}}/{{tag_requests[i+offset_calc][j][2]}}" hx-trigger="click" hx-target="#request_tag_{{i}}_{{j}}" hx-swap="innerHTML">Accept</button>
+                                        <button class="btn btn-warning" hx-post="/update_request_tag/deny/{{posts[i][6]}}/{{tag_requests[i+offset_calc][j][1]}}/{{tag_requests[i+offset_calc][j][2]}}"   hx-trigger="click" hx-target="#request_tag_{{i}}_{{j}}" hx-swap="innerHTML">Deny</button>
+                                        <button class="btn btn-danger"  hx-post="/update_request_tag/report/{{posts[i][6]}}/{{tag_requests[i+offset_calc][j][1]}}/{{tag_requests[i+offset_calc][j][2]}}" hx-trigger="click" hx-target="#request_tag_{{i}}_{{j}}" hx-swap="innerHTML">Report</button>
+                                        <span style="padding-left: 20px;"><b>{{tag_requests[i+offset_calc][j][3]}}</b></span>
                                     </div>
                                 {% endif %}
                             {% endfor %}
@@ -428,7 +429,7 @@
                                     -->
                                 <span>
                                     <button class="btn btn-lg" type="button" onclick="show_link({{i}})">
-                                        BROKEN
+                                        LINK:
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16">
                                             <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
                                             <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/>

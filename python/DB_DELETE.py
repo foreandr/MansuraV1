@@ -166,6 +166,27 @@ def DELETE_FROM_POST_PERSON(post_id):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
     
+def DELETE_FROM_POST_PERSON_REQUEST(post_id,User_id,Person_id):
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            DELETE FROM POST_PERSON_REQUEST
+            WHERE Post_id = %(post_id)s
+            AND Person_id = %(Person_id)s
+            AND User_id = %(User_id)s
+        """, {'post_id': post_id,
+              'User_id': User_id,
+              'Person_id': Person_id
+            }
+        )
+        conn.commit()
+        modules.close_conn(cursor, conn)
+        modules.print_green(f"{inspect.stack()[0][3]} COMPLETED\n") 
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+
+
 def DELETE_FROM_VIEWS(post_id):
     try:
         cursor, conn = modules.create_connection()

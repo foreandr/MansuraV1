@@ -127,6 +127,12 @@ def tag_tribunal(page_no):
 
     can_vote = modules.CHECK_USER_IS_GLOBAL_ADMIN(session_id)
         
+    for i in tag_requests:
+        print("TEST", i)
+        
+
+        
+    
     return render_template('home.html',
         query=query,                   
                            
@@ -144,7 +150,34 @@ def tag_tribunal(page_no):
         tag_requests=tag_requests
     ) 
  
- 
+@app.route("/update_request_tag/<tag_choice>/<post_id>/<person_id>/<requester_id>", methods=['GET', 'POST'])
+def update_request_tag(tag_choice, post_id, person_id, requester_id):
+    print("tag_choice", tag_choice)
+    print("post_id", post_id)
+    print("person_id", person_id)
+    print("requester_id", requester_id)
+    
+    return_string = ""
+    if tag_choice == "accept":
+        modules.INSERT_POST_PERSON(Post_id=post_id, Person_id=person_id)
+        modules.DELETE_FROM_POST_PERSON_REQUEST(post_id=post_id,User_id=requester_id,Person_id=person_id)
+        return_string =  '<span class="text-success">Accepted</span>'
+    elif tag_choice == "deny":
+        modules.DELETE_FROM_POST_PERSON_REQUEST(post_id=post_id,User_id=requester_id,Person_id=person_id)
+        return_string =  '<span class="text-warning">Denied</span>'
+    elif tag_choice == "report":
+        modules.UPDATE_USER_STRIKES(requester_id)
+        modules.DELETE_FROM_POST_PERSON_REQUEST(post_id=post_id,User_id=requester_id,Person_id=person_id)
+        return_string = '<span class="text-danger">Reported</span>'
+        
+        
+    
+    
+    return f"{return_string}"
+    
+    
+    
+    
 @app.route("/favourites/<page_no>", methods=['GET', 'POST'])
 def favourites(page_no):
     modules.log_function("request", request)
@@ -745,8 +778,9 @@ def update_post_tribunal(Post_id, approval):
             modules.UPDATE_USER_STRIKES(session["id"])
             modules.DELETE_POST(Post_id)
             modules.DELETE_PERSON(person_id)
+            
     return render_template(f"update_post.html",
-        updated_html=modules.GET_POST_HTML_BY_ID(Post_id)
+        updated_html=''
         )
 
 

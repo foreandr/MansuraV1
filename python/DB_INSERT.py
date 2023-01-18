@@ -186,7 +186,7 @@ def INSERT_POST_PERSON_REQUEST(Post_id, Person_id, User_id):
             )
         conn.commit()
 
-        modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        modules.print_green(F"{inspect.stack()[0][3]} POST:{Post_id}, PERSON:{Person_id}, USER:{User_id} COMPLETED")
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
