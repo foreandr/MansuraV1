@@ -181,8 +181,24 @@ def UPDATE_NAME_TYPO(Person_name, new_name):
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
     
-
+def MOVE_ALL_POSTS_FROM_BY_IDS(starting_post_id, ending_post_id):
+    cursor, conn = modules.create_connection()
+    try:
+        
+        cursor.execute(f"""
+            UPDATE POST_PERSON
+            SET Person_id = '{ending_post_id}'
+            WHERE Person_id = '{starting_post_id}'
+        """)
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} {starting_post_id, ending_post_id} COMPLETED\n")
+        modules.close_conn(cursor, conn)    
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+    
 if __name__ == "__main__":
     # UPDATE_NAME_TYPO("Terrence Tao", "Terence Tao")
+    # modules.MOVE_ALL_POSTS_FROM_BY_IDS(27, 328)
     pass
     

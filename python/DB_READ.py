@@ -34,7 +34,7 @@ def GET_USERS_BY_TEXT(text):
         query = f"""
             SELECT Person_name
             FROM PEOPLE
-            WHERE LOWER(Person_name) LIKE LOWER('{text}%')
+            WHERE LOWER(Person_name) LIKE LOWER('%{text}%')
             AND Person_live = 'True'
         """
         cursor.execute(query)
@@ -1876,11 +1876,20 @@ def CREATE_DEMO_ORDER_CLAUSE():
         )DESC
     """ 
 
+def GET_PEOPLE_DETAILS_BY_NAME(name):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT *
+        FROM PEOPLE
+        WHERE Person_name LIKE '%{name}%'
+        """)
+    
+    for i in cursor.fetchall():
+        print(i)
+    modules.close_conn(cursor, conn) 
 
 if __name__ == "__main__":
-    # GET_NUM_POSTS()
-    DEMO(User_id=1)
-    #GET_POST_DETAILS_BY_ID(38) 
-
+    # modules.GET_PEOPLE_DETAILS_BY_NAME("w")
+    print(modules.GET_USERS_BY_TEXT('w'))
     pass
 

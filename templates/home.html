@@ -221,8 +221,9 @@
                 <!--CHECK TO DISABLE INTERACTIONS-->
                 {% if searcher == "Trial" %}
                 <div class="card-footer" style="text-align: center;">
-                    <a href="/login">Login to unlock interactions</a>
-                    {% else %}
+                    <a href="/login">Login to unlock interactions---{{searcher}}</a>
+                    
+                {% else %}
                     <div class="card-footer">
                         <small class="text-muted">
                             <span class="col d-flex justify-content-center">

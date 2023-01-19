@@ -33,7 +33,9 @@ def post_logic(person_id, page_no):
     except:
         username = "Trial"
         session_id = 2
-    
+
+        # modules.log_function("error", F"I DON'T THINK THIS USER IS IN SESSION RIGHT NOW {session}")
+
     query, posts, new_page_no, posts_per_page, can_scroll, person_id, tag_requests_ = modules.UNIVERSAL_FUNCTION(
         searcher=username,
         page_no=int(page_no)+1,
@@ -48,6 +50,7 @@ def post_logic(person_id, page_no):
         person_name = "Home"
         
     offset_calc = int(int(page_no) * int(posts_per_page))
+    print("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     return render_template('home.html',
         query=query,                   
         searcher=username,                   
