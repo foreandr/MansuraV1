@@ -1144,11 +1144,11 @@ def test_page():
     return render_template(f"test_page.html",
     )
     
-@app.route("/ads", methods=['GET', 'POST'])
+@app.route("/ads.txt", methods=['GET', 'POST'])
 def ads():
     modules.log_function("request", request)
     
-    return render_template(f"/root/mansura/files/ads.txt",
+    return render_template(f"ads.txt",
     )
     
 @app.route("/request_tag/<Post_id>", methods=['GET', 'POST'])
