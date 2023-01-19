@@ -18,7 +18,7 @@ sudo nginx -s reload
 # 3. 
 pkill gunicorn
 systemctl daemon-reload
-sudo systemctl restart mansura
+sudo systemctl stop mansura
 sudo systemctl start mansura
 sudo systemctl enable mansura
 sudo systemctl status mansura
