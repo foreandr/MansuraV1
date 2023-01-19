@@ -19,7 +19,11 @@ playlists
 
 Profile
     - link to their socials when you go to their page
-
+    
+multiple query strings available for wherre clause
+    where title & desc & whatever == "this"
+    OR where title & desc & whatever "this"
+    X N
 
 QUALITY. public playlists
     - playlist leaderboards
