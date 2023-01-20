@@ -608,7 +608,7 @@ def UNIVERSAL_FUNCTION(
         """
         
         #LOG THE QUERY [ERROR CHECKING]
-        modules.log_function(msg_type="test", log_string=query, function_name=f"{inspect.stack()[0][3]}")
+        # modules.log_function(msg_type="test", log_string=query, function_name=f"{inspect.stack()[0][3]}")
 
         cursor.execute(query)
         posts = []

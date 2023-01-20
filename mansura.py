@@ -1142,7 +1142,7 @@ def intro_page():
         
     list_of_top_n_people = modules.GET_TOP_N_PERSONS(amount=10)
     list_of_top_n_users = modules.GET_TOP_N_USERS(amount=10)        
-        
+    # modules.log_function("test", str(list_of_top_n_users))
     return render_template(f"intro_page.html",
         people_list=list_of_top_n_people,
         user_list=list_of_top_n_users

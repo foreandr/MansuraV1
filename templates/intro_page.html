@@ -25,7 +25,7 @@
         <h3>TOP SCAVENGERS TO FOLLOW</h3>
     </div>
     <div>
-        {% for i in range(people_list | length) %}
+        {% for i in range(user_list | length) %}
             <a href="/user_profile/{{ user_list[i][0] }}/0">{{ user_list[i][0] }}</a> |
             
         {% endfor %}
