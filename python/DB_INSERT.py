@@ -98,7 +98,13 @@ def INSERT_POST_ADMIN(User_id):
     modules.close_conn(cursor, conn)  
    
 def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User_id=1):
-    print("POST PROPERTIES\n")
+    import time
+    start = time.process_time()
+
+    #print("POST PROPERTIES===============\n")
+    #print(f"""{Post_title}\n, {Post_description}\n, {Post_link}\n, {Post_live}\n, {Person}, {User_id}\n""")
+    #print("================================")
+    
     if not modules.CHECK_ACCOUNT_STATUS(User_id):
         print(User_id, F"is suspended for now. CANT {inspect.stack()[0][3]}")
         return ""
@@ -140,6 +146,9 @@ def INSERT_POST(Post_title, Post_description, Post_link, Post_live, Person, User
             INSERT_POST_PERSON(Post_id, Person_id)
         
         modules.print_green(F"{inspect.stack()[0][3]} COMPLETED")
+        
+        # your code here    
+        print(time.process_time() - start)
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")

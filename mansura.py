@@ -2,6 +2,8 @@ from flask import *
 from os import *
 import base64
 import inspect
+import time
+import threading
 
 import python.MODULES as modules
 
@@ -50,7 +52,6 @@ def post_logic(person_id, page_no):
         person_name = "Home"
         
     offset_calc = int(int(page_no) * int(posts_per_page))
-    print("HELOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     return render_template('home.html',
         query=query,                   
         searcher=username,                   
@@ -338,58 +339,54 @@ def request_form(request_type):
         return redirect(url_for("login"))
     modules.log_function("request", request)
     #print("request_type", request_type)
-    if request.method == "POST":     
-        if request_type == "post":
+    if request.method == "POST":
+        print("1")    
+        if request_type == "post": # this can be a little confusiong, there is a post type and perosn type
             
             post_title = request.form["post_title"]
             post_title = modules.clean_title(post_title)
             post_title = post_title.strip()
-            #print("post_title", post_title)
             
             description = request.form["description"]
-            description = modules.COMMENT_TEXT_CHECK(description)
+            description = modules.DOUBLE_LIST_COMMENT_TEXT_CHECK(description)
             description = description.strip()
-            #print("description", description)
             
             link = request.form["post_link"]
             link = link.strip()
-            #print("link", link)
             
             person_name = request.form["chosen_name"]
             people = person_name.split(",")[:-1]
-            print("person_name", people)
             
             # CHANGE TO POST
-            # print("i got here")
+            
             if not modules.GET_ALL_INTERACTIONS(session["id"]):
                 return render_template(f"spam_page.html")
-            
-            modules.INSERT_POST(Post_title=post_title, 
-                                Post_description=description, 
-                                Post_link=link, 
-                                Post_live="false", 
-                                Person=people, 
-                                User_id=session["id"]
-                                ) 
+            print("2")
+            x = threading.Thread(target=modules.INSERT_POST, args=(),kwargs={
+                    'Post_title':post_title,
+                    'Post_description':description,
+                    'Post_link':link,
+                    'Post_live':"false",
+                    'Person':people,
+                    'User_id':session["id"],
+                    }
+            )
+            print("3")
         elif request_type == "person":
+            print("4")
             
             person_post_title = request.form["post_title"]
             person_post_title = person_post_title.strip()
-            #post_title = modules.clean_title(post_title)
-            #print("post_title", post_title)
             
             person_description = request.form["description"]
-            person_description = modules.COMMENT_TEXT_CHECK(person_description)
+            person_description = modules.DOUBLE_LIST_COMMENT_TEXT_CHECK(person_description)
             person_description = person_description.strip()
-            #print("description", description)
             
             person_link = request.form["post_link"]
             person_link = person_link.strip()
-            # print("link", link)
 
             person_person_name = request.form["person_name"]
             person_person_name = person_person_name.split(",")[:-1]
-            print("OG", person_person_name)
             
             upgraded_person_person_name = []
             for i in person_person_name:
@@ -397,22 +394,30 @@ def request_form(request_type):
                 if modules.CHECK_INJECTION(j): #this might be exessive
                     upgraded_person_person_name.append(j)
                 
-            print("NEW", upgraded_person_person_name)
-            
-            modules.log_function(msg_type="test", log_string=str(person_person_name), function_name=f"INSERT_PERSON")
-            
-            # print("person_name:", person_person_name)
-            modules.INSERT_POST(Post_title=person_post_title, 
-                                Post_description=person_description, 
-                                Post_link=person_link, 
-                                Post_live="false", 
-                                Person=person_person_name, 
-                                User_id=session["id"]
+            if len(upgraded_person_person_name) == 0:
+                return render_template(f'request_form.html',
+                    request_type=request_type
                 )
+                
+            modules.log_function(msg_type="test", log_string=str(person_person_name), function_name=f"INSERT_PERSON")
+            x = threading.Thread(target=modules.INSERT_POST, args=(),kwargs={
+                    'Post_title':person_post_title,
+                    'Post_description':person_description,
+                    'Post_link':person_link,
+                    'Post_live':"false",
+                    'Person':person_person_name,
+                    'User_id':session["id"],
+                    }
+            )
             
-    return render_template(f'request_form.html',
-        request_type=request_type
-    )
+            x.start()
+            print("5")
+            
+            
+    #return render_template(f'request_form.html',
+    #    request_type=request_type
+    #)
+    return redirect(url_for('post_logic', person_id=0,page_no=0 ))
 
 @app.route("/search_text_by_category/<type>", methods=['GET'])
 def search_text_by_category(type):
@@ -423,7 +428,6 @@ def search_text_by_category(type):
     query_text = str(request.url).split("name=")[1]
     
     if type == "user":
-        print("1===============================")
         if modules.CHECK_INJECTION(query_text):
             users = modules.GET_USERS_BY_TEXT(query_text)
         else:
@@ -649,9 +653,7 @@ def update_subscribe(Person_id):
         subscribers=modules.GET_NUM_SUBSCRIBERS_BY_PERSON_ID(Person_id),
         am_subscribed = modules.CHECK_IF_SUBSCRIBED(Person_id, session["id"])
         )
-         
-
-   
+          
 @app.route("/update_comment_like/<Comment_id>", methods=['GET', 'POST'])
 def update_comment_like(Comment_id):
     if "email" not in session: 
@@ -777,7 +779,6 @@ def update_post_tribunal(Post_id, approval):
     return render_template(f"update_post.html",
         updated_html=''
         )
-
 
 @app.route("/comment_section/<Post_id>/<how_many>/<order>", methods=['GET', 'POST'])
 def comment_section(Post_id, how_many, order):
@@ -1153,6 +1154,41 @@ def ads():
     
     return render_template(f"ads.txt",
     )
+    
+@app.route("/start", methods=['GET', 'POST'])
+def start():
+    #modules.log_function("request", request)
+    return '''
+<div hx-target="this"
+    hx-get="/job/0" 
+    hx-trigger="load delay:600ms" 
+    hx-swap="outerHTML">
+  <h3>Uploading...</h3>
+  <div class="progress">
+    <div id="pb" class="progress-bar" style="width:0%">
+  </div>
+</div>
+
+'''
+
+@app.route("/job/<percentage>", methods=['GET', 'POST'])
+def job(percentage):
+    # modules.log_function("request", request)
+    if int(percentage) >= 100:
+        return '<div class="text-success">Done Upload</div>'
+    else:
+        return f'''
+    <div hx-target="this"
+        hx-get="/job/{int(percentage)+25}" 
+        hx-trigger="load delay:600ms" 
+        hx-swap="outerHTML">
+    <h3>Uploading...</h3>
+    <div class="progress">
+        <div id="pb" class="progress-bar" style="width:{int(percentage)+25}%">
+    </div>
+    </div>
+    '''
+    
     
 @app.route("/request_tag/<Post_id>", methods=['GET', 'POST'])
 def request_tag(Post_id):

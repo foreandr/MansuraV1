@@ -589,7 +589,11 @@ def GET_UPVOTES_BY_WORD(word):
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
+        
+        
 
+        
+         
 def COMMENT_TEXT_CHECK(entered_string):
     try:
         cursor, conn = modules.create_connection()
@@ -697,7 +701,7 @@ def CHECK_INJECTION(word):
     array = modules.GET_INJECTION_TERMS()
     # print(array)
     if word.lower() in array:
-        print(f"{word} is in {array}, not logging in")
+        print(f"{word} is in INJECTION TERMS, returning FALSE")
         return False
     else:
         return True
@@ -1022,8 +1026,53 @@ def READ_FROM_PERSON_FILE_AND_INSERT(Person_name):
     # FOR EACH ITEM IN ARRAY, DO A POST INSERT
     pass
 
+
+def REGEX_COMMENT_TEXT_CHECK(enterered_string):
+    import re
+    with open('/root/mansura/files/profanity_list.txt') as f:
+        # print("opened fie")
+        lines = f.readlines()[0].split(",") # NOT SURE WHY I HAVE TO INDEX FIRST
+        my_lines = lines
+    
+    # cuss_words = re.search('|'.join(my_lines), enterered_string)    print(cuss_words)
+    # print(cuss_words)
+    found_cuss_words = re.findall(r"(?=("+'|'.join(my_lines)+r"))", enterered_string)
+    print(found_cuss_words)
+    split_entered_string = enterered_string.split(" ")
+    
+    final_string = ""
+    for i in split_entered_string:
+        if i in found_cuss_words:
+            if len(i) != 0: 
+                print(i, len(i))
+                final_string += "****"
+        else:
+            final_string += i
+        final_string += " "
+    print(final_string)
+    
+def DOUBLE_LIST_COMMENT_TEXT_CHECK(entered_string):
+    with open('/root/mansura/files/profanity_list.txt') as f:
+        # print("opened fie")
+        lines = f.readlines()[0].split(",") # NOT SURE WHY I HAVE TO INDEX FIRST
+        my_lines = lines
+    split_entered_string = entered_string.split(" ")
+    cuss_words = [i for i in split_entered_string if i in my_lines]
+    
+    new_string = ""
+    for i in split_entered_string:
+        if i in cuss_words:
+            new_string += "****"
+        else:
+            new_string += i
+        new_string += " "
+    # print(new_string)
+    return new_string
+    
 if __name__ == "__main__":
-    READ_FROM_PERSON_FILE_AND_INSERT(Person_name="Bernardo Kastrup")
+    # READ_FROM_PERSON_FILE_AND_INSERT(Person_name="Bernardo Kastrup")
+    # modules.REGEX_COMMENT_TEXT_CHECK("cunt faggot fagged fag fagots fag fucks fuckers monkey my name is  my name is whore")
+    modules.DOUBLE_LIST_COMMENT_TEXT_CHECK("cunt faggot fagged fag fagots fag fucks fuckers monkey my name is  my name is whore")
     pass
 
 
