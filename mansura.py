@@ -362,7 +362,7 @@ def request_form(request_type):
             if not modules.GET_ALL_INTERACTIONS(session["id"]):
                 return render_template(f"spam_page.html")
             print("2")
-            x = threading.Thread(target=modules.INSERT_POST, args=(),kwargs={
+            thread_insert = threading.Thread(target=modules.INSERT_POST, args=(),kwargs={
                     'Post_title':post_title,
                     'Post_description':description,
                     'Post_link':link,
@@ -371,6 +371,7 @@ def request_form(request_type):
                     'User_id':session["id"],
                     }
             )
+            thread_insert.start()
             print("3")
         elif request_type == "person":
             print("4")
@@ -400,7 +401,7 @@ def request_form(request_type):
                 )
                 
             modules.log_function(msg_type="test", log_string=str(person_person_name), function_name=f"INSERT_PERSON")
-            x = threading.Thread(target=modules.INSERT_POST, args=(),kwargs={
+            thread_insert = threading.Thread(target=modules.INSERT_POST, args=(),kwargs={
                     'Post_title':person_post_title,
                     'Post_description':person_description,
                     'Post_link':person_link,
@@ -410,7 +411,7 @@ def request_form(request_type):
                     }
             )
             
-            x.start()
+            thread_insert.start()
             print("5")
             
 
