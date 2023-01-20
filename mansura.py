@@ -413,7 +413,7 @@ def request_form(request_type):
             x.start()
             print("5")
             
-            
+
     return render_template(f'request_form.html',
         request_type=request_type
     )
@@ -654,8 +654,6 @@ def update_subscribe(Person_id):
         am_subscribed = modules.CHECK_IF_SUBSCRIBED(Person_id, session["id"])
         )
          
-
-   
 @app.route("/update_comment_like/<Comment_id>", methods=['GET', 'POST'])
 def update_comment_like(Comment_id):
     if "email" not in session: 
@@ -781,7 +779,6 @@ def update_post_tribunal(Post_id, approval):
     return render_template(f"update_post.html",
         updated_html=''
         )
-
 
 @app.route("/comment_section/<Post_id>/<how_many>/<order>", methods=['GET', 'POST'])
 def comment_section(Post_id, how_many, order):
@@ -1136,12 +1133,24 @@ def leaderboards_home(leaderboard_category):
         
         leaderboard_category=leaderboard_category
     )
+
 @app.route("/intro_page", methods=['GET'])
 def intro_page():
     modules.log_function("request", request)
-    
+    try:
+        username = modules.GET_USER_NAME_FROM_ID(session['id'])
+    except:
+        print("user is not in session")
+        
+    list_of_top_n_people = modules.GET_TOP_N_PERSONS(amount=10)
+    list_of_top_n_users = modules.GET_TOP_N_USERS(amount=10)        
+        
     return render_template(f"intro_page.html",
+        username=username,
+        people_list=list_of_top_n_people,
+        user_list=list_of_top_n_users
     )
+
 @app.route("/test_page", methods=['GET', 'POST'])
 def test_page():
     modules.log_function("request", request)

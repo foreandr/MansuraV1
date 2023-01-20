@@ -1722,7 +1722,7 @@ def LEADERBOARD_USER(leaderboard_category):
     elif leaderboard_category == "views":
         query_addition = modules.USER_LEADERBOARD_VIEWS() 
     
-    print(query_addition)
+    # print(query_addition)
     
     try:
         cursor, conn = modules.create_connection()
@@ -1887,6 +1887,79 @@ def GET_PEOPLE_DETAILS_BY_NAME(name):
     for i in cursor.fetchall():
         print(i)
     modules.close_conn(cursor, conn) 
+
+def GET_TOP_N_PERSONS(amount):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT PErson_name, Person_id
+        FROM PEOPLE
+        ORDER BY (
+            (
+            SELECT COUNT(*) 
+            FROM LIKES likes
+                    
+            INNER JOIN POST_PERSON post_person
+            ON post_person.Person_id = people.Person_id
+                    
+            INNER JOIN POSTS posts
+            ON posts.Post_id = post_person.Post_id
+                    
+            WHERE likes.Post_id = posts.Post_id 
+            ) + 
+            (
+            SELECT COUNT(*) 
+            FROM VIEWS views
+                    
+            INNER JOIN POST_PERSON post_person
+            ON post_person.Person_id = people.Person_id
+                    
+            INNER JOIN POSTS posts
+            ON posts.Post_id = post_person.Post_id
+                    
+            WHERE views.Post_id = posts.Post_id 
+            ) 
+        )
+        DESC
+        LIMIT {amount}
+        """)
+    results = []
+    for i in cursor.fetchall():
+        results.append([i[0], i[1]])
+    
+    modules.close_conn(cursor, conn)     
+    return results
+
+def GET_TOP_N_USERS(amount):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+            SELECT Username, User_id
+            FROM Users users
+        ORDER BY (
+            (
+                SELECT COUNT(*) 
+                FROM LIKES likes                        
+                WHERE likes.User_id = users.User_id
+            ) + 
+            (
+                SELECT COUNT(*) 
+                FROM COMMENTS comments                        
+                WHERE comments.User_id = users.User_id
+            ) +
+            (
+            SELECT COUNT(*) 
+            FROM VIEWS views                        
+            WHERE views .User_id = users.User_id
+            )
+        )
+        DESC
+        LIMIT {amount}
+        """)
+    results = []
+    for i in cursor.fetchall():
+        results.append([i[0], i[1]])
+    
+    modules.close_conn(cursor, conn)     
+    return results
 
 if __name__ == "__main__":
     # modules.GET_PEOPLE_DETAILS_BY_NAME("w")

@@ -4,7 +4,7 @@ https://pypi.org/project/youtube-video-scraping/
 remove as many queries as possible
 
 Need an intro page for people with new accounts to like figures their interested in
-    - buy topic maybe? and then just sub them to those people
+    - by topic maybe? and then just sub them to those people
     
 subject bias?
     add a subject category to people
