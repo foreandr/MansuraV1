@@ -3,7 +3,7 @@
 {%block main %}
 
 <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;text-align: center;">
-    <h1>Welcome to Mansura {{username}}!</h1>
+    <h1>Welcome to Mansura!</h1>
     <h4>A Digital Content Library</h4>
 </div>
 
@@ -25,7 +25,6 @@
         <h3>TOP SCAVENGERS TO FOLLOW</h3>
     </div>
     <div>
-
         {% for i in range(people_list | length) %}
             <a href="/user_profile/{{ user_list[i][0] }}/0">{{ user_list[i][0] }}</a> |
             

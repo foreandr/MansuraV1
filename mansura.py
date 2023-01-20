@@ -1139,18 +1139,11 @@ def leaderboards_home(leaderboard_category):
 def intro_page():
     modules.log_function("request", request)
     
-    try:
-        session_id = session["id"] 
-        username = session["user"] 
-    except:
-        session_id = 2
-        username = ""
         
     list_of_top_n_people = modules.GET_TOP_N_PERSONS(amount=10)
     list_of_top_n_users = modules.GET_TOP_N_USERS(amount=10)        
         
     return render_template(f"intro_page.html",
-        username=username,
         people_list=list_of_top_n_people,
         user_list=list_of_top_n_users
     )
