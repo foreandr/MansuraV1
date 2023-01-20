@@ -196,9 +196,27 @@ def MOVE_ALL_POSTS_FROM_BY_IDS(starting_post_id, ending_post_id):
     except Exception as e:
         cursor.execute("ROLLBACK")
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
+        
+        
+def UPDATE_POST_TITLE_BY_ID(Post_id, new_title):
+    try:
+        cursor, conn = modules.create_connection()
+        cursor.execute(f"""
+            UPDATE POSTS
+            SET Post_title = '{new_title}'
+            WHERE Post_id = '{Post_id}'
+        """)
+        conn.commit()
+        modules.print_green(f"{inspect.stack()[0][3]} {Post_id, new_title} COMPLETED\n")
+        modules.close_conn(cursor, conn)
+    except Exception as e:
+        cursor.execute("ROLLBACK")
+        modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}")
     
 if __name__ == "__main__":
     # UPDATE_NAME_TYPO("Terrence Tao", "Terence Tao")
-    # modules.MOVE_ALL_POSTS_FROM_BY_IDS(27, 328)
+    #modules.MOVE_ALL_POSTS_FROM_BY_IDS(100, 243)
+    #modules.DELETE_PERSON(100)
+    UPDATE_POST_TITLE_BY_ID(807, "Zuck at F8 Dev Conference")
     pass
     
