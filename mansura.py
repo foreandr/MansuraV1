@@ -414,10 +414,10 @@ def request_form(request_type):
             print("5")
             
             
-    #return render_template(f'request_form.html',
-    #    request_type=request_type
-    #)
-    return redirect(url_for('post_logic', person_id=0,page_no=0 ))
+    return render_template(f'request_form.html',
+        request_type=request_type
+    )
+    # return redirect(url_for('post_logic', person_id=0,page_no=0 ))
 
 @app.route("/search_text_by_category/<type>", methods=['GET'])
 def search_text_by_category(type):
@@ -653,7 +653,9 @@ def update_subscribe(Person_id):
         subscribers=modules.GET_NUM_SUBSCRIBERS_BY_PERSON_ID(Person_id),
         am_subscribed = modules.CHECK_IF_SUBSCRIBED(Person_id, session["id"])
         )
-          
+         
+
+   
 @app.route("/update_comment_like/<Comment_id>", methods=['GET', 'POST'])
 def update_comment_like(Comment_id):
     if "email" not in session: 
@@ -779,6 +781,7 @@ def update_post_tribunal(Post_id, approval):
     return render_template(f"update_post.html",
         updated_html=''
         )
+
 
 @app.route("/comment_section/<Post_id>/<how_many>/<order>", methods=['GET', 'POST'])
 def comment_section(Post_id, how_many, order):
