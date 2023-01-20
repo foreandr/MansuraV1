@@ -12,6 +12,7 @@
         <h3>TOP PEOPLE TO SUBSCRIBE TO</h3>
     </div>
     <div>
+
         {% for i in range(people_list | length) %}
             <a href="/{{ people_list[i][1] }}/0">{{ people_list[i][0] }}</a> |
             
@@ -24,6 +25,7 @@
         <h3>TOP SCAVENGERS TO FOLLOW</h3>
     </div>
     <div>
+
         {% for i in range(people_list | length) %}
             <a href="/user_profile/{{ user_list[i][0] }}/0">{{ user_list[i][0] }}</a> |
             
