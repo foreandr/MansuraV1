@@ -35,7 +35,8 @@ def post_logic(person_id, page_no):
     except:
         username = "Trial"
         session_id = 2
-
+        
+    modules.log_function("request", request, session_user=username)
         # modules.log_function("error", F"I DON'T THINK THIS USER IS IN SESSION RIGHT NOW {session}")
 
     query, posts, new_page_no, posts_per_page, can_scroll, person_id, tag_requests_ = modules.UNIVERSAL_FUNCTION(
@@ -176,17 +177,18 @@ def apply_for_admin():
 
 @app.route("/favourites/<page_no>", methods=['GET', 'POST'])
 def favourites(page_no):
-    modules.log_function("request", request)
+    # modules.log_function("request", request)
     if "email" not in session: 
         return redirect(url_for("login"))
     
     try:
         session_id = session["id"]
-        session_user = session["id"]  
+        session_user = session["user"]  
     except:
         session_id = 2
-    
-    
+        session_user = "Trial"
+        
+    modules.log_function("request", request, session_user=session_user)
     
     query, posts, new_page_no, posts_per_page, can_scroll, person_id, tag_requests_ = modules.UNIVERSAL_FUNCTION(
         searcher=session["user"], 
@@ -217,7 +219,7 @@ def user_profile(user_profile_name, page_no):
     THIS seems to get run twice, and the second time returns the wrong name
     doesnt seem to effect the query tho
     ''' 
-    modules.log_function("request", request)
+    # modules.log_function("request", request)
     if "email" not in session: 
         return redirect(url_for("login"))  
     
@@ -227,8 +229,9 @@ def user_profile(user_profile_name, page_no):
     except:
         session_id = 2
         session_user = "Trial"
-    
-    print("user_profile_name", user_profile_name) 
+        
+    modules.log_function("request", request, session_user=session_user)
+    # print("user_profile_name", user_profile_name) 
     
     if user_profile_name == "home_profile":
         user_profile_id = session_id
@@ -270,7 +273,7 @@ def user_profile(user_profile_name, page_no):
     
 @app.route("/person/<person_id>", methods=['GET', 'POST'])
 def person(person_id):
-    modules.log_function("request", request)
+    # modules.log_function("request", request)
     if "email" not in session: 
         return redirect(url_for("login"))
     
@@ -280,6 +283,7 @@ def person(person_id):
     except:
         session_id = 2
         session_user = "Trial"
+    modules.log_function("request", request, session_user=session_user)
                 
     posts = modules.UNIVERSAL_FUNCTION(searcher=session_user, person_id=person_id)
     
