@@ -12,7 +12,7 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None", ses
     #    return "" # THIS ERROR CAN BE IGNORED
     # print(f"TESTING:{log_string}")
     
-    my_accounts = ['', 'mazinosarchive','youtubebot', 'Admin']
+    my_accounts = ['mazinosarchive','youtubebot', 'Admin', "Andre"]
 
     my_time = pytz.timezone('US/Eastern') 
     current_datetime = datetime.now(my_time).replace(microsecond=0).replace(tzinfo=None)
@@ -29,10 +29,13 @@ def log_function(msg_type, log_string, vote_type="None", distro_type="None", ses
 
     elif msg_type == "request":
         if session_user in my_accounts:
-            with open(f'/root/mansura/logs/access/general/{current_date}.txt', 'a') as f:
+            with open(f'/root/mansura/logs/access/personal/{current_date}.txt', 'a') as f:
                 f.write(err_string)
-        else:
+        elif session_user != "" or len(session_user) != 0:
             with open(f'/root/mansura/logs/access/user/{current_date}.txt', 'a') as f:
+                f.write(err_string)   
+        else:
+            with open(f'/root/mansura/logs/access/general/{current_date}.txt', 'a') as f:
                 f.write(err_string)
     elif msg_type == "distro":
         err_string = f"{log_string}"
