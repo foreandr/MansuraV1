@@ -101,7 +101,7 @@ def post_tribunal(page_no):
         offset_calc=offset_calc,
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
-        coming_from_tribunal="True",
+        coming_from_tribunal=True,
         can_vote=can_vote,
         ADMINISTRATOR=modules.CHECK_IF_IT_IS_ME(session_id)
         #fucking hate javascript
@@ -141,7 +141,7 @@ def tag_tribunal(page_no):
         offset_calc=offset_calc,
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
-        coming_from_tag_tribunal="true",
+        coming_from_tag_tribunal=True,
         can_vote=can_vote,
         ADMINISTRATOR=modules.CHECK_IF_IT_IS_ME(session_id),
         tag_requests=tag_requests
@@ -241,6 +241,9 @@ def user_profile(user_profile_name, page_no):
     )
     offset_calc = int(int(page_no) * int(posts_per_page))
     user_strikes = modules.GET_USER_STRIKES_BY_ID(user_profile_id)
+    
+    followers = modules.GET_FOLLOWERS_BY_USER_ID(user_profile_id)
+    print("FOLLOWERS", followers)
     return render_template('home.html',
         query=query,                   
                            
@@ -263,7 +266,7 @@ def user_profile(user_profile_name, page_no):
         
         # I THINK THE NAMES OF THESE ARE WRONG OT SOME ASPECT OF THIS IS WRONG
         #BUT IT WORKS ANYWAY
-        followers=modules.GET_FOLLOWERS_BY_USER_ID(user_profile_id),
+        followers=followers,
         following=modules.GET_FOLLOWING_BY_USER_ID(user_profile_id)
     )
     
@@ -678,7 +681,7 @@ def update_follow(user_profile_id):
     
     modules.CONNECTION_LOGIC(session["id"], user_profile_id) 
     return render_template(f"update_follow.html",
-        new_following_count=len(modules.GET_FOLLOWERS_BY_USER_ID(user_profile_id))
+        new_follower_count=len(modules.GET_FOLLOWERS_BY_USER_ID(user_profile_id))
         )
 
 @app.route("/update_search_fave/<algo_id>", methods=['GET', 'POST'])

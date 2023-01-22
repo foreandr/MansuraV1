@@ -405,14 +405,30 @@ def TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses, bias_dict):
             # print(i, array_of_order_clauses[i], bias_type, bias_number)
             
             if i == len(array_of_order_clauses) - 1:
-                full_order_by += f"""({ORDER_CLAUSE_SECTIONS(array_of_order_clauses[i])} * 
-                ({bias_number} * (((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id = post_person.Person_id)+1))*{bias_dict["subscriptions_bias"]}))"""
+                full_order_by += f"""
+                (
+                    {ORDER_CLAUSE_SECTIONS(array_of_order_clauses[i])} * 
+                    ( 
+                        {bias_number} *
+                        (((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id = post_person.Person_id)+1) * ({bias_dict["subscriptions_bias"]})) *  
+                        (((SELECT COUNT(*) FROM CONNECTIONS conn WHERE User_id2 = posts.User_id AND User_id1 = @SEARCHER_ID)+1) * ({bias_dict["following_bias"]}))           
+                    )
+                )
+
+                
+            """
                 # (13 * (((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id = post_person.Person_id)+1)*87))
             else:
-                full_order_by += f"""(
+                full_order_by += f"""                
+                (
                     {ORDER_CLAUSE_SECTIONS(array_of_order_clauses[i])} * 
-                    ({bias_number} * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * {bias_dict["subscriptions_bias"]}  ))
-                 +
+                    ( 
+                        {bias_number} *
+                        (((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id = post_person.Person_id)+1) * ({bias_dict["subscriptions_bias"]})) *  
+                        (((SELECT COUNT(*) FROM CONNECTIONS conn WHERE User_id2 = posts.User_id AND User_id1 = @SEARCHER_ID)+1) * ({bias_dict["following_bias"]}))           
+                    )
+                ) +
+                
                 """
             
     except Exception as e:
@@ -708,40 +724,347 @@ def GET_RID_OF_DUPES(posts, posts_per_page):
     
 def TESTING_SEARCH_QURIES():    
     cursor, conn = modules.create_connection()
-    giant_query = """
+    giant_query = """((
+                    
+    (
+        SELECT COUNT(*) 
+        FROM LIKES likes 
+        
+        
+        
+        WHERE likes.Post_id = posts.Post_id
+        
+         
+        
+    )
+     * 
+                    (0 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
                 (
-                (((SELECT Count(*) FROM likes likes WHERE likes.post_id = posts.post_id)) * 4)+
-                (((SELECT Count(*) FROM likes likes WHERE likes.post_id = posts.post_id AND likes.user_id = 1)) * 4)+
-                (((SELECT Count(*) FROM likes likes INNER JOIN connections conn2 ON conn2.user_id1 = likes.user_id WHERE likes.post_id = posts.post_id AND conn2.user_id2 = 1 )) * 4)+
-                (((SELECT Count(*) FROM likes likes INNER JOIN connections conn ON conn.user_id2 = likes.user_id WHERE likes.post_id = posts.post_id AND conn.user_id1 = 1 ) ) * 4)+
-                (((SELECT Count(*) FROM comments comments WHERE comments.post_id = posts.post_id ) ) * 16)+
-                (((SELECT Count(*) FROM comments comments WHERE comments.post_id = posts.post_id AND comments.user_id = 1 ) ) * 16)+
-                (((SELECT Count(*) FROM comments comments INNER JOIN connections conn2 ON conn2.user_id1 = comments.user_id WHERE comments.post_id = posts.post_id AND conn2.user_id2 = 1 )) * 16)+
-                (((SELECT Count(*) FROM comments comments INNER JOIN connections conn ON conn.user_id2 = comments.user_id WHERE comments.post_id = posts.post_id AND conn.user_id1 = 1 ) ) * 16)+
-                (((SELECT Count(*) FROM views views WHERE views.post_id = posts.post_id ) ) * 0) +
-                (((SELECT Count(*) FROM comments comments WHERE  comments.post_id = posts.post_id AND comments.user_id = 1 ) ) * 0)+
-                (((SELECT Count(*) FROM comments comments INNER JOIN connections conn2 ON conn2.user_id1 = comments.user_id WHERE comments.post_id = posts.post_id AND conn2.user_id2 = 1 ) ) * 0)+
-                (((SELECT Count(*) FROM comments comments INNER JOIN connections conn ON conn.user_id2 = comments.user_id WHERE comments.post_id = posts.post_id AND conn.user_id1 = 1 ) ) * 0)+
-                (((SELECT Count(*) FROM favourites faves WHERE faves.post_id = posts.post_id ) ) * 100)+
-                (((SELECT Count(*) FROM favourites faves WHERE faves.post_id = posts.post_id AND faves.user_id = 1 ) ) * 100)+
-                (((SELECT Count(*) FROM favourites faves INNER JOIN connections conn2 ON conn2.user_id1 = faves.user_id WHERE faves.post_id = posts.post_id AND conn2.user_id2 = 1 ) ) * 100)+
-                (((SELECT Count(*) FROM favourites faves INNER JOIN connections conn ON conn.user_id2 = faves.user_id WHERE faves.post_id = posts.post_id AND conn.user_id1 = 1 ) ) * 100)+
-                ((SELECT Count(*) FROM comment_votes comment_votes INNER JOIN comments comments ON comments.comment_id = comment_votes.comment_id WHERE comments.post_id = posts.post_id ) * 9)+
-                ((SELECT Count(*) FROM comment_votes comment_votes INNER JOIN comments comments ON comments.comment_id = comment_votes.comment_id WHERE comments.post_id = posts.post_id AND  comment_votes.user_id = 1 ) * 9)+
-                ((SELECT Count(*) FROM comment_votes comment_votes INNER JOIN connections conn2 ON conn2.user_id1 = comment_votes.user_id INNER JOIN comments comments ON comments.comment_id = comment_votes.comment_id WHERE comments.post_id = posts.post_id AND conn2.user_id2 = 1 ) * 9)+
-                ((SELECT Count(*) FROM comment_votes comment_votes INNER JOIN connections conn ON conn.user_id2 = comment_votes.user_id INNER JOIN comments comments ON comments.comment_id = comment_votes.comment_id WHERE comments.post_id = posts.post_id AND        conn.user_id1 = 1 ) * 9)
-            ) 
-    """            
-    '''(SELECT Count(*) FROM likes likes WHERE likes.post_id = posts.post_id) desc,
-            (SELECT Count(*) FROM comments comments WHERE comments.post_id = posts.post_id) desc,     
-            (SELECT Count(*) FROM favourites faves WHERE faves.post_id = posts.post_id) desc,    
-            (SELECT Count(*) FROM views views WHERE views.post_id = posts.post_id) desc,     
-            (SELECT Count(*) FROM likes likes WHERE likes.post_id = posts.post_id AND '1' = likes.user_id) ,    
-            (SELECT Count(*) FROM favourites faves WHERE faves.post_id = posts.post_id AND '1' = faves.user_id) ,
-            (SELECT username FROM users users WHERE  posts.user_id = users.user_id),'''
+                    
+    (
+        SELECT COUNT(*) 
+        FROM LIKES likes 
+        
+        
+        
+        WHERE likes.Post_id = posts.Post_id
+        
+        AND likes.User_id = 1 
+        
+    )
+     * 
+                    (0 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM LIKES likes 
+        
+        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = likes.User_id
+        
+        WHERE likes.Post_id = posts.Post_id
+        
+         
+        AND conn2.User_id2 = 1
+    )
+     * 
+                    (0 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM LIKES likes 
+        INNER JOIN CONNECTIONS conn ON conn.User_id2 = likes.User_id
+        
+        
+        WHERE likes.Post_id = posts.Post_id
+        AND conn.User_id1 = 1
+         
+        
+    )
+     * 
+                    (0 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        
+        
+        
+        WHERE comments.Post_id = posts.Post_id
+        
+         
+        
+    )
+     * 
+                    (9 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        
+        
+        
+        WHERE comments.Post_id = posts.Post_id
+        
+        AND comments.User_id = 1 
+        
+    )
+     * 
+                    (9 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        
+        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = comments.User_id
+        
+        WHERE comments.Post_id = posts.Post_id
+        
+         
+        AND conn2.User_id2 = 1
+    )
+     * 
+                    (9 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        INNER JOIN CONNECTIONS conn ON conn.User_id2 = comments.User_id
+        
+        
+        WHERE comments.Post_id = posts.Post_id
+        AND conn.User_id1 = 1
+         
+        
+    )
+     * 
+                    (9 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM VIEWS views
+        
+        
+        
+        WHERE views.Post_id = posts.Post_id
+        
+         
+        
+    )
+     * 
+                    (5 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        
+        
+        
+        WHERE comments.Post_id = posts.Post_id
+        
+        AND comments.User_id = 1 
+        
+    )
+     * 
+                    (5 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        
+        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = comments.User_id
+        
+        WHERE comments.Post_id = posts.Post_id
+        
+         
+        AND conn2.User_id2 = 1
+    )
+     * 
+                    (5 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM COMMENTS comments 
+        INNER JOIN CONNECTIONS conn ON conn.User_id2 = comments.User_id
+        
+        
+        WHERE comments.Post_id = posts.Post_id
+        AND conn.User_id1 = 1
+         
+        
+    )
+     * 
+                    (5 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM FAVOURITES faves
+        
+        
+        
+        WHERE faves.Post_id = posts.Post_id
+        
+         
+        
+    )
+     * 
+                    (11 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM FAVOURITES faves
+        
+        
+        
+        WHERE faves.Post_id = posts.Post_id
+        
+        AND faves.User_id = 1 
+        
+    )
+     * 
+                    (11 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM FAVOURITES faves
+        
+        INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = faves.User_id
+        
+        WHERE faves.Post_id = posts.Post_id
+        
+         
+        AND conn2.User_id2 = 1
+    )
+     * 
+                    (11 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    
+    (
+        SELECT COUNT(*) 
+        FROM FAVOURITES faves
+        INNER JOIN CONNECTIONS conn ON conn.User_id2 = faves.User_id
+        
+        
+        WHERE faves.Post_id = posts.Post_id
+        AND conn.User_id1 = 1
+         
+        
+    )
+     * 
+                    (11 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    (
+            SELECT COUNT(*) 
+            FROM COMMENT_VOTES comment_votes
+            
+            
+            
+            
+            INNER JOIN COMMENTS comments  
+            ON comments.Comment_id = comment_votes.Comment_id        
+            
+            WHERE comments.Post_id = posts.Post_id
+            
+             
+            
+        ) * 
+                    (10 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    (
+            SELECT COUNT(*) 
+            FROM COMMENT_VOTES comment_votes
+            
+            
+            
+            
+            INNER JOIN COMMENTS comments  
+            ON comments.Comment_id = comment_votes.Comment_id        
+            
+            WHERE comments.Post_id = posts.Post_id
+            
+            AND comment_votes.User_id = 1 
+            
+        ) * 
+                    (10 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                (
+                    (
+            SELECT COUNT(*) 
+            FROM COMMENT_VOTES comment_votes
+            
+            INNER JOIN CONNECTIONS conn2 ON conn2.User_id1 = comment_votes.User_id
+            
+            
+            INNER JOIN COMMENTS comments  
+            ON comments.Comment_id = comment_votes.Comment_id        
+            
+            WHERE comments.Post_id = posts.Post_id
+            
+             
+            AND conn2.User_id2 = 1
+        ) * 
+                    (10 * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * 100  ))
+                 +
+                
+                (
+                    (
+            SELECT COUNT(*) 
+            FROM COMMENT_VOTES comment_votes
+            
+            
+            INNER JOIN CONNECTIONS conn ON conn.User_id2 = comment_votes.User_id
+            
+            INNER JOIN COMMENTS comments  
+            ON comments.Comment_id = comment_votes.Comment_id        
+            
+            WHERE comments.Post_id = posts.Post_id
+            AND conn.User_id1 = 1
+             
+            
+        ) * 
+                    ( 
+                        10 *
+                        (((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id = post_person.Person_id)+1) * (10000000000)) *  
+                        (((SELECT COUNT(*) FROM CONNECTIONS conn WHERE User_id2 = posts.User_id AND User_id1 = 1)+1) * (10000032))           
+                    )
+                )
+
+                
+            )
+        """          
+
     cursor.execute(f"""
             SELECT 
-            posts.post_id,{giant_query}
+            posts.post_id,{giant_query}, posts.User_id
 
 
             FROM       posts posts
@@ -750,35 +1073,11 @@ def TESTING_SEARCH_QURIES():
             INNER JOIN people people
             ON         people.person_id = post_person.person_id
             WHERE      1=1
-            AND        posts.post_live = 'True'
+            
+            ORDER BY {giant_query} DESC
             
             
-            ORDER BY  
-            ( 
-                (
-                    (
-                        SELECT Count(*)
-                        FROM   likes likes
-                        WHERE  likes.post_id = posts.post_id 
-                    ) * 
-                    (
-                        83 * 
-                        ( 
-                            (
-                                (
-                                    SELECT count(*)
-                                    FROM   subscriptions subs
-                                    WHERE  subs.person_id = post_person.person_id
-                                ) + 1
-                            )
-                        ) * 89
-                    )     
-                )
-            )
-                    
-            DESC
-           
-            offset ( (2-1) * 10 ) limit 10;
+            
             
     """)
     
@@ -788,6 +1087,6 @@ def TESTING_SEARCH_QURIES():
     
 
 if __name__ == "__main__":
-    modules.GET_LIST_SUBSCRIPTIONS_BY_USER_ID(1)
+    # modules.GET_LIST_SUBSCRIPTIONS_BY_USER_ID(1)
     modules.TESTING_SEARCH_QURIES() 
     pass

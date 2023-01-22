@@ -1,6 +1,16 @@
 https://pypi.org/project/sql-formatter/
 https://pypi.org/project/youtube-video-scraping/
 
+WAYS AWAY:
+    PUT FOLLOW UNFOLLOW BLOCK OPTIONS RIGHT IN VIDEO LOCATION WITH NAME
+    PUT SUBSCRIBE OPTION WHEN CLICKING TAG, ALONG WITH SUBSCRIBE ALL OPTION
+
+DONE. FINISH FOLLOWING BIAS
+
+delete post on tribunal interaction so i don't have to scorll
+
+in text query search, and NAME (user)  == %% to get posters as well
+
 remove as many queries as possible
 
 Need an intro page for people with new accounts to like figures their interested in
@@ -9,6 +19,7 @@ Need an intro page for people with new accounts to like figures their interested
 subject bias?
     add a subject category to people
     bias by those fields, to a certain degree
+
 
 test changing gunicorn worker to 4 since there isnt an asynch thing running
 0. ADS

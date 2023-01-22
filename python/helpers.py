@@ -292,9 +292,9 @@ def SERVER_CHECK(server, function):
 
 def CHECK_IF_IT_IS_ME(id):
     if str(id) == "1":
-        return "True"
+        return True
     else:
-        return "False" 
+        return False
         
 def CHECK_IF_MOBILE(request):
     devices = ["Android", "webOS", "iPhone", "iPad", "iPod", "BlackBerry", "IEMobile", "Opera Mini"]

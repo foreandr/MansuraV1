@@ -100,14 +100,14 @@ def INSERT_DEMO_POST():
     modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK4", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=w_X5czMVKT8", Post_live="True", User_id=2, Person=["Noam Chomsky"])
     modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK5", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=XNSxj0TVeJs&t=1360s", Post_live="True", User_id=2, Person=["Noam Chomsky"])
     modules.INSERT_POST(Post_title="Noam Chomsky Ukraine 2 TALK6", Post_description="here is noam chomsky philosopher talking about x", Post_link="https://www.youtube.com/watch?v=aiJEmB3wBxM",Post_live="True", User_id=2, Person=["Noam Chomsky"])
-    
+    #5
     # PETER THIEL DEMO
     modules.INSERT_POST(Post_title="Peter Thiel X talk1", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=XvKi7Omg1_M",Post_live="True", User_id=2, Person=["Peter Thiel", "Noam Chomsky"])
     modules.INSERT_POST(Post_title="Peter Thiel X talk2", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=qYSnVR7d4VE",Post_live="True", User_id=2, Person=["Peter Thiel"])
     modules.INSERT_POST(Post_title="Peter Thiel X talk3", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=F3EBfS9IcB4&t=2518s",Post_live="True", User_id=3, Person=["Peter Thiel"])
     modules.INSERT_POST(Post_title="Peter Thiel X talk4", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.youtube.com/watch?v=3Fx5Q8xGU8k&t=2553s",Post_live="True", User_id=3, Person=["Peter Thiel"]) 
     modules.INSERT_POST(Post_title="SPOTIFY Peter Thiel X talk", Post_description="here is peter thiel philosopher talking about x", Post_link="https://open.spotify.com/episode/4CESb99rKgkQ5MvNL4HaFJ?si=3e1ea553d7c14637", Post_live="True", User_id=2, Person=["Peter Thiel"]) 
-    
+    #10
     """
     modules.INSERT_POST(Post_title="tiktok Peter Thiel X talk", Post_description="here is peter thiel philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7177147474233150726?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person="Peter Thiel")
     
@@ -121,7 +121,7 @@ def INSERT_DEMO_POST():
     modules.INSERT_POST(Post_title="Michael Sugrue X talk2", Post_description="here is michael sugrue philosopher talking about x", Post_link="https://www.youtube.com/watch?v=_PSRVuQvVuU",Post_live="True", User_id=2, Person=["Michael Sugrue"])
     modules.INSERT_POST(Post_title="Michael Sugrue X talk3", Post_description="here is michael sugrue philosopher talking about x", Post_link="https://www.youtube.com/watch?v=WHiPfvzap3o",Post_live="True", User_id=2, Person=["Michael Sugrue"])
     modules.INSERT_POST(Post_title="Michael Sugrue X talk4", Post_description="here is michael sugrue philosopher talking about x", Post_link="https://www.youtube.com/watch?v=tyb93qZIC7g&t=1556s",Post_live="True", User_id=2, Person=["Michael Sugrue"]) 
-
+    #14
     # VERVAEKE DEMO
     modules.INSERT_POST(Post_title="John Vervaeke X talk1", Post_description="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Post_link="https://www.youtube.com/watch?v=54l8_ewcOlY&t=1488s",Post_live="True", User_id=1, Person=["John Vervaeke"]) 
     modules.INSERT_POST(Post_title="John Vervaeke talk2", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=aF9HeXg65AE&t=71s",Post_live="True", User_id=3, Person=["John Vervaeke"]) 
@@ -133,7 +133,7 @@ def INSERT_DEMO_POST():
     modules.INSERT_POST(Post_title="John Vervaeke X talk8", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=KoqibFwvQJ4",Post_live="True", User_id=3, Person=["John Vervaeke"]) 
     modules.INSERT_POST(Post_title="John Vervaeke X talk9", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=rpivf1SoEdc",Post_live="True", User_id=3, Person=["John Vervaeke"]) 
     modules.INSERT_POST(Post_title="John Vervaeke X talk10", Post_description="here is John Vervaeke philosopher talking about x", Post_link="https://www.youtube.com/watch?v=hl2TE-mXPwM",Post_live="False", User_id=1, Person=["John Vervaeke"]) 
-
+    #24
     # MORE TESTS
     
     modules.INSERT_POST(Post_title="Balaji Srinivasan X talk1", Post_description="here is John VASDKJFHALSKDJFHervaeke philosopher talking about x", Post_link="https://www.tiktok.com/@mazinosarchive/video/7179325211559431429?is_copy_url=1&is_from_webapp=v1",Post_live="True", User_id=1, Person=["Balaji Srinivasan"]) 
@@ -306,14 +306,7 @@ def INSERT_DEMO_CONNECTIONS():
     modules.INSERT_CONNECTION(user_id1=10, user_id2=1)
     modules.INSERT_CONNECTION(user_id1=11, user_id2=1)
     modules.INSERT_CONNECTION(user_id1=12, user_id2=1)
-    modules.INSERT_CONNECTION(user_id1=13, user_id2=1)
-    modules.INSERT_CONNECTION(user_id1=14, user_id2=1)
-    modules.INSERT_CONNECTION(user_id1=15, user_id2=1)
-    modules.INSERT_CONNECTION(user_id1=16, user_id2=1)
-    modules.INSERT_CONNECTION(user_id1=17, user_id2=1)
-    modules.INSERT_CONNECTION(user_id1=18, user_id2=1)
-    modules.INSERT_CONNECTION(user_id1=19, user_id2=1)
-    modules.INSERT_CONNECTION(user_id1=20, user_id2=1)
+
     
     modules.INSERT_CONNECTION(user_id1=1, user_id2=2)
     modules.INSERT_CONNECTION(user_id1=2, user_id2=2)
@@ -325,11 +318,7 @@ def INSERT_DEMO_CONNECTIONS():
     modules.INSERT_CONNECTION(user_id1=8, user_id2=2)
     modules.INSERT_CONNECTION(user_id1=9, user_id2=2)
     modules.INSERT_CONNECTION(user_id1=10, user_id2=2)
-    modules.INSERT_CONNECTION(user_id1=11, user_id2=2)
-    modules.INSERT_CONNECTION(user_id1=12, user_id2=2)
-    modules.INSERT_CONNECTION(user_id1=13, user_id2=2)
-    modules.INSERT_CONNECTION(user_id1=14, user_id2=2)
-    modules.INSERT_CONNECTION(user_id1=15, user_id2=2)
+
     modules.INSERT_CONNECTION(user_id1=16, user_id2=2)
     modules.INSERT_CONNECTION(user_id1=17, user_id2=2)
     modules.INSERT_CONNECTION(user_id1=18, user_id2=2)
@@ -348,9 +337,7 @@ def INSERT_DEMO_CONNECTIONS():
     modules.INSERT_CONNECTION(user_id1=10, user_id2=3)
     modules.INSERT_CONNECTION(user_id1=11, user_id2=3)
     modules.INSERT_CONNECTION(user_id1=12, user_id2=3)
-    modules.INSERT_CONNECTION(user_id1=13, user_id2=3)
-    modules.INSERT_CONNECTION(user_id1=14, user_id2=3)
-    modules.INSERT_CONNECTION(user_id1=15, user_id2=3)
+
     modules.INSERT_CONNECTION(user_id1=16, user_id2=3)
     modules.INSERT_CONNECTION(user_id1=17, user_id2=3)
     modules.INSERT_CONNECTION(user_id1=18, user_id2=3)
@@ -377,6 +364,15 @@ def INSERT_DEMO_CONNECTIONS():
     modules.INSERT_CONNECTION(user_id1=18, user_id2=4)
     modules.INSERT_CONNECTION(user_id1=19, user_id2=4)
     modules.INSERT_CONNECTION(user_id1=20, user_id2=4)
+    modules.INSERT_CONNECTION(user_id1=21, user_id2=4)
+    modules.INSERT_CONNECTION(user_id1=22, user_id2=4)
+    modules.INSERT_CONNECTION(user_id1=23, user_id2=4)
+    modules.INSERT_CONNECTION(user_id1=24, user_id2=4)
+    modules.INSERT_CONNECTION(user_id1=25, user_id2=4)
+    modules.INSERT_CONNECTION(user_id1=26, user_id2=4)
+    modules.INSERT_CONNECTION(user_id1=27, user_id2=4)
+    modules.INSERT_CONNECTION(user_id1=28, user_id2=4)
+    
     
     modules.INSERT_CONNECTION(user_id1=1, user_id2=6)
     modules.INSERT_CONNECTION(user_id1=2, user_id2=6)
@@ -400,17 +396,6 @@ def INSERT_DEMO_CONNECTIONS():
     modules.INSERT_CONNECTION(user_id1=20, user_id2=6)
     
     modules.INSERT_CONNECTION(user_id1=1, user_id2=9)
-    modules.INSERT_CONNECTION(user_id1=2, user_id2=9)
-    modules.INSERT_CONNECTION(user_id1=3, user_id2=9)
-    modules.INSERT_CONNECTION(user_id1=4, user_id2=9)
-    modules.INSERT_CONNECTION(user_id1=5, user_id2=9)
-    modules.INSERT_CONNECTION(user_id1=6, user_id2=9)
-    modules.INSERT_CONNECTION(user_id1=7, user_id2=9)
-    modules.INSERT_CONNECTION(user_id1=8, user_id2=9)
-    modules.INSERT_CONNECTION(user_id1=9, user_id2=9)
-    modules.INSERT_CONNECTION(user_id1=10, user_id2=9)
-    modules.INSERT_CONNECTION(user_id1=11, user_id2=9)
-    modules.INSERT_CONNECTION(user_id1=12, user_id2=9)
     modules.INSERT_CONNECTION(user_id1=13, user_id2=9)
     modules.INSERT_CONNECTION(user_id1=14, user_id2=9)
     modules.INSERT_CONNECTION(user_id1=15, user_id2=9)
@@ -422,24 +407,7 @@ def INSERT_DEMO_CONNECTIONS():
     
     modules.INSERT_CONNECTION(user_id1=1, user_id2=12)
     modules.INSERT_CONNECTION(user_id1=2, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=3, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=4, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=5, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=6, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=7, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=8, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=9, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=10, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=11, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=12, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=13, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=14, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=15, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=16, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=17, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=18, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=19, user_id2=12)
-    modules.INSERT_CONNECTION(user_id1=20, user_id2=12)
+
     
     modules.INSERT_CONNECTION(user_id1=1, user_id2=15)
     modules.INSERT_CONNECTION(user_id1=2, user_id2=15)
@@ -457,10 +425,7 @@ def INSERT_DEMO_CONNECTIONS():
     modules.INSERT_CONNECTION(user_id1=14, user_id2=15)
     modules.INSERT_CONNECTION(user_id1=15, user_id2=15)
     modules.INSERT_CONNECTION(user_id1=16, user_id2=15)
-    modules.INSERT_CONNECTION(user_id1=17, user_id2=15)
-    modules.INSERT_CONNECTION(user_id1=18, user_id2=15)
-    modules.INSERT_CONNECTION(user_id1=19, user_id2=15)
-    modules.INSERT_CONNECTION(user_id1=20, user_id2=15)
+
     
     modules.INSERT_CONNECTION(user_id1=1, user_id2=20)
     modules.INSERT_CONNECTION(user_id1=2, user_id2=20)
@@ -475,13 +440,7 @@ def INSERT_DEMO_CONNECTIONS():
     modules.INSERT_CONNECTION(user_id1=11, user_id2=20)
     modules.INSERT_CONNECTION(user_id1=12, user_id2=20)
     modules.INSERT_CONNECTION(user_id1=13, user_id2=20)
-    modules.INSERT_CONNECTION(user_id1=14, user_id2=20)
-    modules.INSERT_CONNECTION(user_id1=15, user_id2=20)
-    modules.INSERT_CONNECTION(user_id1=16, user_id2=20)
-    modules.INSERT_CONNECTION(user_id1=17, user_id2=20)
-    modules.INSERT_CONNECTION(user_id1=18, user_id2=20)
-    modules.INSERT_CONNECTION(user_id1=19, user_id2=20)
-    modules.INSERT_CONNECTION(user_id1=20, user_id2=20)
+
     
 def INSERT_DEMO_BLOCKS():
     modules.print_title(f"{inspect.stack()[0][3]}")

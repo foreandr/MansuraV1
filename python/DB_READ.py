@@ -139,7 +139,9 @@ def GET_ALL_USERS():
     try:
         cursor, conn = modules.create_connection()
         query = """
-            SELECT * FROM USERS
+            SELECT * 
+            FROM USERS
+            ORDER BY User_id
         """
         cursor.execute(query)
         
@@ -1974,6 +1976,7 @@ def GET_LIST_SUBSCRIPTIONS_BY_USER_ID(User_id):
     modules.close_conn(cursor, conn) 
 if __name__ == "__main__":
     # modules.GET_PEOPLE_DETAILS_BY_NAME("w")
-    print(modules.GET_USERS_BY_TEXT('w'))
+    # print(modules.GET_USERS_BY_TEXT('w'))
+    modules.GET_ALL_USERS()
     pass
 
