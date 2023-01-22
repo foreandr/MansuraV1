@@ -79,3 +79,14 @@ ADMINISTRATOR
          different ways to earn points
 
 
+LONG TERM UI
+    imagine netflix
+    each name is a horizontal row that can scroll indefinitly
+    
+    chomsky
+    vid1,vidn+=1...
+
+    peter
+    vid1,vidn+=1...
+
+    DONE. scroll logic for the tribunal

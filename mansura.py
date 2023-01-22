@@ -90,7 +90,6 @@ def post_tribunal(page_no):
     offset_calc = int(int(page_no) * int(posts_per_page))
 
     can_vote = modules.CHECK_USER_IS_GLOBAL_ADMIN(session_id)
-    
     return render_template('home.html',
         query=query,                   
                            
@@ -102,7 +101,7 @@ def post_tribunal(page_no):
         offset_calc=offset_calc,
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
-        coming_from_tribunal="true",
+        coming_from_tribunal="True",
         can_vote=can_vote,
         ADMINISTRATOR=modules.CHECK_IF_IT_IS_ME(session_id)
         #fucking hate javascript
@@ -855,7 +854,7 @@ def structure_search_by_phrase(page_no, phrase_again):
         offset_calc=offset_calc,
         can_scroll=can_scroll,
         posts_per_page=posts_per_page,
-        coming_from_search="true",
+        coming_from_search="True",
         searcher=session_user,
         search_phrase=searched_value
     )        
@@ -874,20 +873,24 @@ def search_algo_create():
                 return render_template(f"search_algo_create.html",
                     failure_message="Already created 2 today, wait until tomorrow."
             )
+                
         like_bias = request.form["likes_bias"]
         views_bias = request.form["views_bias"]
         faves_bias = request.form["faves_bias"]
         comments_bias = request.form["comments_bias"]
         comment_likes_bias = request.form["comment_likes_bias"]
-        # subscriptions_bias = request.form["subscriptions_bias"]
+        subscriptions_bias = request.form["subscriptions_bias"]
+        following_bias = request.form["following_bias"]
+        
         
         bias_dict = {
             "like_bias":like_bias, 
             "views_bias":views_bias, 
             "faves_bias":faves_bias, 
             "comments_bias":comments_bias, 
-            "comment_likes_bias":comment_likes_bias
-            # "subscriptions_bias":subscriptions_bias
+            "comment_likes_bias":comment_likes_bias,
+            "subscriptions_bias":subscriptions_bias,
+            "following_bias":following_bias,
         }
         for key,value in request.form.items():
             # print(key, value)
@@ -898,12 +901,11 @@ def search_algo_create():
                 array_of_where_clauses.append([key, value])
             elif key == "algo_name":
                 algo_name = value
-        # exit(0)
+        
         #TODO: IMPLEMENT WHERE CLAUSES ONN THE BASIS OF THOSE CRITERION
         # print(f"ORDER CLAUSES\n{array_of_order_clauses}")
         # print("GOT HERE 2")
         full_order_by = modules.TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses, bias_dict)
-        # print(full_order_by)
         full_where = modules.TRANSFER_SEARCH_WHERE_TO_QUERY(array_of_where_clauses)
         algorithm = modules.CHECK_ALGO_FUNCTION(algo_name, session["user"])
 
@@ -915,7 +917,15 @@ def search_algo_create():
         #print("algo_name     :", algo_name)
         #print("full_order_by :", full_order_by)
         #print("full_where", full_where)
-        modules.INSERT_SEARCH_ALGORITHM(Search_algorithm_name=algo_name, Search_where_clause=full_where, Search_order_clause=full_order_by, User_id=session["id"])
+        thread_insert = threading.Thread(target=modules.INSERT_SEARCH_ALGORITHM, args=(),kwargs={
+            'Search_algorithm_name':algo_name,
+            'Search_where_clause':full_where,
+            'Search_order_clause':full_order_by,
+            'User_id':session["id"]
+                }
+        )
+        thread_insert.start()
+        # modules.INSERT_SEARCH_ALGORITHM(Search_algorithm_name=algo_name, Search_where_clause=full_where, Search_order_clause=full_order_by, User_id=session["id"])
         return redirect(url_for('search_algo_home', search_type="home", page_no="0"))
                 
     return render_template(f"search_algo_create.html",

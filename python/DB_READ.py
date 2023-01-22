@@ -80,7 +80,7 @@ def GET_REAL_USERS_BY_TEXT(text, user_id):
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
 
 def GET_USER_ID_FROM_NAME(username):
-    print("username", username)
+    # print("username", username)
     try:
         cursor, conn = modules.create_connection()
         # print("NAME BEING USED", username)
@@ -1961,6 +1961,17 @@ def GET_TOP_N_USERS(amount):
     modules.close_conn(cursor, conn)     
     return results
 
+def GET_LIST_SUBSCRIPTIONS_BY_USER_ID(User_id):
+    cursor, conn = modules.create_connection()
+    cursor.execute(f"""
+        SELECT *
+        FROM SUBSCRIPTIONS
+        WHERE User_id = '{User_id}'
+        """)
+    
+    for i in cursor.fetchall():
+        print(i)
+    modules.close_conn(cursor, conn) 
 if __name__ == "__main__":
     # modules.GET_PEOPLE_DETAILS_BY_NAME("w")
     print(modules.GET_USERS_BY_TEXT('w'))

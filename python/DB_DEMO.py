@@ -168,6 +168,21 @@ def INSERT_DEMO_SUBJECTS():
     modules.INSERT_SUBJECTS(Subject_name="Lacan")
     modules.INSERT_SUBJECTS(Subject_name="Deluze")
 
+def INSERT_DEMO_SUBSCRIPTIONS():
+    modules.INSERT_SUBSCRIBE(Person_id=1, User_id=1) 
+    modules.INSERT_SUBSCRIBE(Person_id=2, User_id=1) 
+    modules.INSERT_SUBSCRIBE(Person_id=3, User_id=1)    
+    modules.INSERT_SUBSCRIBE(Person_id=4, User_id=1) 
+    modules.INSERT_SUBSCRIBE(Person_id=5, User_id=1) 
+    modules.INSERT_SUBSCRIBE(Person_id=6, User_id=1) 
+    
+    modules.INSERT_SUBSCRIBE(Person_id=1, User_id=2) 
+    modules.INSERT_SUBSCRIBE(Person_id=2, User_id=2) 
+    modules.INSERT_SUBSCRIBE(Person_id=3, User_id=2)    
+    modules.INSERT_SUBSCRIBE(Person_id=4, User_id=2) 
+    modules.INSERT_SUBSCRIBE(Person_id=5, User_id=2) 
+    modules.INSERT_SUBSCRIBE(Person_id=6, User_id=2)
+
 def INSERT_DEMO_POST_SUBJECTS():
     modules.INSERT_POST_SUBJECTS(Subject_id=1, Post_id=1)
     modules.INSERT_POST_SUBJECTS(Subject_id=2, Post_id=1)

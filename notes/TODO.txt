@@ -9,13 +9,17 @@ Need an intro page for people with new accounts to like figures their interested
 subject bias?
     add a subject category to people
     bias by those fields, to a certain degree
+
+test changing gunicorn worker to 4 since there isnt an asynch thing running
 0. ADS
-1. scroll logic for the tribunal
+
 2. subscription bias
 3. early virality boosts
 4. follwoing follower UI is WAY off
 5. leaderboards is counting things that I've liked, not things that art posted by me
 6. where users are thes users! in where clause
+7. switch, if coming from x to actually python truth values insteaf of stirngs
+8. bias by people my peers are subscribed to
 
 USERS TO ASIIMILATE
     - DO THE FULL CHANNELS FIRST TOMORROW, THEN THESE PEOPLE INDIVIDUALLY
@@ -40,3 +44,4 @@ USERS TO ASIIMILATE
 
 
 
+(( ( SELECT COUNT(*) FROM LIKES likes WHERE likes.Post_id = posts.Post_id ) * (13 * ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id = post_person.Person_id)+1) * 87 ) ) + ( ( SELECT COUNT(*) FROM COMMENTS comments WHERE comments.Post_id = posts.Post_id ) * (50 * ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id = post_person.Person_id)+1) * 87 )) DESC 

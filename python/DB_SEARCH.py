@@ -4,6 +4,8 @@ except:
     import MODULES as modules
 
 import inspect
+import threading
+
 def PERSON_SEARCH(person_id):
     if person_id == "" or str(person_id) == '0':
         # print("empty person id")
@@ -263,21 +265,21 @@ def GET_POST_COMMENT_LIKE_COUNT(home_function=False,
         user_constraint_str = ""
         
     
-    return f"""
-        SELECT COUNT(*) 
-        FROM COMMENT_VOTES comment_votes
-        
-        {bias_followers_comment_likes_join}
-        {bias_user_comment_likes_join}
-        
-        INNER JOIN COMMENTS comments  
-        ON comments.Comment_id = comment_votes.Comment_id        
-        
-        WHERE comments.Post_id = posts.Post_id
-        {bias_user_comment_likes_and}
-        {user_constraint_str} 
-        {bias_followers_comment_likes_and}
-    """        
+    return f"""(
+            SELECT COUNT(*) 
+            FROM COMMENT_VOTES comment_votes
+            
+            {bias_followers_comment_likes_join}
+            {bias_user_comment_likes_join}
+            
+            INNER JOIN COMMENTS comments  
+            ON comments.Comment_id = comment_votes.Comment_id        
+            
+            WHERE comments.Post_id = posts.Post_id
+            {bias_user_comment_likes_and}
+            {user_constraint_str} 
+            {bias_followers_comment_likes_and}
+        ){search_addition}"""        
          
 def GET_ALL_COUNTS():
     query = f"""
@@ -403,9 +405,15 @@ def TRANSFER_SEARCH_ORDER_CLAUSE_TO_QUERY(array_of_order_clauses, bias_dict):
             # print(i, array_of_order_clauses[i], bias_type, bias_number)
             
             if i == len(array_of_order_clauses) - 1:
-                full_order_by += f"(({ORDER_CLAUSE_SECTIONS(array_of_order_clauses[i])}) * {bias_number})"
+                full_order_by += f"""({ORDER_CLAUSE_SECTIONS(array_of_order_clauses[i])} * 
+                ({bias_number} * (((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id = post_person.Person_id)+1))*{bias_dict["subscriptions_bias"]}))"""
+                # (13 * (((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id = post_person.Person_id)+1)*87))
             else:
-                full_order_by += f"(({ORDER_CLAUSE_SECTIONS(array_of_order_clauses[i])}) * {bias_number})" + "+"
+                full_order_by += f"""(
+                    {ORDER_CLAUSE_SECTIONS(array_of_order_clauses[i])} * 
+                    ({bias_number} * ( ((SELECT Count(*) FROM SUBSCRIPTIONS subs WHERE subs.Person_id  = post_person.Person_id)+1)) * {bias_dict["subscriptions_bias"]}  ))
+                 +
+                """
             
     except Exception as e:
         modules.log_function("error", e, function_name=F"{inspect.stack()[0][3]}") 
@@ -561,7 +569,14 @@ def UNIVERSAL_FUNCTION(
         where_clause = modules.GET_WHERE_CLAUSE_BY_SEARCH_ALGO_ID(search_algo_id)
         
         # CAST VOTE FOR SEARCH
-        modules.INSERT_SEARCH_VOTE(search_algo_id, searcher_id)
+        thread_insert = threading.Thread(target=modules.INSERT_SEARCH_VOTE, args=(),kwargs={
+            'Search_algorithm_id':search_algo_id,
+            'User_id':searcher_id,
+                }
+        )
+        thread_insert.start()
+        
+        # =modules.INSERT_SEARCH_VOTE(search_algo_id, searcher_id)
         
         posts_per_page = 10
         
@@ -608,7 +623,7 @@ def UNIVERSAL_FUNCTION(
         """
         
         #LOG THE QUERY [ERROR CHECKING]
-        # modules.log_function(msg_type="test", log_string=query, function_name=f"{inspect.stack()[0][3]}")
+        modules.log_function(msg_type="test", log_string=query, function_name=f"{inspect.stack()[0][3]}")
 
         cursor.execute(query)
         posts = []
@@ -691,7 +706,88 @@ def GET_RID_OF_DUPES(posts, posts_per_page):
     
     return post_array
     
+def TESTING_SEARCH_QURIES():    
+    cursor, conn = modules.create_connection()
+    giant_query = """
+                (
+                (((SELECT Count(*) FROM likes likes WHERE likes.post_id = posts.post_id)) * 4)+
+                (((SELECT Count(*) FROM likes likes WHERE likes.post_id = posts.post_id AND likes.user_id = 1)) * 4)+
+                (((SELECT Count(*) FROM likes likes INNER JOIN connections conn2 ON conn2.user_id1 = likes.user_id WHERE likes.post_id = posts.post_id AND conn2.user_id2 = 1 )) * 4)+
+                (((SELECT Count(*) FROM likes likes INNER JOIN connections conn ON conn.user_id2 = likes.user_id WHERE likes.post_id = posts.post_id AND conn.user_id1 = 1 ) ) * 4)+
+                (((SELECT Count(*) FROM comments comments WHERE comments.post_id = posts.post_id ) ) * 16)+
+                (((SELECT Count(*) FROM comments comments WHERE comments.post_id = posts.post_id AND comments.user_id = 1 ) ) * 16)+
+                (((SELECT Count(*) FROM comments comments INNER JOIN connections conn2 ON conn2.user_id1 = comments.user_id WHERE comments.post_id = posts.post_id AND conn2.user_id2 = 1 )) * 16)+
+                (((SELECT Count(*) FROM comments comments INNER JOIN connections conn ON conn.user_id2 = comments.user_id WHERE comments.post_id = posts.post_id AND conn.user_id1 = 1 ) ) * 16)+
+                (((SELECT Count(*) FROM views views WHERE views.post_id = posts.post_id ) ) * 0) +
+                (((SELECT Count(*) FROM comments comments WHERE  comments.post_id = posts.post_id AND comments.user_id = 1 ) ) * 0)+
+                (((SELECT Count(*) FROM comments comments INNER JOIN connections conn2 ON conn2.user_id1 = comments.user_id WHERE comments.post_id = posts.post_id AND conn2.user_id2 = 1 ) ) * 0)+
+                (((SELECT Count(*) FROM comments comments INNER JOIN connections conn ON conn.user_id2 = comments.user_id WHERE comments.post_id = posts.post_id AND conn.user_id1 = 1 ) ) * 0)+
+                (((SELECT Count(*) FROM favourites faves WHERE faves.post_id = posts.post_id ) ) * 100)+
+                (((SELECT Count(*) FROM favourites faves WHERE faves.post_id = posts.post_id AND faves.user_id = 1 ) ) * 100)+
+                (((SELECT Count(*) FROM favourites faves INNER JOIN connections conn2 ON conn2.user_id1 = faves.user_id WHERE faves.post_id = posts.post_id AND conn2.user_id2 = 1 ) ) * 100)+
+                (((SELECT Count(*) FROM favourites faves INNER JOIN connections conn ON conn.user_id2 = faves.user_id WHERE faves.post_id = posts.post_id AND conn.user_id1 = 1 ) ) * 100)+
+                ((SELECT Count(*) FROM comment_votes comment_votes INNER JOIN comments comments ON comments.comment_id = comment_votes.comment_id WHERE comments.post_id = posts.post_id ) * 9)+
+                ((SELECT Count(*) FROM comment_votes comment_votes INNER JOIN comments comments ON comments.comment_id = comment_votes.comment_id WHERE comments.post_id = posts.post_id AND  comment_votes.user_id = 1 ) * 9)+
+                ((SELECT Count(*) FROM comment_votes comment_votes INNER JOIN connections conn2 ON conn2.user_id1 = comment_votes.user_id INNER JOIN comments comments ON comments.comment_id = comment_votes.comment_id WHERE comments.post_id = posts.post_id AND conn2.user_id2 = 1 ) * 9)+
+                ((SELECT Count(*) FROM comment_votes comment_votes INNER JOIN connections conn ON conn.user_id2 = comment_votes.user_id INNER JOIN comments comments ON comments.comment_id = comment_votes.comment_id WHERE comments.post_id = posts.post_id AND        conn.user_id1 = 1 ) * 9)
+            ) 
+    """            
+    '''(SELECT Count(*) FROM likes likes WHERE likes.post_id = posts.post_id) desc,
+            (SELECT Count(*) FROM comments comments WHERE comments.post_id = posts.post_id) desc,     
+            (SELECT Count(*) FROM favourites faves WHERE faves.post_id = posts.post_id) desc,    
+            (SELECT Count(*) FROM views views WHERE views.post_id = posts.post_id) desc,     
+            (SELECT Count(*) FROM likes likes WHERE likes.post_id = posts.post_id AND '1' = likes.user_id) ,    
+            (SELECT Count(*) FROM favourites faves WHERE faves.post_id = posts.post_id AND '1' = faves.user_id) ,
+            (SELECT username FROM users users WHERE  posts.user_id = users.user_id),'''
+    cursor.execute(f"""
+            SELECT 
+            posts.post_id,{giant_query}
+
+
+            FROM       posts posts
+            INNER JOIN post_person post_person
+            ON         post_person.post_id = posts.post_id
+            INNER JOIN people people
+            ON         people.person_id = post_person.person_id
+            WHERE      1=1
+            AND        posts.post_live = 'True'
+            
+            
+            ORDER BY  
+            ( 
+                (
+                    (
+                        SELECT Count(*)
+                        FROM   likes likes
+                        WHERE  likes.post_id = posts.post_id 
+                    ) * 
+                    (
+                        83 * 
+                        ( 
+                            (
+                                (
+                                    SELECT count(*)
+                                    FROM   subscriptions subs
+                                    WHERE  subs.person_id = post_person.person_id
+                                ) + 1
+                            )
+                        ) * 89
+                    )     
+                )
+            )
+                    
+            DESC
+           
+            offset ( (2-1) * 10 ) limit 10;
+            
+    """)
     
+    for i in cursor.fetchall():
+        print(i)
+    modules.close_conn(cursor, conn)
     
-if __name__ == "__main__": 
+
+if __name__ == "__main__":
+    modules.GET_LIST_SUBSCRIPTIONS_BY_USER_ID(1)
+    modules.TESTING_SEARCH_QURIES() 
     pass

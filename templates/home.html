@@ -8,66 +8,65 @@
 {% endif %}
 {% endblock nav %}
 {%block main %}
-{% if coming_from_tribunal == "true" %}
-{% if page_no == 1 %}
-<div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
-    <div style="margin: auto; width: 50%; padding: 10px;">
-        <h1><u>ONLY ADMINS WILL SEE CONTENT HERE!</u></h1>
+{% if coming_from_tribunal == "True" %}
+    {% if page_no == 1 %}
+    <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+        <div style="margin: auto; width: 50%; padding: 10px;">
+            <h1><u>ONLY ADMINS WILL SEE CONTENT HERE!</u></h1>
+        </div>
+        <div style="margin: auto;
+            width: 50%;
+            padding: 10px;">
+            <a href="/apply_for_admin">
+                <h1>WANT TO BE AN ADMIN? APPLY HERE!</h1>
+            </a>
+        </div>
     </div>
-    <div style="margin: auto;
-        width: 50%;
-        padding: 10px;">
-        <a href="/apply_for_admin">
-            <h1>WANT TO BE AN ADMIN? APPLY HERE!</h1>
-        </a>
-    </div>
-</div>
-{% endif %}
+    {% endif %}
+    {% if can_scroll == true %}
+        <div class="container-fluid" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+        {% else %}
+        <div class="container-fluid">
+    {% endif %}
+
 {% elif coming_from_favourites == "true" %}
-{% if can_scroll == true %}
-<div class="container-fluid" style="margin: auto" hx-post="/favourites/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
-{% else %}
-<div class="container-fluid" style="margin: auto">
-{% endif %}
+    {% if can_scroll == true %}
+    <div class="container-fluid" style="margin: auto" hx-post="/favourites/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
+    {% else %}
+    <div class="container-fluid" style="margin: auto">
+    {% endif %}
 {% elif coming_from_tag_tribunal == "true" %}
-{% if page_no == 1 %}
-<div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
-    <div style="margin: auto; width: 50%; padding: 10px;">
-        <h1><u>ONLY ADMINS WILL SEE CONTENT HERE!</u></h1>
+    {% if page_no == 1 %}
+    <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
+        <div style="margin: auto; width: 50%; padding: 10px;">
+            <h1><u>ONLY ADMINS WILL SEE CONTENT HERE!</u></h1>
+        </div>
+        <div style="margin: auto;
+            width: 50%;
+            padding: 10px;">
+            <a href="/apply_for_admin">
+                <h1>WANT TO BE AN ADMIN? APPLY HERE!</h1>
+            </a>
+        </div>
     </div>
-    <div style="margin: auto;
-        width: 50%;
-        padding: 10px;">
-        <a href="/apply_for_admin">
-            <h1>WANT TO BE AN ADMIN? APPLY HERE!</h1>
-        </a>
-    </div>
-</div>
+
 {% endif %}
 {% if can_scroll == true %}
 <div class="container-fluid" style="margin: auto" hx-post="/tag_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
 {% else %}
 <div class="container-fluid" style="margin: auto">
 {% endif %}
-{% elif coming_from_search == "true" %}
+{% elif coming_from_search == "True" %}
 {% if can_scroll == true %}
 <div class="container-fluid" style="margin: auto" hx-post="/structure_search_by_phrase/{{page_no}}/{{search_phrase}}" hx-trigger="revealed" hx-swap="afterend">
 {% else %}
 <div class="container-fluid" style="margin: auto">
 {% endif %}
-{% elif coming_from_tribunal == "true" %}
-{% if can_scroll == true %}
-{% if can_vote == "true"%}
-<div class="container-fluid" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend">
-{% else %}
-<div class="container-fluid" style="margin: auto" hx-post="/post_tribunal/{{page_no}}" hx-trigger="revealed" hx-swap="afterend" hidden>
-{% endif %}
-{% else %}
-<div class="container-fluid" style="margin: auto">
-{% endif %}
+
 {% elif coming_from_profile == "True" %}
 {% if page_no == 1 %}
 <div class="container-fluid">
+    
     <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
         <h1>
             <u class="text-center">{{username}}</u>                
@@ -98,7 +97,7 @@
 {% if person_name != "Home" %}
 {% if page_no == 1 %}
 <div class="jumbotron" style="padding-top: 10px !important;padding-bottom: 10px !important;">
-
+    TRIBUNAL {{coming_from_tribunal}}
     <div class="text-center">
         <h1>
             <u>{{person_name}}</u>
